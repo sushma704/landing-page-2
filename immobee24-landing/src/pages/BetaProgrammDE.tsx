@@ -278,11 +278,43 @@ const Trust = () => {
   );
 };
 
+// Tally injects window.Tally with loadEmbeds() once its embed.js script
+// (loaded async in index.html) has initialised.
+declare global {
+  interface Window {
+    Tally?: { loadEmbeds: () => void };
+  }
+}
+
+const TALLY_BETA_FORM_SRC =
+  'https://tally.so/r/ja5bzJ?transparentBackground=1&dynamicHeight=1';
+
 const ApplicationForm = () => {
   const { t } = useLanguage();
-  const fields = asStringArray(t('betaProgram.form.fields'));
+
+  // Wire up the iframe with Tally's embed.js once it has loaded. The script
+  // in index.html loads async, so it may not be ready at mount time.
+  useEffect(() => {
+    const init = () => {
+      if (window.Tally?.loadEmbeds) {
+        window.Tally.loadEmbeds();
+        return true;
+      }
+      return false;
+    };
+    if (init()) return;
+    const interval = window.setInterval(() => {
+      if (init()) window.clearInterval(interval);
+    }, 200);
+    const timeout = window.setTimeout(() => window.clearInterval(interval), 5000);
+    return () => {
+      window.clearInterval(interval);
+      window.clearTimeout(timeout);
+    };
+  }, []);
+
   return (
-    <section id="apply" className="py-20 md:py-28 bg-white">
+    <section id="apply" className="py-20 md:py-28 bg-gradient-to-b from-cream to-white">
       <div className="container">
         <div className="max-w-3xl mx-auto">
           <div className="text-center">
@@ -294,36 +326,24 @@ const ApplicationForm = () => {
             </p>
           </div>
 
-          <div className="mt-10 rounded-2xl border border-golden/30 bg-cream shadow-card overflow-hidden">
-            <div className="p-6 md:p-8">
-              <p className="text-xs font-semibold uppercase tracking-wider text-golden-dark">
-                {asString(t('betaProgram.form.fieldsLabel'))}
-              </p>
-              <ul className="mt-4 grid sm:grid-cols-2 gap-x-6 gap-y-2">
-                {fields.map((f, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-charcoal">
-                    <CheckCircle2 className="h-4 w-4 mt-0.5 text-honey-green flex-shrink-0" />
-                    <span>{f}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div className="bg-charcoal text-white px-6 md:px-8 py-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <p className="text-sm text-white/80">
-                {asString(t('betaProgram.form.microcopy'))}
-              </p>
-              <button
-                type="button"
-                {...TALLY_PROPS}
-                onClick={() => trackEvent('beta_form_cta_click')}
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-gradient-golden text-white px-6 py-3 font-semibold shadow-golden hover:opacity-95 transition-opacity"
-              >
-                {asString(t('betaProgram.form.cta'))}
-                <ArrowRight className="h-4 w-4" />
-              </button>
-            </div>
+          <div className="mt-10 rounded-2xl border border-charcoal/10 bg-white shadow-card overflow-hidden">
+            <iframe
+              data-tally-src={TALLY_BETA_FORM_SRC}
+              loading="lazy"
+              width="100%"
+              height="900"
+              frameBorder={0}
+              marginHeight={0}
+              marginWidth={0}
+              title="Jetzt für das immob24 Beta Programm bewerben."
+              className="block w-full"
+              onLoad={() => trackEvent('beta_form_iframe_loaded')}
+            />
           </div>
+
+          <p className="mt-6 text-sm text-warm-gray text-center italic">
+            {asString(t('betaProgram.form.microcopy'))}
+          </p>
         </div>
       </div>
     </section>

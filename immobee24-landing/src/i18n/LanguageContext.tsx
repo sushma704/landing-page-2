@@ -5,35 +5,34 @@ import { trackEvent } from '../lib/analytics';
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (path: string) => string | string[];
-  isRTL: boolean;
+  t: (path: string) => string | string[] | Array<{ q: string; a: string }> | string[][];
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [language, setLanguage] = useState<Language>(() => {
-    // Check localStorage first
-    const saved = localStorage.getItem('immobee24-lang');
-    if (saved && ['en', 'de', 'fr', 'ar'].includes(saved)) {
-      return saved as Language;
-    }
-    // Default to English
-    return 'en';
-  });
+const STORAGE_KEY = 'immob24-lang';
 
-  const isRTL = language === 'ar';
+function detectInitialLanguage(): Language {
+  if (typeof window === 'undefined') return 'de';
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (saved === 'de' || saved === 'en') return saved;
+  // German-first site — default DE unless the browser strongly prefers EN.
+  const browserLang = navigator.language?.toLowerCase() ?? '';
+  if (browserLang.startsWith('en')) return 'en';
+  return 'de';
+}
+
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const [language, setLanguage] = useState<Language>(detectInitialLanguage);
 
   useEffect(() => {
-    localStorage.setItem('immobee24-lang', language);
-    // Update document direction for RTL support
-    document.documentElement.dir = isRTL ? 'rtl' : 'ltr';
+    localStorage.setItem(STORAGE_KEY, language);
     document.documentElement.lang = language;
+    document.documentElement.dir = 'ltr';
     trackEvent('language_change', { language });
-  }, [language, isRTL]);
+  }, [language]);
 
-  // Translation function that navigates nested objects
-  const t = (path: string): string | string[] => {
+  const t = (path: string) => {
     const keys = path.split('.');
     let result: any = translations;
 
@@ -46,22 +45,18 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
       }
     }
 
-    // If result is an object with language keys, return the value for current language
-    if (result && typeof result === 'object') {
+    if (result && typeof result === 'object' && !Array.isArray(result)) {
       if (language in result) {
         return result[language];
       }
-      // Check if it's an array-type translation
-      if (Array.isArray(result)) {
-        return result;
-      }
     }
 
+    if (Array.isArray(result)) return result;
     return typeof result === 'string' ? result : path;
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t, isRTL }}>
+    <LanguageContext.Provider value={{ language, setLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );
@@ -75,10 +70,7 @@ export function useLanguage() {
   return context;
 }
 
-// Language names and flags for the selector
-export const languageOptions = [
-  { code: 'en' as Language, name: 'English', flag: '🇬🇧' },
-  { code: 'de' as Language, name: 'Deutsch', flag: '🇩🇪' },
-  { code: 'fr' as Language, name: 'Français', flag: '🇫🇷' },
-  { code: 'ar' as Language, name: 'العربية', flag: '🇸🇦' },
+export const languageOptions: Array<{ code: Language; name: string; short: string }> = [
+  { code: 'de', name: 'Deutsch', short: 'DE' },
+  { code: 'en', name: 'English', short: 'EN' },
 ];

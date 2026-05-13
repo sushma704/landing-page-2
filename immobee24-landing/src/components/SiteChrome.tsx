@@ -13,25 +13,37 @@ export const TALLY_PROPS = {
   'data-tally-open': 'eqRpWJ',
   'data-tally-emoji-text': '👋',
   'data-tally-emoji-animation': 'wave',
-  'data-tally-width': '400',
+  'data-tally-width': '650',
 };
 
 export const Wordmark = ({ variant = 'dark' }: { variant?: 'dark' | 'light' }) => {
   const { pathname } = useLocation();
   const isHome = pathname === '/';
-  const className =
-    'inline-flex items-center gap-2 font-heading font-bold text-xl tracking-tight';
+  const wrapperClass = 'inline-flex flex-col items-start leading-tight';
   const inner = (
-    <span className={variant === 'light' ? 'text-white' : 'text-charcoal'}>
-      Immob<span className="text-golden">24</span>
-    </span>
+    <>
+      <span
+        className={`font-heading font-bold text-xl tracking-tight ${
+          variant === 'light' ? 'text-white' : 'text-charcoal'
+        }`}
+      >
+        Immob<span className="text-golden">24</span>
+      </span>
+      <span
+        className={`hidden sm:block mt-0.5 text-[10px] font-medium uppercase tracking-[0.08em] whitespace-nowrap ${
+          variant === 'light' ? 'text-white/60' : 'text-slate'
+        }`}
+      >
+        The AI Operating System for Modern Real Estate
+      </span>
+    </>
   );
   return isHome ? (
-    <a href="#top" className={className} aria-label="Immob24">
+    <a href="#top" className={wrapperClass} aria-label="Immob24">
       {inner}
     </a>
   ) : (
-    <Link to="/" className={className} aria-label="Immob24">
+    <Link to="/" className={wrapperClass} aria-label="Immob24">
       {inner}
     </Link>
   );
@@ -368,9 +380,6 @@ export const Footer = () => {
           <div className="grid gap-10 md:grid-cols-3">
             <div>
               <Wordmark variant="light" />
-              <p className="mt-4 text-sm text-white/60 max-w-xs">
-                {asString(t('hero.eyebrow'))}.
-              </p>
             </div>
 
             <div>

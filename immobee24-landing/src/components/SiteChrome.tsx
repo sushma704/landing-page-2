@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ArrowRight, Menu, Sparkles, X } from 'lucide-react';
+import { ArrowRight, Menu, X } from 'lucide-react';
 import { useLanguage, languageOptions } from '../i18n';
 import type { Language } from '../i18n';
 import { trackEvent } from '../lib/analytics';
@@ -22,18 +22,9 @@ export const Wordmark = ({ variant = 'dark' }: { variant?: 'dark' | 'light' }) =
   const className =
     'inline-flex items-center gap-2 font-heading font-bold text-xl tracking-tight';
   const inner = (
-    <>
-      <span
-        className={`inline-flex h-8 w-8 items-center justify-center rounded-lg ${
-          variant === 'light' ? 'bg-white text-charcoal' : 'bg-gradient-golden text-white'
-        }`}
-      >
-        <Sparkles className="h-4 w-4" strokeWidth={2.5} />
-      </span>
-      <span className={variant === 'light' ? 'text-white' : 'text-charcoal'}>
-        Immob<span className="text-golden">24</span>
-      </span>
-    </>
+    <span className={variant === 'light' ? 'text-white' : 'text-charcoal'}>
+      Immob<span className="text-golden">24</span>
+    </span>
   );
   return isHome ? (
     <a href="#top" className={className} aria-label="Immob24">
@@ -95,9 +86,11 @@ export const Header = () => {
   const navItems = [
     { href: '#product', label: asString(t('nav.product')) },
     { href: '#how-it-works', label: asString(t('nav.howItWorks')) },
-    { href: '#for-whom', label: asString(t('nav.forWhom')) },
     { href: '#crm-alternative', label: asString(t('nav.crmAlternative')) },
   ];
+
+  // Cross-page link to the Beta Agent Program. Always visible.
+  const betaLink = { to: '/de/beta-agentenprogramm', label: asString(t('betaProgram.nav')) };
 
   // From any non-home page, also surface a link back to the homepage.
   const homeLink = pathname !== '/' ? { to: '/', label: 'Home' } : null;
@@ -129,6 +122,12 @@ export const Header = () => {
               {item.label}
             </a>
           ))}
+          <Link
+            to={betaLink.to}
+            className="px-3 py-2 text-sm text-charcoal/70 hover:text-charcoal transition-colors"
+          >
+            {betaLink.label}
+          </Link>
         </nav>
 
         <div className="flex items-center gap-3">
@@ -175,6 +174,13 @@ export const Header = () => {
                 {item.label}
               </a>
             ))}
+            <Link
+              to={betaLink.to}
+              onClick={() => setOpen(false)}
+              className="px-3 py-2 text-sm text-charcoal/80 hover:bg-cream rounded-lg"
+            >
+              {betaLink.label}
+            </Link>
             <button
               type="button"
               {...TALLY_PROPS}

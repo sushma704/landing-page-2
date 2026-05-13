@@ -5,7 +5,6 @@ import {
   CheckCircle2,
   HelpCircle,
   Layers,
-  MessageSquare,
   Repeat,
   Sparkles,
   Target,
@@ -15,6 +14,22 @@ import {
 import { Header, Footer, TALLY_PROPS } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
+import { useLanguage } from '../i18n';
+
+// Local helpers (kept out of i18n module since they're shared by both pages
+// in slightly different shapes). These narrow the t() return to the value
+// type each section expects.
+type TVal = string | string[] | Array<{ q: string; a: string }> | string[][];
+const asString = (v: TVal): string => (typeof v === 'string' ? v : '');
+const asStringArray = (v: TVal): string[] =>
+  Array.isArray(v) && v.every((x) => typeof x === 'string') ? (v as string[]) : [];
+const asFaqArray = (v: TVal): Array<{ q: string; a: string }> =>
+  Array.isArray(v) &&
+  v.every((x) => typeof x === 'object' && x !== null && 'q' in x && 'a' in x)
+    ? (v as Array<{ q: string; a: string }>)
+    : [];
+const asPairArray = (v: TVal): string[][] =>
+  Array.isArray(v) && v.every((x) => Array.isArray(x)) ? (v as string[][]) : [];
 
 function useInView<T extends HTMLElement>(threshold = 0.1) {
   const ref = useRef<T | null>(null);
@@ -52,106 +67,91 @@ const RevealOnScroll = ({ children }: { children: ReactNode }) => {
   );
 };
 
-const Hero = () => (
-  <section
-    id="top"
-    className="relative pt-36 pb-20 md:pt-44 md:pb-28 overflow-hidden bg-gradient-to-b from-cream to-white"
-  >
-    <div
-      aria-hidden
-      className="absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full bg-gradient-golden opacity-20 blur-3xl"
-    />
-    <div
-      aria-hidden
-      className="absolute -bottom-40 -left-24 w-[24rem] h-[24rem] rounded-full bg-golden/10 blur-3xl"
-    />
-    <div className="container relative">
-      <div className="max-w-3xl mx-auto text-center">
-        <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
-          <Sparkles className="h-3.5 w-3.5" />
-          Produkt
-        </span>
+const Hero = () => {
+  const { t } = useLanguage();
+  const bullets = asStringArray(t('produkt.hero.bullets'));
+  return (
+    <section
+      id="top"
+      className="relative pt-36 pb-20 md:pt-44 md:pb-28 overflow-hidden bg-gradient-to-b from-cream to-white"
+    >
+      <div
+        aria-hidden
+        className="absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full bg-gradient-golden opacity-20 blur-3xl"
+      />
+      <div
+        aria-hidden
+        className="absolute -bottom-40 -left-24 w-[24rem] h-[24rem] rounded-full bg-golden/10 blur-3xl"
+      />
+      <div className="container relative">
+        <div className="max-w-3xl mx-auto text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
+            <Sparkles className="h-3.5 w-3.5" />
+            {asString(t('produkt.hero.eyebrow'))}
+          </span>
 
-        <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
-          Das KI-System für Immobilienmakler, das auf Ihrem Workflow arbeitet.
-        </h1>
+          <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
+            {asString(t('produkt.hero.headline'))}
+          </h1>
 
-        <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">
-          Immob24 wurde für Maklerbüros entwickelt, die neue Anfragen schneller beantworten,
-          Interessenten automatisch qualifizieren und weniger Zeit mit manueller Nachverfolgung
-          verlieren wollen. Statt ein weiteres CRM einzuführen, ergänzt Immob24 den bestehenden
-          Prozess um schnelle, automatisierte Ausführung.
-        </p>
+          <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">
+            {asString(t('produkt.hero.subheadline'))}
+          </p>
 
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-          <button
-            type="button"
-            {...TALLY_PROPS}
-            onClick={() => trackEvent('produkt_hero_primary_cta_click')}
-            className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
-          >
-            Demo anfragen
-            <ArrowRight className="h-4 w-4" />
-          </button>
-          <a
-            href="#how-it-works"
-            className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
-          >
-            So funktioniert's
-          </a>
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <button
+              type="button"
+              {...TALLY_PROPS}
+              onClick={() => trackEvent('produkt_hero_primary_cta_click')}
+              className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
+            >
+              {asString(t('produkt.hero.primaryCta'))}
+              <ArrowRight className="h-4 w-4" />
+            </button>
+            <a
+              href="#how-it-works"
+              className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
+            >
+              {asString(t('produkt.hero.secondaryCta'))}
+            </a>
+          </div>
+
+          <ul className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 max-w-2xl mx-auto text-left">
+            {bullets.map((b, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-slate">
+                <CheckCircle2 className="h-4 w-4 mt-0.5 text-honey-green flex-shrink-0" />
+                <span>{b}</span>
+              </li>
+            ))}
+          </ul>
         </div>
-
-        <ul className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 max-w-2xl mx-auto text-left">
-          {[
-            'Reagiert sofort auf neue Immobilienanfragen.',
-            'Qualifiziert Leads automatisch.',
-            'Plant nächste Schritte ohne manuelles Hin und Her.',
-            'Setzt auf bestehende Prozesse und Systeme auf.',
-          ].map((b, i) => (
-            <li key={i} className="flex items-start gap-2 text-sm text-slate">
-              <CheckCircle2 className="h-4 w-4 mt-0.5 text-honey-green flex-shrink-0" />
-              <span>{b}</span>
-            </li>
-          ))}
-        </ul>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
-const Definition = () => (
-  <section id="product" className="py-20 md:py-28 bg-white">
-    <div className="container">
-      <div className="max-w-3xl mx-auto text-center">
-        <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-          Was Immob24 ist
-        </h2>
-        <p className="mt-6 text-body-lg text-slate">
-          Immob24 ist ein KI Operating System für Immobilienmakler in Deutschland. Die Plattform
-          übernimmt die operative Arbeit zwischen Anfrageeingang und dem nächsten qualifizierten
-          Schritt: Antwort, Qualifizierung, Terminlogik und Follow-up. Dadurch gewinnen Maklerbüros
-          Geschwindigkeit, Struktur und Entlastung im Tagesgeschäft.
-        </p>
+const Definition = () => {
+  const { t } = useLanguage();
+  return (
+    <section id="product" className="py-20 md:py-28 bg-white">
+      <div className="container">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+            {asString(t('produkt.definition.headline'))}
+          </h2>
+          <p className="mt-6 text-body-lg text-slate">
+            {asString(t('produkt.definition.body'))}
+          </p>
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const AnswerBlock = () => {
-  const items = [
-    {
-      q: 'Ist Immob24 ein CRM?',
-      a: 'Nein. Immob24 ist kein klassisches CRM.',
-    },
-    {
-      q: 'Was macht Immob24 stattdessen?',
-      a: 'Es führt operative Vertriebsarbeit automatisch aus, statt nur Kontakte und Vorgänge zu speichern.',
-    },
-    {
-      q: 'Für wen ist Immob24 gedacht?',
-      a: 'Für Immobilienmakler und Maklerbüros in Deutschland, die schneller reagieren und Routinearbeit reduzieren wollen.',
-    },
-  ];
+  const { t } = useLanguage();
+  const items = asFaqArray(t('produkt.qa.items'));
+  const qaLabel = asString(t('produkt.qa.qaLabel'));
   return (
     <section className="pb-16 md:pb-24 bg-white">
       <div className="container">
@@ -163,7 +163,7 @@ const AnswerBlock = () => {
             >
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-golden-dark">
                 <HelpCircle className="h-4 w-4" />
-                <span>Q&amp;A</span>
+                <span>{qaLabel}</span>
               </div>
               <h3 className="mt-3 font-heading text-xl text-charcoal">{item.q}</h3>
               <p className="mt-3 text-slate leading-relaxed">{item.a}</p>
@@ -176,25 +176,17 @@ const AnswerBlock = () => {
 };
 
 const ProblemFit = () => {
-  const points = [
-    'Langsame Antwortzeiten → Immob24 reagiert sofort.',
-    'Unklare Lead-Priorisierung → Immob24 qualifiziert früh im Prozess.',
-    'Zu viel Terminabstimmung → Immob24 stößt den nächsten Schritt automatisiert an.',
-    'Manuelle Follow-ups → Immob24 hält Gespräche aktiv.',
-  ];
+  const { t } = useLanguage();
+  const points = asStringArray(t('produkt.problemFit.points'));
   return (
     <section className="py-20 md:py-28 bg-charcoal text-white">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-balance">
-            Warum Maklerbüros ein anderes System brauchen als ein klassisches CRM
+            {asString(t('produkt.problemFit.headline'))}
           </h2>
           <p className="mt-6 text-body-lg text-white/70">
-            Viele Maklerbüros haben kein Datenproblem, sondern ein Reaktionsproblem. Neue Anfragen
-            kommen rein, aber die operative Bearbeitung hängt an manueller Disziplin,
-            Teamkapazität und Back-and-forth-Kommunikation. Genau in dieser Lücke sitzt Immob24:
-            nicht als Datenbank, sondern als KI-Ausführungsschicht für die ersten entscheidenden
-            Schritte im Lead-Prozess.
+            {asString(t('produkt.problemFit.body'))}
           </p>
         </div>
 
@@ -214,35 +206,24 @@ const ProblemFit = () => {
   );
 };
 
-type Feature = { icon: ComponentType<{ className?: string }>; title: string; body: string };
+type Feature = {
+  icon: ComponentType<{ className?: string }>;
+  titleKey: string;
+  bodyKey: string;
+};
 
 const Features = () => {
+  const { t } = useLanguage();
   const items: Feature[] = [
-    {
-      icon: Zap,
-      title: 'Neue Anfragen sofort beantworten',
-      body: 'Sobald ein Lead eingeht, startet Immob24 automatisch die Erstreaktion. Dadurch steigt die Chance auf Kontakt, bevor Interessenten abspringen oder bei anderen Maklern weitermachen.',
-    },
-    {
-      icon: Target,
-      title: 'Leads automatisch qualifizieren',
-      body: 'Immob24 sammelt wichtige Informationen früh im Gespräch und hilft dabei, Anfragen schneller zu priorisieren. Ihr Team konzentriert sich zuerst auf die Interessenten mit höherer Abschlusswahrscheinlichkeit.',
-    },
+    { icon: Zap, titleKey: 'produkt.features.f1Title', bodyKey: 'produkt.features.f1Body' },
+    { icon: Target, titleKey: 'produkt.features.f2Title', bodyKey: 'produkt.features.f2Body' },
     {
       icon: CalendarClock,
-      title: 'Termine und nächste Schritte koordinieren',
-      body: 'Statt jeder manuellen Abstimmung stößt Immob24 den nächsten passenden Prozessschritt an. Das reduziert operative Reibung und beschleunigt die Bearbeitung von Interessenten.',
+      titleKey: 'produkt.features.f3Title',
+      bodyKey: 'produkt.features.f3Body',
     },
-    {
-      icon: Repeat,
-      title: 'Follow-ups aktiv halten',
-      body: 'Wenn Teams ausgelastet sind, brechen Gespräche oft wegen fehlender Nachverfolgung ab. Immob24 hält den Prozess aktiv und verhindert, dass Leads einfach liegen bleiben.',
-    },
-    {
-      icon: Layers,
-      title: 'Auf bestehende Maklerprozesse aufsetzen',
-      body: 'Immob24 ist nicht als harter Systemwechsel positioniert. Die Plattform ist dafür gedacht, vorhandene Prozesse zu ergänzen und die operative Ausführung zu automatisieren, ohne ein bestehendes CRM zwingend zu ersetzen.',
-    },
+    { icon: Repeat, titleKey: 'produkt.features.f4Title', bodyKey: 'produkt.features.f4Body' },
+    { icon: Layers, titleKey: 'produkt.features.f5Title', bodyKey: 'produkt.features.f5Body' },
   ];
 
   return (
@@ -250,7 +231,7 @@ const Features = () => {
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            Was Immob24 im Makleralltag übernimmt
+            {asString(t('produkt.features.headline'))}
           </h2>
         </div>
 
@@ -268,8 +249,10 @@ const Features = () => {
                   {`0${i + 1}`}
                 </span>
               </div>
-              <h3 className="mt-4 font-heading text-xl text-charcoal">{item.title}</h3>
-              <p className="mt-3 text-slate leading-relaxed">{item.body}</p>
+              <h3 className="mt-4 font-heading text-xl text-charcoal">
+                {asString(t(item.titleKey))}
+              </h3>
+              <p className="mt-3 text-slate leading-relaxed">{asString(t(item.bodyKey))}</p>
             </div>
           ))}
         </div>
@@ -279,30 +262,19 @@ const Features = () => {
 };
 
 const UseCases = () => {
+  const { t } = useLanguage();
   const cases = [
-    {
-      title: 'Portal-Anfragen schneller bearbeiten',
-      body: 'Wenn viele Anfragen parallel eingehen, sorgt Immob24 dafür, dass neue Leads nicht auf manuelle Sichtung warten müssen.',
-    },
-    {
-      title: 'Interessenten früh priorisieren',
-      body: 'Makler können schneller erkennen, welche Gespräche zuerst Aufmerksamkeit benötigen, weil die KI die Vorqualifizierung unterstützt.',
-    },
-    {
-      title: 'Besichtigungen effizienter vorbereiten',
-      body: 'Durch automatisierte nächste Schritte sinkt die Zahl der manuellen Schleifen in der Terminabstimmung.',
-    },
-    {
-      title: 'Teams operativ entlasten',
-      body: 'Makler verbringen weniger Zeit mit wiederkehrender Routinekommunikation und mehr Zeit mit Beratung, Besichtigung und Abschluss.',
-    },
+    { titleKey: 'produkt.useCases.c1Title', bodyKey: 'produkt.useCases.c1Body' },
+    { titleKey: 'produkt.useCases.c2Title', bodyKey: 'produkt.useCases.c2Body' },
+    { titleKey: 'produkt.useCases.c3Title', bodyKey: 'produkt.useCases.c3Body' },
+    { titleKey: 'produkt.useCases.c4Title', bodyKey: 'produkt.useCases.c4Body' },
   ];
   return (
     <section className="py-20 md:py-28 bg-white">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            Wofür Maklerbüros Immob24 einsetzen
+            {asString(t('produkt.useCases.headline'))}
           </h2>
         </div>
 
@@ -312,8 +284,10 @@ const UseCases = () => {
               key={i}
               className="rounded-2xl border border-charcoal/10 bg-cream p-6 md:p-8 shadow-subtle"
             >
-              <h3 className="font-heading text-xl text-charcoal">{c.title}</h3>
-              <p className="mt-3 text-slate leading-relaxed">{c.body}</p>
+              <h3 className="font-heading text-xl text-charcoal">
+                {asString(t(c.titleKey))}
+              </h3>
+              <p className="mt-3 text-slate leading-relaxed">{asString(t(c.bodyKey))}</p>
             </div>
           ))}
         </div>
@@ -323,40 +297,18 @@ const UseCases = () => {
 };
 
 const CrmComparison = () => {
-  const rows: Array<{ topic: string; crm: string; immob: string }> = [
-    {
-      topic: 'Kernfunktion',
-      crm: 'Kontakte, Objekte und Vorgänge verwalten.',
-      immob: 'Operative Arbeit zwischen Anfrage und nächstem Schritt automatisieren.',
-    },
-    {
-      topic: 'Reaktion auf neue Leads',
-      crm: 'Meist manuell durch Team oder Workflow-Setups.',
-      immob: 'Sofortige KI-Reaktion auf neue Anfragen.',
-    },
-    {
-      topic: 'Lead-Qualifizierung',
-      crm: 'Häufig dokumentations- und workflowbasiert.',
-      immob: 'Frühe KI-gestützte Vorqualifizierung.',
-    },
-    {
-      topic: 'Terminlogik',
-      crm: 'Abhängig von Teamprozess oder externer Automatisierung.',
-      immob: 'In den automatisierten Ablauf eingebettet.',
-    },
-    {
-      topic: 'Positionierung',
-      crm: 'System of record.',
-      immob: 'AI operating layer auf bestehendem Workflow.',
-    },
-  ];
+  const { t } = useLanguage();
+  const rows = asPairArray(t('produkt.crmTable.rows'));
+  const themaLabel = asString(t('produkt.crmTable.thema'));
+  const classicalLabel = asString(t('produkt.crmTable.classicalCrm'));
+  const immobLabel = asString(t('produkt.crmTable.immob'));
 
   return (
     <section id="crm-alternative" className="py-20 md:py-28 bg-cream">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            Immob24 vs. klassisches CRM
+            {asString(t('produkt.crmTable.headline'))}
           </h2>
         </div>
 
@@ -365,12 +317,12 @@ const CrmComparison = () => {
           <table className="w-full text-left">
             <thead>
               <tr className="bg-charcoal text-white text-sm uppercase tracking-wider">
-                <th className="px-5 py-4 font-semibold">Thema</th>
-                <th className="px-5 py-4 font-semibold">Klassisches CRM</th>
+                <th className="px-5 py-4 font-semibold">{themaLabel}</th>
+                <th className="px-5 py-4 font-semibold">{classicalLabel}</th>
                 <th className="px-5 py-4 font-semibold">
                   <span className="inline-flex items-center gap-2">
                     <Sparkles className="h-4 w-4 text-golden" />
-                    Immob24
+                    {immobLabel}
                   </span>
                 </th>
               </tr>
@@ -383,9 +335,9 @@ const CrmComparison = () => {
                     i !== rows.length - 1 ? 'border-b border-charcoal/5' : ''
                   }`}
                 >
-                  <td className="px-5 py-4 font-medium text-charcoal">{row.topic}</td>
-                  <td className="px-5 py-4 text-slate">{row.crm}</td>
-                  <td className="px-5 py-4 text-charcoal bg-golden/5">{row.immob}</td>
+                  <td className="px-5 py-4 font-medium text-charcoal">{row[0]}</td>
+                  <td className="px-5 py-4 text-slate">{row[1]}</td>
+                  <td className="px-5 py-4 text-charcoal bg-golden/5">{row[2]}</td>
                 </tr>
               ))}
             </tbody>
@@ -400,20 +352,20 @@ const CrmComparison = () => {
               className="rounded-2xl border border-charcoal/10 bg-white p-5 shadow-subtle"
             >
               <p className="text-xs font-semibold uppercase tracking-wider text-golden-dark">
-                {row.topic}
+                {row[0]}
               </p>
               <div className="mt-3 space-y-3">
                 <div>
                   <span className="inline-block min-w-[88px] rounded-full bg-charcoal/5 text-charcoal/70 px-3 py-1 text-xs font-bold uppercase tracking-wider">
-                    CRM
+                    {classicalLabel}
                   </span>
-                  <p className="mt-1 text-slate">{row.crm}</p>
+                  <p className="mt-1 text-slate">{row[1]}</p>
                 </div>
                 <div>
                   <span className="inline-block min-w-[88px] rounded-full bg-gradient-golden text-white px-3 py-1 text-xs font-bold uppercase tracking-wider">
-                    Immob24
+                    {immobLabel}
                   </span>
-                  <p className="mt-1 text-charcoal">{row.immob}</p>
+                  <p className="mt-1 text-charcoal">{row[2]}</p>
                 </div>
               </div>
             </div>
@@ -425,7 +377,7 @@ const CrmComparison = () => {
             href="#book-demo"
             className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
           >
-            CRM-Alternative ansehen
+            {asString(t('produkt.crmTable.cta'))}
             <ArrowRight className="h-4 w-4" />
           </a>
         </div>
@@ -435,18 +387,14 @@ const CrmComparison = () => {
 };
 
 const WhoItsFor = () => {
-  const cards = [
-    'Kleine Maklerbüros mit hohem Anfrageaufkommen.',
-    'Mittelgroße Agenturen mit zu viel manueller Nacharbeit.',
-    'Teams, die ihren bestehenden Software-Stack nicht komplett austauschen wollen.',
-    'Makler, die Geschwindigkeit im Erstkontakt als Wettbewerbsvorteil nutzen wollen.',
-  ];
+  const { t } = useLanguage();
+  const cards = asStringArray(t('produkt.whoFor.cards'));
   return (
     <section id="for-whom" className="py-20 md:py-28 bg-white">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            Für wen Immob24 gebaut ist
+            {asString(t('produkt.whoFor.headline'))}
           </h2>
         </div>
 
@@ -464,13 +412,10 @@ const WhoItsFor = () => {
 
         <div className="mt-10 max-w-3xl mx-auto rounded-2xl border border-charcoal/15 bg-charcoal/5 p-6 md:p-7">
           <p className="text-xs font-semibold uppercase tracking-wider text-charcoal/60">
-            Nicht für
+            {asString(t('produkt.whoFor.notForLabel'))}
           </p>
           <p className="mt-2 text-charcoal leading-relaxed">
-            Immob24 ist nicht die richtige Positionierung für Unternehmen, die primär eine
-            klassische Datenbank, ein Portal oder ein reines Listing-Management-System suchen. Der
-            Fokus liegt auf Reaktion, Qualifizierung, Follow-up und operativer Automatisierung im
-            Maklerprozess.
+            {asString(t('produkt.whoFor.notForBody'))}
           </p>
         </div>
       </div>
@@ -479,19 +424,14 @@ const WhoItsFor = () => {
 };
 
 const HowItWorks = () => {
-  const steps = [
-    'Neue Anfrage kommt rein.',
-    'Immob24 reagiert sofort.',
-    'Die KI sammelt Informationen und qualifiziert den Lead.',
-    'Nächster Schritt wird koordiniert: Termin, Rückfrage oder Follow-up.',
-    'Ihr Team steigt dort ein, wo persönliche Beratung den größten Hebel hat.',
-  ];
+  const { t } = useLanguage();
+  const steps = asStringArray(t('produkt.howItWorks.steps'));
   return (
     <section id="how-it-works" className="py-20 md:py-28 bg-gradient-to-b from-cream to-white">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            Wie Immob24 arbeitet
+            {asString(t('produkt.howItWorks.headline'))}
           </h2>
         </div>
 
@@ -519,7 +459,7 @@ const HowItWorks = () => {
             onClick={() => trackEvent('produkt_how_cta_click')}
             className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
           >
-            So funktioniert's im Detail
+            {asString(t('produkt.howItWorks.cta'))}
             <ArrowRight className="h-4 w-4" />
           </button>
         </div>
@@ -529,21 +469,18 @@ const HowItWorks = () => {
 };
 
 const SocialProof = () => {
-  const placeholders = [
-    '„Wir reagieren jetzt auf jede Anfrage sofort."',
-    '„Unser Team spart wöchentlich Zeit bei Nachverfolgung und Terminabstimmung."',
-    '„Wir mussten kein neues CRM ausrollen, um schneller zu werden."',
-  ];
+  const { t } = useLanguage();
+  const placeholders = asStringArray(t('produkt.socialProof.placeholders'));
+  const placeholderLabel = asString(t('produkt.socialProof.placeholderLabel'));
   return (
     <section className="py-20 md:py-28 bg-white">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            Vertrauen entsteht durch belegbare Ergebnisse
+            {asString(t('produkt.socialProof.headline'))}
           </h2>
           <p className="mt-4 text-sm text-warm-gray italic">
-            Diese Sektion geht erst mit validierten Kundenbelegen live (Logos, Testimonials,
-            Workflow-Screenshots, Vorher/Nachher-Ergebnisse). Bis dahin Platzhalter.
+            {asString(t('produkt.socialProof.note'))}
           </p>
         </div>
 
@@ -555,7 +492,7 @@ const SocialProof = () => {
             >
               <blockquote className="text-charcoal leading-relaxed">{quote}</blockquote>
               <figcaption className="mt-4 text-xs uppercase tracking-wider text-warm-gray">
-                Platzhalter
+                {placeholderLabel}
               </figcaption>
             </figure>
           ))}
@@ -591,34 +528,14 @@ const FAQItem = ({ q, a }: { q: string; a: string }) => {
 };
 
 const FAQ = () => {
-  const items = [
-    {
-      q: 'Ist Immob24 ein CRM?',
-      a: 'Nein. Immob24 ist kein klassisches CRM, sondern eine KI-Schicht für Makler-Workflows.',
-    },
-    {
-      q: 'Brauche ich mein bestehendes CRM weiterhin?',
-      a: 'Immob24 setzt auf bestehende Prozesse auf und setzt nicht zwingend einen kompletten Systemwechsel voraus.',
-    },
-    {
-      q: 'Was automatisiert Immob24 konkret?',
-      a: 'Erstreaktion, Lead-Qualifizierung, Terminlogik und Follow-ups.',
-    },
-    {
-      q: 'Für wen eignet sich Immob24 besonders?',
-      a: 'Für Maklerbüros in Deutschland, die schneller reagieren und operative Routinearbeit reduzieren möchten.',
-    },
-    {
-      q: 'Warum reicht ein CRM dafür nicht aus?',
-      a: 'Weil ein CRM in erster Linie Informationen verwaltet, während Immob24 die operative Ausführung zwischen Anfrage und nächstem Schritt automatisiert.',
-    },
-  ];
+  const { t } = useLanguage();
+  const items = asFaqArray(t('produkt.faq.items'));
   return (
     <section className="py-20 md:py-28 bg-cream">
       <div className="container">
         <div className="max-w-3xl mx-auto">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-center text-balance">
-            Häufige Fragen zum Produkt
+            {asString(t('produkt.faq.headline'))}
           </h2>
 
           <div className="mt-10 rounded-2xl bg-white border border-charcoal/10 px-6">
@@ -632,122 +549,86 @@ const FAQ = () => {
   );
 };
 
-const FinalCTA = () => (
-  <section
-    id="book-demo"
-    className="py-20 md:py-28 bg-charcoal text-white relative overflow-hidden"
-  >
-    <div
-      aria-hidden
-      className="absolute -top-24 left-1/2 -translate-x-1/2 w-[40rem] h-[40rem] rounded-full bg-gradient-golden opacity-10 blur-3xl"
-    />
-    <div className="container relative">
-      <div className="max-w-3xl mx-auto text-center">
-        <h2 className="font-heading text-section-mobile md:text-section text-balance">
-          Sehen Sie, wie Immob24 in Ihren bestehenden Maklerprozess passt
-        </h2>
-        <p className="mt-6 text-body-lg text-white/70">
-          In der Demo wird gezeigt, wie Immob24 neue Anfragen beantwortet, Leads qualifiziert und
-          operative Engpässe in Ihrem Maklerbüro reduziert — ohne dass Sie bei null anfangen
-          müssen.
-        </p>
+const FinalCTA = () => {
+  const { t } = useLanguage();
+  return (
+    <section
+      id="book-demo"
+      className="py-20 md:py-28 bg-charcoal text-white relative overflow-hidden"
+    >
+      <div
+        aria-hidden
+        className="absolute -top-24 left-1/2 -translate-x-1/2 w-[40rem] h-[40rem] rounded-full bg-gradient-golden opacity-10 blur-3xl"
+      />
+      <div className="container relative">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-heading text-section-mobile md:text-section text-balance">
+            {asString(t('produkt.finalCta.headline'))}
+          </h2>
+          <p className="mt-6 text-body-lg text-white/70">
+            {asString(t('produkt.finalCta.body'))}
+          </p>
 
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-          <button
-            type="button"
-            {...TALLY_PROPS}
-            onClick={() => trackEvent('produkt_final_cta_click')}
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-golden text-white px-7 py-3.5 font-semibold shadow-golden hover:opacity-95 transition-opacity"
-          >
-            Demo anfragen
-            <ArrowRight className="h-4 w-4" />
-          </button>
-          <a
-            href="#crm-alternative"
-            className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3 font-medium text-white hover:bg-white/10 transition-colors"
-          >
-            CRM-Alternative ansehen
-          </a>
+          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <button
+              type="button"
+              {...TALLY_PROPS}
+              onClick={() => trackEvent('produkt_final_cta_click')}
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-golden text-white px-7 py-3.5 font-semibold shadow-golden hover:opacity-95 transition-opacity"
+            >
+              {asString(t('produkt.finalCta.primaryCta'))}
+              <ArrowRight className="h-4 w-4" />
+            </button>
+            <a
+              href="#crm-alternative"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3 font-medium text-white hover:bg-white/10 transition-colors"
+            >
+              {asString(t('produkt.finalCta.secondaryCta'))}
+            </a>
+          </div>
+
+          <p className="mt-6 text-sm text-white/55">
+            {asString(t('produkt.finalCta.supportNote'))}
+          </p>
         </div>
-
-        <p className="mt-6 text-sm text-white/55">
-          Keine Verpflichtung. Besonders relevant für kleine und mittelgroße Maklerbüros in
-          Deutschland.
-        </p>
       </div>
-    </div>
-  </section>
-);
-
-const PRODUKT_FAQ_SCHEMA = {
-  '@context': 'https://schema.org',
-  '@type': 'FAQPage',
-  inLanguage: 'de-DE',
-  mainEntity: [
-    {
-      '@type': 'Question',
-      name: 'Ist Immob24 ein CRM?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Nein. Immob24 ist kein klassisches CRM, sondern eine KI-Schicht für Makler-Workflows.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Brauche ich mein bestehendes CRM weiterhin?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Immob24 setzt auf bestehende Prozesse auf und setzt nicht zwingend einen kompletten Systemwechsel voraus.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Was automatisiert Immob24 konkret?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Erstreaktion, Lead-Qualifizierung, Terminlogik und Follow-ups.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Für wen eignet sich Immob24 besonders?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Für Maklerbüros in Deutschland, die schneller reagieren und operative Routinearbeit reduzieren möchten.',
-      },
-    },
-    {
-      '@type': 'Question',
-      name: 'Warum reicht ein CRM dafür nicht aus?',
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: 'Weil ein CRM in erster Linie Informationen verwaltet, während Immob24 die operative Ausführung zwischen Anfrage und nächstem Schritt automatisiert.',
-      },
-    },
-  ],
+    </section>
+  );
 };
 
-function useFaqSchema() {
+// Inject language-appropriate FAQ JSON-LD on mount and when language changes.
+function useFaqSchema(items: Array<{ q: string; a: string }>, lang: 'de' | 'en') {
   useEffect(() => {
+    const schema = {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      inLanguage: lang === 'de' ? 'de-DE' : 'en',
+      mainEntity: items.map((it) => ({
+        '@type': 'Question',
+        name: it.q,
+        acceptedAnswer: { '@type': 'Answer', text: it.a },
+      })),
+    };
     const script = document.createElement('script');
     script.type = 'application/ld+json';
     script.dataset.page = 'produkt-faq';
-    script.textContent = JSON.stringify(PRODUKT_FAQ_SCHEMA);
+    script.textContent = JSON.stringify(schema);
     document.head.appendChild(script);
     return () => {
       script.remove();
     };
-  }, []);
+  }, [items, lang]);
 }
 
 export default function ProduktDE() {
+  const { t, language } = useLanguage();
+
   useDocumentMeta({
-    title: 'Immob24 Produkt | KI-System für Immobilienmakler statt klassischem CRM',
-    description:
-      'Immob24 automatisiert Lead-Reaktion, Qualifizierung, Terminplanung und Follow-ups für Immobilienmakler in Deutschland — ohne dass ein bestehendes CRM ersetzt werden muss.',
+    title: asString(t('produkt.meta.title')),
+    description: asString(t('produkt.meta.description')),
     canonical: 'https://immob24.de/de/produkt',
   });
-  useFaqSchema();
+  useFaqSchema(asFaqArray(t('produkt.faq.items')), language);
 
   const sections = [
     Hero,

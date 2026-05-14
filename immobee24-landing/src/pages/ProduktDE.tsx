@@ -11,6 +11,7 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Header, Footer, TALLY_PROPS } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
@@ -108,12 +109,13 @@ const Hero = () => {
               {asString(t('produkt.hero.primaryCta'))}
               <ArrowRight className="h-4 w-4" />
             </button>
-            <a
-              href="#how-it-works"
+            <Link
+              to="/de/how-it-works"
+              onClick={() => trackEvent('produkt_hero_secondary_cta_click')}
               className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
             >
               {asString(t('produkt.hero.secondaryCta'))}
-            </a>
+            </Link>
           </div>
 
           <ul className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 max-w-2xl mx-auto text-left">
@@ -373,13 +375,14 @@ const CrmComparison = () => {
         </div>
 
         <div className="mt-10 text-center">
-          <a
-            href="#book-demo"
+          <Link
+            to="/de/immobilien-crm-alternative"
+            onClick={() => trackEvent('produkt_crmtable_cta_click')}
             className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
           >
             {asString(t('produkt.crmTable.cta'))}
             <ArrowRight className="h-4 w-4" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>
@@ -579,12 +582,13 @@ const FinalCTA = () => {
               {asString(t('produkt.finalCta.primaryCta'))}
               <ArrowRight className="h-4 w-4" />
             </button>
-            <a
-              href="#crm-alternative"
+            <Link
+              to="/de/immobilien-crm-alternative"
+              onClick={() => trackEvent('produkt_final_secondary_cta_click')}
               className="inline-flex items-center gap-2 rounded-full border border-charcoal/20 bg-cream px-6 py-3 font-medium text-charcoal hover:bg-charcoal/5 transition-colors"
             >
               {asString(t('produkt.finalCta.secondaryCta'))}
-            </a>
+            </Link>
           </div>
 
           <p className="mt-6 text-sm text-warm-gray">

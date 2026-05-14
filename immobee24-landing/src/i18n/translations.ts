@@ -28,6 +28,10 @@ export const translations = {
       de: 'Demo',
       en: 'Demo',
     },
+    pricing: {
+      de: 'Preise',
+      en: 'Pricing',
+    },
     requestDemo: {
       de: 'Demo anfragen',
       en: 'Request demo',
@@ -1070,6 +1074,930 @@ export const translations = {
     copyright: {
       de: 'Alle Rechte vorbehalten.',
       en: 'All rights reserved.',
+    },
+  },
+
+  // ============================================
+  // HOW IT WORKS PAGE  (/de/how-it-works)
+  // ============================================
+  howItWorksPage: {
+    nav: { de: 'So funktioniert’s', en: 'How it works' },
+
+    meta: {
+      title: {
+        de: 'So funktioniert Immob24 | Von der Anfrage bis zur Terminplanung',
+        en: 'How Immob24 works | From inquiry to scheduled appointment',
+      },
+      description: {
+        de: 'Erfahren Sie Schritt für Schritt, wie Immob24 Anfragen beantwortet, Leads qualifiziert, Termine vorbereitet und Follow-ups für Immobilienmakler automatisiert.',
+        en: 'See step by step how Immob24 answers inquiries, qualifies leads, prepares appointments, and automates follow-ups for real estate agents.',
+      },
+    },
+
+    hero: {
+      eyebrow: { de: 'So funktioniert’s', en: 'How it works' },
+      headline: {
+        de: 'Vom neuen Lead bis zum nächsten qualifizierten Schritt — automatisch.',
+        en: 'From new lead to the next qualified step — automatically.',
+      },
+      subheadline: {
+        de: 'Immob24 übernimmt die operative Strecke zwischen eingehender Anfrage, erster Antwort, Qualifizierung, Terminlogik und Follow-up. So versteht Ihr Team schneller, welche Leads Priorität haben und wo persönlicher Einsatz wirklich nötig ist.',
+        en: 'Immob24 handles the operational stretch between an incoming inquiry, the first reply, qualification, scheduling logic, and follow-up. Your team sees faster which leads matter and where personal attention is actually needed.',
+      },
+      primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
+      secondaryCta: { de: 'Produkt ansehen', en: 'See the product' },
+      bullets: {
+        de: [
+          'Antwort in Sekunden statt in Stunden.',
+          'Frühe Qualifizierung statt später Nacharbeit.',
+          'Nächste Schritte werden automatisch angestoßen.',
+          'Ihr Team greift dort ein, wo Beratung den größten Hebel hat.',
+        ],
+        en: [
+          'Replies in seconds instead of hours.',
+          'Early qualification instead of late rework.',
+          'Next steps are triggered automatically.',
+          'Your team steps in where advice has the biggest impact.',
+        ],
+      },
+    },
+
+    intro: {
+      headline: {
+        de: 'Was Immob24 im Prozess verändert',
+        en: 'What Immob24 changes in the process',
+      },
+      body: {
+        de: 'In vielen Maklerbüros geht Zeit zwischen Anfrageeingang und nächster sinnvoller Aktion verloren. Immob24 setzt genau dort an: Das System reagiert sofort, sammelt wichtige Informationen, priorisiert den Lead und stößt den nächsten Schritt an. Das Ergebnis ist kein zusätzlicher Verwaltungsprozess, sondern ein operativer Ablauf mit weniger Lücken und weniger manueller Koordination.',
+        en: 'In many brokerages, time leaks away between an incoming inquiry and the next sensible action. Immob24 starts exactly there: it reacts immediately, collects the relevant information, prioritises the lead, and triggers the next step. The result is not an extra admin process, but an operational flow with fewer gaps and less manual coordination.',
+      },
+    },
+
+    steps: {
+      headline: { de: 'Der Ablauf Schritt für Schritt', en: 'The flow, step by step' },
+      items: {
+        de: [
+          {
+            title: 'Schritt 1: Eine neue Anfrage geht ein',
+            body: 'Anfragen können aus Portalen, Formularen oder anderen Kanälen kommen. Für das Team beginnt genau hier normalerweise der Zeitverlust — besonders außerhalb der Arbeitszeiten oder bei hohem Anfragevolumen.',
+          },
+          {
+            title: 'Schritt 2: Immob24 reagiert sofort',
+            body: 'Sobald der Lead eingeht, startet Immob24 die erste Reaktion. Damit verkürzt sich die Zeit bis zum Erstkontakt drastisch, statt dass Interessenten stundenlang oder bis zum nächsten Arbeitstag warten.',
+          },
+          {
+            title: 'Schritt 3: Die KI qualifiziert den Lead',
+            body: 'Im nächsten Schritt sammelt das System die Informationen, die für die Einordnung und Priorisierung wichtig sind. So wird früh erkannt, welche Anfragen hohe Relevanz haben, wo schneller gehandelt werden sollte und welche Gespräche noch weitere Informationen brauchen.',
+          },
+          {
+            title: 'Schritt 4: Der nächste Schritt wird vorbereitet',
+            body: 'Nach der Qualifizierung stößt Immob24 die passende nächste Aktion an. Das kann Terminlogik, Rückfrage, Übergabe oder Follow-up sein — je nachdem, was im Prozess sinnvoll ist.',
+          },
+          {
+            title: 'Schritt 5: Das Team steigt gezielt ein',
+            body: 'Makler verbringen ihre Zeit nicht mehr mit jeder ersten Standardreaktion, sondern dort, wo persönliche Beratung, Besichtigung und Abschluss wirklich zählen. So verschiebt sich der Einsatz von manueller Arbeit auf die wertvolleren Prozessmomente.',
+          },
+          {
+            title: 'Schritt 6: Follow-ups bleiben aktiv',
+            body: 'Wenn ein Gespräch nicht sofort abgeschlossen wird, sorgt Immob24 dafür, dass der Prozess nicht stillsteht. Follow-ups werden nicht vergessen, und Leads bleiben im Fluss statt im Posteingang oder in manuellen Listen zu verschwinden.',
+          },
+        ],
+        en: [
+          {
+            title: 'Step 1: A new inquiry arrives',
+            body: 'Inquiries can come from portals, forms, or other channels. For the team, this is usually where time starts to leak away — especially outside working hours or during high inquiry volume.',
+          },
+          {
+            title: 'Step 2: Immob24 reacts immediately',
+            body: 'As soon as a lead arrives, Immob24 starts the first response. The time-to-first-contact drops drastically, instead of leaving prospects to wait for hours or until the next business day.',
+          },
+          {
+            title: 'Step 3: The AI qualifies the lead',
+            body: 'Next, the system collects the information needed for prioritisation. You see early which inquiries are highly relevant, where to act faster, and which conversations still need more information.',
+          },
+          {
+            title: 'Step 4: The next step is prepared',
+            body: 'After qualification, Immob24 triggers the right next action — scheduling, a follow-up question, a handover, or a follow-up — depending on what makes sense in the process.',
+          },
+          {
+            title: 'Step 5: The team steps in deliberately',
+            body: 'Agents no longer spend time on every first standard reply. They focus on personal advice, viewings, and closings — where their work has the most leverage.',
+          },
+          {
+            title: 'Step 6: Follow-ups stay active',
+            body: 'When a conversation does not close immediately, Immob24 keeps the process moving. Follow-ups are not forgotten, and leads stay in flow instead of disappearing into an inbox or a manual list.',
+          },
+        ],
+      },
+    },
+
+    process: {
+      headline: {
+        de: 'Welche Aufgaben Immob24 in diesem Ablauf übernimmt',
+        en: 'What Immob24 takes off your plate in this flow',
+      },
+      bullets: {
+        de: [
+          'Erstreaktion auf neue Leads.',
+          'Frühe Lead-Qualifizierung.',
+          'Koordination des nächsten Schritts.',
+          'Laufende Nachverfolgung statt manueller Erinnerung.',
+          'Operative Entlastung im Makleralltag.',
+        ],
+        en: [
+          'First reaction to new leads.',
+          'Early lead qualification.',
+          'Coordinating the next step.',
+          'Ongoing follow-up instead of manual reminders.',
+          'Operational relief in everyday brokerage work.',
+        ],
+      },
+    },
+
+    why: {
+      headline: {
+        de: 'Warum dieser Ablauf geschäftlich relevant ist',
+        en: 'Why this flow matters for the business',
+      },
+      body: {
+        de: 'Der Unterschied entsteht nicht nur durch Automatisierung, sondern durch Geschwindigkeit und Konsequenz im Prozess. Wenn Anfragen schneller beantwortet, Leads früher eingeordnet und nächste Schritte zuverlässiger vorbereitet werden, steigt die Chance auf mehr qualifizierte Gespräche und weniger verlorene Opportunities. Genau deshalb sollte die Seite nicht nur erklären, was passiert, sondern warum diese Prozesslogik im Maklergeschäft zählt.',
+        en: 'The difference is not just automation — it is speed and consistency. When inquiries are answered faster, leads are qualified earlier, and next steps are prepared more reliably, you get more qualified conversations and fewer lost opportunities. That is why this page is meant to explain not only what happens, but why the process logic matters in the brokerage business.',
+      },
+    },
+
+    control: {
+      headline: { de: 'Automatisiert, aber nicht unkontrolliert', en: 'Automated, not out of your hands' },
+      body: {
+        de: 'Immob24 ist nicht als Black Box zu erklären. Das System soll operative Arbeit übernehmen, während das Maklerbüro die Kontrolle behält. Diese Botschaft ist wichtig, weil Vertrauen, Freigabe und Nachvollziehbarkeit zentrale Hürden bei der Einführung von KI in reale Vertriebs- und Maklerprozesse sind.',
+        en: 'Immob24 is not a black box. The system handles operational work while the brokerage stays in control. That message matters because trust, sign-off, and traceability are the central hurdles when bringing AI into real sales and brokerage processes.',
+      },
+      bullets: {
+        de: [
+          'Das Team bleibt im entscheidenden Moment eingebunden.',
+          'Der Ablauf ist klar und nachvollziehbar aufgebaut.',
+          'Immob24 ergänzt Prozesse, statt den Arbeitsalltag undurchsichtig zu machen.',
+        ],
+        en: [
+          'The team stays involved at the decisive moment.',
+          'The flow is structured clearly and traceably.',
+          'Immob24 complements your process instead of making the day opaque.',
+        ],
+      },
+    },
+
+    audience: {
+      headline: {
+        de: 'Für wen dieser Ablauf besonders relevant ist',
+        en: 'Who this flow is particularly relevant for',
+      },
+      bullets: {
+        de: [
+          'Maklerbüros mit vielen eingehenden Anfragen.',
+          'Teams, die aktuell zu langsam auf neue Leads reagieren.',
+          'Unternehmen mit manueller Qualifizierung und Terminabstimmung.',
+          'Makler, die operative Entlastung suchen, ohne ihr gesamtes Setup neu aufzubauen.',
+        ],
+        en: [
+          'Brokerages with high inquiry volume.',
+          'Teams that are currently too slow to respond to new leads.',
+          'Companies with manual qualification and scheduling.',
+          'Agents looking for operational relief without rebuilding their entire stack.',
+        ],
+      },
+    },
+
+    faq: {
+      headline: { de: 'Häufige Fragen', en: 'Frequently asked questions' },
+      items: {
+        de: [
+          {
+            q: 'Muss das Team weiterhin eingreifen?',
+            a: 'Ja. Immob24 übernimmt operative Schritte, während das Team dort eingreift, wo Beratung und persönlicher Kontakt den größten Wert schaffen.',
+          },
+          {
+            q: 'Beginnt der Ablauf direkt mit einer neuen Anfrage?',
+            a: 'Ja. Die Logik der Seite startet bewusst beim Lead-Eingang, weil dort im Alltag der größte Zeitverlust entsteht.',
+          },
+          {
+            q: 'Geht es nur um Antworten oder um den ganzen Folgeprozess?',
+            a: 'Nicht nur um Antworten. Qualifizierung, nächste Schritte und Follow-ups sind Teil derselben operativen Logik.',
+          },
+          {
+            q: 'Ersetzt Immob24 damit ein CRM?',
+            a: 'Nein. Immob24 ist eine operative KI-Schicht, kein klassisches CRM.',
+          },
+        ],
+        en: [
+          {
+            q: 'Does the team still need to step in?',
+            a: 'Yes. Immob24 handles operational steps, while the team steps in where advice and personal contact create the most value.',
+          },
+          {
+            q: 'Does the flow really start with a new inquiry?',
+            a: 'Yes. The logic deliberately begins at lead arrival, because that is where most time is lost in everyday work.',
+          },
+          {
+            q: 'Is this only about replies, or the whole follow-up process?',
+            a: 'Not only replies. Qualification, next steps, and follow-ups are all part of the same operational logic.',
+          },
+          {
+            q: 'Does Immob24 replace a CRM?',
+            a: 'No. Immob24 is an operational AI layer, not a classic CRM.',
+          },
+        ],
+      },
+    },
+
+    finalCta: {
+      headline: {
+        de: 'Sehen Sie den Ablauf live in Ihrer Demo',
+        en: 'See the flow live in your demo',
+      },
+      body: {
+        de: 'Wenn der Prozess für Ihr Maklerbüro relevant klingt, sollte der nächste Schritt nicht ein langer Textblock sein, sondern eine klare Einladung zur Demo. Dort kann gezeigt werden, wie Immob24 in Ihrem tatsächlichen Workflow vom Lead-Eingang bis zum Follow-up arbeitet.',
+        en: 'If this process sounds relevant for your brokerage, the next step should not be more text — it should be a quick demo. We will show how Immob24 works in your actual workflow, from inbound lead to follow-up.',
+      },
+      primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
+      secondaryCta: { de: 'Produkt ansehen', en: 'See the product' },
+    },
+  },
+
+  // ============================================
+  // DEMO PAGE  (/de/demo)
+  // ============================================
+  demoPage: {
+    nav: { de: 'Demo', en: 'Demo' },
+
+    meta: {
+      title: {
+        de: 'Immob24 Demo anfragen | KI für Immobilienmakler live ansehen',
+        en: 'Request an Immob24 demo | See AI for real estate agents live',
+      },
+      description: {
+        de: 'Buchen Sie Ihre Immob24 Demo und sehen Sie, wie Anfragen beantwortet, Leads qualifiziert und Follow-ups für Immobilienmakler automatisiert werden.',
+        en: 'Book your Immob24 demo and see how inquiries are answered, leads qualified, and follow-ups automated for real estate agents.',
+      },
+    },
+
+    hero: {
+      eyebrow: { de: 'Demo', en: 'Demo' },
+      headline: {
+        de: 'Sehen Sie Immob24 live in einem echten Makler-Workflow.',
+        en: 'See Immob24 live in a real brokerage workflow.',
+      },
+      subheadline: {
+        de: 'In der Demo zeigen wir, wie Immob24 neue Anfragen beantwortet, Leads qualifiziert, nächste Schritte vorbereitet und Follow-ups im Prozess hält. Das Ziel ist nicht eine generische Produktpräsentation, sondern ein klares Verständnis dafür, wie Immob24 in Ihr Maklerbüro passt.',
+        en: 'In the demo we show how Immob24 answers new inquiries, qualifies leads, prepares next steps, and keeps follow-ups in flow. The goal is not a generic product walkthrough — it is a clear view of how Immob24 fits your brokerage.',
+      },
+      primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
+      microcopy: {
+        de: 'Kurz, relevant und auf Ihren Workflow bezogen.',
+        en: 'Short, relevant, and grounded in your workflow.',
+      },
+    },
+
+    form: {
+      headline: { de: 'Demo anfragen', en: 'Request a demo' },
+      intro: {
+        de: 'Wenn Ihr Maklerbüro schneller auf Leads reagieren und operative Arbeit reduzieren möchte, nutzen Sie das Formular für Ihre Demo-Anfrage. Wir fragen nur die Informationen ab, die wir für eine qualifizierte Terminvorbereitung brauchen.',
+        en: 'If your brokerage wants to respond faster to leads and cut operational work, use the form to request your demo. We only ask for what we need to prepare a qualified call.',
+      },
+      microcopy: {
+        de: 'Wir melden uns mit einem passenden Termin und bereiten die Demo auf Ihren Anwendungsfall vor.',
+        en: 'We will reach out with a time that works and prepare the demo around your use case.',
+      },
+    },
+
+    whatYouSee: {
+      headline: { de: 'Was Sie in der Demo sehen', en: 'What you will see in the demo' },
+      bullets: {
+        de: [
+          'Wie Immob24 neue Anfragen sofort verarbeitet.',
+          'Wie Leads früh qualifiziert und priorisiert werden.',
+          'Wie Termin- und nächste-Schritt-Logik im Prozess funktioniert.',
+          'Wie Immob24 bestehende Maklerprozesse ergänzt, statt unnötig Komplexität zu schaffen.',
+        ],
+        en: [
+          'How Immob24 processes new inquiries immediately.',
+          'How leads are qualified and prioritised early.',
+          'How scheduling and next-step logic work in the flow.',
+          'How Immob24 complements your existing process instead of adding complexity.',
+        ],
+      },
+      support: {
+        de: 'Die Demo ist kein langer Feature-Rundgang. Sie richtet sich an die konkreten Fragen und Prioritäten Ihres Maklerbüros und zeigt, wie Immob24 operative Reibung im Alltag reduziert.',
+        en: 'The demo is not a long feature tour. It focuses on the concrete questions and priorities of your brokerage and shows how Immob24 reduces operational friction in everyday work.',
+      },
+    },
+
+    whoFor: {
+      headline: { de: 'Für wen sich die Demo besonders lohnt', en: 'Who the demo is especially worth it for' },
+      bullets: {
+        de: [
+          'Maklerbüros mit regelmäßig eingehenden Leads.',
+          'Teams, die schneller auf Anfragen reagieren wollen.',
+          'Unternehmen mit manueller Qualifizierung oder Nachverfolgung.',
+          'Makler, die prüfen wollen, wie Immob24 in bestehende Abläufe passt.',
+        ],
+        en: [
+          'Brokerages with a steady stream of leads.',
+          'Teams that want to react faster to inquiries.',
+          'Companies with manual qualification or follow-up.',
+          'Agents who want to see how Immob24 fits their existing process.',
+        ],
+      },
+    },
+
+    notDemo: {
+      headline: { de: 'Was die Demo nicht ist', en: 'What the demo is not' },
+      body: {
+        de: 'Die Demo ist kein allgemeiner Sales-Pitch. Sie ist eine relevante, praxisnahe Einschätzung statt einer Standardpräsentation. Klare Erwartungen, Vertrauen und Fokus erhöhen die Wahrscheinlichkeit, dass Sie nach 20–30 Minuten wirklich wissen, ob Immob24 zu Ihrem Maklerbüro passt.',
+        en: 'The demo is not a generic sales pitch. It is a relevant, hands-on assessment, not a standard presentation. Clear expectations, trust, and focus mean that after 20–30 minutes you really know whether Immob24 fits your brokerage.',
+      },
+      bullets: {
+        de: [
+          'Kein unnötig langer Termin ohne Relevanz.',
+          'Fokus auf Ihren Anwendungsfall.',
+          'Klare nächste Schritte nach dem Gespräch.',
+          'Geeignet für Teams, die ernsthaft evaluieren wollen.',
+        ],
+        en: [
+          'No long meeting without relevance.',
+          'Focus on your use case.',
+          'Clear next steps after the conversation.',
+          'Suited for teams that want to evaluate seriously.',
+        ],
+      },
+    },
+
+    objections: {
+      headline: { de: 'Häufige Bedenken vor einer Demo', en: 'Common concerns before a demo' },
+      items: {
+        de: [
+          {
+            q: 'Wir wollen erst verstehen, ob Immob24 zu unserem Prozess passt.',
+            a: 'Genau dafür ist die Demo da. Wir zeigen, wie Immob24 in reale Maklerabläufe eingebunden werden kann und wo der operative Nutzen entsteht.',
+          },
+          {
+            q: 'Wir haben nicht viel Zeit.',
+            a: 'Die Demo ist niedrigschwellig: 20–30 Minuten, fokussiert auf Ihren Anwendungsfall — kein schwerer Vertriebstermin.',
+          },
+          {
+            q: 'Wir nutzen bereits andere Tools.',
+            a: 'Immob24 ergänzt bestehende Prozesse und verlangt keinen automatischen Systemwechsel.',
+          },
+        ],
+        en: [
+          {
+            q: 'We first want to understand whether Immob24 fits our process.',
+            a: 'That is exactly what the demo is for. We show how Immob24 plugs into real brokerage workflows and where the operational value lives.',
+          },
+          {
+            q: 'We do not have much time.',
+            a: 'The demo is low-friction: 20–30 minutes, focused on your use case — not a heavy sales meeting.',
+          },
+          {
+            q: 'We already use other tools.',
+            a: 'Immob24 complements existing processes and does not force a full system switch.',
+          },
+        ],
+      },
+    },
+
+    faq: {
+      headline: { de: 'Häufige Fragen zur Demo', en: 'Demo FAQs' },
+      items: {
+        de: [
+          {
+            q: 'Wie läuft die Demo ab?',
+            a: 'Anwendungsbezogen: wir zeigen, wie Immob24 auf Anfragen, Qualifizierung, nächste Schritte und Follow-ups im Makleralltag angewendet wird.',
+          },
+          {
+            q: 'Wie lange dauert die Demo?',
+            a: 'In der Regel 20–30 Minuten. Kürzere, klar strukturierte Demos reduzieren Reibung bei kaufnahen Besuchern.',
+          },
+          {
+            q: 'Ist die Demo nur für größere Teams?',
+            a: 'Nein. Sie ist besonders auch für kleine und mittelgroße Maklerbüros relevant.',
+          },
+          {
+            q: 'Muss ich vorab viel vorbereiten?',
+            a: 'Nein. Das Formular fragt nur die wichtigsten Informationen ab, damit die Demo sinnvoll vorbereitet werden kann.',
+          },
+        ],
+        en: [
+          {
+            q: 'How does the demo work?',
+            a: 'It is workflow-driven: we show how Immob24 handles inquiries, qualification, next steps, and follow-ups in everyday brokerage work.',
+          },
+          {
+            q: 'How long does the demo take?',
+            a: 'Usually 20–30 minutes. Short, structured demos reduce friction for buyers who are close to a decision.',
+          },
+          {
+            q: 'Is the demo only for larger teams?',
+            a: 'No. It is also especially relevant for small and mid-sized brokerages.',
+          },
+          {
+            q: 'Do I need to prepare a lot in advance?',
+            a: 'No. The form only asks for what is needed to prepare a useful demo.',
+          },
+        ],
+      },
+    },
+
+    finalCta: {
+      headline: {
+        de: 'Finden Sie heraus, ob Immob24 zu Ihrem Maklerbüro passt',
+        en: 'Find out whether Immob24 fits your brokerage',
+      },
+      body: {
+        de: 'Wenn Ihr Team regelmäßig neue Anfragen verarbeitet und schneller, strukturierter und mit weniger manueller Reibung arbeiten möchte, ist die Demo der beste nächste Schritt.',
+        en: 'If your team handles new inquiries regularly and wants to work faster, more structured, and with less manual friction, the demo is the best next step.',
+      },
+      primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
+    },
+  },
+
+  // ============================================
+  // CRM ALTERNATIVE PAGE  (/de/immobilien-crm-alternative)
+  // ============================================
+  crmAltPage: {
+    nav: { de: 'CRM-Alternative', en: 'CRM alternative' },
+
+    meta: {
+      title: {
+        de: 'Immob24 als CRM-Alternative für Immobilienmakler | Was passt besser?',
+        en: 'Immob24 as a CRM alternative for real estate agents | What fits better?',
+      },
+      description: {
+        de: 'Erfahren Sie, wann ein klassisches CRM für Makler ausreicht und wann Immob24 als operative KI-Alternative die bessere Wahl ist.',
+        en: 'Learn when a classic CRM is enough for agents and when Immob24 as an operational AI alternative is the better choice.',
+      },
+    },
+
+    hero: {
+      eyebrow: { de: 'CRM-Alternative', en: 'CRM alternative' },
+      headline: {
+        de: 'Nicht jedes Maklerbüro braucht ein weiteres CRM.',
+        en: 'Not every brokerage needs another CRM.',
+      },
+      subheadline: {
+        de: 'Viele Immobilienmakler suchen nach Struktur, schnelleren Reaktionen und weniger manueller Nacharbeit — und landen automatisch bei CRM-Software. Immob24 verfolgt einen anderen Ansatz: nicht noch mehr Verwaltung, sondern operative Ausführung zwischen Anfrage, Qualifizierung, nächstem Schritt und Follow-up.',
+        en: 'Many real estate agents look for structure, faster responses, and less manual rework — and automatically land on CRM software. Immob24 takes a different approach: not more admin, but operational execution between inquiry, qualification, next step, and follow-up.',
+      },
+      primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
+      secondaryCta: { de: 'Produkt ansehen', en: 'See the product' },
+      bullets: {
+        de: [
+          'Kein klassisches CRM.',
+          'Fokus auf operative Arbeit statt nur Datenverwaltung.',
+          'Für Maklerbüros, die schneller handeln wollen.',
+        ],
+        en: [
+          'Not a classic CRM.',
+          'Focus on operational work, not just data management.',
+          'For brokerages that want to act faster.',
+        ],
+      },
+    },
+
+    framing: {
+      headline: { de: 'Worum es bei diesem Vergleich wirklich geht', en: 'What this comparison is really about' },
+      body: {
+        de: 'Diese Seite behauptet nicht, dass ein CRM grundsätzlich falsch ist. Gute Vergleichsseiten erklären ehrlich, welche Aufgabe ein klassisches CRM gut erfüllt — und wo es für bestimmte Teams oder Prozessprobleme nicht ausreicht. Genau dort ist Immob24 positioniert: als operative KI-Schicht für Maklerprozesse, nicht als weitere Verwaltungsoberfläche.',
+        en: 'This page does not claim that CRMs are wrong. Good comparison pages explain honestly what a classic CRM does well — and where it falls short for certain teams or process problems. That is exactly where Immob24 sits: as an operational AI layer for brokerage processes, not yet another admin surface.',
+      },
+    },
+
+    table: {
+      headline: { de: 'Klassisches CRM vs. Immob24', en: 'Classic CRM vs. Immob24' },
+      headers: {
+        de: ['Thema', 'Klassisches CRM', 'Immob24'],
+        en: ['Topic', 'Classic CRM', 'Immob24'],
+      },
+      rows: {
+        de: [
+          ['Hauptzweck', 'Kontakte, Vorgänge und Daten verwalten.', 'Operative Arbeit zwischen Anfrage und nächstem Schritt automatisieren.'],
+          ['Reaktion auf neue Leads', 'Meist vom Team oder von manuellen Workflows abhängig.', 'Sofortige Reaktion auf neue Anfragen.'],
+          ['Lead-Qualifizierung', 'Häufig dokumentations- oder workflowgetrieben.', 'Frühe KI-gestützte Qualifizierung und Priorisierung.'],
+          ['Terminlogik', 'Oft über zusätzliche Prozesse oder manuelle Abstimmung.', 'In den operativen Ablauf eingebettet.'],
+          ['Follow-ups', 'Abhängig von Teamdisziplin und manueller Nachverfolgung.', 'Werden aktiv im Prozess gehalten.'],
+          ['Beste Eignung', 'Für Teams, die vor allem Daten zentral verwalten wollen.', 'Für Teams, die schneller handeln und operative Reibung reduzieren wollen.'],
+        ],
+        en: [
+          ['Main purpose', 'Manage contacts, deals, and data.', 'Automate operational work between inquiry and next step.'],
+          ['Reaction to new leads', 'Usually depends on the team or manual workflows.', 'Immediate reaction to new inquiries.'],
+          ['Lead qualification', 'Often documentation- or workflow-driven.', 'Early, AI-assisted qualification and prioritisation.'],
+          ['Scheduling logic', 'Often handled by extra processes or manual coordination.', 'Embedded in the operational flow.'],
+          ['Follow-ups', 'Depends on team discipline and manual nurture.', 'Actively kept moving in the process.'],
+          ['Best fit', 'Teams that mainly want to centralise data.', 'Teams that want to act faster and reduce operational friction.'],
+        ],
+      },
+      caption: {
+        de: 'Diese Vergleichstabelle ist das Herzstück der Seite — kompakt, ehrlich und schnell scanbar.',
+        en: 'This comparison table is the heart of the page — compact, honest, and easy to scan.',
+      },
+    },
+
+    whenCrm: {
+      headline: { de: 'Wann ein klassisches CRM die richtige Wahl sein kann', en: 'When a classic CRM is the right choice' },
+      bullets: {
+        de: [
+          'Wenn das Hauptproblem Datenorganisation und zentrale Dokumentation ist.',
+          'Wenn das Team bereits diszipliniert und schnell auf Leads reagiert.',
+          'Wenn operative Engpässe weniger kritisch sind als Reporting und Datenhaltung.',
+        ],
+        en: [
+          'When the main problem is data organisation and central documentation.',
+          'When the team already responds to leads quickly and consistently.',
+          'When operational bottlenecks matter less than reporting and data hygiene.',
+        ],
+      },
+      support: {
+        de: 'Diese Ehrlichkeit erhöht die Glaubwürdigkeit der Seite. Vergleichsseiten konvertieren besser, wenn sie nicht alles andere schlechtreden, sondern klare Entscheidungshilfe geben.',
+        en: 'This honesty increases credibility. Comparison pages convert better when they do not bash the alternatives but instead help with the decision.',
+      },
+    },
+
+    whenImmob: {
+      headline: { de: 'Wann Immob24 die bessere Alternative ist', en: 'When Immob24 is the better alternative' },
+      bullets: {
+        de: [
+          'Wenn neue Anfragen zu langsam beantwortet werden.',
+          'Wenn Leads nicht früh genug priorisiert werden.',
+          'Wenn Terminabstimmung und Follow-ups zu viel manuelle Arbeit erzeugen.',
+          'Wenn das Team weniger Verwaltungsaufwand und mehr operative Geschwindigkeit braucht.',
+          'Wenn kein weiteres komplexes Verwaltungssystem eingeführt werden soll.',
+        ],
+        en: [
+          'When new inquiries are answered too slowly.',
+          'When leads are not prioritised early enough.',
+          'When scheduling and follow-ups generate too much manual work.',
+          'When the team needs less admin and more operational speed.',
+          'When you do not want to introduce yet another complex management system.',
+        ],
+      },
+    },
+
+    fit: {
+      headline: { de: 'Für wen Immob24 als CRM-Alternative besonders sinnvoll ist', en: 'Who Immob24 as a CRM alternative is especially right for' },
+      bestForLabel: { de: 'Gut geeignet für', en: 'Best for' },
+      bestFor: {
+        de: [
+          'Kleine bis mittelgroße Maklerbüros.',
+          'Teams mit hohem Anfragevolumen.',
+          'Unternehmen mit operativen Reibungsverlusten im Erstkontakt und Follow-up.',
+        ],
+        en: [
+          'Small to mid-sized brokerages.',
+          'Teams with high inquiry volume.',
+          'Companies with operational friction in first contact and follow-up.',
+        ],
+      },
+      notForLabel: { de: 'Weniger geeignet für', en: 'Not ideal for' },
+      notFor: {
+        de: [
+          'Teams, die primär ein System of Record suchen.',
+          'Unternehmen, die vor allem Datenstrukturen und Reporting zentralisieren wollen.',
+          'Käufer, die nur eine klassische CRM-Kategorie evaluieren und keine operative Alternative prüfen möchten.',
+        ],
+        en: [
+          'Teams primarily looking for a system of record.',
+          'Companies whose main goal is centralising data structures and reporting.',
+          'Buyers who only want to evaluate the classic CRM category, not an operational alternative.',
+        ],
+      },
+    },
+
+    objections: {
+      headline: { de: 'Häufige Einwände gegen eine CRM-Alternative', en: 'Common objections to a CRM alternative' },
+      items: {
+        de: [
+          {
+            q: 'Wir wollen nicht komplett von vorne anfangen.',
+            a: 'Verständlich. Immob24 ergänzt bestehende Prozesse und verlangt keinen radikalen Neustart.',
+          },
+          {
+            q: 'Ein CRM klingt für uns erstmal sicherer.',
+            a: 'CRM-Systeme sind für bestimmte Aufgaben sinnvoll. Immob24 ist dann stärker, wenn Geschwindigkeit, Qualifizierung und operative Ausführung im Fokus stehen.',
+          },
+          {
+            q: 'Wir wissen nicht, ob unser Team eine neue Lösung annimmt.',
+            a: 'Deshalb gibt es Demo, Beta-Programm und klare Einführungslogik — schrittweise statt mit Druck.',
+          },
+        ],
+        en: [
+          {
+            q: 'We do not want to start from scratch.',
+            a: 'Understandable. Immob24 complements existing processes and does not require a radical restart.',
+          },
+          {
+            q: 'A CRM feels safer at first.',
+            a: 'CRMs are useful for certain jobs. Immob24 is stronger when speed, qualification, and operational execution are the priority.',
+          },
+          {
+            q: 'We do not know whether our team will adopt a new solution.',
+            a: 'That is why we offer a demo, beta program, and a clear rollout — step by step, not under pressure.',
+          },
+        ],
+      },
+    },
+
+    faq: {
+      headline: { de: 'Häufige Fragen zur CRM-Alternative', en: 'CRM alternative FAQs' },
+      items: {
+        de: [
+          {
+            q: 'Ist Immob24 ein CRM?',
+            a: 'Nein. Immob24 ist eine operative KI-Schicht, kein klassisches CRM.',
+          },
+          {
+            q: 'Muss ich mein bestehendes CRM ersetzen?',
+            a: 'Nicht zwingend. Immob24 kann bestehende Prozesse ergänzen.',
+          },
+          {
+            q: 'Für wen ist Immob24 besser geeignet als ein CRM?',
+            a: 'Für Maklerbüros, die vor allem Reaktionsgeschwindigkeit, Lead-Qualifizierung und Follow-up-Prozesse verbessern wollen.',
+          },
+          {
+            q: 'Ist diese Seite gegen CRM-Systeme gerichtet?',
+            a: 'Nein. Die Seite hilft bei der Einordnung und ist kein unfairer Angriff auf die Kategorie.',
+          },
+        ],
+        en: [
+          {
+            q: 'Is Immob24 a CRM?',
+            a: 'No. Immob24 is an operational AI layer, not a classic CRM.',
+          },
+          {
+            q: 'Do I have to replace my existing CRM?',
+            a: 'Not necessarily. Immob24 can complement existing processes.',
+          },
+          {
+            q: 'For whom is Immob24 a better fit than a CRM?',
+            a: 'For brokerages that mainly want to improve response speed, lead qualification, and follow-up.',
+          },
+          {
+            q: 'Is this page anti-CRM?',
+            a: 'No. The page helps with the decision and is not an unfair attack on the category.',
+          },
+        ],
+      },
+    },
+
+    finalCta: {
+      headline: {
+        de: 'Prüfen Sie live, ob Immob24 besser zu Ihrem Maklerbüro passt als ein klassisches CRM',
+        en: 'See live whether Immob24 fits your brokerage better than a classic CRM',
+      },
+      body: {
+        de: 'Wenn Ihr Hauptproblem nicht Datenablage, sondern operative Geschwindigkeit ist, lohnt sich die Demo. Dort prüfen wir gemeinsam, wie Immob24 auf Ihren Prozess wirkt und ob eine CRM-Alternative für Ihr Team sinnvoller ist.',
+        en: 'If your main problem is operational speed rather than data storage, the demo is worth it. Together we will see how Immob24 affects your process and whether a CRM alternative is the better fit.',
+      },
+      primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
+      secondaryCta: { de: 'Produkt ansehen', en: 'See the product' },
+    },
+  },
+
+  // ============================================
+  // PRICING PAGE  (/de/preise)
+  // ============================================
+  pricingPage: {
+    nav: { de: 'Preise', en: 'Pricing' },
+
+    meta: {
+      title: {
+        de: 'Immob24 Preise | Beta, Team und individuelle Lösungen für Maklerbüros',
+        en: 'Immob24 pricing | Beta, Team, and custom plans for brokerages',
+      },
+      description: {
+        de: 'Vergleichen Sie die Preise von Immob24: Beta-Programm, Team-Plan und individuelle Lösung für Immobilienmakler in Deutschland. Klare Pakete, klare CTAs.',
+        en: 'Compare Immob24 pricing: Beta program, Team plan, and custom solution for real estate agents in Germany. Clear packages, clear CTAs.',
+      },
+    },
+
+    hero: {
+      eyebrow: { de: 'Preise', en: 'Pricing' },
+      headline: {
+        de: 'Wählen Sie den passenden Einstieg für Ihr Maklerbüro.',
+        en: 'Choose the right way to start with your brokerage.',
+      },
+      subheadline: {
+        de: 'Immob24 bietet einen frühen Beta-Einstieg, einen klaren Team-Plan für den operativen Alltag und eine individuelle Lösung für komplexere Anforderungen. Vergleichen, auswählen, nächsten Schritt starten.',
+        en: 'Immob24 offers an early Beta entry, a clear Team plan for everyday operations, and a custom solution for more complex needs. Compare, choose, start the next step.',
+      },
+      primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
+      secondaryCta: { de: 'Für Beta bewerben', en: 'Apply for the beta' },
+      microcopy: {
+        de: 'Transparente Preislogik. Keine unnötige Komplexität.',
+        en: 'Transparent pricing. No unnecessary complexity.',
+      },
+    },
+
+    cards: {
+      sectionHeadline: { de: 'Drei Wege, mit Immob24 zu starten', en: 'Three ways to start with Immob24' },
+      recommendedBadge: { de: 'Empfohlen', en: 'Recommended' },
+
+      beta: {
+        label: { de: 'Beta', en: 'Beta' },
+        audience: { de: 'Für frühe Partner', en: 'For early partners' },
+        price: { de: 'Kostenlos', en: 'Free' },
+        subtext: {
+          de: 'Während der Beta. Preis für 12 Monate danach fixiert.',
+          en: 'During the beta. Price fixed for 12 months afterwards.',
+        },
+        description: {
+          de: 'Für Maklerbüros, die Immob24 früh testen, Feedback geben und den Produktaufbau aktiv mitgestalten wollen.',
+          en: 'For brokerages that want to try Immob24 early, give feedback, and actively shape the product.',
+        },
+        included: {
+          de: [
+            'Zugang im Beta-Programm.',
+            'Direkter Kontakt zum Gründerteam.',
+            '12-Wochen-Pilot.',
+            'Frühes Feedback zur Roadmap.',
+          ],
+          en: [
+            'Access via the beta program.',
+            'Direct contact with the founding team.',
+            '12-week pilot.',
+            'Early input on the roadmap.',
+          ],
+        },
+        cta: { de: 'Für Beta bewerben', en: 'Apply for the beta' },
+        support: { de: 'Begrenzte Plätze.', en: 'Limited seats.' },
+      },
+
+      team: {
+        label: { de: 'Team', en: 'Team' },
+        audience: {
+          de: 'Für kleine bis mittelgroße Maklerbüros',
+          en: 'For small to mid-sized brokerages',
+        },
+        price: { de: 'Ab €249 / Monat', en: 'From €249 / month' },
+        subtext: {
+          de: 'Für Teams, die Immob24 im operativen Alltag einsetzen möchten.',
+          en: 'For teams that want to use Immob24 in everyday operations.',
+        },
+        description: {
+          de: 'Der richtige Einstieg für Maklerbüros, die schneller auf Leads reagieren, Qualifizierung strukturieren und Follow-ups im Prozess halten wollen.',
+          en: 'The right starting point for brokerages that want to respond to leads faster, structure qualification, and keep follow-ups in flow.',
+        },
+        included: {
+          de: [
+            'Reaktion auf neue Anfragen.',
+            'Lead-Qualifizierung.',
+            'Nächste-Schritt- und Terminlogik.',
+            'Follow-up-Unterstützung.',
+            'Standard-Onboarding und Support.',
+          ],
+          en: [
+            'Reaction to new inquiries.',
+            'Lead qualification.',
+            'Next-step and scheduling logic.',
+            'Follow-up support.',
+            'Standard onboarding and support.',
+          ],
+        },
+        cta: { de: 'Demo anfragen', en: 'Request demo' },
+      },
+
+      custom: {
+        label: { de: 'Individuell', en: 'Custom' },
+        audience: { de: 'Für komplexere Anforderungen', en: 'For more complex needs' },
+        price: { de: 'Auf Anfrage', en: 'On request' },
+        subtext: {
+          de: 'Für Teams mit besonderem Rollout-, Prozess- oder Betreuungsbedarf.',
+          en: 'For teams with specific rollout, process, or support needs.',
+        },
+        description: {
+          de: 'Für Unternehmen, die mehr Abstimmung, größere Teamstrukturen oder individuelle kommerzielle und operative Anforderungen haben.',
+          en: 'For companies with more coordination, larger team structures, or specific commercial and operational requirements.',
+        },
+        included: {
+          de: [
+            'Individuelle Einführung.',
+            'Erweiterte Betreuung.',
+            'Maßgeschneiderte Abstimmung.',
+            'Priorisierte Unterstützung.',
+          ],
+          en: [
+            'Tailored onboarding.',
+            'Extended support.',
+            'Custom alignment.',
+            'Prioritised assistance.',
+          ],
+        },
+        cta: { de: 'Gespräch vereinbaren', en: 'Book a call' },
+        support: {
+          de: 'Individuelle Preisgestaltung je nach Setup.',
+          en: 'Custom pricing depending on setup.',
+        },
+      },
+    },
+
+    quickComparison: {
+      headline: { de: 'Welcher Einstieg passt zu Ihnen?', en: 'Which entry point fits you?' },
+      headers: {
+        de: ['Wenn Sie…', 'Dann passt am besten …'],
+        en: ['If you…', 'The right fit is…'],
+      },
+      rows: {
+        de: [
+          ['Immob24 früh testen und mitgestalten möchten', 'Beta'],
+          ['einen klaren operativen Standard-Einstieg suchen', 'Team'],
+          ['mehr Abstimmung und individuelle Anforderungen haben', 'Individuell'],
+        ],
+        en: [
+          ['want to try Immob24 early and shape it', 'Beta'],
+          ['look for a clear operational standard entry', 'Team'],
+          ['need more coordination and custom requirements', 'Custom'],
+        ],
+      },
+      caption: {
+        de: 'Diese Übersicht hilft, sich schneller selbst einzuordnen — Planübersicht plus kurze Entscheidungshilfe.',
+        en: 'A short overview to help you place yourself — plan view plus quick guidance.',
+      },
+    },
+
+    trust: {
+      headline: { de: 'Was wichtig ist, bevor Sie starten', en: 'What matters before you start' },
+      bullets: {
+        de: [
+          'Immob24 ist auf Maklerprozesse ausgelegt, nicht auf generische Softwarekäufer.',
+          'Die Beta ist für frühe Partner gedacht und hat begrenzte Plätze.',
+          'Der Team-Plan ist der sinnvollste Standard-Einstieg für aktive Maklerbüros.',
+          'Der individuelle Plan ist kein Upsell, sondern für echte Sonderanforderungen gedacht.',
+        ],
+        en: [
+          'Immob24 is built for brokerage processes, not generic software buyers.',
+          'The beta is for early partners and has limited seats.',
+          'The Team plan is the most sensible standard entry for active brokerages.',
+          'The Custom plan is not an upsell — it is for real special requirements.',
+        ],
+      },
+    },
+
+    faq: {
+      headline: { de: 'Häufige Fragen zu Preisen und Einstieg', en: 'Pricing and onboarding FAQs' },
+      items: {
+        de: [
+          {
+            q: 'Gibt es einen kostenlosen Einstieg?',
+            a: 'Ja, über das Beta-Agentenprogramm für ausgewählte Partner.',
+          },
+          {
+            q: 'Welcher Plan ist für die meisten Maklerbüros passend?',
+            a: 'Der Team-Plan ist der Standardeinstieg für kleine bis mittelgroße Maklerbüros.',
+          },
+          {
+            q: 'Warum gibt es einen individuellen Plan ohne festen Preis?',
+            a: 'Weil größere oder komplexere Anforderungen im B2B-SaaS oft nicht sinnvoll in ein starres Standardpaket gepresst werden sollten.',
+          },
+          {
+            q: 'Soll die Seite direkt zum Kauf führen?',
+            a: 'Für Immob24 ist ein CTA zu Demo, Beta-Bewerbung oder Sales-Gespräch sinnvoller als ein klassisches „Jetzt kaufen", weil das Produkt prozessnah und beratungsintensiver ist.',
+          },
+          {
+            q: 'Braucht jede Card einen eigenen CTA?',
+            a: 'Ja. Pricing Tables funktionieren besser, wenn jede Option einen klaren nächsten Schritt hat.',
+          },
+        ],
+        en: [
+          {
+            q: 'Is there a free entry?',
+            a: 'Yes, through the Beta Agent Program for selected partners.',
+          },
+          {
+            q: 'Which plan fits most brokerages?',
+            a: 'The Team plan is the standard entry for small to mid-sized brokerages.',
+          },
+          {
+            q: 'Why is the Custom plan listed without a fixed price?',
+            a: 'Because larger or more complex requirements in B2B SaaS often should not be forced into a rigid standard package.',
+          },
+          {
+            q: 'Should the page lead directly to a purchase?',
+            a: 'For Immob24, a CTA to demo, beta application, or sales conversation makes more sense than a classic "Buy now", because the product is process-driven and consultative.',
+          },
+          {
+            q: 'Does each card need its own CTA?',
+            a: 'Yes. Pricing tables work better when every option has a clear next step.',
+          },
+        ],
+      },
+    },
+
+    finalCta: {
+      headline: { de: 'Starten Sie mit dem passenden Modell', en: 'Start with the right model' },
+      body: {
+        de: 'Wenn Sie Immob24 früh testen und mitgestalten möchten, bewerben Sie sich für die Beta. Wenn Sie bereits einen klaren operativen Use Case im Alltag haben, ist eine Demo der beste nächste Schritt. Für größere Anforderungen lohnt sich ein direktes Gespräch zur passenden Einführung.',
+        en: 'If you want to try Immob24 early and shape it, apply for the beta. If you already have a clear operational use case, a demo is the best next step. For larger requirements, a direct call is the right way in.',
+      },
+      primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
+      secondaryCta: { de: 'Für Beta bewerben', en: 'Apply for the beta' },
+      tertiaryCta: { de: 'Gespräch vereinbaren', en: 'Book a call' },
     },
   },
 } as const;

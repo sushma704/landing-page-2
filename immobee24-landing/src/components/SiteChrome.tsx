@@ -10,7 +10,7 @@ const asString = (
 ): string => (typeof v === 'string' ? v : '');
 
 export const TALLY_PROPS = {
-  'data-tally-open': 'eqRpWJ',
+  'data-tally-open': 'ja5bzJ',
   'data-tally-emoji-text': '👋',
   'data-tally-emoji-animation': 'wave',
   'data-tally-width': '650',
@@ -93,15 +93,18 @@ export const Header = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Anchor IDs are shared between Home and the Produkt page, so plain hash
-  // links scroll within whichever page the visitor is on.
-  const navItems = [
-    { href: '#how-it-works', label: asString(t('nav.howItWorks')) },
-    { href: '#crm-alternative', label: asString(t('nav.crmAlternative')) },
-  ];
-
-  // Cross-page links — always visible.
+  // All nav items are now cross-page links to dedicated landing pages.
   const productLink = { to: '/de/produkt', label: asString(t('nav.product')) };
+  const howItWorksLink = {
+    to: '/de/how-it-works',
+    label: asString(t('nav.howItWorks')),
+  };
+  const crmAltLink = {
+    to: '/de/immobilien-crm-alternative',
+    label: asString(t('nav.crmAlternative')),
+  };
+  const pricingLink = { to: '/de/preise', label: asString(t('nav.pricing')) };
+  const demoLink = { to: '/de/demo', label: asString(t('nav.demo')) };
   const betaLink = { to: '/de/beta-agentenprogramm', label: asString(t('betaProgram.nav')) };
 
   // From any non-home page, also surface a link back to the homepage.
@@ -125,27 +128,15 @@ export const Header = () => {
               {homeLink.label}
             </Link>
           )}
-          <Link
-            to={productLink.to}
-            className="px-3 py-2 text-sm text-charcoal/70 hover:text-charcoal transition-colors"
-          >
-            {productLink.label}
-          </Link>
-          {navItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
+          {[productLink, howItWorksLink, crmAltLink, pricingLink, demoLink, betaLink].map((l) => (
+            <Link
+              key={l.to}
+              to={l.to}
               className="px-3 py-2 text-sm text-charcoal/70 hover:text-charcoal transition-colors"
             >
-              {item.label}
-            </a>
+              {l.label}
+            </Link>
           ))}
-          <Link
-            to={betaLink.to}
-            className="px-3 py-2 text-sm text-charcoal/70 hover:text-charcoal transition-colors"
-          >
-            {betaLink.label}
-          </Link>
         </nav>
 
         <div className="flex items-center gap-3">
@@ -182,30 +173,16 @@ export const Header = () => {
                 {homeLink.label}
               </Link>
             )}
-            <Link
-              to={productLink.to}
-              onClick={() => setOpen(false)}
-              className="px-3 py-2 text-sm text-charcoal/80 hover:bg-cream rounded-lg"
-            >
-              {productLink.label}
-            </Link>
-            {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
+            {[productLink, howItWorksLink, crmAltLink, pricingLink, demoLink, betaLink].map((l) => (
+              <Link
+                key={l.to}
+                to={l.to}
                 onClick={() => setOpen(false)}
                 className="px-3 py-2 text-sm text-charcoal/80 hover:bg-cream rounded-lg"
               >
-                {item.label}
-              </a>
+                {l.label}
+              </Link>
             ))}
-            <Link
-              to={betaLink.to}
-              onClick={() => setOpen(false)}
-              className="px-3 py-2 text-sm text-charcoal/80 hover:bg-cream rounded-lg"
-            >
-              {betaLink.label}
-            </Link>
             <button
               type="button"
               {...TALLY_PROPS}
@@ -379,14 +356,14 @@ export const Footer = () => {
   const { t } = useLanguage();
   const [modal, setModal] = useState<null | 'impressum' | 'datenschutz' | 'cookies'>(null);
 
-  const productLinks = [
-    { href: '#how-it-works', label: asString(t('nav.howItWorks')) },
-    { href: '#crm-alternative', label: asString(t('nav.crmAlternative')) },
-    { href: '#book-demo', label: asString(t('nav.demo')) },
-  ];
+  const productLinks: Array<{ href: string; label: string }> = [];
 
   const pageLinks = [
     { to: '/de/produkt', label: asString(t('nav.product')) },
+    { to: '/de/how-it-works', label: asString(t('nav.howItWorks')) },
+    { to: '/de/immobilien-crm-alternative', label: asString(t('nav.crmAlternative')) },
+    { to: '/de/preise', label: asString(t('nav.pricing')) },
+    { to: '/de/demo', label: asString(t('nav.demo')) },
     { to: '/de/beta-agentenprogramm', label: asString(t('betaProgram.nav')) },
   ];
 

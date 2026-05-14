@@ -11,6 +11,7 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '../i18n';
 import { trackEvent } from '../lib/analytics';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
@@ -98,12 +99,13 @@ const Hero = () => {
               {asString(t('hero.primaryCta'))}
               <ArrowRight className="h-4 w-4" />
             </button>
-            <a
-              href="#how-it-works"
+            <Link
+              to="/de/how-it-works"
+              onClick={() => trackEvent('hero_secondary_cta_click')}
               className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
             >
               {asString(t('hero.secondaryCta'))}
-            </a>
+            </Link>
           </div>
 
           <ul className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 max-w-2xl mx-auto text-left">
@@ -293,13 +295,14 @@ const CrmDifferentiation = () => {
         </div>
 
         <div className="mt-8 text-center">
-          <a
-            href="#book-demo"
+          <Link
+            to="/de/immobilien-crm-alternative"
+            onClick={() => trackEvent('home_crmdiff_cta_click')}
             className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
           >
             {asString(t('crmDiff.cta'))}
             <ArrowRight className="h-4 w-4" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>
@@ -336,15 +339,14 @@ const HowItWorks = () => {
         </ol>
 
         <div className="mt-10 text-center">
-          <button
-            type="button"
-            {...TALLY_PROPS}
-            onClick={() => trackEvent('how_cta_click')}
+          <Link
+            to="/de/how-it-works"
+            onClick={() => trackEvent('home_how_cta_click')}
             className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
           >
             {asString(t('howItWorks.cta'))}
             <ArrowRight className="h-4 w-4" />
-          </button>
+          </Link>
         </div>
       </div>
     </section>

@@ -779,7 +779,7 @@ export const translations = {
       },
     },
 
-    nav: { de: 'Beta-Programm', en: 'Beta program' },
+    nav: { de: 'Beta-Agentenprogramm', en: 'Beta Agent Program' },
 
     hero: {
       eyebrow: { de: 'Geschlossene Beta', en: 'Closed beta' },

@@ -400,7 +400,7 @@ const FAQ = () => {
 const FinalCTA = () => {
   const { t } = useLanguage();
   return (
-    <section className="py-20 md:py-28 bg-charcoal text-white relative overflow-hidden">
+    <section className="py-20 md:py-28 bg-white text-charcoal relative overflow-hidden">
       <div
         aria-hidden
         className="absolute -top-24 left-1/2 -translate-x-1/2 w-[40rem] h-[40rem] rounded-full bg-gradient-golden opacity-10 blur-3xl"
@@ -408,10 +408,10 @@ const FinalCTA = () => {
       <div className="container relative">
         <div className="max-w-3xl mx-auto text-center">
           <Handshake className="h-10 w-10 text-golden mx-auto" />
-          <h2 className="mt-4 font-heading text-section-mobile md:text-section text-balance">
+          <h2 className="mt-4 font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('betaProgram.finalCta.headline'))}
           </h2>
-          <p className="mt-6 text-body-lg text-white/70">
+          <p className="mt-6 text-body-lg text-slate">
             {asString(t('betaProgram.finalCta.body'))}
           </p>
 

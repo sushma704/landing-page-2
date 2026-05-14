@@ -96,12 +96,12 @@ export const Header = () => {
   // Anchor IDs are shared between Home and the Produkt page, so plain hash
   // links scroll within whichever page the visitor is on.
   const navItems = [
-    { href: '#product', label: asString(t('nav.product')) },
     { href: '#how-it-works', label: asString(t('nav.howItWorks')) },
     { href: '#crm-alternative', label: asString(t('nav.crmAlternative')) },
   ];
 
-  // Cross-page link to the Beta Agent Program. Always visible.
+  // Cross-page links — always visible.
+  const productLink = { to: '/de/produkt', label: asString(t('nav.product')) };
   const betaLink = { to: '/de/beta-agentenprogramm', label: asString(t('betaProgram.nav')) };
 
   // From any non-home page, also surface a link back to the homepage.
@@ -125,6 +125,12 @@ export const Header = () => {
               {homeLink.label}
             </Link>
           )}
+          <Link
+            to={productLink.to}
+            className="px-3 py-2 text-sm text-charcoal/70 hover:text-charcoal transition-colors"
+          >
+            {productLink.label}
+          </Link>
           {navItems.map((item) => (
             <a
               key={item.href}
@@ -176,6 +182,13 @@ export const Header = () => {
                 {homeLink.label}
               </Link>
             )}
+            <Link
+              to={productLink.to}
+              onClick={() => setOpen(false)}
+              className="px-3 py-2 text-sm text-charcoal/80 hover:bg-cream rounded-lg"
+            >
+              {productLink.label}
+            </Link>
             {navItems.map((item) => (
               <a
                 key={item.href}
@@ -367,10 +380,14 @@ export const Footer = () => {
   const [modal, setModal] = useState<null | 'impressum' | 'datenschutz' | 'cookies'>(null);
 
   const productLinks = [
-    { href: '#product', label: asString(t('nav.product')) },
     { href: '#how-it-works', label: asString(t('nav.howItWorks')) },
     { href: '#crm-alternative', label: asString(t('nav.crmAlternative')) },
     { href: '#book-demo', label: asString(t('nav.demo')) },
+  ];
+
+  const pageLinks = [
+    { to: '/de/produkt', label: asString(t('nav.product')) },
+    { to: '/de/beta-agentenprogramm', label: asString(t('betaProgram.nav')) },
   ];
 
   return (
@@ -387,6 +404,15 @@ export const Footer = () => {
                 {asString(t('footer.sectionsLabel'))}
               </p>
               <nav className="mt-3 flex flex-col gap-2">
+                {pageLinks.map((l) => (
+                  <Link
+                    key={l.to}
+                    to={l.to}
+                    className="text-sm text-white/75 hover:text-white"
+                  >
+                    {l.label}
+                  </Link>
+                ))}
                 {productLinks.map((l) => (
                   <a
                     key={l.href}

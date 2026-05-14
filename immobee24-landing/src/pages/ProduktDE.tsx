@@ -554,7 +554,7 @@ const FinalCTA = () => {
   return (
     <section
       id="book-demo"
-      className="py-20 md:py-28 bg-charcoal text-white relative overflow-hidden"
+      className="py-20 md:py-28 bg-white text-charcoal relative overflow-hidden"
     >
       <div
         aria-hidden
@@ -562,10 +562,10 @@ const FinalCTA = () => {
       />
       <div className="container relative">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-heading text-section-mobile md:text-section text-balance">
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('produkt.finalCta.headline'))}
           </h2>
-          <p className="mt-6 text-body-lg text-white/70">
+          <p className="mt-6 text-body-lg text-slate">
             {asString(t('produkt.finalCta.body'))}
           </p>
 
@@ -581,13 +581,13 @@ const FinalCTA = () => {
             </button>
             <a
               href="#crm-alternative"
-              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3 font-medium text-white hover:bg-white/10 transition-colors"
+              className="inline-flex items-center gap-2 rounded-full border border-charcoal/20 bg-cream px-6 py-3 font-medium text-charcoal hover:bg-charcoal/5 transition-colors"
             >
               {asString(t('produkt.finalCta.secondaryCta'))}
             </a>
           </div>
 
-          <p className="mt-6 text-sm text-white/55">
+          <p className="mt-6 text-sm text-warm-gray">
             {asString(t('produkt.finalCta.supportNote'))}
           </p>
         </div>

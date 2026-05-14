@@ -462,7 +462,7 @@ const FinalCTA = () => {
   return (
     <section
       id="book-demo"
-      className="py-20 md:py-28 bg-charcoal text-white relative overflow-hidden"
+      className="py-20 md:py-28 bg-white text-charcoal relative overflow-hidden"
     >
       <div
         aria-hidden
@@ -470,10 +470,10 @@ const FinalCTA = () => {
       />
       <div className="container relative">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-heading text-section-mobile md:text-section text-balance">
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('finalCta.headline'))}
           </h2>
-          <p className="mt-6 text-body-lg text-white/70">{asString(t('finalCta.body'))}</p>
+          <p className="mt-6 text-body-lg text-slate">{asString(t('finalCta.body'))}</p>
 
           <div className="mt-8 flex flex-col items-center gap-3">
             <button
@@ -485,7 +485,7 @@ const FinalCTA = () => {
               {asString(t('finalCta.primaryCta'))}
               <ArrowRight className="h-4 w-4" />
             </button>
-            <p className="text-sm text-white/55">{asString(t('finalCta.secondaryNote'))}</p>
+            <p className="text-sm text-warm-gray">{asString(t('finalCta.secondaryNote'))}</p>
           </div>
         </div>
       </div>

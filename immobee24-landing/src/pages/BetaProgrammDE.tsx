@@ -215,10 +215,10 @@ const Pilot = () => {
     },
   ];
   return (
-    <section id="pilot" className="py-20 md:py-28 bg-charcoal text-white">
+    <section id="pilot" className="py-20 md:py-28 bg-cream">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-heading text-section-mobile md:text-section text-balance">
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('betaProgram.pilot.headline'))}
           </h2>
         </div>
@@ -227,18 +227,20 @@ const Pilot = () => {
           {phases.map((p, i) => (
             <li
               key={i}
-              className="rounded-2xl border border-white/10 bg-white/5 p-6 md:p-7 backdrop-blur-sm"
+              className="rounded-2xl border border-charcoal/10 bg-white p-6 md:p-7 shadow-card"
             >
               <div className="flex items-center gap-3">
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-golden text-white shadow-golden">
                   <p.icon className="h-5 w-5" />
                 </span>
-                <span className="text-xs font-semibold uppercase tracking-wider text-golden">
+                <span className="text-xs font-semibold uppercase tracking-wider text-golden-dark">
                   {`0${i + 1}`}
                 </span>
               </div>
-              <h3 className="mt-4 font-heading text-xl">{asString(t(p.titleKey))}</h3>
-              <p className="mt-3 text-white/75 leading-relaxed">{asString(t(p.bodyKey))}</p>
+              <h3 className="mt-4 font-heading text-xl text-charcoal">
+                {asString(t(p.titleKey))}
+              </h3>
+              <p className="mt-3 text-slate leading-relaxed">{asString(t(p.bodyKey))}</p>
             </li>
           ))}
         </ol>

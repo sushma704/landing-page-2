@@ -19,18 +19,18 @@ export const TALLY_PROPS = {
 export const Wordmark = ({ variant = 'dark' }: { variant?: 'dark' | 'light' }) => {
   const { pathname } = useLocation();
   const isHome = pathname === '/';
-  const wrapperClass = 'inline-flex flex-col items-start leading-tight';
+  const wrapperClass = 'inline-flex flex-col items-center leading-tight';
   const inner = (
     <>
       <span
-        className={`font-heading font-bold text-xl tracking-tight ${
+        className={`font-heading font-bold text-2xl tracking-tight ${
           variant === 'light' ? 'text-white' : 'text-charcoal'
         }`}
       >
         Immob<span className="text-golden">24</span>
       </span>
       <span
-        className={`hidden sm:block mt-0.5 text-[10px] font-medium uppercase tracking-[0.08em] whitespace-nowrap ${
+        className={`hidden sm:block mt-1 text-[9px] font-medium uppercase tracking-[0.12em] whitespace-nowrap text-center ${
           variant === 'light' ? 'text-white/60' : 'text-slate'
         }`}
       >
@@ -82,7 +82,6 @@ const LanguageToggle = () => {
 
 export const Header = () => {
   const { t } = useLanguage();
-  const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -107,9 +106,6 @@ export const Header = () => {
   const demoLink = { to: '/de/demo', label: asString(t('nav.demo')) };
   const betaLink = { to: '/de/beta-agentenprogramm', label: asString(t('betaProgram.nav')) };
 
-  // From any non-home page, also surface a link back to the homepage.
-  const homeLink = pathname !== '/' ? { to: '/', label: 'Home' } : null;
-
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-colors ${
@@ -120,14 +116,6 @@ export const Header = () => {
         <Wordmark />
 
         <nav className="hidden lg:flex items-center gap-1">
-          {homeLink && (
-            <Link
-              to={homeLink.to}
-              className="px-3 py-2 text-sm text-charcoal/70 hover:text-charcoal transition-colors"
-            >
-              {homeLink.label}
-            </Link>
-          )}
           {[productLink, howItWorksLink, crmAltLink, pricingLink, demoLink, betaLink].map((l) => (
             <Link
               key={l.to}
@@ -164,15 +152,6 @@ export const Header = () => {
       {open && (
         <div className="lg:hidden border-t border-charcoal/5 bg-white">
           <div className="container py-3 flex flex-col gap-1">
-            {homeLink && (
-              <Link
-                to={homeLink.to}
-                onClick={() => setOpen(false)}
-                className="px-3 py-2 text-sm text-charcoal/80 hover:bg-cream rounded-lg"
-              >
-                {homeLink.label}
-              </Link>
-            )}
             {[productLink, howItWorksLink, crmAltLink, pricingLink, demoLink, betaLink].map((l) => (
               <Link
                 key={l.to}

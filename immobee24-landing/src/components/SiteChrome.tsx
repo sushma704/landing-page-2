@@ -333,9 +333,6 @@ const CookiesContent = () => (
 
 export const Footer = () => {
   const { t } = useLanguage();
-  const [modal, setModal] = useState<null | 'impressum' | 'datenschutz' | 'cookies'>(null);
-
-  const productLinks: Array<{ href: string; label: string }> = [];
 
   const pageLinks = [
     { to: '/de/produkt', label: asString(t('nav.product')) },
@@ -347,106 +344,44 @@ export const Footer = () => {
   ];
 
   return (
-    <>
-      <footer className="bg-charcoal text-white py-16 border-t border-white/5">
-        <div className="container">
-          <div className="grid gap-10 md:grid-cols-3">
-            <div>
-              <Wordmark variant="light" />
-            </div>
+    <footer className="bg-charcoal text-white py-16 border-t border-white/5">
+      <div className="container">
+        <div className="grid gap-10 md:grid-cols-2">
+          <div>
+            <Wordmark variant="light" />
+          </div>
 
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
-                {asString(t('footer.sectionsLabel'))}
-              </p>
-              <nav className="mt-3 flex flex-col gap-2">
-                {pageLinks.map((l) => (
-                  <Link
-                    key={l.to}
-                    to={l.to}
-                    className="text-sm text-white/75 hover:text-white"
-                  >
-                    {l.label}
-                  </Link>
-                ))}
-                {productLinks.map((l) => (
-                  <a
-                    key={l.href}
-                    href={l.href}
-                    className="text-sm text-white/75 hover:text-white"
-                  >
-                    {l.label}
-                  </a>
-                ))}
-                <a
-                  href="mailto:kontakt@immob24.de"
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
+              {asString(t('footer.sectionsLabel'))}
+            </p>
+            <nav className="mt-3 flex flex-col gap-2">
+              {pageLinks.map((l) => (
+                <Link
+                  key={l.to}
+                  to={l.to}
                   className="text-sm text-white/75 hover:text-white"
                 >
-                  {asString(t('footer.contact'))}
-                </a>
-              </nav>
-            </div>
-
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
-                {asString(t('footer.legalLabel'))}
-              </p>
-              <nav className="mt-3 flex flex-col gap-2">
-                <button
-                  type="button"
-                  onClick={() => setModal('impressum')}
-                  className="text-sm text-white/75 hover:text-white text-left"
-                >
-                  {asString(t('footer.impressum'))}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setModal('datenschutz')}
-                  className="text-sm text-white/75 hover:text-white text-left"
-                >
-                  {asString(t('footer.datenschutz'))}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setModal('cookies')}
-                  className="text-sm text-white/75 hover:text-white text-left"
-                >
-                  {asString(t('footer.cookies'))}
-                </button>
-              </nav>
-            </div>
-          </div>
-
-          <div className="mt-12 pt-6 border-t border-white/10 text-xs text-white/40 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
-            <span>
-              © {new Date().getFullYear()} Immob24. {asString(t('footer.copyright'))}
-            </span>
-            <span>Made in Germany.</span>
+                  {l.label}
+                </Link>
+              ))}
+              <a
+                href="mailto:kontakt@immob24.de"
+                className="text-sm text-white/75 hover:text-white"
+              >
+                {asString(t('footer.contact'))}
+              </a>
+            </nav>
           </div>
         </div>
-      </footer>
 
-      <LegalModal
-        open={modal === 'impressum'}
-        onClose={() => setModal(null)}
-        title={asString(t('footer.impressum'))}
-      >
-        <ImpressumContent />
-      </LegalModal>
-      <LegalModal
-        open={modal === 'datenschutz'}
-        onClose={() => setModal(null)}
-        title={asString(t('footer.datenschutz'))}
-      >
-        <DatenschutzContent />
-      </LegalModal>
-      <LegalModal
-        open={modal === 'cookies'}
-        onClose={() => setModal(null)}
-        title={asString(t('footer.cookies'))}
-      >
-        <CookiesContent />
-      </LegalModal>
-    </>
+        <div className="mt-12 pt-6 border-t border-white/10 text-xs text-white/40 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+          <span>
+            © {new Date().getFullYear()} Immob24. {asString(t('footer.copyright'))}
+          </span>
+          <span>Made in Germany.</span>
+        </div>
+      </div>
+    </footer>
   );
 };

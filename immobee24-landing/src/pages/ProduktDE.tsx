@@ -474,7 +474,6 @@ const HowItWorks = () => {
 const SocialProof = () => {
   const { t } = useLanguage();
   const placeholders = asStringArray(t('produkt.socialProof.placeholders'));
-  const placeholderLabel = asString(t('produkt.socialProof.placeholderLabel'));
   return (
     <section className="py-20 md:py-28 bg-white">
       <div className="container">
@@ -494,9 +493,6 @@ const SocialProof = () => {
               className="rounded-2xl bg-cream border border-charcoal/10 p-6 shadow-subtle"
             >
               <blockquote className="text-charcoal leading-relaxed">{quote}</blockquote>
-              <figcaption className="mt-4 text-xs uppercase tracking-wider text-warm-gray">
-                {placeholderLabel}
-              </figcaption>
             </figure>
           ))}
         </div>

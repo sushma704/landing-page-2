@@ -373,9 +373,6 @@ const SocialProof = () => {
               className="rounded-2xl bg-white border border-charcoal/10 p-6 shadow-subtle"
             >
               <blockquote className="text-charcoal leading-relaxed">{quote}</blockquote>
-              <figcaption className="mt-4 text-xs uppercase tracking-wider text-warm-gray">
-                Platzhalter / Placeholder
-              </figcaption>
             </figure>
           ))}
         </div>

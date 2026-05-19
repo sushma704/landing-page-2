@@ -14,7 +14,9 @@ import {
 import { Link } from 'react-router-dom';
 import { Header, Footer, TALLY_PROPS } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
-import { useDocumentMeta } from '../lib/useDocumentMeta';
+import { usePageMeta } from '../lib/usePageMeta';
+import { useFaqSchema } from '../lib/useFaqSchema';
+import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { useLanguage } from '../i18n';
 
 // Local helpers (kept out of i18n module since they're shared by both pages
@@ -70,6 +72,7 @@ const RevealOnScroll = ({ children }: { children: ReactNode }) => {
 
 const Hero = () => {
   const { t } = useLanguage();
+  const localPath = useLocalizedPath();
   const bullets = asStringArray(t('produkt.hero.bullets'));
   return (
     <section
@@ -110,7 +113,7 @@ const Hero = () => {
               <ArrowRight className="h-4 w-4" />
             </button>
             <Link
-              to="/de/how-it-works"
+              to={localPath('howItWorks')}
               onClick={() => trackEvent('produkt_hero_secondary_cta_click')}
               className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
             >
@@ -300,6 +303,7 @@ const UseCases = () => {
 
 const CrmComparison = () => {
   const { t } = useLanguage();
+  const localPath = useLocalizedPath();
   const rows = asPairArray(t('produkt.crmTable.rows'));
   const themaLabel = asString(t('produkt.crmTable.thema'));
   const classicalLabel = asString(t('produkt.crmTable.classicalCrm'));
@@ -376,7 +380,7 @@ const CrmComparison = () => {
 
         <div className="mt-10 text-center">
           <Link
-            to="/de/immobilien-crm-alternative"
+            to={localPath('crmAlternative')}
             onClick={() => trackEvent('produkt_crmtable_cta_click')}
             className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
           >
@@ -550,6 +554,7 @@ const FAQ = () => {
 
 const FinalCTA = () => {
   const { t } = useLanguage();
+  const localPath = useLocalizedPath();
   return (
     <section
       id="book-demo"
@@ -579,7 +584,7 @@ const FinalCTA = () => {
               <ArrowRight className="h-4 w-4" />
             </button>
             <Link
-              to="/de/immobilien-crm-alternative"
+              to={localPath('crmAlternative')}
               onClick={() => trackEvent('produkt_final_secondary_cta_click')}
               className="inline-flex items-center gap-2 rounded-full border border-charcoal/20 bg-cream px-6 py-3 font-medium text-charcoal hover:bg-charcoal/5 transition-colors"
             >
@@ -596,39 +601,15 @@ const FinalCTA = () => {
   );
 };
 
-// Inject language-appropriate FAQ JSON-LD on mount and when language changes.
-function useFaqSchema(items: Array<{ q: string; a: string }>, lang: 'de' | 'en') {
-  useEffect(() => {
-    const schema = {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      inLanguage: lang === 'de' ? 'de-DE' : 'en',
-      mainEntity: items.map((it) => ({
-        '@type': 'Question',
-        name: it.q,
-        acceptedAnswer: { '@type': 'Answer', text: it.a },
-      })),
-    };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.dataset.page = 'produkt-faq';
-    script.textContent = JSON.stringify(schema);
-    document.head.appendChild(script);
-    return () => {
-      script.remove();
-    };
-  }, [items, lang]);
-}
-
 export default function ProduktDE() {
   const { t, language } = useLanguage();
 
-  useDocumentMeta({
-    title: asString(t('produkt.meta.title')),
-    description: asString(t('produkt.meta.description')),
-    canonical: 'https://immob24.de/de/produkt',
+  usePageMeta({
+    pageKey: 'produkt',
+    titleKey: 'produkt.meta.title',
+    descriptionKey: 'produkt.meta.description',
   });
-  useFaqSchema(asFaqArray(t('produkt.faq.items')), language);
+  useFaqSchema(asFaqArray(t('produkt.faq.items')), language, 'produkt');
 
   const sections = [
     Hero,

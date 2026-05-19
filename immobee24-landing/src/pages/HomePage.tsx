@@ -14,7 +14,9 @@ import {
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../i18n';
 import { trackEvent } from '../lib/analytics';
-import { useDocumentMeta } from '../lib/useDocumentMeta';
+import { usePageMeta } from '../lib/usePageMeta';
+import { useFaqSchema } from '../lib/useFaqSchema';
+import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { Header, Footer, TALLY_PROPS } from '../components/SiteChrome';
 
 const asString = (
@@ -58,6 +60,7 @@ function useInView<T extends HTMLElement>(threshold = 0.15) {
 
 const Hero = () => {
   const { t } = useLanguage();
+  const localPath = useLocalizedPath();
   const bullets = asStringArray(t('hero.trustBullets'));
 
   return (
@@ -100,7 +103,7 @@ const Hero = () => {
               <ArrowRight className="h-4 w-4" />
             </button>
             <Link
-              to="/de/how-it-works"
+              to={localPath('howItWorks')}
               onClick={() => trackEvent('hero_secondary_cta_click')}
               className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
             >
@@ -254,6 +257,7 @@ const Features = () => {
 
 const CrmDifferentiation = () => {
   const { t } = useLanguage();
+  const localPath = useLocalizedPath();
   const pairs = asPairArray(t('crmDiff.comparisons'));
   return (
     <section id="crm-alternative" className="py-20 md:py-28 bg-cream">
@@ -296,7 +300,7 @@ const CrmDifferentiation = () => {
 
         <div className="mt-8 text-center">
           <Link
-            to="/de/immobilien-crm-alternative"
+            to={localPath('crmAlternative')}
             onClick={() => trackEvent('home_crmdiff_cta_click')}
             className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
           >
@@ -311,6 +315,7 @@ const CrmDifferentiation = () => {
 
 const HowItWorks = () => {
   const { t } = useLanguage();
+  const localPath = useLocalizedPath();
   const steps = asStringArray(t('howItWorks.steps'));
   return (
     <section id="how-it-works" className="py-20 md:py-28 bg-white">
@@ -340,7 +345,7 @@ const HowItWorks = () => {
 
         <div className="mt-10 text-center">
           <Link
-            to="/de/how-it-works"
+            to={localPath('howItWorks')}
             onClick={() => trackEvent('home_how_cta_click')}
             className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
           >
@@ -507,13 +512,13 @@ const RevealOnScroll = ({ children }: { children: ReactNode }) => {
 };
 
 export default function HomePage() {
-  useDocumentMeta({
-    title:
-      'KI für Immobilienmakler in Deutschland | Leads in 3 Sekunden beantworten | Immob24',
-    description:
-      'Immob24 ist das KI Operating System für Immobilienmakler in Deutschland. Beantwortet Anfragen in 3 Sekunden, qualifiziert Leads automatisch, plant Termine und reduziert Verwaltungsaufwand.',
-    canonical: 'https://immob24.de/',
+  const { t, language } = useLanguage();
+  usePageMeta({
+    pageKey: 'home',
+    titleKey: 'home.meta.title',
+    descriptionKey: 'home.meta.description',
   });
+  useFaqSchema(asFaqArray(t('faq.items')), language, 'home');
 
   const sections = [
     Hero,

@@ -3,6 +3,8 @@ import { Link, useLocation } from 'react-router-dom';
 import { ArrowRight, Menu, X } from 'lucide-react';
 import { useLanguage, languageOptions } from '../i18n';
 import type { Language } from '../i18n';
+import { pathFor } from '../i18n/pages';
+import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { trackEvent } from '../lib/analytics';
 
 const asString = (
@@ -17,8 +19,10 @@ export const TALLY_PROPS = {
 };
 
 export const Wordmark = ({ variant = 'dark' }: { variant?: 'dark' | 'light' }) => {
+  const { language } = useLanguage();
   const { pathname } = useLocation();
-  const isHome = pathname === '/';
+  const homePath = pathFor('home', language);
+  const isHome = pathname === homePath || pathname === '/';
   const wrapperClass = 'inline-flex flex-col items-center leading-tight';
   const inner = (
     <>
@@ -43,14 +47,14 @@ export const Wordmark = ({ variant = 'dark' }: { variant?: 'dark' | 'light' }) =
       {inner}
     </a>
   ) : (
-    <Link to="/" className={wrapperClass} aria-label="Immob24">
+    <Link to={homePath} className={wrapperClass} aria-label="Immob24">
       {inner}
     </Link>
   );
 };
 
 const LanguageToggle = () => {
-  const { language, setLanguage } = useLanguage();
+  const { language, switchLanguage } = useLanguage();
   return (
     <div
       role="group"
@@ -64,7 +68,7 @@ const LanguageToggle = () => {
             key={opt.code}
             type="button"
             onClick={() => {
-              setLanguage(opt.code as Language);
+              switchLanguage(opt.code as Language);
               trackEvent('lang_toggle_click', { to: opt.code });
             }}
             aria-pressed={active}
@@ -82,6 +86,7 @@ const LanguageToggle = () => {
 
 export const Header = () => {
   const { t } = useLanguage();
+  const localPath = useLocalizedPath();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -92,19 +97,18 @@ export const Header = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // All nav items are now cross-page links to dedicated landing pages.
-  const productLink = { to: '/de/produkt', label: asString(t('nav.product')) };
+  const productLink = { to: localPath('produkt'), label: asString(t('nav.product')) };
   const howItWorksLink = {
-    to: '/de/how-it-works',
+    to: localPath('howItWorks'),
     label: asString(t('nav.howItWorks')),
   };
   const crmAltLink = {
-    to: '/de/immobilien-crm-alternative',
+    to: localPath('crmAlternative'),
     label: asString(t('nav.crmAlternative')),
   };
-  const pricingLink = { to: '/de/preise', label: asString(t('nav.pricing')) };
-  const demoLink = { to: '/de/demo', label: asString(t('nav.demo')) };
-  const betaLink = { to: '/de/beta-agentenprogramm', label: asString(t('betaProgram.nav')) };
+  const pricingLink = { to: localPath('pricing'), label: asString(t('nav.pricing')) };
+  const demoLink = { to: localPath('demo'), label: asString(t('nav.demo')) };
+  const betaLink = { to: localPath('beta'), label: asString(t('betaProgram.nav')) };
 
   return (
     <header
@@ -333,14 +337,15 @@ const CookiesContent = () => (
 
 export const Footer = () => {
   const { t } = useLanguage();
+  const localPath = useLocalizedPath();
 
   const pageLinks = [
-    { to: '/de/produkt', label: asString(t('nav.product')) },
-    { to: '/de/how-it-works', label: asString(t('nav.howItWorks')) },
-    { to: '/de/immobilien-crm-alternative', label: asString(t('nav.crmAlternative')) },
-    { to: '/de/preise', label: asString(t('nav.pricing')) },
-    { to: '/de/demo', label: asString(t('nav.demo')) },
-    { to: '/de/beta-agentenprogramm', label: asString(t('betaProgram.nav')) },
+    { to: localPath('produkt'), label: asString(t('nav.product')) },
+    { to: localPath('howItWorks'), label: asString(t('nav.howItWorks')) },
+    { to: localPath('crmAlternative'), label: asString(t('nav.crmAlternative')) },
+    { to: localPath('pricing'), label: asString(t('nav.pricing')) },
+    { to: localPath('demo'), label: asString(t('nav.demo')) },
+    { to: localPath('beta'), label: asString(t('betaProgram.nav')) },
   ];
 
   return (

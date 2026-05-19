@@ -14,7 +14,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Primary Meta Tags -->
+  <!--
+    Page-level meta (title, description, canonical, hreflang, og:url, og:title,
+    og:description, twitter:*) is injected per-route by usePageMeta. The values
+    below are the safe fallbacks shown before React mounts (e.g. for the
+    /de homepage / for crawlers that fetch the static HTML).
+  -->
   <title>KI für Immobilienmakler in Deutschland | Leads in 3 Sekunden beantworten | Immob24</title>
   <meta name="title" content="KI für Immobilienmakler in Deutschland | Leads in 3 Sekunden beantworten | Immob24" />
   <meta name="description" content="Immob24 ist das KI Operating System für Immobilienmakler in Deutschland. Beantwortet Anfragen in 3 Sekunden, qualifiziert Leads automatisch, plant Termine und reduziert Verwaltungsaufwand." />
@@ -26,7 +31,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="de_DE" />
   <meta property="og:locale:alternate" content="en_US" />
-  <meta property="og:url" content="https://immob24.de/" />
+  <meta property="og:url" content="https://immob24.com/de" />
   <meta property="og:title" content="KI für Immobilienmakler in Deutschland | Immob24" />
   <meta property="og:description" content="Beantworten Sie Immobilienanfragen in 3 Sekunden statt in Stunden. Immob24 reagiert sofort, qualifiziert Leads und plant Termine — ohne Ihr bestehendes CRM zu ersetzen." />
   <meta property="og:image" content="/og-image.png" />
@@ -34,13 +39,13 @@
 
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
-  <meta property="twitter:url" content="https://immob24.de/" />
+  <meta property="twitter:url" content="https://immob24.com/de" />
   <meta property="twitter:title" content="KI für Immobilienmakler in Deutschland | Immob24" />
   <meta property="twitter:description" content="Anfragen in 3 Sekunden beantworten, Leads automatisch qualifizieren, Termine planen. Das KI Operating System für Maklerbüros in Deutschland." />
   <meta property="twitter:image" content="/og-image.png" />
 
-  <!-- Canonical URL — keep one production canonical and align all metadata. -->
-  <link rel="canonical" href="https://immob24.de/" />
+  <!-- Canonical fallback for crawlers that read static HTML. React overrides per-route. -->
+  <link rel="canonical" href="https://immob24.com/de" />
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="/favicon.png" />
@@ -51,7 +56,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
 
-  <!-- Structured Data - SoftwareApplication -->
+  <!-- Structured Data - SoftwareApplication (site-wide, language-neutral) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -61,6 +66,7 @@
     "operatingSystem": "Web",
     "description": "Immob24 ist das KI Operating System für Immobilienmakler in Deutschland. Reagiert in 3 Sekunden auf neue Anfragen, qualifiziert Leads, plant Termine und übernimmt Follow-ups.",
     "inLanguage": ["de-DE", "en"],
+    "url": "https://immob24.com",
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -77,56 +83,11 @@
   }
   </script>
 
-  <!-- FAQ Schema -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "inLanguage": "de-DE",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Ist Immob24 ein CRM?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Nein. Immob24 ist kein klassisches CRM, sondern eine KI-Schicht für Makler-Workflows."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Für wen ist Immob24 gedacht?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Für Immobilienmakler und Maklerbüros in Deutschland, die neue Anfragen schneller beantworten und Routinearbeit automatisieren möchten."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Muss ich mein bestehendes CRM ersetzen?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Nein. Immob24 setzt auf bestehende Prozesse auf, statt zwingend ein bestehendes CRM zu ersetzen."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Was automatisiert Immob24?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Erstreaktion, Lead-Qualifizierung, Terminplanung und Follow-ups."
-        }
-      },
-      {
-        "@type": "Question",
-        "name": "Warum ist schnelle Reaktion so wichtig?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Weil Interessenten in wettbewerbsintensiven Märkten oft mehrere Anbieter parallel kontaktieren und langsame Antworten direkt zu verlorenen Gesprächen führen können."
-        }
-      }
-    ]
-  }
-  </script>
+  <!--
+    FAQPage schema is emitted per-route by useFaqSchema with the current page's
+    FAQ items and inLanguage. Do not add another FAQPage block here — Google
+    treats multiple FAQPage objects on one URL as conflicting structured data.
+  -->
 
   <!-- Organization Schema -->
   <script type="application/ld+json">
@@ -134,8 +95,8 @@
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Immob24",
-    "url": "https://immob24.de",
-    "logo": "https://immob24.de/logo.svg",
+    "url": "https://immob24.com",
+    "logo": "https://immob24.com/logo.svg",
     "description": "Immob24 ist das KI Operating System für Immobilienmakler in Deutschland.",
     "areaServed": "DE",
     "sameAs": [

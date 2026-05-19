@@ -12,7 +12,9 @@ import {
 import { Link } from 'react-router-dom';
 import { Header, Footer, TALLY_PROPS } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
-import { useDocumentMeta } from '../lib/useDocumentMeta';
+import { usePageMeta } from '../lib/usePageMeta';
+import { useFaqSchema } from '../lib/useFaqSchema';
+import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { useLanguage } from '../i18n';
 
 type TVal = string | string[] | Array<{ q: string; a: string }> | string[][];
@@ -77,6 +79,7 @@ const RevealOnScroll = ({ children }: { children: ReactNode }) => {
 
 const Hero = () => {
   const { t } = useLanguage();
+  const localPath = useLocalizedPath();
   const bullets = asStringArray(t('howItWorksPage.hero.bullets'));
   return (
     <section
@@ -117,7 +120,7 @@ const Hero = () => {
               <ArrowRight className="h-4 w-4" />
             </button>
             <Link
-              to="/de/produkt"
+              to={localPath('produkt')}
               className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
             >
               {asString(t('howItWorksPage.hero.secondaryCta'))}
@@ -368,6 +371,7 @@ const FAQ = () => {
 
 const FinalCTA = () => {
   const { t } = useLanguage();
+  const localPath = useLocalizedPath();
   return (
     <section
       id="book-demo"
@@ -397,7 +401,7 @@ const FinalCTA = () => {
               <ArrowRight className="h-4 w-4" />
             </button>
             <Link
-              to="/de/produkt"
+              to={localPath('produkt')}
               className="inline-flex items-center gap-2 rounded-full border border-charcoal/20 bg-cream px-6 py-3 font-medium text-charcoal hover:bg-charcoal/5 transition-colors"
             >
               {asString(t('howItWorksPage.finalCta.secondaryCta'))}
@@ -409,38 +413,15 @@ const FinalCTA = () => {
   );
 };
 
-function useFaqSchema(items: Array<{ q: string; a: string }>, lang: 'de' | 'en') {
-  useEffect(() => {
-    const schema = {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      inLanguage: lang === 'de' ? 'de-DE' : 'en',
-      mainEntity: items.map((it) => ({
-        '@type': 'Question',
-        name: it.q,
-        acceptedAnswer: { '@type': 'Answer', text: it.a },
-      })),
-    };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.dataset.page = 'how-it-works-faq';
-    script.textContent = JSON.stringify(schema);
-    document.head.appendChild(script);
-    return () => {
-      script.remove();
-    };
-  }, [items, lang]);
-}
-
 export default function HowItWorksDE() {
   const { t, language } = useLanguage();
 
-  useDocumentMeta({
-    title: asString(t('howItWorksPage.meta.title')),
-    description: asString(t('howItWorksPage.meta.description')),
-    canonical: 'https://immob24.de/de/how-it-works',
+  usePageMeta({
+    pageKey: 'howItWorks',
+    titleKey: 'howItWorksPage.meta.title',
+    descriptionKey: 'howItWorksPage.meta.description',
   });
-  useFaqSchema(asFaqArray(t('howItWorksPage.faq.items')), language);
+  useFaqSchema(asFaqArray(t('howItWorksPage.faq.items')), language, 'how-it-works');
 
   const sections: Array<() => ReactNode> = [
     Hero,

@@ -2,7 +2,8 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { ArrowRight, CheckCircle2, ShieldCheck, Sparkles, Users } from 'lucide-react';
 import { Header, Footer } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
-import { useDocumentMeta } from '../lib/useDocumentMeta';
+import { usePageMeta } from '../lib/usePageMeta';
+import { useFaqSchema } from '../lib/useFaqSchema';
 import { useLanguage } from '../i18n';
 
 type TVal = string | string[] | Array<{ q: string; a: string }> | string[][];
@@ -348,40 +349,15 @@ const FinalCTA = () => {
   );
 };
 
-function useFaqSchema(items: Array<{ q: string; a: string }>, lang: 'de' | 'en') {
-  useEffect(() => {
-    const schema = {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      inLanguage: lang === 'de' ? 'de-DE' : 'en',
-      mainEntity: items.map((it) => ({
-        '@type': 'Question',
-        name: it.q,
-        acceptedAnswer: { '@type': 'Answer', text: it.a },
-      })),
-    };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.dataset.page = 'demo-faq';
-    script.textContent = JSON.stringify(schema);
-    document.head.appendChild(script);
-    return () => {
-      script.remove();
-    };
-  }, [items, lang]);
-}
-
-// Fallback secondary nav items aren't shown on this page — Demo is a focused conversion page.
-// Keep a small "back to product" link in the hero microcopy area is unnecessary; nav handles it.
 export default function DemoDE() {
   const { t, language } = useLanguage();
 
-  useDocumentMeta({
-    title: asString(t('demoPage.meta.title')),
-    description: asString(t('demoPage.meta.description')),
-    canonical: 'https://immob24.de/de/demo',
+  usePageMeta({
+    pageKey: 'demo',
+    titleKey: 'demoPage.meta.title',
+    descriptionKey: 'demoPage.meta.description',
   });
-  useFaqSchema(asFaqArray(t('demoPage.faq.items')), language);
+  useFaqSchema(asFaqArray(t('demoPage.faq.items')), language, 'demo');
 
   const sections: Array<() => ReactNode> = [
     Hero,

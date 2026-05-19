@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { ScrollToHash } from './lib/ScrollToHash';
 import HomePage from './pages/HomePage';
 import ProduktDE from './pages/ProduktDE';
@@ -13,14 +13,29 @@ export default function App() {
     <>
       <ScrollToHash />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<Navigate to="/de" replace />} />
+
+        <Route path="/de" element={<HomePage />} />
+        <Route path="/en" element={<HomePage />} />
+
         <Route path="/de/produkt" element={<ProduktDE />} />
+        <Route path="/en/product" element={<ProduktDE />} />
+
         <Route path="/de/how-it-works" element={<HowItWorksDE />} />
+        <Route path="/en/how-it-works" element={<HowItWorksDE />} />
+
         <Route path="/de/immobilien-crm-alternative" element={<CrmAlternativeDE />} />
+        <Route path="/en/crm-alternative" element={<CrmAlternativeDE />} />
+
         <Route path="/de/preise" element={<PricingDE />} />
+        <Route path="/en/pricing" element={<PricingDE />} />
+
         <Route path="/de/demo" element={<DemoDE />} />
+        <Route path="/en/demo" element={<DemoDE />} />
+
         <Route path="/de/beta-agentenprogramm" element={<BetaProgrammDE />} />
-        {/* Fallback: anything unknown shows the homepage so the site never goes blank. */}
+        <Route path="/en/beta-program" element={<BetaProgrammDE />} />
+
         <Route path="*" element={<HomePage />} />
       </Routes>
     </>

@@ -1,10 +1,13 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Language, translations } from './translations';
+import { alternateForLanguage, languageFromPath } from './pages';
 import { trackEvent } from '../lib/analytics';
 
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
+  switchLanguage: (lang: Language) => void;
   t: (path: string) => string | string[] | Array<{ q: string; a: string }> | string[][];
 }
 
@@ -14,9 +17,11 @@ const STORAGE_KEY = 'immob24-lang';
 
 function detectInitialLanguage(): Language {
   if (typeof window === 'undefined') return 'de';
+  // URL takes precedence over storage/browser when present.
+  const urlLang = languageFromPath(window.location.pathname);
+  if (urlLang) return urlLang;
   const saved = localStorage.getItem(STORAGE_KEY);
   if (saved === 'de' || saved === 'en') return saved;
-  // German-first site — default DE unless the browser strongly prefers EN.
   const browserLang = navigator.language?.toLowerCase() ?? '';
   if (browserLang.startsWith('en')) return 'en';
   return 'de';
@@ -24,6 +29,16 @@ function detectInitialLanguage(): Language {
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>(detectInitialLanguage);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  // Keep the language in sync with the URL: /de/* and /en/* are language-locked.
+  useEffect(() => {
+    const urlLang = languageFromPath(pathname);
+    if (urlLang && urlLang !== language) {
+      setLanguage(urlLang);
+    }
+  }, [pathname, language]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, language);
@@ -31,6 +46,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     document.documentElement.dir = 'ltr';
     trackEvent('language_change', { language });
   }, [language]);
+
+  const switchLanguage = (target: Language) => {
+    if (target === language) return;
+    const nextPath = alternateForLanguage(pathname, target);
+    setLanguage(target);
+    navigate(nextPath);
+  };
 
   const t = (path: string) => {
     const keys = path.split('.');
@@ -56,7 +78,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <LanguageContext.Provider value={{ language, setLanguage, t }}>
+    <LanguageContext.Provider value={{ language, setLanguage, switchLanguage, t }}>
       {children}
     </LanguageContext.Provider>
   );

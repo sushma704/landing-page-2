@@ -1,24 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://immob24.com/</loc>
+    <loc>https://immob24.com/de</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de" />
   </url>
   <url>
     <loc>https://immob24.com/de/produkt</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/produkt" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/product" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/produkt" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en/product</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/produkt" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/product" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/produkt" />
   </url>
   <url>
     <loc>https://immob24.com/de/how-it-works</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/how-it-works" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/how-it-works" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/how-it-works" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en/how-it-works</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/how-it-works" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/how-it-works" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/how-it-works" />
   </url>
   <url>
     <loc>https://immob24.com/de/immobilien-crm-alternative</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/immobilien-crm-alternative" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/crm-alternative" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/immobilien-crm-alternative" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en/crm-alternative</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/immobilien-crm-alternative" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/crm-alternative" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/immobilien-crm-alternative" />
   </url>
   <url>
     <loc>https://immob24.com/de/preise</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/preise" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/pricing" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/preise" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en/pricing</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/preise" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/pricing" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/preise" />
   </url>
   <url>
     <loc>https://immob24.com/de/demo</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/demo" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/demo" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/demo" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en/demo</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/demo" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/demo" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/demo" />
   </url>
   <url>
     <loc>https://immob24.com/de/beta-agentenprogramm</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/beta-agentenprogramm" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/beta-program" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/beta-agentenprogramm" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en/beta-program</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/beta-agentenprogramm" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/beta-program" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/beta-agentenprogramm" />
   </url>
 </urlset>

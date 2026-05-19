@@ -5,6 +5,22 @@ export type Language = 'en' | 'de';
 
 export const translations = {
   // ============================================
+  // HOMEPAGE META (used by usePageMeta for the / + /de + /en home routes)
+  // ============================================
+  home: {
+    meta: {
+      title: {
+        de: 'KI für Immobilienmakler in Deutschland | Leads in 3 Sekunden beantworten | Immob24',
+        en: 'AI for real estate agents in Germany | Answer leads in 3 seconds | Immob24',
+      },
+      description: {
+        de: 'Immob24 ist das KI Operating System für Immobilienmakler in Deutschland. Beantwortet Anfragen in 3 Sekunden, qualifiziert Leads automatisch, plant Termine und reduziert Verwaltungsaufwand.',
+        en: 'Immob24 is the AI operating system for real estate agents in Germany. Answer inquiries in 3 seconds, qualify leads automatically, schedule appointments and reduce admin work.',
+      },
+    },
+  },
+
+  // ============================================
   // HEADER & NAVIGATION
   // ============================================
   nav: {

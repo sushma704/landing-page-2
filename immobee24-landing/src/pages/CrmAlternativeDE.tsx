@@ -11,7 +11,9 @@ import {
 import { Link } from 'react-router-dom';
 import { Header, Footer, TALLY_PROPS } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
-import { useDocumentMeta } from '../lib/useDocumentMeta';
+import { usePageMeta } from '../lib/usePageMeta';
+import { useFaqSchema } from '../lib/useFaqSchema';
+import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { useLanguage } from '../i18n';
 
 type TVal = string | string[] | Array<{ q: string; a: string }> | string[][];
@@ -67,6 +69,7 @@ const RevealOnScroll = ({ children }: { children: ReactNode }) => {
 
 const Hero = () => {
   const { t } = useLanguage();
+  const localPath = useLocalizedPath();
   const bullets = asStringArray(t('crmAltPage.hero.bullets'));
   return (
     <section
@@ -103,7 +106,7 @@ const Hero = () => {
               <ArrowRight className="h-4 w-4" />
             </button>
             <Link
-              to="/de/produkt"
+              to={localPath('produkt')}
               className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
             >
               {asString(t('crmAltPage.hero.secondaryCta'))}
@@ -430,6 +433,7 @@ const FAQ = () => {
 
 const FinalCTA = () => {
   const { t } = useLanguage();
+  const localPath = useLocalizedPath();
   return (
     <section className="py-20 md:py-28 bg-white text-charcoal relative overflow-hidden">
       <div
@@ -456,7 +460,7 @@ const FinalCTA = () => {
               <ArrowRight className="h-4 w-4" />
             </button>
             <Link
-              to="/de/produkt"
+              to={localPath('produkt')}
               className="inline-flex items-center gap-2 rounded-full border border-charcoal/20 bg-cream px-6 py-3 font-medium text-charcoal hover:bg-charcoal/5 transition-colors"
             >
               {asString(t('crmAltPage.finalCta.secondaryCta'))}
@@ -468,38 +472,15 @@ const FinalCTA = () => {
   );
 };
 
-function useFaqSchema(items: Array<{ q: string; a: string }>, lang: 'de' | 'en') {
-  useEffect(() => {
-    const schema = {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      inLanguage: lang === 'de' ? 'de-DE' : 'en',
-      mainEntity: items.map((it) => ({
-        '@type': 'Question',
-        name: it.q,
-        acceptedAnswer: { '@type': 'Answer', text: it.a },
-      })),
-    };
-    const script = document.createElement('script');
-    script.type = 'application/ld+json';
-    script.dataset.page = 'crm-alt-faq';
-    script.textContent = JSON.stringify(schema);
-    document.head.appendChild(script);
-    return () => {
-      script.remove();
-    };
-  }, [items, lang]);
-}
-
 export default function CrmAlternativeDE() {
   const { t, language } = useLanguage();
 
-  useDocumentMeta({
-    title: asString(t('crmAltPage.meta.title')),
-    description: asString(t('crmAltPage.meta.description')),
-    canonical: 'https://immob24.de/de/immobilien-crm-alternative',
+  usePageMeta({
+    pageKey: 'crmAlternative',
+    titleKey: 'crmAltPage.meta.title',
+    descriptionKey: 'crmAltPage.meta.description',
   });
-  useFaqSchema(asFaqArray(t('crmAltPage.faq.items')), language);
+  useFaqSchema(asFaqArray(t('crmAltPage.faq.items')), language, 'crm-alt');
 
   const sections: Array<() => ReactNode> = [
     Hero,

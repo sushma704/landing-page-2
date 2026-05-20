@@ -19,11 +19,11 @@ export const PAGE_PATHS: Record<PageKey, PagePaths> = {
   howItWorks: { de: '/de/how-it-works', en: '/en/how-it-works' },
   crmAlternative: {
     de: '/de/immobilien-crm-alternative',
-    en: '/en/crm-alternative',
+    en: '/en/real-estate-crm-alternative',
   },
   pricing: { de: '/de/preise', en: '/en/pricing' },
   demo: { de: '/de/demo', en: '/en/demo' },
-  beta: { de: '/de/beta-agentenprogramm', en: '/en/beta-program' },
+  beta: { de: '/de/beta-agentenprogramm', en: '/en/beta-agent-program' },
 };
 
 // DE is the primary market — used as x-default.

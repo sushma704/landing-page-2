@@ -25,7 +25,7 @@ export default function App() {
         <Route path="/en/how-it-works" element={<HowItWorksDE />} />
 
         <Route path="/de/immobilien-crm-alternative" element={<CrmAlternativeDE />} />
-        <Route path="/en/crm-alternative" element={<CrmAlternativeDE />} />
+        <Route path="/en/real-estate-crm-alternative" element={<CrmAlternativeDE />} />
 
         <Route path="/de/preise" element={<PricingDE />} />
         <Route path="/en/pricing" element={<PricingDE />} />
@@ -34,7 +34,17 @@ export default function App() {
         <Route path="/en/demo" element={<DemoDE />} />
 
         <Route path="/de/beta-agentenprogramm" element={<BetaProgrammDE />} />
-        <Route path="/en/beta-program" element={<BetaProgrammDE />} />
+        <Route path="/en/beta-agent-program" element={<BetaProgrammDE />} />
+
+        {/* Legacy English slugs — redirect to the current SEO URLs. */}
+        <Route
+          path="/en/crm-alternative"
+          element={<Navigate to="/en/real-estate-crm-alternative" replace />}
+        />
+        <Route
+          path="/en/beta-program"
+          element={<Navigate to="/en/beta-agent-program" replace />}
+        />
 
         <Route path="*" element={<HomePage />} />
       </Routes>

@@ -11,11 +11,11 @@ export const translations = {
     meta: {
       title: {
         de: 'KI-Maklersoftware für Immobilienmakler | Immob24',
-        en: 'AI for real estate agents in Germany | Answer leads in 3 seconds | Immob24',
+        en: 'AI Software for Real Estate Brokers | Immob24',
       },
       description: {
         de: 'Immob24 ist die KI-Maklersoftware für Immobilienmakler in Deutschland. Beantworten Sie neue Anfragen in 3 Sekunden, qualifizieren Sie Leads automatisch.',
-        en: 'Immob24 is the AI operating system for real estate agents in Germany. Answer inquiries in 3 seconds, qualify leads automatically, schedule appointments and reduce admin work.',
+        en: 'Immob24 is AI software for real estate brokers. Respond to new property inquiries in seconds, qualify leads, and keep your existing CRM.',
       },
     },
   },
@@ -64,15 +64,15 @@ export const translations = {
   hero: {
     eyebrow: {
       de: 'KI-Maklersoftware für Immobilienmakler',
-      en: 'AI for real estate agents in Germany',
+      en: 'AI software for real estate brokers',
     },
     headline: {
       de: 'KI-Software für Immobilienmakler in Deutschland',
-      en: 'Answer real estate inquiries in 3 seconds instead of hours.',
+      en: 'AI software for real estate brokers',
     },
     subheadline: {
       de: 'Immob24 ist die KI-Maklersoftware für Maklerbüros in Deutschland: Sie beantwortet neue Immobilienanfragen in 3 Sekunden, qualifiziert Leads automatisch und übernimmt Follow-ups — ohne dass Sie Ihr bestehendes CRM ersetzen müssen.',
-      en: 'Immob24 is the AI Operating System for real estate agencies in Germany. The platform responds to new leads automatically, qualifies prospects, plans next steps and handles follow-ups — without replacing your existing CRM.',
+      en: 'Immob24 is AI software for real estate brokerages: it responds to new property inquiries in seconds, qualifies leads automatically, and triggers follow-ups — without replacing your existing CRM.',
     },
     primaryCta: {
       de: 'Demo anfragen',
@@ -108,7 +108,7 @@ export const translations = {
     },
     a1: {
       de: 'Immob24 ist eine KI-Software für Immobilienmakler in Deutschland. Sie beantwortet neue Anfragen automatisch, qualifiziert Interessenten und führt sie in den nächsten Schritt — als Ausführungsschicht auf bestehenden Makler-Workflows.',
-      en: 'Immob24 is an AI system for real estate agents that automatically answers, qualifies and advances new inquiries to the next step.',
+      en: 'Immob24 is AI software for real estate brokers. It answers new inquiries automatically, qualifies prospects, and advances them to the next step — as an execution layer on top of existing broker workflows.',
     },
     q2: {
       de: 'Ist Immob24 ein CRM?',
@@ -212,7 +212,7 @@ export const translations = {
     },
     ctaLink: {
       de: 'Alle Funktionen der KI-Maklersoftware ansehen',
-      en: 'See all features of the AI broker software',
+      en: 'See all features of the AI software for real estate brokers',
     },
   },
 
@@ -246,7 +246,7 @@ export const translations = {
     },
     demoCta: {
       de: 'Demo anfragen',
-      en: 'Request demo',
+      en: 'Request a demo',
     },
   },
 
@@ -278,7 +278,7 @@ export const translations = {
     },
     cta: {
       de: 'Warum Immob24 kein klassisches CRM ist',
-      en: 'Why Immob24 is not a classic CRM',
+      en: 'Why Immob24 is not a traditional CRM',
     },
   },
 
@@ -447,11 +447,11 @@ export const translations = {
     meta: {
       title: {
         de: 'KI-Software für Immobilienmakler | Immob24',
-        en: 'Immob24 Product | AI system for real estate agents, not another CRM',
+        en: 'Immob24 Product — AI Software for Real Estate Brokers',
       },
       description: {
         de: 'Immob24 ist die KI-Software für Immobilienmakler: automatische Erstreaktion, Lead-Qualifizierung, Terminkoordination und Follow-ups — ohne CRM-Wechsel.',
-        en: 'Immob24 automates lead response, qualification, appointment planning and follow-ups for real estate agents in Germany — without replacing your existing CRM.',
+        en: 'The AI operating system for real estate brokerages: automated first response, lead qualification, and follow-ups built for broker workflows.',
       },
     },
 
@@ -459,11 +459,11 @@ export const translations = {
       eyebrow: { de: 'Produkt', en: 'Product' },
       headline: {
         de: 'Immob24 — KI-Maklersoftware für schnellere Lead-Reaktion',
-        en: 'The AI system for real estate agents that runs on top of your workflow.',
+        en: 'Immob24 — AI software for faster real estate lead response',
       },
       subheadline: {
         de: 'Beantworten Sie neue Immobilienanfragen in 3 Sekunden statt in Stunden. Immob24 ist die KI-Maklersoftware, die Leads automatisch qualifiziert und den nächsten Schritt koordiniert — als Ausführungsschicht auf Ihrem bestehenden Workflow, ohne ein weiteres CRM einzuführen.',
-        en: 'Immob24 was built for brokerages that want to answer new inquiries faster, qualify prospects automatically and lose less time on manual follow-up. Instead of introducing yet another CRM, Immob24 adds fast, automated execution on top of your existing process.',
+        en: 'Respond to property inquiries in seconds instead of hours. Immob24 is the AI software that qualifies leads automatically and coordinates the next step — an execution layer on top of your existing workflow, without introducing another CRM.',
       },
       primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
       secondaryCta: { de: 'So funktioniert’s', en: 'How it works' },
@@ -842,11 +842,11 @@ export const translations = {
     meta: {
       title: {
         de: 'Beta-Agentenprogramm für Immobilienmakler | Immob24',
-        en: 'Immob24 Beta Agent Program | 12-week pilot for real estate brokers',
+        en: 'Beta Agent Program for Real Estate Brokers | Immob24',
       },
       description: {
         de: 'Bewerben Sie sich für das Beta-Agentenprogramm von Immob24. 20 Plätze für Maklerbüros: 12-Wochen-Pilot, kostenloser Zugang, direkt mit dem Gründerteam.',
-        en: 'Apply for the Immob24 Beta Agent Program: 12-week pilot, free access, fixed price for 12 months, and direct access to the founding team.',
+        en: 'Apply for the Immob24 Beta Agent Program. Limited spots for brokerages that want to test AI early and help shape the product.',
       },
     },
 
@@ -856,7 +856,7 @@ export const translations = {
       eyebrow: { de: 'Geschlossene Beta', en: 'Closed beta' },
       headline: {
         de: 'Beta-Agentenprogramm für Immobilienmakler',
-        en: 'Become a beta partner for Immob24.',
+        en: 'Beta Agent Program for real estate brokers',
       },
       subheadline: {
         de: 'Ein 12-Wochen-Pilot für Immobilienmakler und Maklerbüros in Deutschland, die neue Anfragen schneller bearbeiten, operative Arbeit reduzieren und den Produktaufbau aktiv mitgestalten wollen. Der Zugang ist begrenzt, der Aufwand gering und der Fokus klar: echte Workflows, echte Ergebnisse, direkt mit dem Gründerteam.',
@@ -1108,7 +1108,7 @@ export const translations = {
       },
       cta: { de: 'Für Beta bewerben', en: 'Apply for the beta' },
       linksLabel: { de: 'Mehr erfahren:', en: 'Learn more:' },
-      linkProduct: { de: 'KI-Maklersoftware', en: 'AI broker software' },
+      linkProduct: { de: 'KI-Maklersoftware', en: 'AI software for real estate brokers' },
       linkDemo: { de: 'Demo-Seite', en: 'Demo page' },
       linkPricing: { de: 'Immob24 Preise', en: 'Immob24 pricing' },
     },
@@ -1157,11 +1157,11 @@ export const translations = {
     meta: {
       title: {
         de: 'So funktioniert Immob24 | KI für Makler',
-        en: 'How Immob24 works | From inquiry to scheduled appointment',
+        en: 'How Immob24 Works | AI for Real Estate Brokers',
       },
       description: {
         de: 'So funktioniert KI für Makler: Immob24 beantwortet neue Anfragen, qualifiziert Leads und koordiniert Follow-ups — der Ablauf im Makler-Alltag Schritt für Schritt.',
-        en: 'See step by step how Immob24 answers inquiries, qualifies leads, prepares appointments, and automates follow-ups for real estate agents.',
+        en: 'See how Immob24 works: it answers new inquiries, qualifies leads, and coordinates follow-ups — the broker’s day-to-day flow, step by step.',
       },
     },
 
@@ -1169,7 +1169,7 @@ export const translations = {
       eyebrow: { de: 'So funktioniert’s', en: 'How it works' },
       headline: {
         de: 'So funktioniert Immob24 — KI im Makler-Alltag',
-        en: 'From new lead to the next qualified step — automatically.',
+        en: 'How Immob24 works — AI for real estate brokers',
       },
       subheadline: {
         de: 'Immob24 übernimmt die operative Strecke zwischen eingehender Anfrage, erster Antwort, Qualifizierung, Terminlogik und Follow-up. So versteht Ihr Team schneller, welche Leads Priorität haben und wo persönlicher Einsatz wirklich nötig ist.',
@@ -1405,11 +1405,11 @@ export const translations = {
     meta: {
       title: {
         de: 'Immob24 Demo anfragen | KI für Makler',
-        en: 'Request an Immob24 demo | See AI for real estate agents live',
+        en: 'Request an Immob24 Demo | AI for Brokers',
       },
       description: {
         de: 'Erleben Sie Immob24 in einem 30-minütigen Demo-Call: wie die KI-Maklersoftware neue Anfragen beantwortet, Leads qualifiziert und Follow-ups übernimmt.',
-        en: 'Book your Immob24 demo and see how inquiries are answered, leads qualified, and follow-ups automated for real estate agents.',
+        en: 'Test Immob24 in a 30-minute demo call. See how the AI responds to new real estate leads, qualifies inquiries, and prepares follow-ups.',
       },
     },
 
@@ -1417,7 +1417,7 @@ export const translations = {
       eyebrow: { de: 'Demo', en: 'Demo' },
       headline: {
         de: 'Immob24 Demo anfragen — KI-Maklersoftware live erleben',
-        en: 'See Immob24 live in a real brokerage workflow.',
+        en: 'Request an Immob24 demo — see AI real estate software live',
       },
       subheadline: {
         de: 'In der Demo zeigen wir, wie Immob24 neue Anfragen beantwortet, Leads qualifiziert, nächste Schritte vorbereitet und Follow-ups im Prozess hält. Das Ziel ist nicht eine generische Produktpräsentation, sondern ein klares Verständnis dafür, wie Immob24 in Ihr Maklerbüro passt.',
@@ -1591,7 +1591,7 @@ export const translations = {
       },
       primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
       linksLabel: { de: 'Mehr erfahren:', en: 'Learn more:' },
-      linkProduct: { de: 'KI-Maklersoftware', en: 'AI broker software' },
+      linkProduct: { de: 'KI-Maklersoftware', en: 'AI software for real estate brokers' },
       linkPricing: { de: 'Immob24 Preise', en: 'Immob24 pricing' },
       linkBeta: { de: 'Beta-Agentenprogramm', en: 'Beta agent program' },
     },
@@ -1606,11 +1606,11 @@ export const translations = {
     meta: {
       title: {
         de: 'Immobilien-CRM-Alternative für Makler | Immob24',
-        en: 'Immob24 as a CRM alternative for real estate agents | What fits better?',
+        en: 'Real Estate CRM Alternative for Brokers | Immob24',
       },
       description: {
         de: 'Immob24 ist keine CRM-Lösung, sondern die KI-Schicht, die Ihr bestehendes CRM schneller macht — die Immobilien-CRM-Alternative für schnelle Lead-Reaktion.',
-        en: 'Learn when a classic CRM is enough for agents and when Immob24 as an operational AI alternative is the better choice.',
+        en: 'Immob24 is not a traditional CRM. It is the AI layer that helps your existing CRM work faster through lead response, qualification, and follow-up.',
       },
     },
 
@@ -1618,7 +1618,7 @@ export const translations = {
       eyebrow: { de: 'CRM-Alternative', en: 'CRM alternative' },
       headline: {
         de: 'Immobilien-CRM-Alternative: Was Immob24 anders macht',
-        en: 'Not every brokerage needs another CRM.',
+        en: 'Real estate CRM alternative: what Immob24 does differently',
       },
       subheadline: {
         de: 'Viele Immobilienmakler suchen nach Struktur, schnelleren Reaktionen und weniger manueller Nacharbeit — und landen automatisch bei CRM-Software. Immob24 verfolgt einen anderen Ansatz: nicht noch mehr Verwaltung, sondern operative Ausführung zwischen Anfrage, Qualifizierung, nächstem Schritt und Follow-up.',
@@ -1896,11 +1896,11 @@ export const translations = {
     meta: {
       title: {
         de: 'Immob24 Preise | Maklersoftware ab €249',
-        en: 'Immob24 pricing | Beta, Team, and custom plans for brokerages',
+        en: 'Immob24 Pricing | AI Software from €249/month',
       },
       description: {
         de: 'Immob24 Preise: Beta kostenlos, Team ab 249 €/Monat, Individuell auf Anfrage. Maklersoftware für schnellere Lead-Reaktion — ohne Langzeitvertrag.',
-        en: 'Compare Immob24 pricing: Beta program, Team plan, and custom solution for real estate agents in Germany. Clear packages, clear CTAs.',
+        en: 'Immob24 pricing: free during beta, Team from €249/month, and custom plans on request. No long-term contract during the pilot.',
       },
     },
 
@@ -1908,11 +1908,11 @@ export const translations = {
       eyebrow: { de: 'Preise', en: 'Pricing' },
       headline: {
         de: 'Immob24 Preise — Maklersoftware ab €249 pro Monat',
-        en: 'Choose the right way to start with your brokerage.',
+        en: 'Immob24 pricing — AI software from €249 per month',
       },
       subheadline: {
         de: 'Wählen Sie den passenden Einstieg für Ihr Maklerbüro — vom kostenlosen Beta-Zugang über den Team-Plan ab 249 €/Monat bis zur individuellen Lösung. Vergleichen, auswählen, nächsten Schritt starten.',
-        en: 'Immob24 offers an early Beta entry, a clear Team plan for everyday operations, and a custom solution for more complex needs. Compare, choose, start the next step.',
+        en: 'Choose the right starting point for your brokerage — from free beta access and the Team plan from €249/month to a custom implementation. Compare, choose, start the next step.',
       },
       primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
       secondaryCta: { de: 'Für Beta bewerben', en: 'Apply for the beta' },
@@ -2126,7 +2126,7 @@ export const translations = {
       secondaryCta: { de: 'Für Beta bewerben', en: 'Apply for the beta' },
       tertiaryCta: { de: 'Gespräch vereinbaren', en: 'Book a call' },
       linksLabel: { de: 'Mehr erfahren:', en: 'Learn more:' },
-      linkProduct: { de: 'KI-Maklersoftware', en: 'AI broker software' },
+      linkProduct: { de: 'KI-Maklersoftware', en: 'AI software for real estate brokers' },
       linkDemo: { de: 'Demo-Seite', en: 'Demo page' },
     },
   },

@@ -190,7 +190,7 @@ const ProblemFit = () => {
     <section className="py-20 md:py-28 bg-charcoal text-white">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-heading text-section-mobile md:text-section text-balance">
+          <h2 className="font-heading text-section-mobile md:text-section text-balance text-white">
             {asString(t('produkt.problemFit.headline'))}
           </h2>
           <p className="mt-6 text-body-lg text-white/70">

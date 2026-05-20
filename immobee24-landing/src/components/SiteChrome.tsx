@@ -6,6 +6,7 @@ import type { Language } from '../i18n';
 import { pathFor } from '../i18n/pages';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { trackEvent } from '../lib/analytics';
+import { NewsletterSignup } from './NewsletterSignup';
 
 const asString = (
   v: string | string[] | Array<{ q: string; a: string }> | string[][],
@@ -353,7 +354,10 @@ export const Footer = () => {
       <div className="container">
         <div className="grid gap-10 md:grid-cols-2">
           <div>
-            <Wordmark variant="light" />
+            <div className="flex w-fit flex-col items-center">
+              <Wordmark variant="light" />
+              <NewsletterSignup />
+            </div>
           </div>
 
           <div>

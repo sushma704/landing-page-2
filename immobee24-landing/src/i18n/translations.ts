@@ -1149,6 +1149,80 @@ export const translations = {
   },
 
   // ============================================
+  // NEWSLETTER SIGNUP (footer button + modal, all pages)
+  // ============================================
+  newsletter: {
+    button: {
+      de: 'Newsletter abonnieren',
+      en: 'Subscribe to newsletter',
+    },
+    ariaOpen: {
+      de: 'Newsletter-Anmeldung öffnen',
+      en: 'Open newsletter signup',
+    },
+    title: {
+      de: 'Immob24 Newsletter',
+      en: 'Immob24 newsletter',
+    },
+    subtitle: {
+      de: 'Produkt-Updates, KI-Tipps für Makler und Neuigkeiten von Immob24 — direkt in Ihr Postfach.',
+      en: 'Product updates, AI tips for brokers, and Immob24 news — straight to your inbox.',
+    },
+    nameLabel: {
+      de: 'Name (optional)',
+      en: 'Name (optional)',
+    },
+    namePlaceholder: {
+      de: 'Ihr Name',
+      en: 'Your name',
+    },
+    emailLabel: {
+      de: 'E-Mail-Adresse',
+      en: 'Email address',
+    },
+    emailPlaceholder: {
+      de: 'name@beispiel.de',
+      en: 'name@example.com',
+    },
+    emailRequired: {
+      de: 'Bitte geben Sie Ihre E-Mail-Adresse ein.',
+      en: 'Please enter your email address.',
+    },
+    emailInvalid: {
+      de: 'E-Mail ist ungültig.',
+      en: 'Email is invalid.',
+    },
+    submit: {
+      de: 'Abonnieren',
+      en: 'Subscribe',
+    },
+    submitting: {
+      de: 'Wird gesendet …',
+      en: 'Sending …',
+    },
+    successTitle: {
+      de: 'Vielen Dank!',
+      en: 'Thank you!',
+    },
+    successBody: {
+      de: 'Ihre Anmeldung ist eingegangen. Wir halten Sie mit Neuigkeiten von Immob24 auf dem Laufenden.',
+      en: 'Your signup has been received. We will keep you posted with news from Immob24.',
+    },
+    errorBody: {
+      de: 'Ihre Anmeldung konnte nicht gesendet werden. Bitte versuchen Sie es später erneut.',
+      en: 'We could not submit your subscription. Please try again later.',
+    },
+    consent: {
+      de: 'Mit der Anmeldung stimmen Sie dem Erhalt unseres Newsletters zu. Sie können sich jederzeit abmelden.',
+      en: 'By subscribing you agree to receive our newsletter. You can unsubscribe at any time.',
+    },
+    close: {
+      de: 'Schließen',
+      en: 'Close',
+    },
+  },
+
+  // ============================================
   // HOW IT WORKS PAGE  (/de/how-it-works)
   // ============================================
   howItWorksPage: {

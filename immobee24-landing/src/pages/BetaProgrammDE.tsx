@@ -10,11 +10,16 @@ import {
   Sparkles,
   Users,
 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Header, Footer, TALLY_PROPS } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
+import { useJsonLd } from '../lib/useJsonLd';
+import { breadcrumbSchema } from '../lib/schema';
+import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { useLanguage } from '../i18n';
+import { pathFor } from '../i18n/pages';
 
 type TVal = string | string[] | Array<{ q: string; a: string }> | string[][];
 const asString = (v: TVal): string => (typeof v === 'string' ? v : '');
@@ -402,6 +407,7 @@ const FAQ = () => {
 
 const FinalCTA = () => {
   const { t } = useLanguage();
+  const localPath = useLocalizedPath();
   return (
     <section className="py-20 md:py-28 bg-white text-charcoal relative overflow-hidden">
       <div
@@ -429,6 +435,35 @@ const FinalCTA = () => {
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>
+
+          <p className="mt-6 text-sm text-slate">
+            <span className="text-warm-gray">
+              {asString(t('betaProgram.finalCta.linksLabel'))}
+            </span>{' '}
+            <Link
+              to={localPath('produkt')}
+              onClick={() => trackEvent('beta_final_product_link_click')}
+              className="font-medium text-golden-dark underline underline-offset-2 hover:text-charcoal"
+            >
+              {asString(t('betaProgram.finalCta.linkProduct'))}
+            </Link>
+            {' · '}
+            <Link
+              to={localPath('demo')}
+              onClick={() => trackEvent('beta_final_demo_link_click')}
+              className="font-medium text-golden-dark underline underline-offset-2 hover:text-charcoal"
+            >
+              {asString(t('betaProgram.finalCta.linkDemo'))}
+            </Link>
+            {' · '}
+            <Link
+              to={localPath('pricing')}
+              onClick={() => trackEvent('beta_final_pricing_link_click')}
+              className="font-medium text-golden-dark underline underline-offset-2 hover:text-charcoal"
+            >
+              {asString(t('betaProgram.finalCta.linkPricing'))}
+            </Link>
+          </p>
         </div>
       </div>
     </section>
@@ -444,6 +479,18 @@ export default function BetaProgrammDE() {
     descriptionKey: 'betaProgram.meta.description',
   });
   useFaqSchema(asFaqArray(t('betaProgram.faq.items')), language, 'beta');
+  useJsonLd(
+    [
+      breadcrumbSchema([
+        { name: asString(t('nav.home')), path: pathFor('home', language) },
+        {
+          name: asString(t('betaProgram.nav')),
+          path: pathFor('beta', language),
+        },
+      ]),
+    ],
+    'beta',
+  );
 
   const sections: Array<() => ReactNode> = [
     Hero,

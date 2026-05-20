@@ -13,8 +13,11 @@ import { Header, Footer, TALLY_PROPS } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
+import { useJsonLd } from '../lib/useJsonLd';
+import { breadcrumbSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { useLanguage } from '../i18n';
+import { pathFor } from '../i18n/pages';
 
 type TVal = string | string[] | Array<{ q: string; a: string }> | string[][];
 const asString = (v: TVal): string => (typeof v === 'string' ? v : '');
@@ -256,6 +259,41 @@ const ComparisonTable = () => {
   );
 };
 
+const Competitors = () => {
+  const { t } = useLanguage();
+  const items = asStringMatrix(t('crmAltPage.competitors.items'));
+  return (
+    <section className="py-20 md:py-24 bg-white">
+      <div className="container">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+            {asString(t('crmAltPage.competitors.headline'))}
+          </h2>
+          <p className="mt-6 text-body-lg text-slate">
+            {asString(t('crmAltPage.competitors.intro'))}
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
+          {items.map((it, i) => (
+            <div
+              key={i}
+              className="rounded-2xl border border-charcoal/10 bg-cream p-6 shadow-subtle"
+            >
+              <h3 className="font-heading text-xl text-charcoal">{it[0]}</h3>
+              <p className="mt-3 text-slate leading-relaxed">{it[1]}</p>
+            </div>
+          ))}
+        </div>
+
+        <p className="mt-10 text-center text-slate max-w-2xl mx-auto">
+          {asString(t('crmAltPage.competitors.note'))}
+        </p>
+      </div>
+    </section>
+  );
+};
+
 const WhenCrm = () => {
   const { t } = useLanguage();
   const bullets = asStringArray(t('crmAltPage.whenCrm.bullets'));
@@ -466,6 +504,27 @@ const FinalCTA = () => {
               {asString(t('crmAltPage.finalCta.secondaryCta'))}
             </Link>
           </div>
+
+          <p className="mt-6 text-sm text-slate">
+            <span className="text-warm-gray">
+              {asString(t('crmAltPage.finalCta.linksLabel'))}
+            </span>{' '}
+            <Link
+              to={localPath('pricing')}
+              onClick={() => trackEvent('crmalt_final_pricing_link_click')}
+              className="font-medium text-golden-dark underline underline-offset-2 hover:text-charcoal"
+            >
+              {asString(t('crmAltPage.finalCta.linkPricing'))}
+            </Link>
+            {' · '}
+            <Link
+              to={localPath('demo')}
+              onClick={() => trackEvent('crmalt_final_demo_link_click')}
+              className="font-medium text-golden-dark underline underline-offset-2 hover:text-charcoal"
+            >
+              {asString(t('crmAltPage.finalCta.linkDemo'))}
+            </Link>
+          </p>
         </div>
       </div>
     </section>
@@ -481,11 +540,24 @@ export default function CrmAlternativeDE() {
     descriptionKey: 'crmAltPage.meta.description',
   });
   useFaqSchema(asFaqArray(t('crmAltPage.faq.items')), language, 'crm-alt');
+  useJsonLd(
+    [
+      breadcrumbSchema([
+        { name: asString(t('nav.home')), path: pathFor('home', language) },
+        {
+          name: asString(t('crmAltPage.nav')),
+          path: pathFor('crmAlternative', language),
+        },
+      ]),
+    ],
+    'crm-alt',
+  );
 
   const sections: Array<() => ReactNode> = [
     Hero,
     Framing,
     ComparisonTable,
+    Competitors,
     WhenCrm,
     WhenImmob,
     Fit,

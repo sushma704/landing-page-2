@@ -1,10 +1,15 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { ArrowRight, CheckCircle2, ShieldCheck, Sparkles, Users } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { Header, Footer } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
+import { useJsonLd } from '../lib/useJsonLd';
+import { breadcrumbSchema } from '../lib/schema';
+import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { useLanguage } from '../i18n';
+import { pathFor } from '../i18n/pages';
 
 type TVal = string | string[] | Array<{ q: string; a: string }> | string[][];
 const asString = (v: TVal): string => (typeof v === 'string' ? v : '');
@@ -319,6 +324,7 @@ const FAQ = () => {
 
 const FinalCTA = () => {
   const { t } = useLanguage();
+  const localPath = useLocalizedPath();
   return (
     <section className="py-20 md:py-28 bg-white text-charcoal relative overflow-hidden">
       <div
@@ -343,6 +349,35 @@ const FinalCTA = () => {
               <ArrowRight className="h-4 w-4" />
             </a>
           </div>
+
+          <p className="mt-6 text-sm text-slate">
+            <span className="text-warm-gray">
+              {asString(t('demoPage.finalCta.linksLabel'))}
+            </span>{' '}
+            <Link
+              to={localPath('produkt')}
+              onClick={() => trackEvent('demo_final_product_link_click')}
+              className="font-medium text-golden-dark underline underline-offset-2 hover:text-charcoal"
+            >
+              {asString(t('demoPage.finalCta.linkProduct'))}
+            </Link>
+            {' · '}
+            <Link
+              to={localPath('pricing')}
+              onClick={() => trackEvent('demo_final_pricing_link_click')}
+              className="font-medium text-golden-dark underline underline-offset-2 hover:text-charcoal"
+            >
+              {asString(t('demoPage.finalCta.linkPricing'))}
+            </Link>
+            {' · '}
+            <Link
+              to={localPath('beta')}
+              onClick={() => trackEvent('demo_final_beta_link_click')}
+              className="font-medium text-golden-dark underline underline-offset-2 hover:text-charcoal"
+            >
+              {asString(t('demoPage.finalCta.linkBeta'))}
+            </Link>
+          </p>
         </div>
       </div>
     </section>
@@ -358,6 +393,15 @@ export default function DemoDE() {
     descriptionKey: 'demoPage.meta.description',
   });
   useFaqSchema(asFaqArray(t('demoPage.faq.items')), language, 'demo');
+  useJsonLd(
+    [
+      breadcrumbSchema([
+        { name: asString(t('nav.home')), path: pathFor('home', language) },
+        { name: asString(t('demoPage.nav')), path: pathFor('demo', language) },
+      ]),
+    ],
+    'demo',
+  );
 
   const sections: Array<() => ReactNode> = [
     Hero,

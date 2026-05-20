@@ -16,8 +16,11 @@ import { Header, Footer, TALLY_PROPS } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
+import { useJsonLd } from '../lib/useJsonLd';
+import { softwareApplicationSchema, breadcrumbSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { useLanguage } from '../i18n';
+import { pathFor } from '../i18n/pages';
 
 // Local helpers (kept out of i18n module since they're shared by both pages
 // in slightly different shapes). These narrow the t() return to the value
@@ -592,7 +595,26 @@ const FinalCTA = () => {
             </Link>
           </div>
 
-          <p className="mt-6 text-sm text-warm-gray">
+          <p className="mt-6 text-sm text-slate">
+            <span className="text-warm-gray">{asString(t('produkt.finalCta.linksLabel'))}</span>{' '}
+            <Link
+              to={localPath('pricing')}
+              onClick={() => trackEvent('produkt_final_pricing_link_click')}
+              className="font-medium text-golden-dark underline underline-offset-2 hover:text-charcoal"
+            >
+              {asString(t('produkt.finalCta.linkPricing'))}
+            </Link>
+            {' · '}
+            <Link
+              to={localPath('demo')}
+              onClick={() => trackEvent('produkt_final_demo_link_click')}
+              className="font-medium text-golden-dark underline underline-offset-2 hover:text-charcoal"
+            >
+              {asString(t('produkt.finalCta.linkDemo'))}
+            </Link>
+          </p>
+
+          <p className="mt-4 text-sm text-warm-gray">
             {asString(t('produkt.finalCta.supportNote'))}
           </p>
         </div>
@@ -610,6 +632,22 @@ export default function ProduktDE() {
     descriptionKey: 'produkt.meta.description',
   });
   useFaqSchema(asFaqArray(t('produkt.faq.items')), language, 'produkt');
+  useJsonLd(
+    [
+      softwareApplicationSchema(language, asString(t('produkt.meta.description')), [
+        asString(t('produkt.features.f1Title')),
+        asString(t('produkt.features.f2Title')),
+        asString(t('produkt.features.f3Title')),
+        asString(t('produkt.features.f4Title')),
+        asString(t('produkt.features.f5Title')),
+      ]),
+      breadcrumbSchema([
+        { name: asString(t('nav.home')), path: pathFor('home', language) },
+        { name: asString(t('nav.product')), path: pathFor('produkt', language) },
+      ]),
+    ],
+    'produkt',
+  );
 
   const sections = [
     Hero,

@@ -10,11 +10,11 @@ export const translations = {
   home: {
     meta: {
       title: {
-        de: 'KI für Immobilienmakler in Deutschland | Leads in 3 Sekunden beantworten | Immob24',
+        de: 'KI-Maklersoftware für Immobilienmakler | Immob24',
         en: 'AI for real estate agents in Germany | Answer leads in 3 seconds | Immob24',
       },
       description: {
-        de: 'Immob24 ist das KI Operating System für Immobilienmakler in Deutschland. Beantwortet Anfragen in 3 Sekunden, qualifiziert Leads automatisch, plant Termine und reduziert Verwaltungsaufwand.',
+        de: 'Immob24 ist die KI-Maklersoftware für Immobilienmakler in Deutschland. Beantworten Sie neue Anfragen in 3 Sekunden, qualifizieren Sie Leads automatisch.',
         en: 'Immob24 is the AI operating system for real estate agents in Germany. Answer inquiries in 3 seconds, qualify leads automatically, schedule appointments and reduce admin work.',
       },
     },
@@ -24,6 +24,10 @@ export const translations = {
   // HEADER & NAVIGATION
   // ============================================
   nav: {
+    home: {
+      de: 'Startseite',
+      en: 'Home',
+    },
     product: {
       de: 'Produkt',
       en: 'Product',
@@ -59,15 +63,15 @@ export const translations = {
   // ============================================
   hero: {
     eyebrow: {
-      de: 'KI für Immobilienmakler in Deutschland',
+      de: 'KI-Maklersoftware für Immobilienmakler',
       en: 'AI for real estate agents in Germany',
     },
     headline: {
-      de: 'Beantworten Sie Immobilienanfragen in 3 Sekunden statt in Stunden.',
+      de: 'KI-Software für Immobilienmakler in Deutschland',
       en: 'Answer real estate inquiries in 3 seconds instead of hours.',
     },
     subheadline: {
-      de: 'Immob24 ist das AI Operating System für Maklerbüros in Deutschland. Die Plattform beantwortet neue Leads automatisch, qualifiziert Interessenten, plant nächste Schritte und übernimmt Follow-ups — ohne dass Sie Ihr bestehendes CRM ersetzen müssen.',
+      de: 'Immob24 ist die KI-Maklersoftware für Maklerbüros in Deutschland: Sie beantwortet neue Immobilienanfragen in 3 Sekunden, qualifiziert Leads automatisch und übernimmt Follow-ups — ohne dass Sie Ihr bestehendes CRM ersetzen müssen.',
       en: 'Immob24 is the AI Operating System for real estate agencies in Germany. The platform responds to new leads automatically, qualifies prospects, plans next steps and handles follow-ups — without replacing your existing CRM.',
     },
     primaryCta: {
@@ -103,7 +107,7 @@ export const translations = {
       en: 'What is Immob24?',
     },
     a1: {
-      de: 'Immob24 ist ein KI-System für Immobilienmakler, das neue Anfragen automatisch beantwortet, qualifiziert und in den nächsten Schritt führt.',
+      de: 'Immob24 ist eine KI-Software für Immobilienmakler in Deutschland. Sie beantwortet neue Anfragen automatisch, qualifiziert Interessenten und führt sie in den nächsten Schritt — als Ausführungsschicht auf bestehenden Makler-Workflows.',
       en: 'Immob24 is an AI system for real estate agents that automatically answers, qualifies and advances new inquiries to the next step.',
     },
     q2: {
@@ -206,6 +210,44 @@ export const translations = {
       de: 'Interessenten werden nicht vergessen, nur weil der Tag voll ist. Automatisierte Nachverfolgung hält Gespräche aktiv und senkt den Verlust durch manuelle Lücken.',
       en: 'Prospects don’t get forgotten just because the day is full. Automated follow-up keeps conversations alive and reduces losses from manual gaps.',
     },
+    ctaLink: {
+      de: 'Alle Funktionen der KI-Maklersoftware ansehen',
+      en: 'See all features of the AI broker software',
+    },
+  },
+
+  // ============================================
+  // PRICING TEASER (homepage — links to /de/preise)
+  // ============================================
+  pricingTeaser: {
+    headline: {
+      de: 'Preise auf einen Blick',
+      en: 'Pricing at a glance',
+    },
+    body: {
+      de: 'Immob24 bietet drei Einstiegswege für Maklerbüros — vom kostenlosen Beta-Zugang über den Team-Tarif ab 249 €/Monat bis zur individuellen Lösung auf Anfrage.',
+      en: 'Immob24 offers three ways to start for brokerages — from free beta access and the Team plan from €249/month to an individual solution on request.',
+    },
+    plans: {
+      de: [
+        ['Beta', 'Kostenlos während der Beta-Phase'],
+        ['Team', 'Ab 249 €/Monat'],
+        ['Individuell', 'Auf Anfrage'],
+      ],
+      en: [
+        ['Beta', 'Free during the beta phase'],
+        ['Team', 'From €249/month'],
+        ['Individual', 'On request'],
+      ],
+    },
+    pricingCta: {
+      de: 'Immob24 Preise',
+      en: 'Immob24 pricing',
+    },
+    demoCta: {
+      de: 'Demo anfragen',
+      en: 'Request demo',
+    },
   },
 
   // ============================================
@@ -235,8 +277,8 @@ export const translations = {
       ],
     },
     cta: {
-      de: 'CRM-Alternative ansehen',
-      en: 'See the CRM alternative',
+      de: 'Warum Immob24 kein klassisches CRM ist',
+      en: 'Why Immob24 is not a classic CRM',
     },
   },
 
@@ -381,8 +423,8 @@ export const translations = {
   // ============================================
   finalCta: {
     headline: {
-      de: 'Sehen Sie in 15 Minuten, wie Immob24 in Ihr Maklerbüro passt',
-      en: 'See in 15 minutes how Immob24 fits your brokerage',
+      de: 'Sehen Sie in 30 Minuten, wie Immob24 in Ihr Maklerbüro passt',
+      en: 'See in 30 minutes how Immob24 fits your brokerage',
     },
     body: {
       de: 'In der Demo zeigen wir, wie Immob24 auf neue Immobilienanfragen reagiert, wie Leads qualifiziert werden und wie Ihr Team weniger Zeit in Routinearbeit verliert.',
@@ -404,11 +446,11 @@ export const translations = {
   produkt: {
     meta: {
       title: {
-        de: 'Immob24 Produkt | KI-System für Immobilienmakler statt klassischem CRM',
+        de: 'KI-Software für Immobilienmakler | Immob24',
         en: 'Immob24 Product | AI system for real estate agents, not another CRM',
       },
       description: {
-        de: 'Immob24 automatisiert Lead-Reaktion, Qualifizierung, Terminplanung und Follow-ups für Immobilienmakler in Deutschland — ohne dass ein bestehendes CRM ersetzt werden muss.',
+        de: 'Immob24 ist die KI-Software für Immobilienmakler: automatische Erstreaktion, Lead-Qualifizierung, Terminkoordination und Follow-ups — ohne CRM-Wechsel.',
         en: 'Immob24 automates lead response, qualification, appointment planning and follow-ups for real estate agents in Germany — without replacing your existing CRM.',
       },
     },
@@ -416,11 +458,11 @@ export const translations = {
     hero: {
       eyebrow: { de: 'Produkt', en: 'Product' },
       headline: {
-        de: 'Das KI-System für Immobilienmakler, das auf Ihrem Workflow arbeitet.',
+        de: 'Immob24 — KI-Maklersoftware für schnellere Lead-Reaktion',
         en: 'The AI system for real estate agents that runs on top of your workflow.',
       },
       subheadline: {
-        de: 'Immob24 wurde für Maklerbüros entwickelt, die neue Anfragen schneller beantworten, Interessenten automatisch qualifizieren und weniger Zeit mit manueller Nachverfolgung verlieren wollen. Statt ein weiteres CRM einzuführen, ergänzt Immob24 den bestehenden Prozess um schnelle, automatisierte Ausführung.',
+        de: 'Beantworten Sie neue Immobilienanfragen in 3 Sekunden statt in Stunden. Immob24 ist die KI-Maklersoftware, die Leads automatisch qualifiziert und den nächsten Schritt koordiniert — als Ausführungsschicht auf Ihrem bestehenden Workflow, ohne ein weiteres CRM einzuführen.',
         en: 'Immob24 was built for brokerages that want to answer new inquiries faster, qualify prospects automatically and lose less time on manual follow-up. Instead of introducing yet another CRM, Immob24 adds fast, automated execution on top of your existing process.',
       },
       primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
@@ -587,7 +629,10 @@ export const translations = {
       thema: { de: 'Thema', en: 'Topic' },
       classicalCrm: { de: 'Klassisches CRM', en: 'Classical CRM' },
       immob: { de: 'Immob24', en: 'Immob24' },
-      cta: { de: 'CRM-Alternative ansehen', en: 'See the CRM alternative' },
+      cta: {
+        de: 'Immobilien-CRM-Alternative ansehen',
+        en: 'See the real estate CRM alternative',
+      },
       // Three-column rows: [topic, classical CRM cell, Immob24 cell].
       rows: {
         de: [
@@ -775,7 +820,13 @@ export const translations = {
         en: 'In the demo we show how Immob24 answers new inquiries, qualifies leads and removes operational bottlenecks in your brokerage — without you having to start from scratch.',
       },
       primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
-      secondaryCta: { de: 'CRM-Alternative ansehen', en: 'See the CRM alternative' },
+      secondaryCta: {
+        de: 'Immobilien-CRM-Alternative ansehen',
+        en: 'See the real estate CRM alternative',
+      },
+      linksLabel: { de: 'Mehr erfahren:', en: 'Learn more:' },
+      linkPricing: { de: 'Immob24 Preise', en: 'Immob24 pricing' },
+      linkDemo: { de: 'Demo-Seite', en: 'Demo page' },
       supportNote: {
         de: 'Keine Verpflichtung. Besonders relevant für kleine und mittelgroße Maklerbüros in Deutschland.',
         en: 'No obligation. Especially relevant for small and mid-sized brokerages in Germany.',
@@ -790,11 +841,11 @@ export const translations = {
   betaProgram: {
     meta: {
       title: {
-        de: 'Immob24 Beta-Agentenprogramm | 12-Wochen-Pilot für Immobilienmakler',
+        de: 'Beta-Agentenprogramm für Immobilienmakler | Immob24',
         en: 'Immob24 Beta Agent Program | 12-week pilot for real estate brokers',
       },
       description: {
-        de: 'Bewerben Sie sich für das Immob24 Beta-Agentenprogramm: 12 Wochen Pilot, kostenloser Zugang, fixer Preis für 12 Monate und direkter Zugang zum Gründerteam.',
+        de: 'Bewerben Sie sich für das Beta-Agentenprogramm von Immob24. 20 Plätze für Maklerbüros: 12-Wochen-Pilot, kostenloser Zugang, direkt mit dem Gründerteam.',
         en: 'Apply for the Immob24 Beta Agent Program: 12-week pilot, free access, fixed price for 12 months, and direct access to the founding team.',
       },
     },
@@ -804,7 +855,7 @@ export const translations = {
     hero: {
       eyebrow: { de: 'Geschlossene Beta', en: 'Closed beta' },
       headline: {
-        de: 'Werden Sie Beta-Partner für Immob24.',
+        de: 'Beta-Agentenprogramm für Immobilienmakler',
         en: 'Become a beta partner for Immob24.',
       },
       subheadline: {
@@ -1056,6 +1107,10 @@ export const translations = {
         en: 'If your brokerage wants to respond to leads faster and help shape a new system early, the Beta Agent Program is the right starting point.',
       },
       cta: { de: 'Für Beta bewerben', en: 'Apply for the beta' },
+      linksLabel: { de: 'Mehr erfahren:', en: 'Learn more:' },
+      linkProduct: { de: 'KI-Maklersoftware', en: 'AI broker software' },
+      linkDemo: { de: 'Demo-Seite', en: 'Demo page' },
+      linkPricing: { de: 'Immob24 Preise', en: 'Immob24 pricing' },
     },
   },
 
@@ -1101,11 +1156,11 @@ export const translations = {
 
     meta: {
       title: {
-        de: 'So funktioniert Immob24 | Von der Anfrage bis zur Terminplanung',
+        de: 'So funktioniert Immob24 | KI für Makler',
         en: 'How Immob24 works | From inquiry to scheduled appointment',
       },
       description: {
-        de: 'Erfahren Sie Schritt für Schritt, wie Immob24 Anfragen beantwortet, Leads qualifiziert, Termine vorbereitet und Follow-ups für Immobilienmakler automatisiert.',
+        de: 'So funktioniert KI für Makler: Immob24 beantwortet neue Anfragen, qualifiziert Leads und koordiniert Follow-ups — der Ablauf im Makler-Alltag Schritt für Schritt.',
         en: 'See step by step how Immob24 answers inquiries, qualifies leads, prepares appointments, and automates follow-ups for real estate agents.',
       },
     },
@@ -1113,7 +1168,7 @@ export const translations = {
     hero: {
       eyebrow: { de: 'So funktioniert’s', en: 'How it works' },
       headline: {
-        de: 'Vom neuen Lead bis zum nächsten qualifizierten Schritt — automatisch.',
+        de: 'So funktioniert Immob24 — KI im Makler-Alltag',
         en: 'From new lead to the next qualified step — automatically.',
       },
       subheadline: {
@@ -1335,6 +1390,9 @@ export const translations = {
       },
       primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
       secondaryCta: { de: 'Produkt ansehen', en: 'See the product' },
+      linksLabel: { de: 'Mehr erfahren:', en: 'Learn more:' },
+      linkPricing: { de: 'Immob24 Preise', en: 'Immob24 pricing' },
+      linkDemo: { de: 'Demo-Seite', en: 'Demo page' },
     },
   },
 
@@ -1346,11 +1404,11 @@ export const translations = {
 
     meta: {
       title: {
-        de: 'Immob24 Demo anfragen | KI für Immobilienmakler live ansehen',
+        de: 'Immob24 Demo anfragen | KI für Makler',
         en: 'Request an Immob24 demo | See AI for real estate agents live',
       },
       description: {
-        de: 'Buchen Sie Ihre Immob24 Demo und sehen Sie, wie Anfragen beantwortet, Leads qualifiziert und Follow-ups für Immobilienmakler automatisiert werden.',
+        de: 'Erleben Sie Immob24 in einem 30-minütigen Demo-Call: wie die KI-Maklersoftware neue Anfragen beantwortet, Leads qualifiziert und Follow-ups übernimmt.',
         en: 'Book your Immob24 demo and see how inquiries are answered, leads qualified, and follow-ups automated for real estate agents.',
       },
     },
@@ -1358,7 +1416,7 @@ export const translations = {
     hero: {
       eyebrow: { de: 'Demo', en: 'Demo' },
       headline: {
-        de: 'Sehen Sie Immob24 live in einem echten Makler-Workflow.',
+        de: 'Immob24 Demo anfragen — KI-Maklersoftware live erleben',
         en: 'See Immob24 live in a real brokerage workflow.',
       },
       subheadline: {
@@ -1427,8 +1485,8 @@ export const translations = {
     notDemo: {
       headline: { de: 'Was die Demo nicht ist', en: 'What the demo is not' },
       body: {
-        de: 'Die Demo ist kein allgemeiner Sales-Pitch. Sie ist eine relevante, praxisnahe Einschätzung statt einer Standardpräsentation. Klare Erwartungen, Vertrauen und Fokus erhöhen die Wahrscheinlichkeit, dass Sie nach 20–30 Minuten wirklich wissen, ob Immob24 zu Ihrem Maklerbüro passt.',
-        en: 'The demo is not a generic sales pitch. It is a relevant, hands-on assessment, not a standard presentation. Clear expectations, trust, and focus mean that after 20–30 minutes you really know whether Immob24 fits your brokerage.',
+        de: 'Die Demo ist kein allgemeiner Sales-Pitch. Sie ist eine relevante, praxisnahe Einschätzung statt einer Standardpräsentation. Klare Erwartungen, Vertrauen und Fokus erhöhen die Wahrscheinlichkeit, dass Sie nach 30 Minuten wirklich wissen, ob Immob24 zu Ihrem Maklerbüro passt.',
+        en: 'The demo is not a generic sales pitch. It is a relevant, hands-on assessment, not a standard presentation. Clear expectations, trust, and focus mean that after 30 minutes you really know whether Immob24 fits your brokerage.',
       },
       bullets: {
         de: [
@@ -1456,7 +1514,7 @@ export const translations = {
           },
           {
             q: 'Wir haben nicht viel Zeit.',
-            a: 'Die Demo ist niedrigschwellig: 20–30 Minuten, fokussiert auf Ihren Anwendungsfall — kein schwerer Vertriebstermin.',
+            a: 'Die Demo ist niedrigschwellig: 30 Minuten, fokussiert auf Ihren Anwendungsfall — kein schwerer Vertriebstermin.',
           },
           {
             q: 'Wir nutzen bereits andere Tools.',
@@ -1470,7 +1528,7 @@ export const translations = {
           },
           {
             q: 'We do not have much time.',
-            a: 'The demo is low-friction: 20–30 minutes, focused on your use case — not a heavy sales meeting.',
+            a: 'The demo is low-friction: 30 minutes, focused on your use case — not a heavy sales meeting.',
           },
           {
             q: 'We already use other tools.',
@@ -1490,7 +1548,7 @@ export const translations = {
           },
           {
             q: 'Wie lange dauert die Demo?',
-            a: 'In der Regel 20–30 Minuten. Kürzere, klar strukturierte Demos reduzieren Reibung bei kaufnahen Besuchern.',
+            a: 'In der Regel 30 Minuten. Kürzere, klar strukturierte Demos reduzieren Reibung bei kaufnahen Besuchern.',
           },
           {
             q: 'Ist die Demo nur für größere Teams?',
@@ -1508,7 +1566,7 @@ export const translations = {
           },
           {
             q: 'How long does the demo take?',
-            a: 'Usually 20–30 minutes. Short, structured demos reduce friction for buyers who are close to a decision.',
+            a: 'Usually 30 minutes. Short, structured demos reduce friction for buyers who are close to a decision.',
           },
           {
             q: 'Is the demo only for larger teams?',
@@ -1532,6 +1590,10 @@ export const translations = {
         en: 'If your team handles new inquiries regularly and wants to work faster, more structured, and with less manual friction, the demo is the best next step.',
       },
       primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
+      linksLabel: { de: 'Mehr erfahren:', en: 'Learn more:' },
+      linkProduct: { de: 'KI-Maklersoftware', en: 'AI broker software' },
+      linkPricing: { de: 'Immob24 Preise', en: 'Immob24 pricing' },
+      linkBeta: { de: 'Beta-Agentenprogramm', en: 'Beta agent program' },
     },
   },
 
@@ -1543,11 +1605,11 @@ export const translations = {
 
     meta: {
       title: {
-        de: 'Immob24 als CRM-Alternative für Immobilienmakler | Was passt besser?',
+        de: 'Immobilien-CRM-Alternative für Makler | Immob24',
         en: 'Immob24 as a CRM alternative for real estate agents | What fits better?',
       },
       description: {
-        de: 'Erfahren Sie, wann ein klassisches CRM für Makler ausreicht und wann Immob24 als operative KI-Alternative die bessere Wahl ist.',
+        de: 'Immob24 ist keine CRM-Lösung, sondern die KI-Schicht, die Ihr bestehendes CRM schneller macht — die Immobilien-CRM-Alternative für schnelle Lead-Reaktion.',
         en: 'Learn when a classic CRM is enough for agents and when Immob24 as an operational AI alternative is the better choice.',
       },
     },
@@ -1555,7 +1617,7 @@ export const translations = {
     hero: {
       eyebrow: { de: 'CRM-Alternative', en: 'CRM alternative' },
       headline: {
-        de: 'Nicht jedes Maklerbüro braucht ein weiteres CRM.',
+        de: 'Immobilien-CRM-Alternative: Was Immob24 anders macht',
         en: 'Not every brokerage needs another CRM.',
       },
       subheadline: {
@@ -1613,6 +1675,52 @@ export const translations = {
       caption: {
         de: 'Diese Vergleichstabelle ist das Herzstück der Seite — kompakt, ehrlich und schnell scanbar.',
         en: 'This comparison table is the heart of the page — compact, honest, and easy to scan.',
+      },
+    },
+
+    competitors: {
+      headline: {
+        de: 'Wie Immob24 sich von Propstack, Flowfact und onOffice unterscheidet',
+        en: 'How Immob24 differs from Propstack, Flowfact and onOffice',
+      },
+      intro: {
+        de: 'Propstack, Flowfact und onOffice sind etablierte Immobilien-CRM-Systeme in Deutschland. Sie verwalten Kontakte, Objekte und Vorgänge zuverlässig. Immob24 konkurriert nicht mit dieser Aufgabe — es ergänzt sie um die operative Erstreaktion, Qualifizierung und Follow-up-Logik, die ein CRM nicht automatisch übernimmt.',
+        en: 'Propstack, Flowfact and onOffice are established real estate CRM systems in Germany. They reliably manage contacts, properties and records. Immob24 does not compete with that job — it adds the operational first response, qualification and follow-up logic that a CRM does not handle automatically.',
+      },
+      // [competitor heading, comparison paragraph]
+      items: {
+        de: [
+          [
+            'Immob24 vs. Propstack',
+            'Propstack ist ein modernes Immobilien-CRM mit Fokus auf Datenpflege, Objektverwaltung und Pipeline-Übersicht. Immob24 ersetzt das nicht, sondern setzt davor an: Es beantwortet neue Anfragen in Sekunden und qualifiziert Leads, bevor sie im CRM-Workflow landen.',
+          ],
+          [
+            'Immob24 vs. Flowfact',
+            'Flowfact ist eine langjährig etablierte Maklersoftware für Kontakt- und Vorgangsmanagement. Immob24 ist keine Alternative zur Datenhaltung, sondern zur langsamen, manuellen Lead-Reaktion: Die KI übernimmt Erstkontakt, Vorqualifizierung und Nachverfolgung automatisch.',
+          ],
+          [
+            'Immob24 vs. onOffice',
+            'onOffice ist eine umfassende Maklersoftware mit breitem Funktionsumfang für Verwaltung und Reporting. Immob24 fokussiert bewusst nur die operative Strecke zwischen Anfrage und nächstem Schritt — und lässt sich parallel zu onOffice nutzen, statt es abzulösen.',
+          ],
+        ],
+        en: [
+          [
+            'Immob24 vs. Propstack',
+            'Propstack is a modern real estate CRM focused on data hygiene, property management and pipeline overview. Immob24 does not replace it but works ahead of it: it answers new inquiries in seconds and qualifies leads before they reach the CRM workflow.',
+          ],
+          [
+            'Immob24 vs. Flowfact',
+            'Flowfact is a long-established broker software for contact and record management. Immob24 is not an alternative to data storage but to slow, manual lead response: the AI handles first contact, pre-qualification and follow-up automatically.',
+          ],
+          [
+            'Immob24 vs. onOffice',
+            'onOffice is a comprehensive broker software with a broad feature set for administration and reporting. Immob24 deliberately focuses only on the operational stretch between inquiry and next step — and runs alongside onOffice instead of replacing it.',
+          ],
+        ],
+      },
+      note: {
+        de: 'Immob24 ist damit weniger eine „CRM-Alternative" im Sinne von Ersatz, sondern die KI-Ausführungsschicht, die Ihr bestehendes Immobilien-CRM schneller macht.',
+        en: 'Immob24 is therefore less a “CRM alternative” in the sense of a replacement, and more the AI execution layer that makes your existing real estate CRM faster.',
       },
     },
 
@@ -1773,6 +1881,9 @@ export const translations = {
       },
       primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
       secondaryCta: { de: 'Produkt ansehen', en: 'See the product' },
+      linksLabel: { de: 'Mehr erfahren:', en: 'Learn more:' },
+      linkPricing: { de: 'Immob24 Preise', en: 'Immob24 pricing' },
+      linkDemo: { de: 'Demo-Seite', en: 'Demo page' },
     },
   },
 
@@ -1784,11 +1895,11 @@ export const translations = {
 
     meta: {
       title: {
-        de: 'Immob24 Preise | Beta, Team und individuelle Lösungen für Maklerbüros',
+        de: 'Immob24 Preise | Maklersoftware ab €249',
         en: 'Immob24 pricing | Beta, Team, and custom plans for brokerages',
       },
       description: {
-        de: 'Vergleichen Sie die Preise von Immob24: Beta-Programm, Team-Plan und individuelle Lösung für Immobilienmakler in Deutschland. Klare Pakete, klare CTAs.',
+        de: 'Immob24 Preise: Beta kostenlos, Team ab 249 €/Monat, Individuell auf Anfrage. Maklersoftware für schnellere Lead-Reaktion — ohne Langzeitvertrag.',
         en: 'Compare Immob24 pricing: Beta program, Team plan, and custom solution for real estate agents in Germany. Clear packages, clear CTAs.',
       },
     },
@@ -1796,11 +1907,11 @@ export const translations = {
     hero: {
       eyebrow: { de: 'Preise', en: 'Pricing' },
       headline: {
-        de: 'Wählen Sie den passenden Einstieg für Ihr Maklerbüro.',
+        de: 'Immob24 Preise — Maklersoftware ab €249 pro Monat',
         en: 'Choose the right way to start with your brokerage.',
       },
       subheadline: {
-        de: 'Immob24 bietet einen frühen Beta-Einstieg, einen klaren Team-Plan für den operativen Alltag und eine individuelle Lösung für komplexere Anforderungen. Vergleichen, auswählen, nächsten Schritt starten.',
+        de: 'Wählen Sie den passenden Einstieg für Ihr Maklerbüro — vom kostenlosen Beta-Zugang über den Team-Plan ab 249 €/Monat bis zur individuellen Lösung. Vergleichen, auswählen, nächsten Schritt starten.',
         en: 'Immob24 offers an early Beta entry, a clear Team plan for everyday operations, and a custom solution for more complex needs. Compare, choose, start the next step.',
       },
       primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
@@ -2014,6 +2125,9 @@ export const translations = {
       primaryCta: { de: 'Demo anfragen', en: 'Request demo' },
       secondaryCta: { de: 'Für Beta bewerben', en: 'Apply for the beta' },
       tertiaryCta: { de: 'Gespräch vereinbaren', en: 'Book a call' },
+      linksLabel: { de: 'Mehr erfahren:', en: 'Learn more:' },
+      linkProduct: { de: 'KI-Maklersoftware', en: 'AI broker software' },
+      linkDemo: { de: 'Demo-Seite', en: 'Demo page' },
     },
   },
 } as const;

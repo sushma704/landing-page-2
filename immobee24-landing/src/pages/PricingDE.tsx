@@ -5,8 +5,11 @@ import { Header, Footer, TALLY_PROPS } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
+import { useJsonLd } from '../lib/useJsonLd';
+import { productSchema, breadcrumbSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { useLanguage } from '../i18n';
+import { pathFor } from '../i18n/pages';
 
 type TVal = string | string[] | Array<{ q: string; a: string }> | string[][];
 const asString = (v: TVal): string => (typeof v === 'string' ? v : '');
@@ -431,6 +434,27 @@ const FinalCTA = () => {
               {asString(t('pricingPage.finalCta.tertiaryCta'))}
             </button>
           </div>
+
+          <p className="mt-6 text-sm text-slate">
+            <span className="text-warm-gray">
+              {asString(t('pricingPage.finalCta.linksLabel'))}
+            </span>{' '}
+            <Link
+              to={localPath('produkt')}
+              onClick={() => trackEvent('pricing_final_product_link_click')}
+              className="font-medium text-golden-dark underline underline-offset-2 hover:text-charcoal"
+            >
+              {asString(t('pricingPage.finalCta.linkProduct'))}
+            </Link>
+            {' · '}
+            <Link
+              to={localPath('demo')}
+              onClick={() => trackEvent('pricing_final_demo_link_click')}
+              className="font-medium text-golden-dark underline underline-offset-2 hover:text-charcoal"
+            >
+              {asString(t('pricingPage.finalCta.linkDemo'))}
+            </Link>
+          </p>
         </div>
       </div>
     </section>
@@ -446,6 +470,30 @@ export default function PricingDE() {
     descriptionKey: 'pricingPage.meta.description',
   });
   useFaqSchema(asFaqArray(t('pricingPage.faq.items')), language, 'pricing');
+  useJsonLd(
+    [
+      productSchema(language, asString(t('pricingPage.meta.description')), [
+        {
+          name: asString(t('pricingPage.cards.beta.label')),
+          price: '0',
+          description: asString(t('pricingPage.cards.beta.subtext')),
+        },
+        {
+          name: asString(t('pricingPage.cards.team.label')),
+          price: '249',
+          description: asString(t('pricingPage.cards.team.subtext')),
+        },
+      ]),
+      breadcrumbSchema([
+        { name: asString(t('nav.home')), path: pathFor('home', language) },
+        {
+          name: asString(t('pricingPage.nav')),
+          path: pathFor('pricing', language),
+        },
+      ]),
+    ],
+    'pricing',
+  );
 
   const sections: Array<() => ReactNode> = [
     Hero,

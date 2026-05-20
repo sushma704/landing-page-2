@@ -7,6 +7,7 @@ import {
   Layers,
   MessageSquare,
   Sparkles,
+  Tag,
   Target,
   Users,
   Zap,
@@ -16,6 +17,8 @@ import { useLanguage } from '../i18n';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
+import { useJsonLd } from '../lib/useJsonLd';
+import { organizationSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { Header, Footer, TALLY_PROPS } from '../components/SiteChrome';
 
@@ -211,6 +214,7 @@ const Solution = () => {
 
 const Features = () => {
   const { t } = useLanguage();
+  const localPath = useLocalizedPath();
   const items = [
     { icon: Zap, title: asString(t('features.f1Title')), body: asString(t('features.f1Body')) },
     { icon: Target, title: asString(t('features.f2Title')), body: asString(t('features.f2Body')) },
@@ -249,6 +253,17 @@ const Features = () => {
               <p className="mt-3 text-slate leading-relaxed">{item.body}</p>
             </div>
           ))}
+        </div>
+
+        <div className="mt-10 text-center">
+          <Link
+            to={localPath('produkt')}
+            onClick={() => trackEvent('home_features_cta_click')}
+            className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
+          >
+            {asString(t('features.ctaLink'))}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
         </div>
       </div>
     </section>
@@ -414,6 +429,58 @@ const UseCases = () => {
   );
 };
 
+const PricingTeaser = () => {
+  const { t } = useLanguage();
+  const localPath = useLocalizedPath();
+  const plans = asPairArray(t('pricingTeaser.plans'));
+  return (
+    <section id="pricing" className="py-20 md:py-28 bg-white">
+      <div className="container">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+            {asString(t('pricingTeaser.headline'))}
+          </h2>
+          <p className="mt-6 text-body-lg text-slate">{asString(t('pricingTeaser.body'))}</p>
+        </div>
+
+        <div className="mt-12 grid sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
+          {plans.map((plan, i) => (
+            <div
+              key={i}
+              className="rounded-2xl border border-charcoal/10 bg-cream p-6 text-center shadow-subtle"
+            >
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-golden-soft text-golden-dark">
+                <Tag className="h-5 w-5" />
+              </span>
+              <h3 className="mt-4 font-heading text-xl text-charcoal">{plan[0] ?? ''}</h3>
+              <p className="mt-2 text-slate">{plan[1] ?? ''}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <Link
+            to={localPath('pricing')}
+            onClick={() => trackEvent('home_pricing_cta_click')}
+            className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
+          >
+            {asString(t('pricingTeaser.pricingCta'))}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link
+            to={localPath('demo')}
+            onClick={() => trackEvent('home_pricing_demo_cta_click')}
+            className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
+          >
+            {asString(t('pricingTeaser.demoCta'))}
+            <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const FAQItem = ({ q, a }: { q: string; a: string }) => {
   const [open, setOpen] = useState(false);
   return (
@@ -519,6 +586,7 @@ export default function HomePage() {
     descriptionKey: 'home.meta.description',
   });
   useFaqSchema(asFaqArray(t('faq.items')), language, 'home');
+  useJsonLd([organizationSchema()], 'home');
 
   const sections = [
     Hero,
@@ -530,6 +598,7 @@ export default function HomePage() {
     HowItWorks,
     SocialProof,
     UseCases,
+    PricingTeaser,
     FAQ,
     FinalCTA,
   ];

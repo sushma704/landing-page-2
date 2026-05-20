@@ -14,8 +14,11 @@ import { Header, Footer, TALLY_PROPS } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
+import { useJsonLd } from '../lib/useJsonLd';
+import { howToSchema, breadcrumbSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { useLanguage } from '../i18n';
+import { pathFor } from '../i18n/pages';
 
 type TVal = string | string[] | Array<{ q: string; a: string }> | string[][];
 type StepItem = { title: string; body: string };
@@ -407,6 +410,27 @@ const FinalCTA = () => {
               {asString(t('howItWorksPage.finalCta.secondaryCta'))}
             </Link>
           </div>
+
+          <p className="mt-6 text-sm text-slate">
+            <span className="text-warm-gray">
+              {asString(t('howItWorksPage.finalCta.linksLabel'))}
+            </span>{' '}
+            <Link
+              to={localPath('pricing')}
+              onClick={() => trackEvent('howitworks_final_pricing_link_click')}
+              className="font-medium text-golden-dark underline underline-offset-2 hover:text-charcoal"
+            >
+              {asString(t('howItWorksPage.finalCta.linkPricing'))}
+            </Link>
+            {' · '}
+            <Link
+              to={localPath('demo')}
+              onClick={() => trackEvent('howitworks_final_demo_link_click')}
+              className="font-medium text-golden-dark underline underline-offset-2 hover:text-charcoal"
+            >
+              {asString(t('howItWorksPage.finalCta.linkDemo'))}
+            </Link>
+          </p>
         </div>
       </div>
     </section>
@@ -422,6 +446,26 @@ export default function HowItWorksDE() {
     descriptionKey: 'howItWorksPage.meta.description',
   });
   useFaqSchema(asFaqArray(t('howItWorksPage.faq.items')), language, 'how-it-works');
+  useJsonLd(
+    [
+      howToSchema(
+        language,
+        asString(t('howItWorksPage.steps.headline')),
+        asStepArray(t('howItWorksPage.steps.items') as unknown).map((s) => ({
+          name: s.title,
+          text: s.body,
+        })),
+      ),
+      breadcrumbSchema([
+        { name: asString(t('nav.home')), path: pathFor('home', language) },
+        {
+          name: asString(t('howItWorksPage.nav')),
+          path: pathFor('howItWorks', language),
+        },
+      ]),
+    ],
+    'how-it-works',
+  );
 
   const sections: Array<() => ReactNode> = [
     Hero,

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { ArrowRight, CheckCircle2, ShieldCheck, Sparkles, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Header, Footer } from '../components/SiteChrome';
+import { Header, Footer, DEMO_BOOKING_URL } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
@@ -20,15 +20,6 @@ const asFaqArray = (v: TVal): Array<{ q: string; a: string }> =>
   v.every((x) => typeof x === 'object' && x !== null && 'q' in x && 'a' in x)
     ? (v as Array<{ q: string; a: string }>)
     : [];
-
-declare global {
-  interface Window {
-    Tally?: { loadEmbeds: () => void };
-  }
-}
-
-const TALLY_DEMO_FORM_SRC =
-  'https://tally.so/r/ja5bzJ?transparentBackground=1&dynamicHeight=1';
 
 function useInView<T extends HTMLElement>(threshold = 0.1) {
   const ref = useRef<T | null>(null);
@@ -94,7 +85,9 @@ const Hero = () => {
 
           <div className="mt-8 flex flex-col items-center gap-3">
             <a
-              href="#demo-form"
+              href={DEMO_BOOKING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => trackEvent('demo_hero_cta_click')}
               className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
             >
@@ -103,65 +96,6 @@ const Hero = () => {
             </a>
             <p className="text-sm text-warm-gray">{asString(t('demoPage.hero.microcopy'))}</p>
           </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const FormSection = () => {
-  const { t } = useLanguage();
-  useEffect(() => {
-    const init = () => {
-      if (window.Tally?.loadEmbeds) {
-        window.Tally.loadEmbeds();
-        return true;
-      }
-      return false;
-    };
-    if (init()) return;
-    const interval = window.setInterval(() => {
-      if (init()) window.clearInterval(interval);
-    }, 200);
-    const timeout = window.setTimeout(() => window.clearInterval(interval), 5000);
-    return () => {
-      window.clearInterval(interval);
-      window.clearTimeout(timeout);
-    };
-  }, []);
-
-  return (
-    <section
-      id="demo-form"
-      className="py-16 md:py-20 bg-gradient-to-b from-white to-cream"
-    >
-      <div className="container">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center">
-            <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-              {asString(t('demoPage.form.headline'))}
-            </h2>
-            <p className="mt-6 text-body-lg text-slate">
-              {asString(t('demoPage.form.intro'))}
-            </p>
-          </div>
-          <div className="mt-10 rounded-2xl border border-charcoal/10 bg-white shadow-card overflow-hidden">
-            <iframe
-              data-tally-src={TALLY_DEMO_FORM_SRC}
-              loading="lazy"
-              width="100%"
-              height="900"
-              frameBorder={0}
-              marginHeight={0}
-              marginWidth={0}
-              title="Immob24 Demo anfragen"
-              className="block w-full"
-              onLoad={() => trackEvent('demo_form_iframe_loaded')}
-            />
-          </div>
-          <p className="mt-6 text-sm text-warm-gray text-center italic">
-            {asString(t('demoPage.form.microcopy'))}
-          </p>
         </div>
       </div>
     </section>
@@ -341,7 +275,9 @@ const FinalCTA = () => {
           </p>
           <div className="mt-8 flex justify-center">
             <a
-              href="#demo-form"
+              href={DEMO_BOOKING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => trackEvent('demo_final_cta_click')}
               className="inline-flex items-center gap-2 rounded-full bg-gradient-golden text-white px-7 py-3.5 font-semibold shadow-golden hover:opacity-95 transition-opacity"
             >
@@ -405,7 +341,6 @@ export default function DemoDE() {
 
   const sections: Array<() => ReactNode> = [
     Hero,
-    FormSection,
     WhatYouSee,
     WhoFor,
     NotADemo,

@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ScrollToHash } from './lib/ScrollToHash';
+import { DEMO_BOOKING_URL } from './components/SiteChrome';
 import HomePage from './pages/HomePage';
 import ProduktDE from './pages/ProduktDE';
 import BetaProgrammDE from './pages/BetaProgrammDE';
@@ -9,6 +11,18 @@ import CrmAlternativeDE from './pages/CrmAlternativeDE';
 import PricingDE from './pages/PricingDE';
 
 export default function App() {
+  // Any element marked with data-demo-cta opens the Cal.com booking page.
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      const el = e.target as Element | null;
+      if (el?.closest('[data-demo-cta]')) {
+        window.open(DEMO_BOOKING_URL, '_blank', 'noopener,noreferrer');
+      }
+    };
+    document.addEventListener('click', onClick);
+    return () => document.removeEventListener('click', onClick);
+  }, []);
+
   return (
     <>
       <ScrollToHash />

@@ -10,7 +10,7 @@ import {
   Zap,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Header, Footer, TALLY_PROPS } from '../components/SiteChrome';
+import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
@@ -115,7 +115,7 @@ const Hero = () => {
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               type="button"
-              {...TALLY_PROPS}
+              {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('howitworks_hero_primary_cta_click')}
               className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
             >
@@ -211,7 +211,7 @@ const Steps = () => {
         <div className="mt-12 flex justify-center">
           <button
             type="button"
-            {...TALLY_PROPS}
+            {...DEMO_CTA_PROPS}
             onClick={() => trackEvent('howitworks_steps_cta_click')}
             className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
           >
@@ -396,7 +396,7 @@ const FinalCTA = () => {
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               type="button"
-              {...TALLY_PROPS}
+              {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('howitworks_final_cta_click')}
               className="inline-flex items-center gap-2 rounded-full bg-gradient-golden text-white px-7 py-3.5 font-semibold shadow-golden hover:opacity-95 transition-opacity"
             >

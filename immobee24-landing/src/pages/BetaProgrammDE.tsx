@@ -11,7 +11,7 @@ import {
   Users,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Header, Footer, TALLY_PROPS } from '../components/SiteChrome';
+import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
@@ -90,7 +90,7 @@ const Hero = () => {
             {asString(t('betaProgram.hero.eyebrow'))}
           </span>
 
-          <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
+          <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance break-words hyphens-auto">
             {asString(t('betaProgram.hero.headline'))}
           </h1>
 
@@ -101,7 +101,7 @@ const Hero = () => {
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               type="button"
-              {...TALLY_PROPS}
+              {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('beta_hero_primary_cta_click')}
               className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
             >
@@ -286,78 +286,6 @@ const Trust = () => {
   );
 };
 
-// Tally injects window.Tally with loadEmbeds() once its embed.js script
-// (loaded async in index.html) has initialised.
-declare global {
-  interface Window {
-    Tally?: { loadEmbeds: () => void };
-  }
-}
-
-const TALLY_BETA_FORM_SRC =
-  'https://tally.so/r/ja5bzJ?transparentBackground=1&dynamicHeight=1';
-
-const ApplicationForm = () => {
-  const { t } = useLanguage();
-
-  // Wire up the iframe with Tally's embed.js once it has loaded. The script
-  // in index.html loads async, so it may not be ready at mount time.
-  useEffect(() => {
-    const init = () => {
-      if (window.Tally?.loadEmbeds) {
-        window.Tally.loadEmbeds();
-        return true;
-      }
-      return false;
-    };
-    if (init()) return;
-    const interval = window.setInterval(() => {
-      if (init()) window.clearInterval(interval);
-    }, 200);
-    const timeout = window.setTimeout(() => window.clearInterval(interval), 5000);
-    return () => {
-      window.clearInterval(interval);
-      window.clearTimeout(timeout);
-    };
-  }, []);
-
-  return (
-    <section id="apply" className="py-20 md:py-28 bg-gradient-to-b from-cream to-white">
-      <div className="container">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center">
-            <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-              {asString(t('betaProgram.form.headline'))}
-            </h2>
-            <p className="mt-6 text-body-lg text-slate">
-              {asString(t('betaProgram.form.intro'))}
-            </p>
-          </div>
-
-          <div className="mt-10 rounded-2xl border border-charcoal/10 bg-white shadow-card overflow-hidden">
-            <iframe
-              data-tally-src={TALLY_BETA_FORM_SRC}
-              loading="lazy"
-              width="100%"
-              height="900"
-              frameBorder={0}
-              marginHeight={0}
-              marginWidth={0}
-              title="Jetzt für das immob24 Beta Programm bewerben."
-              className="block w-full"
-              onLoad={() => trackEvent('beta_form_iframe_loaded')}
-            />
-          </div>
-
-          <p className="mt-6 text-sm text-warm-gray text-center italic">
-            {asString(t('betaProgram.form.microcopy'))}
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-};
-
 const FAQItem = ({ q, a }: { q: string; a: string }) => {
   const [open, setOpen] = useState(false);
   return (
@@ -427,7 +355,7 @@ const FinalCTA = () => {
           <div className="mt-8 flex flex-col items-center gap-3">
             <button
               type="button"
-              {...TALLY_PROPS}
+              {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('beta_final_cta_click')}
               className="inline-flex items-center gap-2 rounded-full bg-gradient-golden text-white px-7 py-3.5 font-semibold shadow-golden hover:opacity-95 transition-opacity"
             >
@@ -521,7 +449,6 @@ export default function BetaProgrammDE() {
       />
     ),
     Trust,
-    ApplicationForm,
     FAQ,
     FinalCTA,
   ];

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { ArrowRight, Check, Sparkles, Star, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Header, Footer, TALLY_PROPS } from '../components/SiteChrome';
+import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
@@ -92,7 +92,7 @@ const Hero = () => {
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               type="button"
-              {...TALLY_PROPS}
+              {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('pricing_hero_primary_cta_click')}
               className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
             >
@@ -247,7 +247,7 @@ const PricingCards = () => {
             description={asString(t('pricingPage.cards.team.description'))}
             included={asStringArray(t('pricingPage.cards.team.included'))}
             ctaLabel={asString(t('pricingPage.cards.team.cta'))}
-            ctaAttrs={TALLY_PROPS}
+            ctaAttrs={DEMO_CTA_PROPS}
             onCta={() => trackEvent('pricing_card_cta_click', { plan: 'team' })}
           />
 
@@ -259,7 +259,7 @@ const PricingCards = () => {
             description={asString(t('pricingPage.cards.custom.description'))}
             included={asStringArray(t('pricingPage.cards.custom.included'))}
             ctaLabel={asString(t('pricingPage.cards.custom.cta'))}
-            ctaAttrs={TALLY_PROPS}
+            ctaAttrs={DEMO_CTA_PROPS}
             onCta={() => trackEvent('pricing_card_cta_click', { plan: 'custom' })}
             support={asString(t('pricingPage.cards.custom.support'))}
           />
@@ -412,7 +412,7 @@ const FinalCTA = () => {
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               type="button"
-              {...TALLY_PROPS}
+              {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('pricing_final_primary_cta_click')}
               className="inline-flex items-center gap-2 rounded-full bg-gradient-golden text-white px-7 py-3.5 font-semibold shadow-golden hover:opacity-95 transition-opacity"
             >
@@ -427,7 +427,7 @@ const FinalCTA = () => {
             </Link>
             <button
               type="button"
-              {...TALLY_PROPS}
+              {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('pricing_final_tertiary_cta_click')}
               className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
             >

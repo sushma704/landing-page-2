@@ -12,11 +12,13 @@ const asString = (
   v: string | string[] | Array<{ q: string; a: string }> | string[][],
 ): string => (typeof v === 'string' ? v : '');
 
-export const TALLY_PROPS = {
-  'data-tally-open': 'ja5bzJ',
-  'data-tally-emoji-text': '👋',
-  'data-tally-emoji-animation': 'wave',
-  'data-tally-width': '650',
+// Cal.com booking page that every "Request demo" CTA opens.
+export const DEMO_BOOKING_URL = 'https://www.cal.eu/hari-prasad-iu7zxy';
+
+// Spread onto a CTA <button>. The global click handler in App.tsx opens
+// DEMO_BOOKING_URL for any element carrying the data-demo-cta attribute.
+export const DEMO_CTA_PROPS = {
+  'data-demo-cta': 'true',
 };
 
 export const Wordmark = ({ variant = 'dark' }: { variant?: 'dark' | 'light' }) => {
@@ -136,7 +138,7 @@ export const Header = () => {
           <LanguageToggle />
           <button
             type="button"
-            {...TALLY_PROPS}
+            {...DEMO_CTA_PROPS}
             onClick={() => trackEvent('header_cta_click')}
             className="hidden md:inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-4 py-2 text-sm font-medium hover:bg-charcoal/90 transition-colors"
           >
@@ -169,7 +171,7 @@ export const Header = () => {
             ))}
             <button
               type="button"
-              {...TALLY_PROPS}
+              {...DEMO_CTA_PROPS}
               onClick={() => {
                 setOpen(false);
                 trackEvent('mobile_cta_click');

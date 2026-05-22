@@ -318,6 +318,25 @@ const DatenschutzContent = () => (
   </>
 );
 
+const TermsContent = () => (
+  <>
+    <p>
+      Die vollständigen Allgemeinen Geschäftsbedingungen (AGB / Terms of Service) für die
+      Nutzung von Immob24 werden hier vor dem öffentlichen Launch ergänzt.
+    </p>
+    <p>
+      Bei Fragen zu vertraglichen Bedingungen wenden Sie sich bitte an{' '}
+      <a href="mailto:kontakt@immob24.de" className="text-charcoal underline">
+        kontakt@immob24.de
+      </a>
+      .
+    </p>
+    <p className="text-xs text-warm-gray pt-3 border-t border-charcoal/5">
+      Platzhalter — finale Terms of Service folgen vor Launch.
+    </p>
+  </>
+);
+
 const CookiesContent = () => (
   <>
     <p>
@@ -338,9 +357,12 @@ const CookiesContent = () => (
   </>
 );
 
+type LegalModalKey = 'impressum' | 'datenschutz' | 'terms' | 'cookies';
+
 export const Footer = () => {
   const { t } = useLanguage();
   const localPath = useLocalizedPath();
+  const [activeModal, setActiveModal] = useState<LegalModalKey | null>(null);
 
   const pageLinks = [
     { to: localPath('produkt'), label: asString(t('nav.product')) },
@@ -351,10 +373,46 @@ export const Footer = () => {
     { to: localPath('beta'), label: asString(t('betaProgram.nav')) },
   ];
 
+  const legalLinks: Array<{ key: LegalModalKey; label: string }> = [
+    { key: 'impressum', label: asString(t('footer.impressum')) },
+    { key: 'datenschutz', label: asString(t('footer.datenschutz')) },
+    { key: 'terms', label: asString(t('footer.termsOfService')) },
+    { key: 'cookies', label: asString(t('footer.cookies')) },
+  ];
+
+  const settingsLinks: Array<{ key: LegalModalKey; label: string }> = [
+    { key: 'datenschutz', label: asString(t('footer.privacy')) },
+    { key: 'cookies', label: asString(t('footer.cookieSettings')) },
+  ];
+
+  const modalTitle: Record<LegalModalKey, string> = {
+    impressum: asString(t('footer.impressum')),
+    datenschutz: asString(t('footer.datenschutz')),
+    terms: asString(t('footer.termsOfService')),
+    cookies: asString(t('footer.cookies')),
+  };
+
+  const renderModalBody = () => {
+    switch (activeModal) {
+      case 'impressum':
+        return <ImpressumContent />;
+      case 'datenschutz':
+        return <DatenschutzContent />;
+      case 'terms':
+        return <TermsContent />;
+      case 'cookies':
+        return <CookiesContent />;
+      default:
+        return null;
+    }
+  };
+
+  const linkBtnClass = 'text-left text-sm text-white/75 hover:text-white';
+
   return (
     <footer className="bg-charcoal text-white py-16 border-t border-white/5">
       <div className="container">
-        <div className="grid gap-10 md:grid-cols-2">
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
           <div>
             <div className="flex w-fit flex-col items-center">
               <Wordmark variant="light" />
@@ -384,6 +442,42 @@ export const Footer = () => {
               </a>
             </nav>
           </div>
+
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
+              {asString(t('footer.legalLabel'))}
+            </p>
+            <nav className="mt-3 flex flex-col gap-2">
+              {legalLinks.map((l) => (
+                <button
+                  key={`legal-${l.key}-${l.label}`}
+                  type="button"
+                  onClick={() => setActiveModal(l.key)}
+                  className={linkBtnClass}
+                >
+                  {l.label}
+                </button>
+              ))}
+            </nav>
+          </div>
+
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
+              {asString(t('footer.settingsLabel'))}
+            </p>
+            <nav className="mt-3 flex flex-col gap-2">
+              {settingsLinks.map((l) => (
+                <button
+                  key={`settings-${l.key}-${l.label}`}
+                  type="button"
+                  onClick={() => setActiveModal(l.key)}
+                  className={linkBtnClass}
+                >
+                  {l.label}
+                </button>
+              ))}
+            </nav>
+          </div>
         </div>
 
         <div className="mt-12 pt-6 border-t border-white/10 text-xs text-white/40 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
@@ -393,6 +487,14 @@ export const Footer = () => {
           <span>Made in Germany.</span>
         </div>
       </div>
+
+      <LegalModal
+        open={activeModal !== null}
+        onClose={() => setActiveModal(null)}
+        title={activeModal ? modalTitle[activeModal] : ''}
+      >
+        {renderModalBody()}
+      </LegalModal>
     </footer>
   );
 };

@@ -1126,21 +1126,37 @@ export const translations = {
       de: 'Rechtliches',
       en: 'Legal',
     },
+    settingsLabel: {
+      de: 'Einstellungen',
+      en: 'Settings',
+    },
     contact: {
       de: 'Kontakt',
       en: 'Contact',
     },
     impressum: {
       de: 'Impressum',
-      en: 'Impressum',
+      en: 'Imprint',
     },
     datenschutz: {
       de: 'Datenschutz',
-      en: 'Privacy policy',
+      en: 'Privacy Policy',
+    },
+    termsOfService: {
+      de: 'AGB',
+      en: 'Terms of Service',
     },
     cookies: {
       de: 'Cookie-Richtlinie',
-      en: 'Cookie policy',
+      en: 'Cookie Policy',
+    },
+    privacy: {
+      de: 'Datenschutz',
+      en: 'Privacy',
+    },
+    cookieSettings: {
+      de: 'Cookie-Einstellungen',
+      en: 'Cookie Settings',
     },
     copyright: {
       de: 'Alle Rechte vorbehalten.',

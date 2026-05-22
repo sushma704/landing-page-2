@@ -2,14 +2,12 @@
 <html lang="de">
 
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-MQKZ3EHWR9"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-MQKZ3EHWR9');
-  </script>
+  <!--
+    Tracking scripts (Google Analytics, Meta Pixel) are loaded conditionally
+    from src/lib/consent.ts AFTER the visitor consents to the matching cookie
+    category. Do not re-add unconditional <script> tags here — that would
+    fire trackers before consent (TTDSG §25 / GDPR violation).
+  -->
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -51,10 +49,12 @@
   <link rel="icon" type="image/png" href="/favicon.png" />
   <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png" />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
+  <!--
+    Fonts are self-hosted via @fontsource packages imported in src/main.tsx.
+    Do not re-add a remote-fonts stylesheet here — that would transmit the
+    visitor IP to a third party on every page load (LG München I, 3 O 17493/20,
+    20.01.2022 ruled this is a GDPR violation without consent).
+  -->
 
   <!--
     Structured data (Organization, SoftwareApplication, BreadcrumbList, HowTo,
@@ -64,26 +64,9 @@
     pages it does not describe.
   -->
 
-  <!-- Meta Pixel Code -->
-  <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '26806117632348430');
-    fbq('track', 'PageView');
-  </script>
-  <!-- End Meta Pixel Code -->
 </head>
 
 <body>
-  <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=26806117632348430&ev=PageView&noscript=1"
-  /></noscript>
   <div id="root"></div>
   <script type="module" src="/src/main.tsx"></script>
 </body>

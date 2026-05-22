@@ -1165,6 +1165,84 @@ export const translations = {
   },
 
   // ============================================
+  // COOKIE CONSENT (banner + settings modal, all pages)
+  // ============================================
+  cookieConsent: {
+    bannerTitle: {
+      de: 'Cookies & Datenschutz',
+      en: 'Cookies & privacy',
+    },
+    bannerBody: {
+      de: 'Wir setzen technisch notwendige Cookies ein, damit diese Website funktioniert. Mit Ihrer Einwilligung nutzen wir zusätzlich Analyse- und Marketing-Cookies (z. B. Google Analytics, Meta Pixel), um die Nutzung zu verstehen und unsere Inhalte zu verbessern. Sie können Ihre Auswahl jederzeit unter „Cookie-Einstellungen" anpassen.',
+      en: 'We use strictly necessary cookies to make this website work. With your consent we also use analytics and marketing cookies (e.g. Google Analytics, Meta Pixel) to understand usage and improve our content. You can change your choice at any time via "Cookie Settings".',
+    },
+    acceptAll: {
+      de: 'Alle akzeptieren',
+      en: 'Accept all',
+    },
+    rejectAll: {
+      de: 'Alle ablehnen',
+      en: 'Reject all',
+    },
+    manage: {
+      de: 'Einstellungen',
+      en: 'Manage settings',
+    },
+    save: {
+      de: 'Auswahl speichern',
+      en: 'Save selection',
+    },
+    settingsTitle: {
+      de: 'Cookie-Einstellungen',
+      en: 'Cookie settings',
+    },
+    settingsIntro: {
+      de: 'Sie entscheiden selbst, welche Cookies geladen werden. Notwendige Cookies sind für den Betrieb der Website erforderlich und können nicht deaktiviert werden.',
+      en: 'You decide which cookies are loaded. Strictly necessary cookies are required for the site to work and cannot be turned off.',
+    },
+    categoryEssentialName: {
+      de: 'Notwendig',
+      en: 'Strictly necessary',
+    },
+    categoryEssentialDesc: {
+      de: 'Diese Cookies sind für den Betrieb der Website erforderlich (z. B. Spracheinstellung, Cookie-Auswahl). Sie können nicht deaktiviert werden. Rechtsgrundlage: berechtigtes Interesse (Art. 6 Abs. 1 lit. f DSGVO).',
+      en: 'These cookies are required for the site to function (e.g. language preference, your cookie choice). They cannot be turned off. Legal basis: legitimate interest (Art. 6(1)(f) GDPR).',
+    },
+    categoryAnalyticsName: {
+      de: 'Analyse',
+      en: 'Analytics',
+    },
+    categoryAnalyticsDesc: {
+      de: 'Google Analytics 4 (Google Ireland Ltd.) hilft uns zu verstehen, wie Besucher die Website nutzen. Es werden anonymisierte Nutzungsdaten erhoben. Rechtsgrundlage: Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TTDSG).',
+      en: 'Google Analytics 4 (Google Ireland Ltd.) helps us understand how visitors use the site. Anonymized usage data is collected. Legal basis: consent (Art. 6(1)(a) GDPR, §25(1) TTDSG).',
+    },
+    categoryMarketingName: {
+      de: 'Marketing',
+      en: 'Marketing',
+    },
+    categoryMarketingDesc: {
+      de: 'Meta Pixel (Meta Platforms Ireland Ltd.) misst die Wirksamkeit unserer Kampagnen. Hierbei werden Daten an Meta in den USA übertragen. Rechtsgrundlage: Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TTDSG, Art. 49 Abs. 1 lit. a DSGVO für die Drittlandübermittlung).',
+      en: 'Meta Pixel (Meta Platforms Ireland Ltd.) measures the effectiveness of our campaigns. This involves transferring data to Meta in the US. Legal basis: consent (Art. 6(1)(a) GDPR, §25(1) TTDSG, Art. 49(1)(a) GDPR for the third-country transfer).',
+    },
+    on: {
+      de: 'An',
+      en: 'On',
+    },
+    off: {
+      de: 'Aus',
+      en: 'Off',
+    },
+    alwaysOn: {
+      de: 'Immer aktiv',
+      en: 'Always on',
+    },
+    close: {
+      de: 'Schließen',
+      en: 'Close',
+    },
+  },
+
+  // ============================================
   // NEWSLETTER SIGNUP (footer button + modal, all pages)
   // ============================================
   newsletter: {

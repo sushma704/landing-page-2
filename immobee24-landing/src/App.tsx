@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ScrollToHash } from './lib/ScrollToHash';
+import { CookieBanner } from './components/CookieBanner';
 import { DEMO_BOOKING_URL } from './components/SiteChrome';
 import HomePage from './pages/HomePage';
 import ProduktDE from './pages/ProduktDE';
@@ -26,6 +27,7 @@ export default function App() {
   return (
     <>
       <ScrollToHash />
+      <CookieBanner />
       <Routes>
         <Route path="/" element={<Navigate to="/de" replace />} />
 

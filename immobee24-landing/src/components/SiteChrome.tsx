@@ -7,6 +7,7 @@ import { pathFor } from '../i18n/pages';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { trackEvent } from '../lib/analytics';
 import { NewsletterSignup } from './NewsletterSignup';
+import { openCookieSettings } from './CookieBanner';
 
 const asString = (
   v: string | string[] | Array<{ q: string; a: string }> | string[][],
@@ -380,9 +381,17 @@ export const Footer = () => {
     { key: 'cookies', label: asString(t('footer.cookies')) },
   ];
 
-  const settingsLinks: Array<{ key: LegalModalKey; label: string }> = [
-    { key: 'datenschutz', label: asString(t('footer.privacy')) },
-    { key: 'cookies', label: asString(t('footer.cookieSettings')) },
+  // Cookie Settings opens the consent panel (not a static modal), so this
+  // column carries onClick handlers instead of modal keys.
+  const settingsLinks: Array<{ label: string; onClick: () => void }> = [
+    {
+      label: asString(t('footer.privacy')),
+      onClick: () => setActiveModal('datenschutz'),
+    },
+    {
+      label: asString(t('footer.cookieSettings')),
+      onClick: () => openCookieSettings(),
+    },
   ];
 
   const modalTitle: Record<LegalModalKey, string> = {
@@ -468,9 +477,9 @@ export const Footer = () => {
             <nav className="mt-3 flex flex-col gap-2">
               {settingsLinks.map((l) => (
                 <button
-                  key={`settings-${l.key}-${l.label}`}
+                  key={`settings-${l.label}`}
                   type="button"
-                  onClick={() => setActiveModal(l.key)}
+                  onClick={l.onClick}
                   className={linkBtnClass}
                 >
                   {l.label}

@@ -1,45 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
   <url>
-    <loc>https://immob24.com/de</loc>
+    <loc>https://immob24.com/</loc>
   </url>
+
   <url>
     <loc>https://immob24.com/en</loc>
   </url>
+
   <url>
-    <loc>https://immob24.com/de/produkt</loc>
+    <loc>https://immob24.com/de</loc>
   </url>
+
   <url>
     <loc>https://immob24.com/en/product</loc>
   </url>
+
   <url>
-    <loc>https://immob24.com/de/how-it-works</loc>
+    <loc>https://immob24.com/de/produkt</loc>
   </url>
+
   <url>
     <loc>https://immob24.com/en/how-it-works</loc>
   </url>
+
   <url>
-    <loc>https://immob24.com/de/immobilien-crm-alternative</loc>
+    <loc>https://immob24.com/de/how-it-works</loc>
   </url>
+
   <url>
     <loc>https://immob24.com/en/real-estate-crm-alternative</loc>
   </url>
+
   <url>
-    <loc>https://immob24.com/de/preise</loc>
+    <loc>https://immob24.com/de/immobilien-crm-alternative</loc>
   </url>
+
   <url>
     <loc>https://immob24.com/en/pricing</loc>
   </url>
+
   <url>
-    <loc>https://immob24.com/de/demo</loc>
+    <loc>https://immob24.com/de/preise</loc>
   </url>
+
   <url>
     <loc>https://immob24.com/en/demo</loc>
   </url>
+
   <url>
-    <loc>https://immob24.com/de/beta-agentenprogramm</loc>
+    <loc>https://immob24.com/de/demo</loc>
   </url>
+
   <url>
     <loc>https://immob24.com/en/beta-agent-program</loc>
   </url>
+
+  <url>
+    <loc>https://immob24.com/de/beta-agentenprogramm</loc>
+  </url>
+
 </urlset>

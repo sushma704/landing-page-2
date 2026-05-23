@@ -309,12 +309,13 @@ export const Footer = () => {
     <footer className="bg-charcoal text-white py-16 border-t border-white/5">
       <div className="container">
         {/*
-          Wordmark column takes 5/12 of the row at lg+ so its tagline
-          ("THE AI OPERATING SYSTEM FOR MODERN REAL ESTATE") fits on one
-          line with breathing room before the Navigation column starts.
+          Wordmark column takes 6/12 (so its tagline "THE AI OPERATING
+          SYSTEM FOR MODERN REAL ESTATE" fits on one line). The other
+          three columns each take 2/12 so they distribute evenly across
+          the remaining half of the row, with equal gaps between them.
         */}
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-12">
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-6">
             <div className="flex flex-col items-start gap-4">
               <Wordmark variant="light" />
               <NewsletterSignup />
@@ -344,7 +345,7 @@ export const Footer = () => {
             </nav>
           </div>
 
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-2">
             <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
               {asString(t('footer.legalLabel'))}
             </p>

@@ -308,15 +308,20 @@ export const Footer = () => {
   return (
     <footer className="bg-charcoal text-white py-16 border-t border-white/5">
       <div className="container">
-        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
-          <div>
-            <div className="flex w-fit flex-col items-center">
+        {/*
+          Wordmark column takes 5/12 of the row at lg+ so its tagline
+          ("THE AI OPERATING SYSTEM FOR MODERN REAL ESTATE") fits on one
+          line with breathing room before the Navigation column starts.
+        */}
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <div className="flex flex-col items-start gap-4">
               <Wordmark variant="light" />
               <NewsletterSignup />
             </div>
           </div>
 
-          <div>
+          <div className="lg:col-span-2">
             <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
               {asString(t('footer.sectionsLabel'))}
             </p>
@@ -339,7 +344,7 @@ export const Footer = () => {
             </nav>
           </div>
 
-          <div>
+          <div className="lg:col-span-3">
             <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
               {asString(t('footer.legalLabel'))}
             </p>
@@ -357,7 +362,7 @@ export const Footer = () => {
             </nav>
           </div>
 
-          <div>
+          <div className="lg:col-span-2">
             <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
               {asString(t('footer.settingsLabel'))}
             </p>

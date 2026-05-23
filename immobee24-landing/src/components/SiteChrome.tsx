@@ -127,12 +127,12 @@ export const Header = () => {
       <div className="container flex items-center justify-between py-4">
         <Wordmark />
 
-        <nav className="hidden lg:flex items-center gap-1">
+        <nav className="hidden lg:flex items-center gap-2 ml-6">
           {[productLink, howItWorksLink, crmAltLink, pricingLink, demoLink, betaLink].map((l) => (
             <Link
               key={l.to}
               to={l.to}
-              className="px-3 py-2 text-sm text-charcoal/70 hover:text-charcoal transition-colors"
+              className="px-3 py-2 text-sm text-charcoal/70 hover:text-charcoal transition-colors whitespace-nowrap"
             >
               {l.label}
             </Link>

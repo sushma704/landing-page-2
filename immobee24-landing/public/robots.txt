@@ -1,3 +1,6 @@
+# Pre-launch lockdown.
+# The site is not yet ready for public indexing — see the noindex meta tag in
+# index.html and the empty sitemap.xml. Re-open this together with those when
+# the operating entity is registered.
 User-agent: *
-Allow: /
-Sitemap: https://immob24.com/sitemap.xml
+Disallow: /

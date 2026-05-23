@@ -8,6 +8,10 @@ import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { trackEvent } from '../lib/analytics';
 import { NewsletterSignup } from './NewsletterSignup';
 import { openCookieSettings } from './CookieBanner';
+import { ImpressumContent } from './legal/ImpressumContent';
+import { DatenschutzContent } from './legal/DatenschutzContent';
+import { TermsContent } from './legal/TermsContent';
+import { CookiesContent } from './legal/CookiesContent';
 
 const asString = (
   v: string | string[] | Array<{ q: string; a: string }> | string[][],
@@ -238,125 +242,8 @@ const LegalModal = ({
   );
 };
 
-const ImpressumContent = () => (
-  <>
-    <p>
-      <strong>Angaben gemäß § 5 TMG</strong>
-    </p>
-    <p>
-      Immob24 GmbH
-      <br />
-      [Straße und Hausnummer]
-      <br />
-      [PLZ] [Stadt]
-      <br />
-      Deutschland
-    </p>
-    <p>
-      <strong>Vertreten durch:</strong>
-      <br />
-      [Geschäftsführer/in]
-    </p>
-    <p>
-      <strong>Kontakt:</strong>
-      <br />
-      Telefon: [Telefonnummer]
-      <br />
-      E-Mail: kontakt@immob24.de
-    </p>
-    <p>
-      <strong>Registereintrag:</strong>
-      <br />
-      Eintragung im Handelsregister
-      <br />
-      Registergericht: [Amtsgericht]
-      <br />
-      Registernummer: [HRB-Nummer]
-    </p>
-    <p>
-      <strong>Umsatzsteuer-ID:</strong> [USt-IdNr.]
-    </p>
-    <p className="text-xs text-warm-gray pt-3 border-t border-charcoal/5">
-      Platzhalter — bitte vor Launch durch finale rechtliche Angaben ersetzen.
-    </p>
-  </>
-);
-
-const DatenschutzContent = () => (
-  <>
-    <p>
-      <strong>1. Verantwortlicher</strong>
-    </p>
-    <p>
-      Verantwortlich für die Datenverarbeitung auf dieser Website ist Immob24 GmbH.
-      Kontaktangaben siehe Impressum.
-    </p>
-    <p>
-      <strong>2. Erhebung und Verarbeitung personenbezogener Daten</strong>
-    </p>
-    <p>
-      Beim Besuch dieser Website werden technisch notwendige Daten verarbeitet (z. B.
-      IP-Adresse, Browsertyp). Bei Nutzung des Demo-Formulars werden die übermittelten
-      Angaben zur Kontaktaufnahme verwendet.
-    </p>
-    <p>
-      <strong>3. Analyse</strong>
-    </p>
-    <p>
-      Wir setzen Google Analytics und Meta Pixel ein, um die Nutzung der Seite auszuwerten.
-      Details und Widerrufsmöglichkeiten folgen in der vollständigen Datenschutzerklärung.
-    </p>
-    <p>
-      <strong>4. Ihre Rechte</strong>
-    </p>
-    <p>
-      Sie haben jederzeit das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der
-      Verarbeitung sowie Widerspruch.
-    </p>
-    <p className="text-xs text-warm-gray pt-3 border-t border-charcoal/5">
-      Platzhalter — bitte vor Launch durch finale Datenschutzerklärung ersetzen.
-    </p>
-  </>
-);
-
-const TermsContent = () => (
-  <>
-    <p>
-      Die vollständigen Allgemeinen Geschäftsbedingungen (AGB / Terms of Service) für die
-      Nutzung von Immob24 werden hier vor dem öffentlichen Launch ergänzt.
-    </p>
-    <p>
-      Bei Fragen zu vertraglichen Bedingungen wenden Sie sich bitte an{' '}
-      <a href="mailto:kontakt@immob24.de" className="text-charcoal underline">
-        kontakt@immob24.de
-      </a>
-      .
-    </p>
-    <p className="text-xs text-warm-gray pt-3 border-t border-charcoal/5">
-      Platzhalter — finale Terms of Service folgen vor Launch.
-    </p>
-  </>
-);
-
-const CookiesContent = () => (
-  <>
-    <p>
-      Wir verwenden Cookies und ähnliche Technologien, um diese Website bereitzustellen, die
-      Nutzung zu analysieren und Marketingmaßnahmen auszuwerten.
-    </p>
-    <p>
-      <strong>Notwendige Cookies</strong> sind für den Betrieb der Seite erforderlich.
-    </p>
-    <p>
-      <strong>Analyse-Cookies</strong> (Google Analytics) und{' '}
-      <strong>Marketing-Cookies</strong> (Meta Pixel) werden nur mit Ihrer Einwilligung
-      gesetzt.
-    </p>
-    <p className="text-xs text-warm-gray pt-3 border-t border-charcoal/5">
-      Platzhalter — vollständige Cookie-Richtlinie folgt vor Launch.
-    </p>
-  </>
-);
+// Legal modal bodies live in src/components/legal/. SiteChrome only imports
+// them so this file stays focused on header/footer scaffolding.
 
 type LegalModalKey = 'impressum' | 'datenschutz' | 'terms' | 'cookies';
 

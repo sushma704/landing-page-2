@@ -10,6 +10,11 @@ import HowItWorksDE from './pages/HowItWorksDE';
 import DemoDE from './pages/DemoDE';
 import CrmAlternativeDE from './pages/CrmAlternativeDE';
 import PricingDE from './pages/PricingDE';
+// SEO landing pages (DE-only, staged under noindex pending entity registration)
+import MaklersoftwareMuenchen from './pages/seo/MaklersoftwareMuenchen';
+import MaklersoftwareBerlin from './pages/seo/MaklersoftwareBerlin';
+import MaklersoftwareHamburg from './pages/seo/MaklersoftwareHamburg';
+import KiFuerImmobilienmakler from './pages/seo/KiFuerImmobilienmakler';
 
 export default function App() {
   // Any element marked with data-demo-cta opens the Cal.com booking page.
@@ -51,6 +56,16 @@ export default function App() {
 
         <Route path="/de/beta-agentenprogramm" element={<BetaProgrammDE />} />
         <Route path="/en/beta-agent-program" element={<BetaProgrammDE />} />
+
+        {/*
+          SEO landing pages — DE-only, currently noindex'd. They live at
+          stable URLs so internal links can point to them; they only start
+          earning traffic once the site-wide noindex is lifted post-entity.
+        */}
+        <Route path="/de/maklersoftware/muenchen" element={<MaklersoftwareMuenchen />} />
+        <Route path="/de/maklersoftware/berlin" element={<MaklersoftwareBerlin />} />
+        <Route path="/de/maklersoftware/hamburg" element={<MaklersoftwareHamburg />} />
+        <Route path="/de/ki-fuer-immobilienmakler" element={<KiFuerImmobilienmakler />} />
 
         {/* Legacy English slugs — redirect to the current SEO URLs. */}
         <Route

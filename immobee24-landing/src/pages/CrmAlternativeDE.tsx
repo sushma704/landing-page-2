@@ -14,7 +14,7 @@ import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
 import { useJsonLd } from '../lib/useJsonLd';
-import { breadcrumbSchema } from '../lib/schema';
+import { breadcrumbSchema, softwareApplicationSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { useLanguage } from '../i18n';
 import { pathFor } from '../i18n/pages';
@@ -531,6 +531,59 @@ const FinalCTA = () => {
   );
 };
 
+// Cross-links to the city/topic landing pages so equity flows between the
+// CRM comparison cluster and the geo SEO cluster. Only rendered for DE.
+const RelatedSeo = () => {
+  const { language } = useLanguage();
+  if (language !== 'de') return null;
+  const items = [
+    {
+      label: 'KI für Immobilienmakler — Übersicht',
+      desc: 'Ratgeber zu KI im Makleralltag.',
+      path: '/de/ki-fuer-immobilienmakler',
+    },
+    {
+      label: 'Maklersoftware München',
+      desc: 'KI-Maklersoftware für den Münchner Markt.',
+      path: '/de/maklersoftware/muenchen',
+    },
+    {
+      label: 'Maklersoftware Berlin',
+      desc: 'KI-Maklersoftware für den Berliner Markt.',
+      path: '/de/maklersoftware/berlin',
+    },
+    {
+      label: 'Maklersoftware Hamburg',
+      desc: 'KI-Maklersoftware für den Hamburger Markt.',
+      path: '/de/maklersoftware/hamburg',
+    },
+  ];
+  return (
+    <section className="py-16 bg-cream">
+      <div className="container max-w-4xl">
+        <h2 className="font-heading text-2xl md:text-3xl font-bold text-charcoal">
+          Auch interessant
+        </h2>
+        <div className="mt-6 grid sm:grid-cols-2 gap-3">
+          {items.map((it) => (
+            <Link
+              key={it.path}
+              to={it.path}
+              className="rounded-2xl bg-white border border-charcoal/10 px-5 py-5 hover:border-charcoal/30 transition-colors"
+            >
+              <p className="font-semibold text-charcoal">{it.label}</p>
+              <p className="mt-2 text-sm text-slate leading-relaxed">{it.desc}</p>
+              <p className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-golden-dark">
+                Lesen <ArrowRight className="h-3 w-3" />
+              </p>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
 export default function CrmAlternativeDE() {
   const { t, language } = useLanguage();
 
@@ -549,6 +602,19 @@ export default function CrmAlternativeDE() {
           path: pathFor('crmAlternative', language),
         },
       ]),
+      // SoftwareApplication schema reinforces the "alternative to onOffice /
+      // FLOWFACT / Propstack" intent of the page for search engines.
+      softwareApplicationSchema(
+        language,
+        asString(t('crmAltPage.meta.description')),
+        [
+          'KI-gestützte Lead-Reaktion in Sekunden',
+          'Automatische Lead-Qualifizierung',
+          'Terminlogik mit Kalenderabgleich',
+          'Follow-up-Automatisierung',
+          'Ergänzung zu bestehenden CRMs (onOffice, FLOWFACT, Propstack)',
+        ],
+      ),
     ],
     'crm-alt',
   );
@@ -563,6 +629,7 @@ export default function CrmAlternativeDE() {
     Fit,
     Objections,
     FAQ,
+    RelatedSeo,
     FinalCTA,
   ];
 

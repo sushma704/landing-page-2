@@ -20,6 +20,7 @@ import { SITE_ORIGIN } from '../../i18n/pages';
 
 const PAGE_PATH = '/de/maklersoftware/muenchen';
 const PAGE_URL = `${SITE_ORIGIN}${PAGE_PATH}`;
+const EN_URL = `${SITE_ORIGIN}/en/real-estate-agent-software/munich`;
 
 const FAQS: Array<{ q: string; a: string }> = [
   {
@@ -349,6 +350,11 @@ export default function MaklersoftwareMuenchen() {
       'Maklersoftware für Münchner Immobilienmakler: KI-gestützte Lead-Reaktion in 3 Sekunden, automatische Qualifizierung & Terminlogik. Demo für München anfragen.',
     canonical: PAGE_URL,
     htmlLang: 'de',
+    alternates: [
+      { hreflang: 'de', href: PAGE_URL },
+      { hreflang: 'en', href: EN_URL },
+      { hreflang: 'x-default', href: PAGE_URL },
+    ],
   });
 
   useJsonLd(

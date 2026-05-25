@@ -27,6 +27,7 @@ import { SITE_ORIGIN } from '../../i18n/pages';
 
 const PAGE_PATH = '/de/ki-fuer-immobilienmakler';
 const PAGE_URL = `${SITE_ORIGIN}${PAGE_PATH}`;
+const EN_URL = `${SITE_ORIGIN}/en/ai-for-real-estate-agents`;
 
 const FAQS: Array<{ q: string; a: string }> = [
   {
@@ -409,6 +410,11 @@ export default function KiFuerImmobilienmakler() {
       'KI für Immobilienmakler: Wie künstliche Intelligenz Lead-Reaktion, Qualifizierung & Follow-up automatisiert — fünf Zeitfresser, konkrete Lösungen, Praxisbeispiele.',
     canonical: PAGE_URL,
     htmlLang: 'de',
+    alternates: [
+      { hreflang: 'de', href: PAGE_URL },
+      { hreflang: 'en', href: EN_URL },
+      { hreflang: 'x-default', href: PAGE_URL },
+    ],
   });
 
   useJsonLd(

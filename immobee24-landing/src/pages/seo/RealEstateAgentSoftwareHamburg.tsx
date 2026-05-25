@@ -1,8 +1,7 @@
-// SEO landing page: Maklersoftware für Hamburg
+// SEO landing page (EN): Real-estate agent software for Hamburg
 // Spec source: docs/SEO_OPTIMIZATION_STRATEGY (Part 2, Page 4)
 //
-// Bracketed `[…]` strings are placeholders for verifiable facts. Replace
-// before lifting noindex.
+// English counterpart to MaklersoftwareHamburg.tsx.
 
 import { Anchor, ArrowRight, ChevronRight, Clock, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
@@ -14,26 +13,26 @@ import { useJsonLd } from '../../lib/useJsonLd';
 import { breadcrumbSchema } from '../../lib/schema';
 import { SITE_ORIGIN } from '../../i18n/pages';
 
-const PAGE_PATH = '/de/maklersoftware/hamburg';
+const PAGE_PATH = '/en/real-estate-agent-software/hamburg';
 const PAGE_URL = `${SITE_ORIGIN}${PAGE_PATH}`;
-const EN_URL = `${SITE_ORIGIN}/en/real-estate-agent-software/hamburg`;
+const DE_URL = `${SITE_ORIGIN}/de/maklersoftware/hamburg`;
 
 const FAQS: Array<{ q: string; a: string }> = [
   {
-    q: 'Wie viele Immobilienmakler gibt es in Hamburg?',
-    a: 'Hamburg gehört mit geschätzt [~X.XXX aktiven Maklerbüros] (Quelle: IVD Nord einfügen) zu den größten Maklermärkten Deutschlands. Die Dichte ist besonders hoch in Eppendorf, Winterhude, Eimsbüttel und der HafenCity — genau dort, wo auch die meisten Anfragen entstehen.',
+    q: 'How many real-estate brokers are there in Hamburg?',
+    a: 'Hamburg is among the largest broker markets in Germany, with an estimated [~X,XXX active brokerages] (source: IVD Nord — to be inserted). Density is highest in Eppendorf, Winterhude, Eimsbüttel, and HafenCity — exactly where most inquiries originate.',
   },
   {
-    q: 'Für welche Hamburger Stadtteile eignet sich Immob24 besonders?',
-    a: 'Immob24 ist für jedes Hamburger Maklerbüro nutzbar — unabhängig vom Bezirk. Besonders deutlich wird der Vorteil aber in nachfragestarken Lagen wie Eppendorf, Winterhude, Eimsbüttel, Blankenese und Ottensen, wo Anfragevolumen und Konkurrenzdruck am höchsten sind.',
+    q: 'Which Hamburg districts is Immob24 especially suitable for?',
+    a: 'Immob24 works for any Hamburg brokerage regardless of district. The benefit is clearest in high-demand areas like Eppendorf, Winterhude, Eimsbüttel, Blankenese, and Ottensen, where inquiry volume and competition are highest.',
   },
   {
-    q: 'Kann Immob24 auch mit Bestands-CRMs in Hamburg zusammenarbeiten?',
-    a: 'Ja. Immob24 ersetzt Ihr CRM nicht — es ergänzt es als KI-Ausführungsschicht für Erstreaktion, Qualifizierung und Follow-up. Eine Anbindung an gängige Maklersysteme ist Teil der Einrichtung.',
+    q: 'Can Immob24 work with existing CRMs in Hamburg?',
+    a: 'Yes. Immob24 does not replace your CRM — it complements it as an AI execution layer for first response, qualification, and follow-up. Integration with common broker systems is part of onboarding.',
   },
   {
-    q: 'Was kostet Immob24 für Hamburger Maklerbüros?',
-    a: 'Immob24 startet bei 249 € pro Monat. Es gibt keine Hamburg-spezifischen Aufschläge. Genaue Pakete und enthaltene Leistungen finden Sie auf der Preisseite.',
+    q: 'How much does Immob24 cost for Hamburg brokerages?',
+    a: 'Immob24 starts at €249 per month. There are no Hamburg-specific surcharges. Exact packages and included features are on the pricing page.',
   },
 ];
 
@@ -43,44 +42,44 @@ const Hero = () => (
     className="relative pt-36 pb-20 md:pt-44 md:pb-24 overflow-hidden bg-gradient-to-b from-cream to-white"
   >
     <div className="container">
-      <nav aria-label="Brotkrumen" className="mb-6 flex items-center gap-1 text-xs text-slate">
-        <Link to="/de" className="hover:text-charcoal">Start</Link>
+      <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-1 text-xs text-slate">
+        <Link to="/en" className="hover:text-charcoal">Home</Link>
         <ChevronRight className="h-3 w-3 text-warm-gray" />
-        <span className="text-warm-gray">Maklersoftware</span>
+        <span className="text-warm-gray">Real-estate agent software</span>
         <ChevronRight className="h-3 w-3 text-warm-gray" />
         <span className="text-charcoal">Hamburg</span>
       </nav>
 
       <p className="inline-flex items-center gap-2 rounded-full bg-golden/10 px-3 py-1 text-xs font-semibold text-golden-dark">
-        <MapPin className="h-3.5 w-3.5" /> Lokaler Fokus: Hamburg
+        <MapPin className="h-3.5 w-3.5" /> Local focus: Hamburg
       </p>
 
       <h1 className="mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight max-w-3xl">
-        Maklersoftware für Immobilienmakler in Hamburg
+        Real-estate agent software for brokerages in Hamburg
       </h1>
 
       <p className="mt-5 max-w-2xl text-lg text-slate leading-relaxed">
-        Der Hamburger Markt belohnt Geschwindigkeit. Immob24 antwortet in unter
-        drei Sekunden auf jede Anfrage, qualifiziert Interessenten anhand der
-        wichtigsten Kriterien und übergibt Ihrem Team nur die Termine, die
-        sich wirklich lohnen.
+        The Hamburg market rewards speed. Immob24 replies to every inquiry
+        in under three seconds, qualifies prospects against the criteria
+        that matter, and hands your team only the viewings that are
+        actually worth the time.
       </p>
 
       <div className="mt-8 flex flex-col sm:flex-row gap-3">
         <button
           type="button"
           {...DEMO_CTA_PROPS}
-          onClick={() => trackEvent('seo_city_cta_click', { city: 'hamburg', position: 'hero' })}
+          onClick={() => trackEvent('seo_city_cta_click', { city: 'hamburg-en', position: 'hero' })}
           className="inline-flex items-center justify-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 text-base font-semibold hover:bg-charcoal/90 transition-colors"
         >
-          Demo für Hamburg anfragen
+          Request a Hamburg demo
           <ArrowRight className="h-4 w-4" />
         </button>
         <Link
-          to="/de/preise"
+          to="/en/pricing"
           className="inline-flex items-center justify-center gap-2 rounded-full border border-charcoal/15 px-6 py-3 text-base font-medium text-charcoal hover:bg-cream transition-colors"
         >
-          Preise ansehen
+          See pricing
         </Link>
       </div>
     </div>
@@ -91,39 +90,40 @@ const Challenge = () => (
   <section className="py-20 bg-white">
     <div className="container max-w-3xl">
       <h2 className="font-heading text-3xl md:text-4xl font-bold text-charcoal">
-        Der Hamburger Immobilienmarkt erfordert Geschwindigkeit
+        Hamburg's real-estate market demands speed
       </h2>
       <p className="mt-5 text-slate leading-relaxed">
-        Hamburg ist mit rund 1,9 Millionen Einwohnern Deutschlands
-        zweitgrößte Stadt — und einer der dichtesten Maklermärkte.
-        Schätzungen sprechen von <strong>[~X.XXX aktiven Maklerbüros]</strong>
-        {' '}(Quelle: IVD Nord einfügen). Anfragen für ein attraktives
-        Objekt in Eppendorf, Winterhude oder Blankenese erreichen oft mehrere
-        Makler gleichzeitig — Reaktionszeit entscheidet, wer das Mandat bekommt.
+        With around 1.9 million inhabitants, Hamburg is Germany's
+        second-largest city — and one of the densest broker markets.
+        Estimates suggest <strong>[~X,XXX active brokerages]</strong>{' '}
+        (source: IVD Nord — to be inserted). Inquiries for an attractive
+        property in Eppendorf, Winterhude, or Blankenese typically reach
+        multiple agents simultaneously — response time determines who wins
+        the mandate.
       </p>
       <p className="mt-4 text-slate leading-relaxed">
-        Hinzu kommt: Hamburger Käuferinnen und Käufer sind im Schnitt sehr
-        gut informiert, recherchieren vorab über mehrere Portale und erwarten
-        eine fachlich präzise erste Antwort. Generische Auto-Replies senken
-        das Vertrauen, statt es aufzubauen.
+        On top of that, Hamburg buyers and tenants are very well informed
+        on average: they research across multiple portals before contacting
+        you and expect a precise first reply. Generic auto-replies erode
+        trust rather than build it.
       </p>
 
       <div className="mt-10 grid md:grid-cols-3 gap-4">
         {[
           {
             icon: Clock,
-            label: 'Antwort in &lt; 3 Sekunden',
-            body: 'Auch nachts und am Wochenende — die Hamburger Anfrage wartet nie länger als wenige Sekunden auf eine fachlich passende Erstreaktion.',
+            label: 'Response in &lt; 3 seconds',
+            body: 'Even at night and on weekends — a Hamburg inquiry never waits more than a few seconds for an on-topic first reply.',
           },
           {
             icon: Anchor,
-            label: 'Lokale Tonalität',
-            body: 'Die KI versteht Hamburger Lageangaben (z. B. „HafenCity", „Eppendorf-Süd") und kann lokal passend formulieren.',
+            label: 'Local tonality',
+            body: 'The AI understands Hamburg location references (e.g. "HafenCity", "Eppendorf-Süd") and replies in locally appropriate language.',
           },
           {
             icon: MapPin,
-            label: 'Skaliert mit Anfragevolumen',
-            body: 'Egal ob 10 oder 100 Anfragen pro Tag — die Qualität der Erstreaktion bleibt konstant.',
+            label: 'Scales with inquiry volume',
+            body: 'Whether 10 or 100 inquiries a day — the quality of first response stays constant.',
           },
         ].map((c) => (
           <div key={c.label} className="rounded-2xl border border-charcoal/10 bg-cream/40 px-5 py-5">
@@ -144,15 +144,15 @@ const Solution = () => (
   <section className="py-20 bg-cream">
     <div className="container max-w-3xl">
       <h2 className="font-heading text-3xl md:text-4xl font-bold text-charcoal">
-        Wie Immob24 Hamburger Makler entlastet
+        How Immob24 supports Hamburg brokerages
       </h2>
       <p className="mt-5 text-slate leading-relaxed">
-        Immob24 sitzt zwischen Ihren Anfragequellen — Portalen, Website,
-        E-Mail — und Ihrem Kalender. Eine eingehende Hamburger Anfrage
-        bekommt in Sekunden eine fachlich korrekte Antwort. Die KI klärt
-        Budget, Eigennutzung oder Kapitalanlage, Wunschtermin und
-        Finanzierungsstatus. Ihr Team bekommt anschließend nur noch die
-        Anfragen, die wirklich qualifiziert sind — mit fertigem Terminvorschlag.
+        Immob24 sits between your inquiry sources — portals, website, email —
+        and your calendar. An incoming Hamburg inquiry gets a precise first
+        reply in seconds. The AI clarifies budget, owner-occupation vs.
+        investment, preferred timing, and financing status. Your team then
+        only receives the inquiries that are actually qualified — with a
+        proposed viewing slot ready.
       </p>
     </div>
   </section>
@@ -164,33 +164,33 @@ const Features = () => (
       <div className="grid md:grid-cols-3 gap-8">
         <div>
           <h3 className="font-heading text-xl font-bold text-charcoal">
-            In 3 Sekunden auf neue Anfragen reagieren
+            Reply to new inquiries in 3 seconds
           </h3>
           <p className="mt-3 text-slate leading-relaxed">
-            Portal-Anfragen, Direktanfragen, Kontaktformular der eigenen
-            Hamburger Makler-Website — alle Eingangskanäle laufen über
-            Immob24 und werden in Sekunden bedient.
+            Portal inquiries, direct inquiries, your own Hamburg website's
+            contact form — every inbound channel flows through Immob24 and
+            is answered in seconds.
           </p>
         </div>
         <div>
           <h3 className="font-heading text-xl font-bold text-charcoal">
-            Intelligente Qualifizierung für Hamburger Interessenten
+            Intelligent qualification for Hamburg prospects
           </h3>
           <p className="mt-3 text-slate leading-relaxed">
-            Die KI führt einen kurzen, höflichen Dialog: Lage, Budget,
-            Eigennutzung vs. Kapitalanlage, Zeithorizont. Wer noch nicht
-            entscheidungsreif ist, landet in einem Nurture-Strang — wer
-            kaufbereit ist, geht direkt in die Terminlogik.
+            The AI runs a short, polite dialogue: location, budget,
+            owner-occupation vs. investment, time horizon. Prospects not yet
+            decision-ready enter a nurture flow — buying-ready ones go
+            straight into scheduling.
           </p>
         </div>
         <div>
           <h3 className="font-heading text-xl font-bold text-charcoal">
-            Besichtigungen effizient planen ohne E-Mail-Chaos
+            Schedule viewings without email ping-pong
           </h3>
           <p className="mt-3 text-slate leading-relaxed">
-            Qualifizierte Anfragen erhalten direkt passende Besichtigungstermine
-            — abgeglichen mit Ihrem Kalender und mit sinnvollen Pufferzeiten
-            zwischen Hamburger Adressen.
+            Qualified inquiries receive suitable viewing slots — reconciled
+            with your calendar and with sensible buffers between Hamburg
+            addresses.
           </p>
         </div>
       </div>
@@ -202,30 +202,31 @@ const WhyHamburg = () => (
   <section className="py-20 bg-cream">
     <div className="container max-w-3xl">
       <h2 className="font-heading text-3xl md:text-4xl font-bold text-charcoal">
-        Warum Hamburger Makler auf KI setzen
+        Why Hamburg brokers are betting on AI
       </h2>
       <ul className="mt-6 space-y-3 text-slate">
         <li>
-          <strong className="text-charcoal">Hohe Anfragequalität in
-          Top-Lagen.</strong> Anfragen aus Eppendorf, Winterhude oder
-          Blankenese kommen oft von gut informierten Interessenten — die
-          erste Antwort entscheidet, ob ein Termin zustande kommt.
+          <strong className="text-charcoal">High inquiry quality in top
+          locations.</strong> Inquiries from Eppendorf, Winterhude, or
+          Blankenese come from informed prospects — the first reply decides
+          whether a viewing happens.
         </li>
         <li>
-          <strong className="text-charcoal">HafenCity-Effekt.</strong> Mit
-          den neuen Quartieren rund um Elbphilharmonie und HafenCity steigt
-          das Anfragevolumen weiter — manuelle Bearbeitung wird zum Engpass.
+          <strong className="text-charcoal">The HafenCity effect.</strong>{' '}
+          With the new quarters around the Elbphilharmonie and HafenCity,
+          inquiry volume keeps rising — manual handling becomes the
+          bottleneck.
         </li>
         <li>
-          <strong className="text-charcoal">Mitarbeiter werden entlastet.</strong>
-          {' '}Statt Erstanrufe und Standardfragen abzuarbeiten, konzentriert
-          sich Ihr Team auf qualifizierte Termine und Vertragsabschlüsse.
+          <strong className="text-charcoal">Your team gets time back.</strong>
+          {' '}Instead of first calls and standard questions, your people
+          focus on qualified viewings and signed contracts.
         </li>
       </ul>
 
       <p className="mt-6 text-sm text-warm-gray italic">
-        Hinweis: Die mit [eckigen Klammern] markierten Zahlen sind
-        Platzhalter und werden vor Launch durch verifizierte Quellen ersetzt.
+        Note: Numbers in [square brackets] are placeholders and will be
+        replaced with verified sources before launch.
       </p>
     </div>
   </section>
@@ -235,7 +236,7 @@ const Faq = () => (
   <section className="py-20 bg-white">
     <div className="container max-w-3xl">
       <h2 className="font-heading text-3xl md:text-4xl font-bold text-charcoal">
-        Häufige Fragen
+        Frequently asked questions
       </h2>
       <div className="mt-8 divide-y divide-charcoal/10">
         {FAQS.map((item) => (
@@ -256,14 +257,14 @@ const RelatedCities = () => (
   <section className="py-16 bg-cream">
     <div className="container">
       <h2 className="font-heading text-2xl font-bold text-charcoal">
-        Auch interessant für Makler in:
+        Also relevant for brokerages in:
       </h2>
       <div className="mt-5 flex flex-wrap gap-3">
         {[
-          { label: 'München', path: '/de/maklersoftware/muenchen' },
-          { label: 'Berlin', path: '/de/maklersoftware/berlin' },
-          { label: 'KI für Immobilienmakler — Übersicht', path: '/de/ki-fuer-immobilienmakler' },
-          { label: 'Immobilien-CRM Alternative', path: '/de/immobilien-crm-alternative' },
+          { label: 'Munich', path: '/en/real-estate-agent-software/munich' },
+          { label: 'Berlin', path: '/en/real-estate-agent-software/berlin' },
+          { label: 'AI for real-estate agents — overview', path: '/en/ai-for-real-estate-agents' },
+          { label: 'Real-estate CRM alternative', path: '/en/real-estate-crm-alternative' },
         ].map((l) => (
           <Link
             key={l.path}
@@ -282,67 +283,66 @@ const FinalCta = () => (
   <section className="py-20 bg-charcoal text-white">
     <div className="container max-w-3xl text-center">
       <h2 className="font-heading text-3xl md:text-4xl font-bold">
-        Starten Sie mit Immob24 in Hamburg
+        Get started with Immob24 in Hamburg
       </h2>
       <p className="mt-5 text-white/75 leading-relaxed">
-        Wir richten Immob24 für Ihr Hamburger Maklerbüro innerhalb eines
-        Tages ein, schließen Portale und Postfächer an und gehen gemeinsam
-        live. Ab Tag 1 sehen Sie, welche Anfragen ankommen und welche
-        Termine die KI für Sie bucht.
+        We set Immob24 up for your Hamburg brokerage within a day, connect
+        your portals and inboxes, and go live with you. From day one you
+        see which inquiries arrive and which viewings the AI books for you.
       </p>
       <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
         <button
           type="button"
           {...DEMO_CTA_PROPS}
-          onClick={() => trackEvent('seo_city_cta_click', { city: 'hamburg', position: 'final' })}
+          onClick={() => trackEvent('seo_city_cta_click', { city: 'hamburg-en', position: 'final' })}
           className="inline-flex items-center justify-center gap-2 rounded-full bg-golden text-charcoal px-6 py-3 text-base font-semibold hover:bg-golden/90 transition-colors"
         >
-          Demo für Hamburg anfragen
+          Request a Hamburg demo
           <ArrowRight className="h-4 w-4" />
         </button>
         <Link
-          to="/de/beta-agentenprogramm"
+          to="/en/beta-agent-program"
           className="inline-flex items-center justify-center gap-2 rounded-full border border-white/30 px-6 py-3 text-base font-medium text-white hover:bg-white/5 transition-colors"
         >
-          Beta-Programm für Hamburg
+          Hamburg beta program
         </Link>
       </div>
     </div>
   </section>
 );
 
-export default function MaklersoftwareHamburg() {
+export default function RealEstateAgentSoftwareHamburg() {
   useDocumentMeta({
-    title: 'Maklersoftware Hamburg | KI für Hamburger Makler | Immob24',
+    title: 'Real-estate agent software for Hamburg | AI for brokerages | Immob24',
     description:
-      'Maklersoftware für Hamburger Immobilienmakler: KI-gestützte Lead-Reaktion, automatische Qualifizierung & Terminlogik. Demo für Hamburg anfragen.',
+      'AI real-estate agent software for Hamburg brokerages: lead response in seconds, automatic qualification, scheduling logic. Request a Hamburg demo.',
     canonical: PAGE_URL,
-    htmlLang: 'de',
+    htmlLang: 'en',
     alternates: [
-      { hreflang: 'de', href: PAGE_URL },
-      { hreflang: 'en', href: EN_URL },
-      { hreflang: 'x-default', href: PAGE_URL },
+      { hreflang: 'de', href: DE_URL },
+      { hreflang: 'en', href: PAGE_URL },
+      { hreflang: 'x-default', href: DE_URL },
     ],
   });
 
   useJsonLd(
     [
       breadcrumbSchema([
-        { name: 'Start', path: '/de' },
-        { name: 'Maklersoftware', path: '/de/produkt' },
+        { name: 'Home', path: '/en' },
+        { name: 'Real-estate agent software', path: '/en/product' },
         { name: 'Hamburg', path: PAGE_PATH },
       ]),
       {
         '@context': 'https://schema.org',
         '@type': 'Product',
-        name: 'Immob24 Maklersoftware Hamburg',
+        name: 'Immob24 real-estate agent software for Hamburg',
         description:
-          'KI-gestützte Maklersoftware für Immobilienmakler in Hamburg — Lead-Reaktion in Sekunden, automatische Qualifizierung, Terminlogik.',
+          'AI-powered real-estate agent software for brokerages in Hamburg — lead response in seconds, automatic qualification, scheduling logic.',
         brand: { '@type': 'Brand', name: 'Immob24' },
         areaServed: {
           '@type': 'City',
           name: 'Hamburg',
-          sameAs: 'https://de.wikipedia.org/wiki/Hamburg',
+          sameAs: 'https://en.wikipedia.org/wiki/Hamburg',
         },
         offers: {
           '@type': 'Offer',
@@ -352,10 +352,10 @@ export default function MaklersoftwareHamburg() {
         },
       },
     ],
-    'maklersoftware-hamburg',
+    'real-estate-agent-software-hamburg',
   );
 
-  useFaqSchema(FAQS, 'de', 'maklersoftware-hamburg');
+  useFaqSchema(FAQS, 'en', 'real-estate-agent-software-hamburg');
 
   return (
     <div className="min-h-screen bg-white">

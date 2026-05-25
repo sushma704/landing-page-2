@@ -16,6 +16,7 @@ import { SITE_ORIGIN } from '../../i18n/pages';
 
 const PAGE_PATH = '/de/maklersoftware/berlin';
 const PAGE_URL = `${SITE_ORIGIN}${PAGE_PATH}`;
+const EN_URL = `${SITE_ORIGIN}/en/real-estate-agent-software/berlin`;
 
 const FAQS: Array<{ q: string; a: string }> = [
   {
@@ -325,6 +326,11 @@ export default function MaklersoftwareBerlin() {
       'Maklersoftware für Berliner Immobilienmakler: KI-gestützte Automatisierung für schnelle Lead-Reaktion, Qualifizierung & Terminlogik — auch zweisprachig.',
     canonical: PAGE_URL,
     htmlLang: 'de',
+    alternates: [
+      { hreflang: 'de', href: PAGE_URL },
+      { hreflang: 'en', href: EN_URL },
+      { hreflang: 'x-default', href: PAGE_URL },
+    ],
   });
 
   useJsonLd(

@@ -10,11 +10,15 @@ import HowItWorksDE from './pages/HowItWorksDE';
 import DemoDE from './pages/DemoDE';
 import CrmAlternativeDE from './pages/CrmAlternativeDE';
 import PricingDE from './pages/PricingDE';
-// SEO landing pages (DE-only, staged under noindex pending entity registration)
+// SEO landing pages — DE/EN pairs, staged under noindex pending entity registration
 import MaklersoftwareMuenchen from './pages/seo/MaklersoftwareMuenchen';
 import MaklersoftwareBerlin from './pages/seo/MaklersoftwareBerlin';
 import MaklersoftwareHamburg from './pages/seo/MaklersoftwareHamburg';
 import KiFuerImmobilienmakler from './pages/seo/KiFuerImmobilienmakler';
+import RealEstateAgentSoftwareMunich from './pages/seo/RealEstateAgentSoftwareMunich';
+import RealEstateAgentSoftwareBerlin from './pages/seo/RealEstateAgentSoftwareBerlin';
+import RealEstateAgentSoftwareHamburg from './pages/seo/RealEstateAgentSoftwareHamburg';
+import AiForRealEstateAgents from './pages/seo/AiForRealEstateAgents';
 
 export default function App() {
   // Any element marked with data-demo-cta opens the Cal.com booking page.
@@ -66,6 +70,20 @@ export default function App() {
         <Route path="/de/maklersoftware/berlin" element={<MaklersoftwareBerlin />} />
         <Route path="/de/maklersoftware/hamburg" element={<MaklersoftwareHamburg />} />
         <Route path="/de/ki-fuer-immobilienmakler" element={<KiFuerImmobilienmakler />} />
+
+        <Route
+          path="/en/real-estate-agent-software/munich"
+          element={<RealEstateAgentSoftwareMunich />}
+        />
+        <Route
+          path="/en/real-estate-agent-software/berlin"
+          element={<RealEstateAgentSoftwareBerlin />}
+        />
+        <Route
+          path="/en/real-estate-agent-software/hamburg"
+          element={<RealEstateAgentSoftwareHamburg />}
+        />
+        <Route path="/en/ai-for-real-estate-agents" element={<AiForRealEstateAgents />} />
 
         {/* Legacy English slugs — redirect to the current SEO URLs. */}
         <Route

@@ -532,37 +532,63 @@ const FinalCTA = () => {
 };
 
 // Cross-links to the city/topic landing pages so equity flows between the
-// CRM comparison cluster and the geo SEO cluster. Only rendered for DE.
+// CRM comparison cluster and the geo SEO cluster. Renders the matching
+// language set so EN visitors get EN links and DE visitors get DE links.
 const RelatedSeo = () => {
   const { language } = useLanguage();
-  if (language !== 'de') return null;
-  const items = [
-    {
-      label: 'KI für Immobilienmakler — Übersicht',
-      desc: 'Ratgeber zu KI im Makleralltag.',
-      path: '/de/ki-fuer-immobilienmakler',
-    },
-    {
-      label: 'Maklersoftware München',
-      desc: 'KI-Maklersoftware für den Münchner Markt.',
-      path: '/de/maklersoftware/muenchen',
-    },
-    {
-      label: 'Maklersoftware Berlin',
-      desc: 'KI-Maklersoftware für den Berliner Markt.',
-      path: '/de/maklersoftware/berlin',
-    },
-    {
-      label: 'Maklersoftware Hamburg',
-      desc: 'KI-Maklersoftware für den Hamburger Markt.',
-      path: '/de/maklersoftware/hamburg',
-    },
-  ];
+  const isDe = language === 'de';
+  const heading = isDe ? 'Auch interessant' : 'Also interesting';
+  const cta = isDe ? 'Lesen' : 'Read';
+  const items = isDe
+    ? [
+        {
+          label: 'KI für Immobilienmakler — Übersicht',
+          desc: 'Ratgeber zu KI im Makleralltag.',
+          path: '/de/ki-fuer-immobilienmakler',
+        },
+        {
+          label: 'Maklersoftware München',
+          desc: 'KI-Maklersoftware für den Münchner Markt.',
+          path: '/de/maklersoftware/muenchen',
+        },
+        {
+          label: 'Maklersoftware Berlin',
+          desc: 'KI-Maklersoftware für den Berliner Markt.',
+          path: '/de/maklersoftware/berlin',
+        },
+        {
+          label: 'Maklersoftware Hamburg',
+          desc: 'KI-Maklersoftware für den Hamburger Markt.',
+          path: '/de/maklersoftware/hamburg',
+        },
+      ]
+    : [
+        {
+          label: 'AI for real-estate agents — overview',
+          desc: 'Guide to AI in the broker workflow.',
+          path: '/en/ai-for-real-estate-agents',
+        },
+        {
+          label: 'Real-estate agent software for Munich',
+          desc: 'AI real-estate agent software for the Munich market.',
+          path: '/en/real-estate-agent-software/munich',
+        },
+        {
+          label: 'Real-estate agent software for Berlin',
+          desc: 'AI real-estate agent software for the Berlin market.',
+          path: '/en/real-estate-agent-software/berlin',
+        },
+        {
+          label: 'Real-estate agent software for Hamburg',
+          desc: 'AI real-estate agent software for the Hamburg market.',
+          path: '/en/real-estate-agent-software/hamburg',
+        },
+      ];
   return (
     <section className="py-16 bg-cream">
       <div className="container max-w-4xl">
         <h2 className="font-heading text-2xl md:text-3xl font-bold text-charcoal">
-          Auch interessant
+          {heading}
         </h2>
         <div className="mt-6 grid sm:grid-cols-2 gap-3">
           {items.map((it) => (
@@ -574,7 +600,7 @@ const RelatedSeo = () => {
               <p className="font-semibold text-charcoal">{it.label}</p>
               <p className="mt-2 text-sm text-slate leading-relaxed">{it.desc}</p>
               <p className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-golden-dark">
-                Lesen <ArrowRight className="h-3 w-3" />
+                {cta} <ArrowRight className="h-3 w-3" />
               </p>
             </Link>
           ))}

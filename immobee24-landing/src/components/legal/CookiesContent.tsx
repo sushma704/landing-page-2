@@ -77,7 +77,7 @@ export const CookiesContent = () => {
               <td className="py-2 pr-3">3 {isDe ? 'Monate' : 'months'}</td>
               <td className="py-2">{isDe ? 'Marketing' : 'Marketing'}</td>
             </tr>
-            <tr className="align-top">
+            <tr className="border-b border-charcoal/5 align-top">
               <td className="py-2 pr-3 font-mono">fr</td>
               <td className="py-2 pr-3">Meta Platforms Ireland Ltd.</td>
               <td className="py-2 pr-3">
@@ -87,6 +87,19 @@ export const CookiesContent = () => {
               </td>
               <td className="py-2 pr-3">90 {isDe ? 'Tage' : 'days'}</td>
               <td className="py-2">{isDe ? 'Marketing' : 'Marketing'}</td>
+            </tr>
+            <tr className="align-top">
+              <td className="py-2 pr-3 font-mono">botpenguin_*</td>
+              <td className="py-2 pr-3">Botpenguin Inc.</td>
+              <td className="py-2 pr-3">
+                {isDe
+                  ? 'Sitzungs- und Konversationszustand des Chat-Widgets'
+                  : 'Session and conversation state of the chat widget'}
+              </td>
+              <td className="py-2 pr-3">
+                {isDe ? 'Sitzung / bis 1 Jahr' : 'Session / up to 1 year'}
+              </td>
+              <td className="py-2">{isDe ? 'Chat' : 'Chat'}</td>
             </tr>
           </tbody>
         </table>
@@ -131,8 +144,8 @@ export const CookiesContent = () => {
       </h4>
       <p>
         {isDe
-          ? 'Details zu den eingesetzten Diensten (Google Analytics, Meta Pixel) und zu den damit verbundenen Datenübermittlungen finden Sie in unserer Datenschutzerklärung.'
-          : 'Details on the services used (Google Analytics, Meta Pixel) and the related data transfers are in our Privacy Policy.'}
+          ? 'Details zu den eingesetzten Diensten (Google Analytics, Meta Pixel, BotPenguin) und zu den damit verbundenen Datenübermittlungen finden Sie in unserer Datenschutzerklärung.'
+          : 'Details on the services used (Google Analytics, Meta Pixel, BotPenguin) and the related data transfers are in our Privacy Policy.'}
       </p>
     </>
   );

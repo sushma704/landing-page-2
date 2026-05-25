@@ -28,6 +28,7 @@ export const CookieBanner = () => {
   const [view, setView] = useState<View>('hidden');
   const [analytics, setAnalytics] = useState(false);
   const [marketing, setMarketing] = useState(false);
+  const [chat, setChat] = useState(false);
 
   // First-visit gate: show the banner only if no prior decision exists.
   // SSR safety: localStorage access deferred to a post-mount effect.
@@ -36,6 +37,7 @@ export const CookieBanner = () => {
     if (stored) {
       setAnalytics(stored.analytics);
       setMarketing(stored.marketing);
+      setChat(stored.chat);
     }
     if (!hasDecided()) setView('banner');
   }, []);
@@ -47,6 +49,7 @@ export const CookieBanner = () => {
       const stored = readConsent();
       setAnalytics(stored?.analytics ?? false);
       setMarketing(stored?.marketing ?? false);
+      setChat(stored?.chat ?? false);
       setView('settings');
     };
     window.addEventListener(OPEN_EVENT, onOpen);
@@ -73,12 +76,13 @@ export const CookieBanner = () => {
     saveConsent(cats);
     setAnalytics(cats.analytics);
     setMarketing(cats.marketing);
+    setChat(cats.chat);
     setView('hidden');
   };
 
-  const acceptAll = () => apply({ analytics: true, marketing: true });
-  const rejectAll = () => apply({ analytics: false, marketing: false });
-  const saveSelection = () => apply({ analytics, marketing });
+  const acceptAll = () => apply({ analytics: true, marketing: true, chat: true });
+  const rejectAll = () => apply({ analytics: false, marketing: false, chat: false });
+  const saveSelection = () => apply({ analytics, marketing, chat });
 
   if (view === 'hidden') return null;
 
@@ -168,6 +172,14 @@ export const CookieBanner = () => {
                 description={tr('categoryMarketingDesc')}
                 value={marketing}
                 onChange={setMarketing}
+                onLabel={tr('on')}
+                offLabel={tr('off')}
+              />
+              <CategoryRow
+                name={tr('categoryChatName')}
+                description={tr('categoryChatDesc')}
+                value={chat}
+                onChange={setChat}
                 onLabel={tr('on')}
                 offLabel={tr('off')}
               />

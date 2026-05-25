@@ -1,22 +1,27 @@
 // Cookie consent state + deferred tracker loading.
 //
-// Tracking scripts (Google Analytics, Meta Pixel) are NOT loaded by index.html.
-// They are injected here only after the visitor consents to the matching
-// category. This is what makes the site TTDSG §25 / GDPR Art. 6/7 compliant.
+// Tracking scripts (Google Analytics, Meta Pixel, BotPenguin chat) are NOT
+// loaded by index.html. They are injected here only after the visitor
+// consents to the matching category. This is what makes the site
+// TTDSG §25 / GDPR Art. 6/7 compliant.
 //
-// Storage shape (localStorage key `immob24_consent_v1`):
-//   { analytics: boolean, marketing: boolean, decidedAt: ISO8601 }
+// Storage shape (localStorage key `immob24_consent_v2`):
+//   { analytics: bool, marketing: bool, chat: bool, decidedAt: ISO8601 }
 //
 // If the schema or category set ever changes, bump STORAGE_KEY's version
-// suffix — the banner will then re-prompt all returning visitors.
+// suffix — the banner will then re-prompt all returning visitors. v2 added
+// the `chat` category (BotPenguin widget) so v1 visitors get re-prompted.
 
-const STORAGE_KEY = 'immob24_consent_v1';
+const STORAGE_KEY = 'immob24_consent_v2';
 const GA_ID = 'G-MQKZ3EHWR9';
 const META_PIXEL_ID = '26806117632348430';
+const BOTPENGUIN_SRC = 'https://cdn.botpenguin.com/website-bot.js';
+const BOTPENGUIN_IDS = '6a14160e9023bca2877cf724,6a14135edd1338ee4740a229';
 
 export type ConsentCategories = {
   analytics: boolean;
   marketing: boolean;
+  chat: boolean;
 };
 
 export type StoredConsent = ConsentCategories & {
@@ -30,6 +35,7 @@ const listeners = new Set<Listener>();
 const loaded = {
   ga: false,
   meta: false,
+  chat: false,
 };
 
 export function readConsent(): StoredConsent | null {
@@ -38,7 +44,11 @@ export function readConsent(): StoredConsent | null {
     const raw = window.localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as StoredConsent;
-    if (typeof parsed.analytics !== 'boolean' || typeof parsed.marketing !== 'boolean') {
+    if (
+      typeof parsed.analytics !== 'boolean' ||
+      typeof parsed.marketing !== 'boolean' ||
+      typeof parsed.chat !== 'boolean'
+    ) {
       return null;
     }
     return parsed;
@@ -55,6 +65,7 @@ export function saveConsent(cats: ConsentCategories): void {
   const next: StoredConsent = {
     analytics: cats.analytics,
     marketing: cats.marketing,
+    chat: cats.chat,
     decidedAt: new Date().toISOString(),
   };
   try {
@@ -101,6 +112,11 @@ function applyConsent(state: StoredConsent): void {
     enableMetaPixel();
   } else {
     disableMetaPixel();
+  }
+  if (state.chat) {
+    enableBotPenguin();
+  } else {
+    disableBotPenguin();
   }
 }
 
@@ -173,4 +189,45 @@ function disableMetaPixel(): void {
   // Meta supports per-page consent revoke. Subsequent fbq() calls become no-ops
   // until 'consent', 'grant' is called.
   window.fbq?.('consent', 'revoke');
+}
+
+// ----- BotPenguin chat widget -----------------------------------------------
+//
+// Loads the standard BotPenguin embed (script + widget IDs in script body).
+// BotPenguin auto-positions the chat bubble in the bottom-right corner.
+//
+// Disable note: the embed script does not expose a clean teardown API, so a
+// mid-session revoke removes the <script> tag and best-effort removes the
+// widget container — visitors who revoke and don't reload may still see a
+// brief residue. Next page load is fully clean.
+
+function enableBotPenguin(): void {
+  if (loaded.chat) return;
+  if (document.getElementById('messenger-widget-b')) {
+    loaded.chat = true;
+    return;
+  }
+  loaded.chat = true;
+  const s = document.createElement('script');
+  s.id = 'messenger-widget-b';
+  s.src = BOTPENGUIN_SRC;
+  s.defer = true;
+  // BotPenguin reads its widget IDs from the script's innerText.
+  s.textContent = BOTPENGUIN_IDS;
+  document.body.appendChild(s);
+}
+
+function disableBotPenguin(): void {
+  if (!loaded.chat) return;
+  loaded.chat = false;
+  document.getElementById('messenger-widget-b')?.remove();
+  // Best-effort: remove any BotPenguin-injected container so the widget UI
+  // disappears immediately. The next page load is fully clean either way.
+  document
+    .querySelectorAll(
+      '[id^="botpenguin"], [class*="botpenguin"], [id*="messenger-widget"]',
+    )
+    .forEach((el) => {
+      if (el.id !== 'messenger-widget-b') el.remove();
+    });
 }

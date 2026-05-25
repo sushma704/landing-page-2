@@ -128,7 +128,22 @@ const PolicyDe = () => (
       (Art. 26 DSGVO).
     </p>
 
-    <h4 className="font-semibold text-charcoal pt-4">9. Newsletter-Anmeldung</h4>
+    <h4 className="font-semibold text-charcoal pt-4">9. Chat-Assistent (BotPenguin)</h4>
+    <p>
+      Nach Ihrer Einwilligung laden wir den Chat-Assistenten der Firma
+      Botpenguin Inc. (cdn.botpenguin.com). Beim Laden des Widgets wird Ihre
+      IP-Adresse an die Server von BotPenguin übermittelt. Schreiben Sie über
+      den Chat, werden Ihre Nachrichten und ggf. von Ihnen angegebene
+      Kontaktdaten zur Beantwortung Ihrer Anfrage verarbeitet. Eine
+      Übermittlung an Server außerhalb der EU (insbesondere USA / Indien)
+      kann stattfinden. Rechtsgrundlage: Ihre Einwilligung
+      (Art. 6 Abs. 1 lit. a DSGVO i. V. m. § 25 Abs. 1 TTDSG; für die
+      Drittlandsübermittlung zusätzlich Art. 49 Abs. 1 lit. a DSGVO). Sie
+      können Ihre Einwilligung jederzeit über die Cookie-Einstellungen
+      widerrufen — danach wird das Widget nicht mehr geladen.
+    </p>
+
+    <h4 className="font-semibold text-charcoal pt-4">10. Newsletter-Anmeldung</h4>
     <p>
       Wenn Sie sich über das Newsletter-Formular anmelden, erheben wir Ihren
       Namen (optional) und Ihre E-Mail-Adresse. Diese Daten werden über einen
@@ -145,7 +160,7 @@ const PolicyDe = () => (
       innerhalb von 30 Tagen gelöscht.
     </p>
 
-    <h4 className="font-semibold text-charcoal pt-4">10. Demo-Buchung über Cal.com</h4>
+    <h4 className="font-semibold text-charcoal pt-4">11. Demo-Buchung über Cal.com</h4>
     <p>
       Über die Schaltfläche „Demo anfragen" leiten wir Sie auf die externe
       Buchungsseite{' '}
@@ -166,14 +181,14 @@ const PolicyDe = () => (
       Terminkoordination (Art. 6 Abs. 1 lit. b und lit. f DSGVO).
     </p>
 
-    <h4 className="font-semibold text-charcoal pt-4">11. SSL- / TLS-Verschlüsselung</h4>
+    <h4 className="font-semibold text-charcoal pt-4">12. SSL- / TLS-Verschlüsselung</h4>
     <p>
       Diese Website nutzt eine SSL- bzw. TLS-Verschlüsselung. Sie erkennen eine
       verschlüsselte Verbindung daran, dass die Adresszeile mit „https://"
       beginnt und das Schloss-Symbol angezeigt wird.
     </p>
 
-    <h4 className="font-semibold text-charcoal pt-4">12. Ihre Rechte als betroffene Person</h4>
+    <h4 className="font-semibold text-charcoal pt-4">13. Ihre Rechte als betroffene Person</h4>
     <p>Sie haben jederzeit folgende Rechte:</p>
     <ul className="list-disc pl-5 space-y-1">
       <li>Auskunft über die zu Ihrer Person gespeicherten Daten (Art. 15 DSGVO)</li>
@@ -192,14 +207,14 @@ const PolicyDe = () => (
       .
     </p>
 
-    <h4 className="font-semibold text-charcoal pt-4">13. Beschwerderecht bei der Aufsichtsbehörde</h4>
+    <h4 className="font-semibold text-charcoal pt-4">14. Beschwerderecht bei der Aufsichtsbehörde</h4>
     <p>
       Sie haben das Recht, sich bei einer Datenschutz-Aufsichtsbehörde über die
       Verarbeitung Ihrer personenbezogenen Daten zu beschweren. Zuständige
       Aufsichtsbehörde: <em>[wird mit Sitz des Unternehmens ergänzt]</em>.
     </p>
 
-    <h4 className="font-semibold text-charcoal pt-4">14. Änderungen dieser Datenschutzerklärung</h4>
+    <h4 className="font-semibold text-charcoal pt-4">15. Änderungen dieser Datenschutzerklärung</h4>
     <p>
       Wir behalten uns vor, diese Datenschutzerklärung anzupassen, damit sie
       stets den aktuellen rechtlichen Anforderungen entspricht oder um
@@ -320,7 +335,20 @@ const PolicyEn = () => (
       by Meta's standard joint-controller addendum (Art. 26 GDPR).
     </p>
 
-    <h4 className="font-semibold text-charcoal pt-4">9. Newsletter sign-up</h4>
+    <h4 className="font-semibold text-charcoal pt-4">9. Chat assistant (BotPenguin)</h4>
+    <p>
+      Subject to your consent we load the chat assistant operated by
+      Botpenguin Inc. (cdn.botpenguin.com). Loading the widget transmits
+      your IP address to BotPenguin's servers. If you chat with us, your
+      messages and any contact details you provide are processed to answer
+      your enquiry. Transfer to servers outside the EU (in particular USA /
+      India) may occur. Legal basis: your consent (Art. 6(1)(a) GDPR in
+      conjunction with § 25(1) TTDSG; Art. 49(1)(a) GDPR for the
+      third-country transfer). You can withdraw consent at any time via the
+      cookie settings — after which the widget is no longer loaded.
+    </p>
+
+    <h4 className="font-semibold text-charcoal pt-4">10. Newsletter sign-up</h4>
     <p>
       When you sign up via the newsletter form we collect your name (optional)
       and e-mail address. The data is forwarded via a Google Apps Script
@@ -335,7 +363,7 @@ const PolicyEn = () => (
       . Storage period: until withdrawal, then deleted within 30 days.
     </p>
 
-    <h4 className="font-semibold text-charcoal pt-4">10. Demo booking via Cal.com</h4>
+    <h4 className="font-semibold text-charcoal pt-4">11. Demo booking via Cal.com</h4>
     <p>
       The "Request demo" button takes you to the external booking page{' '}
       <a
@@ -354,13 +382,13 @@ const PolicyEn = () => (
       legitimate interest in scheduling (Art. 6(1)(b) and (f) GDPR).
     </p>
 
-    <h4 className="font-semibold text-charcoal pt-4">11. SSL / TLS encryption</h4>
+    <h4 className="font-semibold text-charcoal pt-4">12. SSL / TLS encryption</h4>
     <p>
       The site uses SSL/TLS encryption. You can tell an encrypted connection by
       the "https://" prefix in the address bar and the padlock icon.
     </p>
 
-    <h4 className="font-semibold text-charcoal pt-4">12. Your rights</h4>
+    <h4 className="font-semibold text-charcoal pt-4">13. Your rights</h4>
     <p>You have the following rights at any time:</p>
     <ul className="list-disc pl-5 space-y-1">
       <li>Access to the data we hold about you (Art. 15 GDPR)</li>
@@ -379,14 +407,14 @@ const PolicyEn = () => (
       .
     </p>
 
-    <h4 className="font-semibold text-charcoal pt-4">13. Right to lodge a complaint</h4>
+    <h4 className="font-semibold text-charcoal pt-4">14. Right to lodge a complaint</h4>
     <p>
       You have the right to lodge a complaint with a data-protection supervisory
       authority about the processing of your personal data. Competent authority:{' '}
       <em>[added once the entity address is set]</em>.
     </p>
 
-    <h4 className="font-semibold text-charcoal pt-4">14. Changes to this policy</h4>
+    <h4 className="font-semibold text-charcoal pt-4">15. Changes to this policy</h4>
     <p>
       We may adjust this policy so it always reflects current legal requirements
       and changes to our services. The version current at the time of your

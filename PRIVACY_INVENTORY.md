@@ -86,7 +86,19 @@ legal basis" are flags for review, not advice.
 - **What this does:** publishes a *link* in structured data so search engines know the LinkedIn page belongs to immob24. **No script loads, no iframe embeds, no data flows to LinkedIn from a visit to immob24.com.**
 - **Compliance impact:** none — this is just a URL string in markup.
 
-### 1.8 Mail to kontakt@immob24.de
+### 1.9 BotPenguin (chat widget)
+- **Operator:** Botpenguin Inc. — script served from `cdn.botpenguin.com`. Company is US-incorporated with engineering footprint in India; confirm with their DPA which entity is the data controller for EU visitors.
+- **Widget IDs in use:** `6a14160e9023bca2877cf724`, `6a14135edd1338ee4740a229`.
+- **Where in code:** loader in `src/lib/consent.ts` (`enableBotPenguin` / `disableBotPenguin`); UI auto-positions bottom-right.
+- **Data transmitted:** on widget load — visitor IP, browser user agent, page URL. During chat — message content, any contact details the visitor types in (name, email, phone), conversation state.
+- **Purpose:** real-time visitor support / pre-sales chat.
+- **Likely legal basis:** consent — Art. 6(1)(a) GDPR + § 25(1) TTDSG. For any transfer to US / India: Art. 49(1)(a) GDPR (explicit informed consent).
+- **Third-country transfer:** yes (US / India likely). Need to obtain and store BotPenguin's standard DPA + verify their certifications.
+- **Cookies set:** chat widgets typically set `botpenguin_*` first-party cookies and may use localStorage for conversation state.
+- **Consent-gated?** Yes — added as a third toggle category ("Chat / Kommunikation") in the cookie banner alongside Analytics and Marketing. Storage key bumped `immob24_consent_v1` → `_v2` so existing visitors are re-prompted.
+- **Action needed:** request BotPenguin's official DPA; confirm whether transcripts are retained or only buffered; document retention in the privacy policy when the entity is registered.
+
+### 1.10 Mail to kontakt@immob24.de
 - **Where:** footer + "Privacy / Imprint" placeholder text — `mailto:kontakt@immob24.de`.
 - **What this does:** opens the visitor's local email client. No third party involved in the mailto itself.
 - **Downstream processor:** wherever this mailbox is hosted (Google Workspace? Microsoft 365? IONOS? — **needs confirmation from you**) sees the email content + sender's email address.
@@ -104,6 +116,7 @@ legal basis" are flags for review, not advice.
 | `_ga_<container>` | google-analytics.com | analytics | session state for GA4 | 2 years | **Yes** — only after Analytics consent |
 | `_fbp` | first-party (set by Meta Pixel) | marketing | tracks ad-click attribution | 3 months | **Yes** — only after Marketing consent |
 | `fr` | facebook.com | marketing | Meta's own user-tracking cookie (set by Meta if Pixel loads and user is logged into FB) | 90 days | **Yes** — only after Marketing consent |
+| `botpenguin_*` | first-party (set by BotPenguin) | chat | Chat widget session and conversation state | session / up to 1 year | **Yes** — only after Chat consent |
 
 ---
 
@@ -137,7 +150,7 @@ legal basis" are flags for review, not advice.
 - No comments, ratings, or user-generated content.
 - No social media share buttons that load third-party scripts (only the LinkedIn URL in structured data — see 1.7).
 - No embedded YouTube / Vimeo / TikTok / Instagram content.
-- No chat widget, no live-chat tool, no chatbot.
+- ~~No chat widget~~ — BotPenguin chat widget added; see section 1.9. Consent-gated.
 - No A/B testing tool (no Optimizely, no VWO, no Google Optimize).
 - No heatmap tool (no Hotjar, no Microsoft Clarity).
 - No error tracking (no Sentry).

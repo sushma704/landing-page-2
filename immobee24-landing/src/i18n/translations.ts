@@ -1224,6 +1224,14 @@ export const translations = {
       de: 'Meta Pixel (Meta Platforms Ireland Ltd.) misst die Wirksamkeit unserer Kampagnen. Hierbei werden Daten an Meta in den USA übertragen. Rechtsgrundlage: Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TTDSG, Art. 49 Abs. 1 lit. a DSGVO für die Drittlandübermittlung).',
       en: 'Meta Pixel (Meta Platforms Ireland Ltd.) measures the effectiveness of our campaigns. This involves transferring data to Meta in the US. Legal basis: consent (Art. 6(1)(a) GDPR, §25(1) TTDSG, Art. 49(1)(a) GDPR for the third-country transfer).',
     },
+    categoryChatName: {
+      de: 'Chat / Kommunikation',
+      en: 'Chat / Communication',
+    },
+    categoryChatDesc: {
+      de: 'BotPenguin (Botpenguin Inc.) stellt unseren Chat-Assistenten auf der Website bereit. Beim Laden des Widgets wird Ihre IP-Adresse an BotPenguin übermittelt; während der Nutzung werden die Inhalte der Konversation verarbeitet. Eine Übermittlung an Server außerhalb der EU kann stattfinden. Rechtsgrundlage: Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TTDSG).',
+      en: 'BotPenguin (Botpenguin Inc.) powers the chat assistant on this site. Loading the widget transmits your IP address to BotPenguin; during use, the chat content is processed. Transfer to servers outside the EU may occur. Legal basis: consent (Art. 6(1)(a) GDPR, §25(1) TTDSG).',
+    },
     on: {
       de: 'An',
       en: 'On',

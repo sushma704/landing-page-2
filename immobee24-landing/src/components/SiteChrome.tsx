@@ -31,18 +31,20 @@ export const Wordmark = ({ variant = 'dark' }: { variant?: 'dark' | 'light' }) =
   const { pathname } = useLocation();
   const homePath = pathFor('home', language);
   const isHome = pathname === homePath || pathname === '/';
-  const wrapperClass = 'inline-flex flex-col items-center leading-tight';
+  const wrapperClass = 'inline-flex flex-col items-start leading-tight';
+  // The logo PNG is the brand mark. width/height are set explicitly so the
+  // header doesn't reflow while the image loads (avoids CLS).
   const inner = (
     <>
+      <img
+        src="/immob24-wordmark.png"
+        alt="immob24"
+        width={148}
+        height={40}
+        className="h-10 w-auto"
+      />
       <span
-        className={`font-heading font-bold text-2xl tracking-tight ${
-          variant === 'light' ? 'text-white' : 'text-charcoal'
-        }`}
-      >
-        Immob<span className="text-golden">24</span>
-      </span>
-      <span
-        className={`hidden sm:block mt-1 text-[9px] font-medium uppercase tracking-[0.12em] whitespace-nowrap text-center ${
+        className={`hidden sm:block mt-1 text-[9px] font-medium uppercase tracking-[0.12em] whitespace-nowrap ${
           variant === 'light' ? 'text-white/60' : 'text-slate'
         }`}
       >
@@ -51,11 +53,11 @@ export const Wordmark = ({ variant = 'dark' }: { variant?: 'dark' | 'light' }) =
     </>
   );
   return isHome ? (
-    <a href="#top" className={wrapperClass} aria-label="Immob24">
+    <a href="#top" className={wrapperClass} aria-label="immob24">
       {inner}
     </a>
   ) : (
-    <Link to={homePath} className={wrapperClass} aria-label="Immob24">
+    <Link to={homePath} className={wrapperClass} aria-label="immob24">
       {inner}
     </Link>
   );

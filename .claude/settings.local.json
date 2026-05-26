@@ -8,7 +8,10 @@
       "Read(//Users/chandana/.ssh/**)",
       "Bash(ssh:*)",
       "Bash(curl -s -o /dev/null -w \"Page  HTTP %{http_code}\\\\n\" https://immob24.com/beta-agents-program/)",
-      "Bash(curl -s https://immob24.com/beta-agents-program/)"
+      "Bash(curl -s https://immob24.com/beta-agents-program/)",
+      "Bash(curl *)",
+      "Bash(./node_modules/.bin/vite build *)",
+      "Bash(./node_modules/.bin/vite preview *)"
     ]
   }
 }

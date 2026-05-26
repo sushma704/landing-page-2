@@ -1,8 +1,235 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Pre-launch lockdown: empty by design.
-  A fetched empty sitemap is a stronger "drop these URLs" signal to Search
-  Console than a 404. Restore the URL list when re-opening the site.
+  Sitemap for immob24.com.
+
+  IMPORTANT (2026-05-26): The site is still under pre-launch lockdown —
+  robots.txt has `Disallow: /` and every page emits `<meta robots:
+  noindex, nofollow>`. Google will fetch this sitemap but will NOT index
+  any of the URLs below until the lockdown is lifted. Listing them here
+  now is intentional (so the file is launch-ready); expect "Submitted URL
+  marked 'noindex'" notices in Search Console until you flip robots.txt
+  and remove the meta tag.
 -->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml"
+>
+
+  <!-- Home -->
+  <url>
+    <loc>https://immob24.com/de</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de" />
+  </url>
+
+  <!-- Product -->
+  <url>
+    <loc>https://immob24.com/de/produkt</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/produkt" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/product" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/produkt" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en/product</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/produkt" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/product" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/produkt" />
+  </url>
+
+  <!-- How it works -->
+  <url>
+    <loc>https://immob24.com/de/how-it-works</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/how-it-works" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/how-it-works" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/how-it-works" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en/how-it-works</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/how-it-works" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/how-it-works" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/how-it-works" />
+  </url>
+
+  <!-- CRM alternative -->
+  <url>
+    <loc>https://immob24.com/de/immobilien-crm-alternative</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/immobilien-crm-alternative" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/real-estate-crm-alternative" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/immobilien-crm-alternative" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en/real-estate-crm-alternative</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/immobilien-crm-alternative" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/real-estate-crm-alternative" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/immobilien-crm-alternative" />
+  </url>
+
+  <!-- Pricing -->
+  <url>
+    <loc>https://immob24.com/de/preise</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/preise" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/pricing" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/preise" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en/pricing</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/preise" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/pricing" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/preise" />
+  </url>
+
+  <!-- Demo -->
+  <url>
+    <loc>https://immob24.com/de/demo</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/demo" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/demo" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/demo" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en/demo</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/demo" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/demo" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/demo" />
+  </url>
+
+  <!-- Beta agent program -->
+  <url>
+    <loc>https://immob24.com/de/beta-agentenprogramm</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/beta-agentenprogramm" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/beta-agent-program" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/beta-agentenprogramm" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en/beta-agent-program</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/beta-agentenprogramm" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/beta-agent-program" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/beta-agentenprogramm" />
+  </url>
+
+  <!-- SEO landing pages — city + topic, DE+EN pairs -->
+  <url>
+    <loc>https://immob24.com/de/maklersoftware/muenchen</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/maklersoftware/muenchen" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/real-estate-agent-software/munich" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/maklersoftware/muenchen" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en/real-estate-agent-software/munich</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/maklersoftware/muenchen" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/real-estate-agent-software/munich" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/maklersoftware/muenchen" />
+  </url>
+
+  <url>
+    <loc>https://immob24.com/de/maklersoftware/berlin</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/maklersoftware/berlin" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/real-estate-agent-software/berlin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/maklersoftware/berlin" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en/real-estate-agent-software/berlin</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/maklersoftware/berlin" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/real-estate-agent-software/berlin" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/maklersoftware/berlin" />
+  </url>
+
+  <url>
+    <loc>https://immob24.com/de/maklersoftware/hamburg</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/maklersoftware/hamburg" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/real-estate-agent-software/hamburg" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/maklersoftware/hamburg" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en/real-estate-agent-software/hamburg</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/maklersoftware/hamburg" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/real-estate-agent-software/hamburg" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/maklersoftware/hamburg" />
+  </url>
+
+  <url>
+    <loc>https://immob24.com/de/ki-fuer-immobilienmakler</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/ki-fuer-immobilienmakler" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/ai-for-real-estate-agents" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/ki-fuer-immobilienmakler" />
+  </url>
+  <url>
+    <loc>https://immob24.com/en/ai-for-real-estate-agents</loc>
+    <lastmod>2026-05-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="de" href="https://immob24.com/de/ki-fuer-immobilienmakler" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://immob24.com/en/ai-for-real-estate-agents" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://immob24.com/de/ki-fuer-immobilienmakler" />
+  </url>
+
 </urlset>

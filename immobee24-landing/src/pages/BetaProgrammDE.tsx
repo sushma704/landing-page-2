@@ -11,8 +11,13 @@ import {
   Users,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
+import { Header, Footer } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
+
+// External Tally form for beta sign-ups. Both "Apply for the beta" CTAs on
+// this page open this URL in a new tab instead of the generic Cal.com demo
+// link, because beta applications are a higher-intent flow with its own form.
+const BETA_APPLY_URL = 'https://tally.so/r/ja5bzJ';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
 import { useJsonLd } from '../lib/useJsonLd';
@@ -99,15 +104,16 @@ const Hero = () => {
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-            <button
-              type="button"
-              {...DEMO_CTA_PROPS}
+            <a
+              href={BETA_APPLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => trackEvent('beta_hero_primary_cta_click')}
               className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
             >
               {asString(t('betaProgram.hero.primaryCta'))}
               <ArrowRight className="h-4 w-4" />
-            </button>
+            </a>
             <a
               href="#pilot"
               className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
@@ -353,15 +359,16 @@ const FinalCTA = () => {
           </p>
 
           <div className="mt-8 flex flex-col items-center gap-3">
-            <button
-              type="button"
-              {...DEMO_CTA_PROPS}
+            <a
+              href={BETA_APPLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => trackEvent('beta_final_cta_click')}
               className="inline-flex items-center gap-2 rounded-full bg-gradient-golden text-white px-7 py-3.5 font-semibold shadow-golden hover:opacity-95 transition-opacity"
             >
               {asString(t('betaProgram.finalCta.cta'))}
               <ArrowRight className="h-4 w-4" />
-            </button>
+            </a>
           </div>
 
           <p className="mt-6 text-sm text-slate">

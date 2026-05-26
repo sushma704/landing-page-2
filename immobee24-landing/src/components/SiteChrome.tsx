@@ -32,12 +32,16 @@ export const Wordmark = ({ variant = 'dark' }: { variant?: 'dark' | 'light' }) =
   const homePath = pathFor('home', language);
   const isHome = pathname === homePath || pathname === '/';
   const wrapperClass = 'inline-flex flex-col items-start leading-tight';
-  // The logo PNG is the brand mark. width/height are set explicitly so the
-  // header doesn't reflow while the image loads (avoids CLS).
+  // Two PNGs: `dark` (teal "immob" + orange "24") for the white header,
+  // `light` (white "immob" + orange "24") for the charcoal footer. The
+  // width/height are set explicitly so the surrounding chrome doesn't reflow
+  // while the image loads (avoids CLS).
+  const logoSrc =
+    variant === 'light' ? '/immob24-wordmark-white.png' : '/immob24-wordmark.png';
   const inner = (
     <>
       <img
-        src="/immob24-wordmark.png"
+        src={logoSrc}
         alt="immob24"
         width={148}
         height={40}

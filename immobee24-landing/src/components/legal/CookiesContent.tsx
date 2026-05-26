@@ -40,7 +40,7 @@ export const CookiesContent = () => {
           </thead>
           <tbody className="text-slate">
             <tr className="border-b border-charcoal/5 align-top">
-              <td className="py-2 pr-3 font-mono">immob24_consent_v1</td>
+              <td className="py-2 pr-3 font-mono">immob24_consent_v3</td>
               <td className="py-2 pr-3">{isDe ? 'Erstanbieter' : 'First-party'}</td>
               <td className="py-2 pr-3">
                 {isDe
@@ -88,7 +88,7 @@ export const CookiesContent = () => {
               <td className="py-2 pr-3">90 {isDe ? 'Tage' : 'days'}</td>
               <td className="py-2">{isDe ? 'Marketing' : 'Marketing'}</td>
             </tr>
-            <tr className="align-top">
+            <tr className="border-b border-charcoal/5 align-top">
               <td className="py-2 pr-3 font-mono">botpenguin_*</td>
               <td className="py-2 pr-3">Botpenguin Inc.</td>
               <td className="py-2 pr-3">
@@ -100,6 +100,21 @@ export const CookiesContent = () => {
                 {isDe ? 'Sitzung / bis 1 Jahr' : 'Session / up to 1 year'}
               </td>
               <td className="py-2">{isDe ? 'Chat' : 'Chat'}</td>
+            </tr>
+            <tr className="align-top">
+              <td className="py-2 pr-3 font-mono">reb2b_*</td>
+              <td className="py-2 pr-3">Retention.com, Inc. (RB2B)</td>
+              <td className="py-2 pr-3">
+                {isDe
+                  ? 'Besucher-Identifikation (nur Startseite /de und /en)'
+                  : 'Visitor identification (only home pages /de and /en)'}
+              </td>
+              <td className="py-2 pr-3">
+                {isDe ? 'Bis zu 1 Jahr' : 'Up to 1 year'}
+              </td>
+              <td className="py-2">
+                {isDe ? 'Besucher-Identifikation' : 'Identification'}
+              </td>
             </tr>
           </tbody>
         </table>
@@ -144,8 +159,8 @@ export const CookiesContent = () => {
       </h4>
       <p>
         {isDe
-          ? 'Details zu den eingesetzten Diensten (Google Analytics, Meta Pixel, BotPenguin) und zu den damit verbundenen Datenübermittlungen finden Sie in unserer Datenschutzerklärung.'
-          : 'Details on the services used (Google Analytics, Meta Pixel, BotPenguin) and the related data transfers are in our Privacy Policy.'}
+          ? 'Details zu den eingesetzten Diensten (Google Analytics, Meta Pixel, BotPenguin, RB2B) und zu den damit verbundenen Datenübermittlungen finden Sie in unserer Datenschutzerklärung.'
+          : 'Details on the services used (Google Analytics, Meta Pixel, BotPenguin, RB2B) and the related data transfers are in our Privacy Policy.'}
       </p>
     </>
   );

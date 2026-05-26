@@ -1,27 +1,35 @@
 // Cookie consent state + deferred tracker loading.
 //
-// Tracking scripts (Google Analytics, Meta Pixel, BotPenguin chat) are NOT
-// loaded by index.html. They are injected here only after the visitor
-// consents to the matching category. This is what makes the site
-// TTDSG §25 / GDPR Art. 6/7 compliant.
+// Tracking scripts (Google Analytics, Meta Pixel, BotPenguin chat, RB2B
+// visitor identification) are NOT loaded by index.html. They are injected
+// here only after the visitor consents to the matching category. This is
+// what makes the site TTDSG §25 / GDPR Art. 6/7 compliant.
 //
-// Storage shape (localStorage key `immob24_consent_v2`):
-//   { analytics: bool, marketing: bool, chat: bool, decidedAt: ISO8601 }
+// Storage shape (localStorage key `immob24_consent_v3`):
+//   { analytics: bool, marketing: bool, chat: bool, identification: bool,
+//     decidedAt: ISO8601 }
 //
 // If the schema or category set ever changes, bump STORAGE_KEY's version
 // suffix — the banner will then re-prompt all returning visitors. v2 added
-// the `chat` category (BotPenguin widget) so v1 visitors get re-prompted.
+// the `chat` category (BotPenguin widget); v3 added `identification` (RB2B).
+//
+// Note: `identification` is loaded ONLY on the DE and EN home pages — the
+// HomePage component owns calling enableReb2b/disableReb2b. applyConsent
+// below intentionally does not touch RB2B so it never runs on other routes.
 
-const STORAGE_KEY = 'immob24_consent_v2';
+const STORAGE_KEY = 'immob24_consent_v3';
 const GA_ID = 'G-MQKZ3EHWR9';
 const META_PIXEL_ID = '26806117632348430';
 const BOTPENGUIN_SRC = 'https://cdn.botpenguin.com/website-bot.js';
 const BOTPENGUIN_IDS = '6a14160e9023bca2877cf724,6a14135edd1338ee4740a229';
+const REB2B_KEY = '0OV0VHYVYJ6Z';
+const REB2B_SCRIPT_ID = 'immob24-reb2b';
 
 export type ConsentCategories = {
   analytics: boolean;
   marketing: boolean;
   chat: boolean;
+  identification: boolean;
 };
 
 export type StoredConsent = ConsentCategories & {
@@ -36,6 +44,7 @@ const loaded = {
   ga: false,
   meta: false,
   chat: false,
+  reb2b: false,
 };
 
 export function readConsent(): StoredConsent | null {
@@ -47,7 +56,8 @@ export function readConsent(): StoredConsent | null {
     if (
       typeof parsed.analytics !== 'boolean' ||
       typeof parsed.marketing !== 'boolean' ||
-      typeof parsed.chat !== 'boolean'
+      typeof parsed.chat !== 'boolean' ||
+      typeof parsed.identification !== 'boolean'
     ) {
       return null;
     }
@@ -66,6 +76,7 @@ export function saveConsent(cats: ConsentCategories): void {
     analytics: cats.analytics,
     marketing: cats.marketing,
     chat: cats.chat,
+    identification: cats.identification,
     decidedAt: new Date().toISOString(),
   };
   try {
@@ -230,4 +241,47 @@ function disableBotPenguin(): void {
     .forEach((el) => {
       if (el.id !== 'messenger-widget-b') el.remove();
     });
+}
+
+// ----- RB2B (visitor identification) ---------------------------------------
+//
+// RB2B fingerprints the visitor and attempts a person-level match (LinkedIn /
+// work-email level identification). It is loaded ONLY on the DE+EN home pages
+// (gated by HomePage.tsx) AND only after explicit `identification` consent.
+//
+// There is no documented RB2B teardown API. Once the snippet has executed it
+// cannot un-send a fingerprint that already left the browser — but we can
+// stop *future* loads by removing the script tag and the `window.reb2b`
+// guard, which matches how we handle GA / Meta revoke.
+
+export function enableReb2b(): void {
+  if (loaded.reb2b) return;
+  if (document.getElementById(REB2B_SCRIPT_ID)) {
+    loaded.reb2b = true;
+    return;
+  }
+  loaded.reb2b = true;
+
+  const w = window as unknown as { reb2b?: { loaded: boolean } };
+  if (w.reb2b) return;
+  w.reb2b = { loaded: true };
+
+  const s = document.createElement('script');
+  s.id = REB2B_SCRIPT_ID;
+  s.async = true;
+  s.src = `https://ddwl4m2hdecbv.cloudfront.net/b/${REB2B_KEY}/${REB2B_KEY}.js.gz`;
+  const first = document.getElementsByTagName('script')[0];
+  if (first?.parentNode) {
+    first.parentNode.insertBefore(s, first);
+  } else {
+    document.head.appendChild(s);
+  }
+}
+
+export function disableReb2b(): void {
+  if (!loaded.reb2b) return;
+  loaded.reb2b = false;
+  document.getElementById(REB2B_SCRIPT_ID)?.remove();
+  // Drop the global guard so a future re-grant can re-init cleanly.
+  delete (window as unknown as { reb2b?: unknown }).reb2b;
 }

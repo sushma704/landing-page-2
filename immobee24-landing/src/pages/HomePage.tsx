@@ -15,6 +15,7 @@ import {
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../i18n';
 import { trackEvent } from '../lib/analytics';
+import { disableReb2b, enableReb2b, readConsent, subscribe } from '../lib/consent';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
 import { useJsonLd } from '../lib/useJsonLd';
@@ -587,6 +588,22 @@ export default function HomePage() {
   });
   useFaqSchema(asFaqArray(t('faq.items')), language, 'home');
   useJsonLd([organizationSchema()], 'home');
+
+  // RB2B visitor identification is scoped to the home page only (DE + EN) and
+  // gated by the `identification` consent category. Subscribing here so a
+  // mid-session toggle in the cookie settings loads/unloads the script live.
+  // Cleanup also unloads on navigation away from the home page.
+  useEffect(() => {
+    if (readConsent()?.identification) enableReb2b();
+    const unsubscribe = subscribe((state) => {
+      if (state?.identification) enableReb2b();
+      else disableReb2b();
+    });
+    return () => {
+      unsubscribe();
+      disableReb2b();
+    };
+  }, []);
 
   const sections = [
     Hero,

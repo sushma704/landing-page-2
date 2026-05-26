@@ -1173,8 +1173,8 @@ export const translations = {
       en: 'Cookies & privacy',
     },
     bannerBody: {
-      de: 'Wir setzen technisch notwendige Cookies ein, damit diese Website funktioniert. Mit Ihrer Einwilligung nutzen wir zusätzlich Analyse- und Marketing-Cookies (z. B. Google Analytics, Meta Pixel), um die Nutzung zu verstehen und unsere Inhalte zu verbessern. Sie können Ihre Auswahl jederzeit unter „Cookie-Einstellungen" anpassen.',
-      en: 'We use strictly necessary cookies to make this website work. With your consent we also use analytics and marketing cookies (e.g. Google Analytics, Meta Pixel) to understand usage and improve our content. You can change your choice at any time via "Cookie Settings".',
+      de: 'Wir setzen technisch notwendige Cookies ein, damit diese Website funktioniert. Mit Ihrer Einwilligung nutzen wir zusätzlich Analyse-, Marketing- und Identifikations-Tools (z. B. Google Analytics, Meta Pixel, RB2B), um die Nutzung zu verstehen und unsere Inhalte zu verbessern. Sie können Ihre Auswahl jederzeit unter „Cookie-Einstellungen" anpassen.',
+      en: 'We use strictly necessary cookies to make this website work. With your consent we also use analytics, marketing and visitor-identification tools (e.g. Google Analytics, Meta Pixel, RB2B) to understand usage and improve our content. You can change your choice at any time via "Cookie Settings".',
     },
     acceptAll: {
       de: 'Alle akzeptieren',
@@ -1231,6 +1231,14 @@ export const translations = {
     categoryChatDesc: {
       de: 'BotPenguin (Botpenguin Inc.) stellt unseren Chat-Assistenten auf der Website bereit. Beim Laden des Widgets wird Ihre IP-Adresse an BotPenguin übermittelt; während der Nutzung werden die Inhalte der Konversation verarbeitet. Eine Übermittlung an Server außerhalb der EU kann stattfinden. Rechtsgrundlage: Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TTDSG).',
       en: 'BotPenguin (Botpenguin Inc.) powers the chat assistant on this site. Loading the widget transmits your IP address to BotPenguin; during use, the chat content is processed. Transfer to servers outside the EU may occur. Legal basis: consent (Art. 6(1)(a) GDPR, §25(1) TTDSG).',
+    },
+    categoryIdentificationName: {
+      de: 'Besucher-Identifikation',
+      en: 'Visitor identification',
+    },
+    categoryIdentificationDesc: {
+      de: 'RB2B (Retention.com, Inc., USA) versucht, Besucherinnen und Besucher unserer Startseite anhand technischer Merkmale (IP-Adresse, Browser-Fingerprint, Referrer) auf Personenebene zu identifizieren (Name, Unternehmen, Position, ggf. LinkedIn- oder geschäftliche E-Mail-Adresse). Hierbei werden Daten in die USA übertragen. Rechtsgrundlage: Einwilligung (Art. 6 Abs. 1 lit. a DSGVO, § 25 Abs. 1 TTDSG, Art. 49 Abs. 1 lit. a DSGVO für die Drittlandsübermittlung). Dieses Tool wird ausschließlich auf der deutschen und englischen Startseite geladen.',
+      en: 'RB2B (Retention.com, Inc., USA) attempts to identify visitors to our home page at the person level — name, company, role, and where available LinkedIn URL or work e-mail — based on technical signals (IP address, browser fingerprint, referrer). Data is transferred to the USA. Legal basis: consent (Art. 6(1)(a) GDPR, §25(1) TTDSG, Art. 49(1)(a) GDPR for the third-country transfer). This tool is loaded only on the German and English home pages.',
     },
     on: {
       de: 'An',

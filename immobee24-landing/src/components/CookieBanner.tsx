@@ -29,6 +29,7 @@ export const CookieBanner = () => {
   const [analytics, setAnalytics] = useState(false);
   const [marketing, setMarketing] = useState(false);
   const [chat, setChat] = useState(false);
+  const [identification, setIdentification] = useState(false);
 
   // First-visit gate: show the banner only if no prior decision exists.
   // SSR safety: localStorage access deferred to a post-mount effect.
@@ -38,6 +39,7 @@ export const CookieBanner = () => {
       setAnalytics(stored.analytics);
       setMarketing(stored.marketing);
       setChat(stored.chat);
+      setIdentification(stored.identification);
     }
     if (!hasDecided()) setView('banner');
   }, []);
@@ -50,6 +52,7 @@ export const CookieBanner = () => {
       setAnalytics(stored?.analytics ?? false);
       setMarketing(stored?.marketing ?? false);
       setChat(stored?.chat ?? false);
+      setIdentification(stored?.identification ?? false);
       setView('settings');
     };
     window.addEventListener(OPEN_EVENT, onOpen);
@@ -77,12 +80,15 @@ export const CookieBanner = () => {
     setAnalytics(cats.analytics);
     setMarketing(cats.marketing);
     setChat(cats.chat);
+    setIdentification(cats.identification);
     setView('hidden');
   };
 
-  const acceptAll = () => apply({ analytics: true, marketing: true, chat: true });
-  const rejectAll = () => apply({ analytics: false, marketing: false, chat: false });
-  const saveSelection = () => apply({ analytics, marketing, chat });
+  const acceptAll = () =>
+    apply({ analytics: true, marketing: true, chat: true, identification: true });
+  const rejectAll = () =>
+    apply({ analytics: false, marketing: false, chat: false, identification: false });
+  const saveSelection = () => apply({ analytics, marketing, chat, identification });
 
   if (view === 'hidden') return null;
 
@@ -180,6 +186,14 @@ export const CookieBanner = () => {
                 description={tr('categoryChatDesc')}
                 value={chat}
                 onChange={setChat}
+                onLabel={tr('on')}
+                offLabel={tr('off')}
+              />
+              <CategoryRow
+                name={tr('categoryIdentificationName')}
+                description={tr('categoryIdentificationDesc')}
+                value={identification}
+                onChange={setIdentification}
                 onLabel={tr('on')}
                 offLabel={tr('off')}
               />

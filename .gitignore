@@ -5,3 +5,8 @@ dist/
 .env
 .env.local
 .vite/
+
+# Per-developer Claude Code tool-permission allowlist.
+# Keep .claude/settings.json tracked if it ever exists (shared config), but
+# the .local variant is machine-specific.
+.claude/settings.local.json

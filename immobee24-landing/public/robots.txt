@@ -1,6 +1,18 @@
-# Pre-launch lockdown.
-# The site is not yet ready for public indexing — see the noindex meta tag in
-# index.html and the empty sitemap.xml. Re-open this together with those when
-# the operating entity is registered.
+# Pre-launch state: noindex-only lockdown.
+#
+# robots.txt allows crawling; every page emits
+# <meta name="robots" content="noindex, nofollow"> via index.html, which
+# is the correct signal during pre-launch. Allowing crawls means Googlebot
+# can actually fetch the pages and SEE the noindex tag — a Disallow rule
+# would block fetching and Google would never know about the noindex,
+# leaving the door open to "indexed but blocked by robots.txt" warnings.
+#
+# When the entity is registered and we're ready to launch:
+#   1. Remove the <meta robots: noindex> tag from index.html
+#   2. Bump <lastmod> in sitemap.xml so Google rechecks
+#   3. Resubmit the sitemap in Search Console
+
 User-agent: *
-Disallow: /
+Allow: /
+
+Sitemap: https://immob24.com/sitemap.xml

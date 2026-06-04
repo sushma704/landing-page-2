@@ -6,6 +6,7 @@ import { DEMO_BOOKING_URL } from './components/SiteChrome';
 import HomePage from './pages/HomePage';
 import ProduktDE from './pages/ProduktDE';
 import BetaProgrammDE from './pages/BetaProgrammDE';
+import BetaThankYou from './pages/BetaThankYou';
 import HowItWorksDE from './pages/HowItWorksDE';
 import DemoDE from './pages/DemoDE';
 import CrmAlternativeDE from './pages/CrmAlternativeDE';
@@ -60,6 +61,15 @@ export default function App() {
 
         <Route path="/de/beta-agentenprogramm" element={<BetaProgrammDE />} />
         <Route path="/en/beta-agent-program" element={<BetaProgrammDE />} />
+
+        {/*
+          Tally redirects successful beta applicants here. The page fires
+          fbq('track', 'Lead') on mount so Meta Ads records the conversion
+          (when marketing consent has been given). NOT in sitemap.xml —
+          post-conversion only, never search-discoverable.
+        */}
+        <Route path="/de/beta-bewerbung-erfolgreich" element={<BetaThankYou />} />
+        <Route path="/en/beta-application-success" element={<BetaThankYou />} />
 
         {/*
           SEO landing pages — DE-only, currently noindex'd. They live at

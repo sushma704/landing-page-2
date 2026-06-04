@@ -5,19 +5,27 @@
 // here only after the visitor consents to the matching category. This is
 // what makes the site TTDSG §25 / GDPR Art. 6/7 compliant.
 //
-// Storage shape (localStorage key `immob24_consent_v3`):
+// Storage shape (localStorage key `immob24_consent_v4`):
 //   { analytics: bool, marketing: bool, chat: bool, identification: bool,
 //     decidedAt: ISO8601 }
 //
-// If the schema or category set ever changes, bump STORAGE_KEY's version
-// suffix — the banner will then re-prompt all returning visitors. v2 added
-// the `chat` category (BotPenguin widget); v3 added `identification` (RB2B).
+// If the schema or category set ever changes — OR the disclosure wording
+// for an existing category changes materially — bump STORAGE_KEY's version
+// suffix so the banner re-prompts all returning visitors under the new
+// text. History:
+//   v1 — analytics, marketing
+//   v2 — added `chat` (BotPenguin widget)
+//   v3 — added `identification` (RB2B)
+//   v4 — RB2B disclosure tightened pre-launch (full registered address,
+//        data-graph source, transfer-mechanism details). Existing v3
+//        consents are re-prompted so visitors see the stronger wording
+//        before continuing to be tracked.
 //
 // Note: `identification` is loaded ONLY on the DE and EN home pages — the
 // HomePage component owns calling enableReb2b/disableReb2b. applyConsent
 // below intentionally does not touch RB2B so it never runs on other routes.
 
-const STORAGE_KEY = 'immob24_consent_v3';
+const STORAGE_KEY = 'immob24_consent_v4';
 const GA_ID = 'G-MQKZ3EHWR9';
 const META_PIXEL_ID = '26806117632348430';
 const BOTPENGUIN_SRC = 'https://cdn.botpenguin.com/website-bot.js';

@@ -146,19 +146,63 @@ const PolicyDe = () => (
     <h4 className="font-semibold text-charcoal pt-4">10. Besucher-Identifikation (RB2B)</h4>
     <p>
       Ausschließlich auf unserer deutschen und englischen Startseite
-      (<code className="text-xs">/de</code> und <code className="text-xs">/en</code>)
-      laden wir nach Ihrer Einwilligung den Dienst RB2B (Anbieter:
-      Retention.com, Inc., USA). RB2B versucht, Besucherinnen und Besucher
-      anhand technischer Merkmale (insbesondere IP-Adresse, Browser-Fingerprint
-      und Referrer) auf Personenebene zu identifizieren und Angaben wie Name,
-      Unternehmen, Position und – soweit verfügbar – LinkedIn-Profil oder
-      geschäftliche E-Mail-Adresse zuzuordnen. Die hierfür erforderlichen
-      Daten werden an Server von RB2B in den USA übermittelt. Rechtsgrundlage:
-      Ihre Einwilligung (Art. 6 Abs. 1 lit. a DSGVO i. V. m. § 25 Abs. 1
-      TTDSG; für die Drittlandsübermittlung zusätzlich Art. 49 Abs. 1 lit. a
-      DSGVO). Sie können Ihre Einwilligung jederzeit über die
-      Cookie-Einstellungen widerrufen – danach wird das Skript nicht mehr
-      geladen.
+      (<code className="text-xs">/de</code> und <code className="text-xs">/en</code>),
+      und nur nach Ihrer ausdrücklichen Einwilligung im Cookie-Banner unter
+      „Besucher-Identifikation", laden wir den Dienst RB2B des US-Anbieters{' '}
+      <strong>Retention.com, Inc.</strong> (600 Congress Ave, 14th Floor,
+      Austin, TX 78701, USA). RB2B führt eine Identifizierung auf
+      Personenebene durch.
+    </p>
+    <p className="rounded bg-cream px-3 py-2 text-charcoal/80 text-xs">
+      <strong>Datenkategorien.</strong> Beim Laden werden technische Merkmale
+      Ihres Browsers an RB2B übermittelt: IP-Adresse, Browser-Fingerprint
+      (User-Agent, Bildschirmauflösung, installierte Schriftarten, Sprache,
+      Zeitzone) und Referrer-URL.
+      <br />
+      <strong>Identifizierungsverfahren.</strong> RB2B gleicht diese Merkmale
+      mit einer eigenen Datenbank ab, die u. a. aus öffentlich zugänglichen
+      LinkedIn-Profildaten und weiteren B2B-Quellen aufgebaut wurde. Bei einem
+      Treffer werden Name, Unternehmen, Berufsbezeichnung, LinkedIn-Profil-URL
+      und ggf. geschäftliche E-Mail-Adresse zugeordnet.
+      <br />
+      <strong>Verwendungszweck.</strong> Wir nutzen die identifizierten
+      Angaben ausschließlich, um relevante Unternehmen zu erkennen, die sich
+      für unsere Lösung interessieren, und gezielt mit ihnen in Kontakt zu
+      treten. Es findet kein automatisiertes Profiling mit rechtlicher
+      Wirkung im Sinne von Art. 22 DSGVO statt.
+      <br />
+      <strong>Drittlandsübermittlung.</strong> Die Verarbeitung erfolgt
+      vollständig in den USA. Rechtsgrundlage für die Übermittlung ist
+      Ihre ausdrückliche Einwilligung gemäß Art. 49 Abs. 1 lit. a DSGVO.
+      Sollte Retention.com unter dem EU-US Data Privacy Framework
+      zertifiziert sein, gilt zusätzlich der Angemessenheitsbeschluss vom
+      10. Juli 2023; der aktuelle Zertifizierungsstand wird hier ergänzt,
+      sobald uns die schriftliche Bestätigung von Retention.com vorliegt.
+      <br />
+      <strong>Auftragsverarbeitung.</strong> Mit Retention.com besteht eine
+      Vereinbarung zur Auftragsverarbeitung gemäß Art. 28 DSGVO bzw. — sofern
+      Retention.com als eigenständig Verantwortliche einzustufen ist — eine
+      Vereinbarung über gemeinsame Verantwortlichkeit gemäß Art. 26 DSGVO.
+      Status: [in Klärung; wird nach Eingang der unterzeichneten Vereinbarung
+      konkretisiert].
+      <br />
+      <strong>Speicherdauer bei RB2B.</strong> [wird ergänzt, sobald uns die
+      offizielle Aufbewahrungsfrist von Retention.com schriftlich vorliegt].
+      <br />
+      <strong>Unter-Auftragsverarbeiter.</strong> [Liste wird ergänzt, sobald
+      Retention.com uns ihre aktuellen Sub-Prozessoren schriftlich
+      mitgeteilt hat].
+      <br />
+      <strong>Rechtsgrundlage gesamt.</strong> Art. 6 Abs. 1 lit. a DSGVO
+      (Einwilligung), § 25 Abs. 1 TTDSG (Einwilligung beim Zugriff auf
+      Endgeräte­informationen), Art. 49 Abs. 1 lit. a DSGVO (ausdrückliche
+      Einwilligung in die Drittlandsübermittlung).
+      <br />
+      <strong>Widerruf.</strong> Sie können diese Einwilligung jederzeit
+      über den Link „Cookie-Einstellungen" im Footer mit Wirkung für die
+      Zukunft widerrufen. Nach Widerruf wird das RB2B-Skript bei jedem
+      weiteren Seitenaufruf nicht mehr geladen; bereits an RB2B übermittelte
+      Daten können wir auf Anfrage löschen lassen (Art. 17 DSGVO).
     </p>
 
     <h4 className="font-semibold text-charcoal pt-4">11. Newsletter-Anmeldung</h4>
@@ -369,16 +413,58 @@ const PolicyEn = () => (
     <h4 className="font-semibold text-charcoal pt-4">10. Visitor identification (RB2B)</h4>
     <p>
       Only on our German and English home pages (<code className="text-xs">/de</code>{' '}
-      and <code className="text-xs">/en</code>), and only after your consent,
-      we load the RB2B service (provider: Retention.com, Inc., USA). RB2B
-      attempts to identify visitors at the person level — name, company, role
-      and, where available, LinkedIn profile or work e-mail — based on
-      technical signals such as IP address, browser fingerprint and referrer.
-      The data needed for this is transferred to RB2B servers in the USA.
-      Legal basis: your consent (Art. 6(1)(a) GDPR in conjunction with
-      § 25(1) TTDSG; Art. 49(1)(a) GDPR for the third-country transfer). You
-      can withdraw consent at any time via the cookie settings — after which
-      the script is no longer loaded.
+      and <code className="text-xs">/en</code>), and only after your explicit
+      consent via the "Visitor identification" toggle in the cookie banner,
+      we load the RB2B service operated by the US provider{' '}
+      <strong>Retention.com, Inc.</strong> (600 Congress Ave, 14th Floor,
+      Austin, TX 78701, USA). RB2B performs person-level identification.
+    </p>
+    <p className="rounded bg-cream px-3 py-2 text-charcoal/80 text-xs">
+      <strong>Data categories.</strong> On load, technical browser signals are
+      transmitted to RB2B: IP address, browser fingerprint (user agent,
+      screen resolution, installed fonts, language, time zone), and the
+      referrer URL.
+      <br />
+      <strong>Identification mechanism.</strong> RB2B matches these signals
+      against a database it operates, built among other sources from
+      publicly accessible LinkedIn profile data and other B2B sources. On a
+      match, the visitor is enriched with: full name, company, job title,
+      LinkedIn profile URL, and where available work e-mail.
+      <br />
+      <strong>Purpose.</strong> We use the identified information solely to
+      recognise relevant companies showing interest in our solution and to
+      reach out in a targeted way. No automated profiling with legal effects
+      within the meaning of Art. 22 GDPR is performed.
+      <br />
+      <strong>Third-country transfer.</strong> Processing takes place in the
+      United States. The legal basis for the transfer is your explicit
+      consent under Art. 49(1)(a) GDPR. Should Retention.com be certified
+      under the EU-US Data Privacy Framework, the adequacy decision of
+      10 July 2023 applies in addition; the current certification status
+      will be added here once Retention.com has confirmed in writing.
+      <br />
+      <strong>Data-processing agreement.</strong> A data-processing
+      agreement under Art. 28 GDPR — or, if Retention.com qualifies as an
+      independent controller, a joint-controller arrangement under
+      Art. 26 GDPR — is in place with Retention.com. Status: [pending
+      written confirmation; will be specified after the signed agreement
+      is in hand].
+      <br />
+      <strong>Retention by RB2B.</strong> [will be specified once
+      Retention.com confirms their official retention period in writing].
+      <br />
+      <strong>Sub-processors.</strong> [list will be added after
+      Retention.com discloses their current sub-processor list in writing].
+      <br />
+      <strong>Aggregate legal basis.</strong> Art. 6(1)(a) GDPR (consent),
+      § 25(1) TTDSG (consent for access to device information),
+      Art. 49(1)(a) GDPR (explicit consent to the third-country transfer).
+      <br />
+      <strong>Withdrawal.</strong> You can withdraw this consent at any
+      time, with effect for the future, via the "Cookie Settings" link in
+      the footer. After withdrawal the RB2B script will no longer load on
+      any subsequent page view; data already transmitted to RB2B can be
+      deleted on request (Art. 17 GDPR).
     </p>
 
     <h4 className="font-semibold text-charcoal pt-4">11. Newsletter sign-up</h4>

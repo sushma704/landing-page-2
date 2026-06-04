@@ -97,13 +97,88 @@ NOT yet cite a signed DPA or a declared retention period for them.
   currently disclosed under chat consent — workable, but a German alternative
   reduces Art. 49 friction.
 
-### 4.2 RB2B (Retention.com, Inc.)
-- Obtain a signed DPA.
-- Get their declared retention period.
-- Get their declared list of data sources used for the LinkedIn-style match
-  (so it can be named in the privacy policy).
-- Confirm whether they offer an EU-region option (most likely no — they're
-  a US-only product).
+### 4.2 RB2B (Retention.com, Inc.) — HARD GATE BEFORE LAUNCH
+
+The RB2B install is the most legally sensitive third-party processor on
+the site (person-level identification + US transfer + LinkedIn-derived
+data graph). The following items must all be closed *before* lifting
+the site-wide noindex and sending paid traffic to RB2B-instrumented
+pages. Until then, RB2B should remain code-deployed but only fires for
+visitors who explicitly opt in via the cookie banner.
+
+**One email to send today** — covers items 1–4 in a single ask:
+
+> Subject: Compliance documents required for EU launch — Retention.com / RB2B (account 0OV0VHYVYJ6Z)
+>
+> Hello Retention.com team,
+>
+> We have deployed RB2B on the German-targeted site immob24.com and
+> will launch publicly within the next [X] days. Before doing so we
+> need the following documents on file, as required under EU GDPR /
+> § 25 TTDSG:
+>
+> 1. **Signed Data Processing Agreement (DPA / AVV)** under Art. 28
+>    GDPR — or, if you consider Retention.com to be an independent
+>    controller, a Joint Controller Arrangement under Art. 26 GDPR.
+> 2. **EU-US Data Privacy Framework (DPF) certification status** for
+>    Retention.com, Inc., or alternatively a copy of the EU Standard
+>    Contractual Clauses (Module 2) we should sign.
+> 3. **Official data retention period** for personal data processed
+>    by RB2B (visitor fingerprints, identified contact records).
+> 4. **Current sub-processor list** with locations.
+>
+> Please also confirm whether RB2B offers an EU-region processing
+> option, and the formal mechanism by which an identified data
+> subject (or we on their behalf) can request erasure under
+> Art. 17 GDPR.
+>
+> Thank you,
+> [Name]
+
+**Items the code-side install ALREADY handles** (commit `9038c6f` and
+predecessors):
+
+- Off-by-default consent toggle with TTDSG § 25-compliant prior opt-in
+- RB2B loader gated by `identification` consent in `src/lib/consent.ts`
+- Script load scoped to `/de` and `/en` home pages only
+  (`src/pages/HomePage.tsx`) — never on inner routes
+- Granular per-category control via the cookie banner; Accept/Reject
+  buttons equally prominent
+- Disclosure block in `src/components/legal/DatenschutzContent.tsx`
+  section 10 (DE + EN) with full processor address, data categories,
+  identification mechanism, legal basis chain, and revocation
+  instructions
+- Consent storage version bumped to v4 so all existing visitors
+  re-prompt under the tightened disclosure wording
+- Immediate, full-effect revocation (script + global guard removed on
+  consent withdrawal)
+
+**Items still to fill into Datenschutz section 10 once RB2B replies:**
+
+- Replace "[in Klärung]" status on DPA/joint-controller arrangement
+  with the actual signed type
+- Replace "[wird ergänzt]" retention placeholder with RB2B's stated
+  retention period
+- Replace "[Liste wird ergänzt]" sub-processor placeholder with the
+  list received from RB2B
+- If RB2B is DPF-certified: change the transfer legal basis from
+  Art. 49(1)(a) (consent) to the DPF adequacy decision
+
+**DPIA / threshold analysis** — strongly recommended even if not
+strictly required. Either:
+- Commission a short DPIA from a privacy lawyer (~€800–1,500,
+  ~2 days), OR
+- Write a documented Schwellwertanalyse concluding that the
+  combination of strict opt-in, minimisation (home pages only), and
+  no automated Art. 22 decision-making keeps the residual risk below
+  the DPIA threshold. Keep the document on file in case a DPA asks.
+
+**Decision tree if RB2B does not reply within 7 days:**
+
+- Disable RB2B at launch by commenting out the loader in
+  `src/lib/consent.ts` (5-minute change). Launch without it. Re-enable
+  once paperwork arrives. This is the safest path and the one
+  recommended internally — see the Q&A on 2026-06-04.
 
 ### 4.3 Cal.com
 - Already named as an independent controller in section 12 of the privacy

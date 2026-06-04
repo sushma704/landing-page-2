@@ -40,7 +40,7 @@ export const CookiesContent = () => {
           </thead>
           <tbody className="text-slate">
             <tr className="border-b border-charcoal/5 align-top">
-              <td className="py-2 pr-3 font-mono">immob24_consent_v3</td>
+              <td className="py-2 pr-3 font-mono">immob24_consent_v4</td>
               <td className="py-2 pr-3">{isDe ? 'Erstanbieter' : 'First-party'}</td>
               <td className="py-2 pr-3">
                 {isDe

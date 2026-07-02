@@ -56,7 +56,13 @@ export function pageKeyFromPath(pathname: string): PageKey | null {
   return PATH_TO_KEY.get(pathname) ?? null;
 }
 
+// Pages served at a single, shared URL regardless of language (the body is
+// translated in place via the active language). The language toggle keeps the
+// visitor on the same URL rather than sending them back to the home page.
+const LANGUAGE_NEUTRAL_PATHS = new Set<string>(['/privacy']);
+
 export function alternateForLanguage(pathname: string, lang: Language): string {
+  if (LANGUAGE_NEUTRAL_PATHS.has(pathname)) return pathname;
   const key = pageKeyFromPath(pathname);
   if (key) return pathFor(key, lang);
   return PAGE_PATHS.home[lang];

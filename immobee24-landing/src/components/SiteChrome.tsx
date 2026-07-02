@@ -267,19 +267,22 @@ export const Footer = () => {
     { to: localPath('beta'), label: asString(t('betaProgram.nav')) },
   ];
 
-  const legalLinks: Array<{ key: LegalModalKey; label: string }> = [
+  // The privacy policy has its own page (/privacy) rather than a modal, so
+  // that entry carries a `to` path; the rest still open in-place modals.
+  const legalLinks: Array<{ key: LegalModalKey; label: string; to?: string }> = [
     { key: 'impressum', label: asString(t('footer.impressum')) },
-    { key: 'datenschutz', label: asString(t('footer.datenschutz')) },
+    { key: 'datenschutz', label: asString(t('footer.datenschutz')), to: '/privacy' },
     { key: 'terms', label: asString(t('footer.termsOfService')) },
     { key: 'cookies', label: asString(t('footer.cookies')) },
   ];
 
-  // Cookie Settings opens the consent panel (not a static modal), so this
-  // column carries onClick handlers instead of modal keys.
-  const settingsLinks: Array<{ label: string; onClick: () => void }> = [
+  // Cookie Settings opens the consent panel (not a static modal); Privacy
+  // links to the /privacy page. So this column mixes `to` links and onClick
+  // handlers rather than modal keys.
+  const settingsLinks: Array<{ label: string; to?: string; onClick?: () => void }> = [
     {
       label: asString(t('footer.privacy')),
-      onClick: () => setActiveModal('datenschutz'),
+      to: '/privacy',
     },
     {
       label: asString(t('footer.cookieSettings')),
@@ -356,16 +359,22 @@ export const Footer = () => {
               {asString(t('footer.legalLabel'))}
             </p>
             <nav className="mt-3 flex flex-col gap-2">
-              {legalLinks.map((l) => (
-                <button
-                  key={`legal-${l.key}-${l.label}`}
-                  type="button"
-                  onClick={() => setActiveModal(l.key)}
-                  className={linkBtnClass}
-                >
-                  {l.label}
-                </button>
-              ))}
+              {legalLinks.map((l) =>
+                l.to ? (
+                  <Link key={`legal-${l.key}-${l.label}`} to={l.to} className={linkBtnClass}>
+                    {l.label}
+                  </Link>
+                ) : (
+                  <button
+                    key={`legal-${l.key}-${l.label}`}
+                    type="button"
+                    onClick={() => setActiveModal(l.key)}
+                    className={linkBtnClass}
+                  >
+                    {l.label}
+                  </button>
+                ),
+              )}
             </nav>
           </div>
 
@@ -374,16 +383,22 @@ export const Footer = () => {
               {asString(t('footer.settingsLabel'))}
             </p>
             <nav className="mt-3 flex flex-col gap-2">
-              {settingsLinks.map((l) => (
-                <button
-                  key={`settings-${l.label}`}
-                  type="button"
-                  onClick={l.onClick}
-                  className={linkBtnClass}
-                >
-                  {l.label}
-                </button>
-              ))}
+              {settingsLinks.map((l) =>
+                l.to ? (
+                  <Link key={`settings-${l.label}`} to={l.to} className={linkBtnClass}>
+                    {l.label}
+                  </Link>
+                ) : (
+                  <button
+                    key={`settings-${l.label}`}
+                    type="button"
+                    onClick={l.onClick}
+                    className={linkBtnClass}
+                  >
+                    {l.label}
+                  </button>
+                ),
+              )}
             </nav>
           </div>
         </div>

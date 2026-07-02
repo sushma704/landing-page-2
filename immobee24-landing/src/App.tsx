@@ -9,7 +9,6 @@ import BetaProgrammDE from './pages/BetaProgrammDE';
 import BetaThankYou from './pages/BetaThankYou';
 import HowItWorksDE from './pages/HowItWorksDE';
 import DemoDE from './pages/DemoDE';
-import PrivacyPage from './pages/PrivacyPage';
 import CrmAlternativeDE from './pages/CrmAlternativeDE';
 import PricingDE from './pages/PricingDE';
 // SEO landing pages — DE/EN pairs, staged under noindex pending entity registration
@@ -44,14 +43,6 @@ export default function App() {
 
         <Route path="/de" element={<HomePage />} />
         <Route path="/en" element={<HomePage />} />
-
-        {/*
-          Privacy policy at a single, language-neutral URL. Both DE and EN
-          footers link here; PrivacyPage renders DatenschutzContent in the
-          currently-active language, so the content translates in place while
-          the URL (https://immob24.com/privacy) stays the same.
-        */}
-        <Route path="/privacy" element={<PrivacyPage />} />
 
         <Route path="/de/produkt" element={<ProduktDE />} />
         <Route path="/en/product" element={<ProduktDE />} />

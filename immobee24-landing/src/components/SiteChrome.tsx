@@ -361,9 +361,11 @@ export const Footer = () => {
             <nav className="mt-3 flex flex-col gap-2">
               {legalLinks.map((l) =>
                 l.to ? (
-                  <Link key={`legal-${l.key}-${l.label}`} to={l.to} className={linkBtnClass}>
+                  // Full-page navigation (not react-router Link): /privacy is a
+                  // standalone static page served by nginx, not an SPA route.
+                  <a key={`legal-${l.key}-${l.label}`} href={l.to} className={linkBtnClass}>
                     {l.label}
-                  </Link>
+                  </a>
                 ) : (
                   <button
                     key={`legal-${l.key}-${l.label}`}
@@ -385,9 +387,9 @@ export const Footer = () => {
             <nav className="mt-3 flex flex-col gap-2">
               {settingsLinks.map((l) =>
                 l.to ? (
-                  <Link key={`settings-${l.label}`} to={l.to} className={linkBtnClass}>
+                  <a key={`settings-${l.label}`} href={l.to} className={linkBtnClass}>
                     {l.label}
-                  </Link>
+                  </a>
                 ) : (
                   <button
                     key={`settings-${l.label}`}

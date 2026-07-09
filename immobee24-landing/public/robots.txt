@@ -1,16 +1,7 @@
-# Pre-launch state: noindex-only lockdown.
-#
-# robots.txt allows crawling; every page emits
-# <meta name="robots" content="noindex, nofollow"> via index.html, which
-# is the correct signal during pre-launch. Allowing crawls means Googlebot
-# can actually fetch the pages and SEE the noindex tag — a Disallow rule
-# would block fetching and Google would never know about the noindex,
-# leaving the door open to "indexed but blocked by robots.txt" warnings.
-#
-# When the entity is registered and we're ready to launch:
-#   1. Remove the <meta robots: noindex> tag from index.html
-#   2. Bump <lastmod> in sitemap.xml so Google rechecks
-#   3. Resubmit the sitemap in Search Console
+# Public: crawling is allowed for all user agents. Indexable pages emit
+# <meta name="robots" content="index, follow"> (default in index.html);
+# post-conversion thank-you pages set their own noindex per-route. The
+# sitemap below lists only canonical, indexable pages.
 
 User-agent: *
 Allow: /

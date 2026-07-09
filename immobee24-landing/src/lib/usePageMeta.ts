@@ -15,6 +15,8 @@ type Input = {
   pageKey: PageKey;
   titleKey: string;
   descriptionKey: string;
+  // Defaults to "index, follow" — these are the indexable marketing pages.
+  robots?: string;
 };
 
 function lookupLocalizedString(path: string, lang: Language): string {
@@ -34,7 +36,12 @@ function lookupLocalizedString(path: string, lang: Language): string {
   return typeof node === 'string' ? node : '';
 }
 
-export function usePageMeta({ pageKey, titleKey, descriptionKey }: Input) {
+export function usePageMeta({
+  pageKey,
+  titleKey,
+  descriptionKey,
+  robots = 'index, follow',
+}: Input) {
   const { pathname } = useLocation();
   const urlLang = languageFromPath(pathname);
   const lang: Language = urlLang ?? X_DEFAULT_LANG;
@@ -55,6 +62,7 @@ export function usePageMeta({ pageKey, titleKey, descriptionKey }: Input) {
     canonical,
     alternates,
     htmlLang: lang,
+    robots,
   });
 
   return { lang, canonical };

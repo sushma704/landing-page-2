@@ -24,12 +24,12 @@
   <meta name="keywords" content="KI für Immobilienmakler, Immobilienmakler Software, Immobilien Anfragen automatisieren, Lead-Qualifizierung Immobilien, CRM Alternative Immobilienmakler, Immob24" />
   <meta name="author" content="Immob24" />
   <!--
-    Pre-launch lockdown: the site is intentionally NOT discoverable until the
-    operating entity is registered and the Impressum / Datenschutzerklärung
-    carry final text. Flip this back to "index, follow" together with the
-    legal modals when going public.
+    Public launch: the site is discoverable. This is the default for every
+    route; individual routes can override via useDocumentMeta({ robots }).
+    Pages that must stay out of the index (e.g. post-conversion thank-you
+    pages) set "noindex, nofollow" per-route in their component.
   -->
-  <meta name="robots" content="noindex, nofollow" />
+  <meta name="robots" content="index, follow" />
 
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website" />

@@ -20,7 +20,7 @@ const DE_URL = `${SITE_ORIGIN}/de/maklersoftware/hamburg`;
 const FAQS: Array<{ q: string; a: string }> = [
   {
     q: 'How many real-estate brokers are there in Hamburg?',
-    a: 'Hamburg is among the largest broker markets in Germany, with an estimated [~X,XXX active brokerages] (source: IVD Nord — to be inserted). Density is highest in Eppendorf, Winterhude, Eimsbüttel, and HafenCity — exactly where most inquiries originate.',
+    a: 'Hamburg is among the largest broker markets in Germany. Density is highest in Eppendorf, Winterhude, Eimsbüttel, and HafenCity — exactly where most inquiries originate.',
   },
   {
     q: 'Which Hamburg districts is Immob24 especially suitable for?',
@@ -95,8 +95,7 @@ const Challenge = () => (
       <p className="mt-5 text-slate leading-relaxed">
         With around 1.9 million inhabitants, Hamburg is Germany's
         second-largest city — and one of the densest broker markets.
-        Estimates suggest <strong>[~X,XXX active brokerages]</strong>{' '}
-        (source: IVD Nord — to be inserted). Inquiries for an attractive
+        Competition for every inquiry is correspondingly intense. Inquiries for an attractive
         property in Eppendorf, Winterhude, or Blankenese typically reach
         multiple agents simultaneously — response time determines who wins
         the mandate.
@@ -224,10 +223,6 @@ const WhyHamburg = () => (
         </li>
       </ul>
 
-      <p className="mt-6 text-sm text-warm-gray italic">
-        Note: Numbers in [square brackets] are placeholders and will be
-        replaced with verified sources before launch.
-      </p>
     </div>
   </section>
 );

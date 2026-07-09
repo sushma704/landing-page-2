@@ -8,6 +8,10 @@ type MetaInput = {
   canonical?: string;
   alternates?: AlternateLink[];
   htmlLang?: string;
+  // Robots directive for this route. Omit to inherit the static default in
+  // index.html ("index, follow"). Pass "noindex, nofollow" for pages that must
+  // stay out of the index (e.g. post-conversion thank-you pages).
+  robots?: string;
 };
 
 function setMeta(name: string, content: string) {
@@ -65,9 +69,11 @@ export function useDocumentMeta({
   canonical,
   alternates,
   htmlLang,
+  robots,
 }: MetaInput) {
   useEffect(() => {
     if (htmlLang) document.documentElement.lang = htmlLang;
+    if (robots) setMeta('robots', robots);
     if (title) {
       document.title = title;
       setProperty('og:title', title);

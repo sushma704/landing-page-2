@@ -101,9 +101,9 @@ const Challenge = () => (
         In Berlin treffen sich drei Welten: klassische Eigentumswohnungen in
         Mitte, Prenzlauer Berg und Kreuzberg; großflächige Bestände in
         Pankow, Reinickendorf oder Marzahn; und Investmentobjekte für
-        internationale Kapitalanleger. Schätzungen sprechen von{' '}
-        <strong>[~X.XXX aktiven Maklerbüros]</strong> im Stadtgebiet (Quelle: IVD
-        Berlin/Brandenburg einfügen).
+        internationale Kapitalanleger. Berlin zählt damit zu den{' '}
+        <strong>größten und dichtesten Maklermärkten Deutschlands</strong> — mit
+        entsprechend hohem Wettbewerb um jede einzelne Anfrage.
       </p>
       <p className="mt-4 text-slate leading-relaxed">
         Anfragen kommen nicht mehr nur per Telefon, sondern fast ausschließlich
@@ -219,8 +219,8 @@ const WhyBerlin = () => (
         </li>
         <li>
           <strong className="text-charcoal">Volumen pro Objekt.</strong>{' '}
-          Ein typisches Berliner Mietobjekt kann <strong>[~XX-XXX Anfragen]</strong>{' '}
-          in den ersten 48 Stunden generieren. Ohne Automatisierung gehen
+          Ein typisches Berliner Mietobjekt kann <strong>eine Vielzahl von
+          Anfragen</strong> in den ersten 48 Stunden generieren. Ohne Automatisierung gehen
           dabei systematisch Leads verloren.
         </li>
         <li>
@@ -231,10 +231,6 @@ const WhyBerlin = () => (
         </li>
       </ul>
 
-      <p className="mt-6 text-sm text-warm-gray italic">
-        Hinweis: Die mit [eckigen Klammern] markierten Zahlen sind
-        Platzhalter und werden vor Launch durch verifizierte Quellen ersetzt.
-      </p>
     </div>
   </section>
 );

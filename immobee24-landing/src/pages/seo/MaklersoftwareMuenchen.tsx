@@ -108,16 +108,15 @@ const Challenge = () => (
       </h2>
       <p className="mt-5 text-slate leading-relaxed">
         München gehört zu den dichtesten Maklermärkten Deutschlands.
-        Schätzungen gehen von <strong>[~X.XXX aktiven Maklerbüros]</strong> in
-        der Region München-Oberbayern aus (Quelle: IVD-Marktbericht
-        einfügen). Wer eine Münchner Immobilie verkaufen oder vermieten will,
+        Der Markt in der Region München-Oberbayern ist entsprechend
+        umkämpft. Wer eine Münchner Immobilie verkaufen oder vermieten will,
         kontaktiert in der Regel mehrere Makler parallel — über
         ImmoScout24, Immowelt oder direkt per E-Mail.
       </p>
       <p className="mt-4 text-slate leading-relaxed">
         Wer als Erstes reagiert, gewinnt das Vertrauen — und meistens auch
-        das Mandat. In einem Markt mit Quadratmeterpreisen von
-        <strong> [~XX.XXX € im Stadtgebiet, Quelle Immoscout24-Atlas]</strong>{' '}
+        das Mandat. In einem Markt mit{' '}
+        <strong>den höchsten Quadratmeterpreisen Deutschlands</strong>{' '}
         ist jedes nicht beantwortete Lead bares Geld. Genau hier setzt
         Immob24 an: Während Sie noch lesen, hat das System bereits geantwortet,
         qualifiziert und einen Termin vorgeschlagen.
@@ -236,7 +235,7 @@ const WhyMunich = () => (
         <li>
           <strong className="text-charcoal">Anfragevolumen pro Objekt:</strong>{' '}
           Ein attraktives Münchner Objekt kann innerhalb von 24 Stunden{' '}
-          <strong>[~XX Anfragen]</strong> generieren. Manuell ist diese Welle
+          <strong>zahlreiche Anfragen</strong> generieren. Manuell ist diese Welle
           kaum sauber zu bearbeiten — die KI nimmt jede Anfrage zuverlässig an.
         </li>
         <li>
@@ -251,10 +250,6 @@ const WhyMunich = () => (
         </li>
       </ul>
 
-      <p className="mt-6 text-sm text-warm-gray italic">
-        Hinweis: Die mit [eckigen Klammern] markierten Zahlen sind
-        Platzhalter und werden vor Launch durch verifizierte Quellen ersetzt.
-      </p>
     </div>
   </section>
 );

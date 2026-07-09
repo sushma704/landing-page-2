@@ -100,9 +100,9 @@ const Challenge = () => (
         Three worlds meet in Berlin: classic owner-occupied flats in Mitte,
         Prenzlauer Berg, and Kreuzberg; large existing portfolios in Pankow,
         Reinickendorf, and Marzahn; and investment properties for
-        international capital investors. Estimates suggest{' '}
-        <strong>[~X,XXX active brokerages]</strong> across the city
-        (source: IVD Berlin-Brandenburg — to be inserted).
+        international capital investors. Berlin is one of the{' '}
+        <strong>largest and densest broker markets in Germany</strong> — with
+        correspondingly fierce competition for every inquiry.
       </p>
       <p className="mt-4 text-slate leading-relaxed">
         Inquiries no longer come by phone — they come digitally, and usually
@@ -219,7 +219,7 @@ const WhyBerlin = () => (
         <li>
           <strong className="text-charcoal">Volume per listing.</strong> A
           typical Berlin rental listing can produce{' '}
-          <strong>[~XX–XXX inquiries]</strong> in the first 48 hours.
+          <strong>a large volume of inquiries</strong> in the first 48 hours.
           Without automation, leads systematically slip through.
         </li>
         <li>
@@ -229,10 +229,6 @@ const WhyBerlin = () => (
         </li>
       </ul>
 
-      <p className="mt-6 text-sm text-warm-gray italic">
-        Note: Numbers in [square brackets] are placeholders and will be
-        replaced with verified sources before launch.
-      </p>
     </div>
   </section>
 );

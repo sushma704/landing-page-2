@@ -105,17 +105,15 @@ const Challenge = () => (
         The challenge for Munich brokerages
       </h2>
       <p className="mt-5 text-slate leading-relaxed">
-        Munich has one of the densest broker markets in Germany. Estimates
-        put the number of active brokerages in the Munich / Upper Bavaria
-        region at <strong>[~X,XXX active brokerages]</strong> (source: IVD
-        market report — to be inserted). Sellers and landlords typically
+        Munich has one of the densest broker markets in Germany. Sellers
+        and landlords in the Munich / Upper Bavaria region typically
         contact several agents in parallel — through ImmoScout24, Immowelt,
         or directly by email.
       </p>
       <p className="mt-4 text-slate leading-relaxed">
         Whoever responds first wins trust — and usually the mandate. In a
-        market with square-meter prices around{' '}
-        <strong>[~€XX,XXX in central Munich — source: Immoscout24 atlas]</strong>,
+        market with{' '}
+        <strong>some of the highest square-meter prices in Germany</strong>,
         every unanswered lead is real money. This is exactly where Immob24 fits
         in: while you're still reading, the system has already responded,
         qualified, and proposed a viewing time.
@@ -234,7 +232,7 @@ const WhyMunich = () => (
         <li>
           <strong className="text-charcoal">Inquiry volume per listing:</strong>{' '}
           An attractive Munich property can generate{' '}
-          <strong>[~XX inquiries]</strong> in 24 hours. Handling that wave
+          <strong>numerous inquiries</strong> in 24 hours. Handling that wave
           manually without dropping leads is barely possible — the AI takes
           every single one.
         </li>
@@ -250,10 +248,6 @@ const WhyMunich = () => (
         </li>
       </ul>
 
-      <p className="mt-6 text-sm text-warm-gray italic">
-        Note: Numbers in [square brackets] are placeholders and will be
-        replaced with verified sources before launch.
-      </p>
     </div>
   </section>
 );

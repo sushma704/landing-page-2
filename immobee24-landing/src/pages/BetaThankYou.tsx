@@ -17,11 +17,10 @@ export default function BetaThankYou() {
   const { language } = useLanguage();
   const isDe = language === 'de';
 
-  // Note: noindex is already set site-wide in index.html during the
-  // pre-launch lockdown. Once the lockdown lifts, this page should stay
-  // noindex (it's a post-conversion landing, not search-discoverable),
-  // but that's handled by leaving it out of sitemap.xml — Google won't
-  // try to index a URL it never sees in the sitemap.
+  // This is a post-conversion landing (not search-discoverable), so it must
+  // stay noindex now that the site is public. It is also left out of
+  // sitemap.xml. The explicit robots override is what keeps it out of the
+  // index — the static default in index.html is now "index, follow".
   useDocumentMeta({
     title: isDe
       ? 'Danke für deine Bewerbung — Immob24'
@@ -31,6 +30,7 @@ export default function BetaThankYou() {
       : 'We received your application for the Beta Agent Program and will be in touch within 48 hours.',
     canonical: `${SITE_ORIGIN}${isDe ? '/de/beta-bewerbung-erfolgreich' : '/en/beta-application-success'}`,
     htmlLang: language,
+    robots: 'noindex, nofollow',
   });
 
   useEffect(() => {

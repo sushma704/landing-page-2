@@ -136,7 +136,7 @@ const Overview = () => (
         response to new inquiries, polite qualifying dialogues, scheduling,
         and follow-up</strong>. According to internal estimates, these
         tasks cost the average brokerage{' '}
-        <strong>[~XX hours per week per team member]</strong> — hours that
+        <strong>many hours per week per team member</strong> — hours that
         do not flow into consultations or signed contracts.
       </p>
       <p className="mt-4 text-slate leading-relaxed">
@@ -245,11 +245,6 @@ const PainPoints = () => (
         </div>
       ))}
 
-      <p className="mt-8 text-sm text-warm-gray italic">
-        Note: numbers in [square brackets] are internal estimates and will
-        be replaced before launch with verified sources (e.g. IVD market
-        reports, our own beta analytics).
-      </p>
     </div>
   </section>
 );

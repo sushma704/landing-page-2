@@ -21,7 +21,7 @@ const EN_URL = `${SITE_ORIGIN}/en/real-estate-agent-software/hamburg`;
 const FAQS: Array<{ q: string; a: string }> = [
   {
     q: 'Wie viele Immobilienmakler gibt es in Hamburg?',
-    a: 'Hamburg gehört mit geschätzt [~X.XXX aktiven Maklerbüros] (Quelle: IVD Nord einfügen) zu den größten Maklermärkten Deutschlands. Die Dichte ist besonders hoch in Eppendorf, Winterhude, Eimsbüttel und der HafenCity — genau dort, wo auch die meisten Anfragen entstehen.',
+    a: 'Hamburg gehört zu den größten Maklermärkten Deutschlands. Die Dichte ist besonders hoch in Eppendorf, Winterhude, Eimsbüttel und der HafenCity — genau dort, wo auch die meisten Anfragen entstehen.',
   },
   {
     q: 'Für welche Hamburger Stadtteile eignet sich Immob24 besonders?',
@@ -96,8 +96,7 @@ const Challenge = () => (
       <p className="mt-5 text-slate leading-relaxed">
         Hamburg ist mit rund 1,9 Millionen Einwohnern Deutschlands
         zweitgrößte Stadt — und einer der dichtesten Maklermärkte.
-        Schätzungen sprechen von <strong>[~X.XXX aktiven Maklerbüros]</strong>
-        {' '}(Quelle: IVD Nord einfügen). Anfragen für ein attraktives
+        Entsprechend groß ist der Wettbewerb um jede Anfrage. Anfragen für ein attraktives
         Objekt in Eppendorf, Winterhude oder Blankenese erreichen oft mehrere
         Makler gleichzeitig — Reaktionszeit entscheidet, wer das Mandat bekommt.
       </p>
@@ -223,10 +222,6 @@ const WhyHamburg = () => (
         </li>
       </ul>
 
-      <p className="mt-6 text-sm text-warm-gray italic">
-        Hinweis: Die mit [eckigen Klammern] markierten Zahlen sind
-        Platzhalter und werden vor Launch durch verifizierte Quellen ersetzt.
-      </p>
     </div>
   </section>
 );

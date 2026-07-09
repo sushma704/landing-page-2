@@ -17,6 +17,7 @@ Fix: the marketing build emits its hashed bundle under **`/mkt-assets/`** instea
 ALB rules that must point at `immob24-de-marketing-tg`:
 | Priority | Path(s) | Purpose |
 |---|---|---|
+| 6  | `/robots.txt` `/sitemap.xml` | SEO — must be OUR files, not the dashboard's |
 | 8  | `/mkt-assets/*` | marketing JS/CSS/fonts (namespaced bundle) |
 | 9  | `/privacy` `/terms` `/support` `/docs` | static legal pages |
 | 13 | `/de` `/de/*` `/en` `/en/*` | marketing SPA routes |
@@ -25,7 +26,24 @@ ALB rules that must point at `immob24-de-marketing-tg`:
 | 19 | `/google343c928c44c9906a.html` | Google Search Console verification token |
 | 35 | `/` | bare root |
 `/api`, `/ws`, `/actuator` go to the api-gateway; everything else (`/login`,
-`/dashboard`, `/assets/*`, `/*` fallback) is the dashboard's.
+`/dashboard`, `/assets/*`, `/*` fallback) is the dashboard's. NOTE: `/robots.txt`
+and `/sitemap.xml` have no path prefix, so without the prio-6 rule they fall
+through to the dashboard — which serves its own robots.txt and an HTML SPA for
+`/sitemap.xml`, breaking Search Console. Keep the prio-6 rule.
+
+## SEO / indexing (public launch — 2026-07-09)
+The site is public (`index, follow`). Robots is per-route: `index.html` defaults
+to `index, follow`; `useDocumentMeta({ robots })` overrides it (thank-you pages
+set `noindex, nofollow`). `nginx-spa.conf` 301s `www` -> non-`www`. The sitemap
+lists only canonical indexable pages (thank-you pages excluded). After any deploy
+that changes indexability, resubmit the sitemap in Search Console.
+
+## Fargate capacity note
+The cluster runs over its Fargate vCPU quota (8). `immob24-de-migration-service`
+was scaled to `desired-count 0` (2026-07-09) to give marketing stable headroom so
+it stops getting evicted. To restore it:
+`aws ecs update-service --cluster immob24-de-cluster --service immob24-de-migration-service --desired-count 1`
+— but only once the quota is raised, or marketing may start flapping again.
 
 **Gotcha for any new root-level file** (verification tokens, `ads.txt`, etc.):
 the `/*` fallback (prio 40) sends it to the *dashboard*, not marketing. Putting

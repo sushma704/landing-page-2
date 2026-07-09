@@ -137,7 +137,7 @@ const Overview = () => (
         neue Anfragen, höfliche Qualifizierungsdialoge, Terminkoordination
         und Follow-up</strong>. Genau diese Aufgaben kosten ein durchschnittliches
         Maklerbüro nach internen Erhebungen{' '}
-        <strong>[~XX Stunden pro Woche und Mitarbeiter*in]</strong> — Stunden, die
+        <strong>viele Stunden pro Woche und Mitarbeiter*in</strong> — Stunden, die
         nicht in Beratungsgespräche oder Vertragsabschlüsse fließen.
       </p>
       <p className="mt-4 text-slate leading-relaxed">
@@ -246,11 +246,6 @@ const PainPoints = () => (
         </div>
       ))}
 
-      <p className="mt-8 text-sm text-warm-gray italic">
-        Hinweis: Mit [eckigen Klammern] markierte Zahlen sind interne
-        Schätzwerte und werden vor Launch durch verifizierte Quellen
-        (z. B. IVD-Marktbericht, eigene Beta-Auswertungen) ersetzt.
-      </p>
     </div>
   </section>
 );

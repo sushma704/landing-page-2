@@ -2,29 +2,49 @@
 
 immob24.com runs on AWS account **020642895299**, region **eu-central-1**, on the
 ECS cluster `immob24-de-cluster` behind ALB `immob24-de-alb`. The marketing site
-runs as the `immob24-de-marketing` Fargate service (ARM64); the ALB rule at
-**priority 35** (`/* -> immob24-de-marketing-tg`) makes it the site frontend.
-`/api`, `/ws`, `/actuator` go to the api-gateway. The dashboard app is a
-SEPARATE repo/service (`immob24-de-frontend-nginx`).
+runs as the `immob24-de-marketing` Fargate service (ARM64).
+
+## Coexistence with the dashboard app (IMPORTANT)
+The marketing site shares the `immob24.com` host with the **dashboard app**
+(separate repo/service `immob24-de-frontend-nginx`). Both are Vite/React SPAs, so
+both *used* to emit their bundle under `/assets/*` — only one target group can own
+that path, so whoever lost the ALB race had its JS/CSS 404 and the site broke.
+
+Fix: the marketing build emits its hashed bundle under **`/mkt-assets/`** instead
+(`build.assetsDir: 'mkt-assets'` in `vite.config.ts`). The dashboard keeps
+`/assets/*`. They no longer collide. **Do not revert `assetsDir`.**
+
+ALB rules that must point at `immob24-de-marketing-tg`:
+| Priority | Path(s) | Purpose |
+|---|---|---|
+| 8  | `/mkt-assets/*` | marketing JS/CSS/fonts (namespaced bundle) |
+| 9  | `/privacy` `/terms` `/support` `/docs` | static legal pages |
+| 13 | `/de` `/de/*` `/en` `/en/*` | marketing SPA routes |
+| 17 | `/immob24-wordmark.png` `/immob24-wordmark-white.png` `/favicon.png` | root images |
+| 18 | `/privacy.html` `/terms.html` `/support.html` `/docs.html` | static legal pages (.html) |
+| 35 | `/` | bare root |
+`/api`, `/ws`, `/actuator` go to the api-gateway; everything else (`/login`,
+`/dashboard`, `/assets/*`, `/*` fallback) is the dashboard's.
 
 ## Redeploy after a content change
 ```bash
 export AWS_PROFILE=<profile-for-020642895299> AWS_DEFAULT_REGION=eu-central-1
 REG=020642895299.dkr.ecr.eu-central-1.amazonaws.com
+TAG=v2                                          # bump on each build
 
-pnpm install && pnpm build                    # produces dist/  (run in immobee24-landing/)
+BUILD_MODE=prod pnpm build                      # produces dist/ (run in immobee24-landing/)
 aws ecr get-login-password | docker login --username AWS --password-stdin $REG
 # single-arch ARM64 image (Fargate rejects buildx attestation manifests):
-docker build --platform linux/arm64 --provenance=false --sbom=false \
-  -t $REG/immob24-de/marketing-nginx:v1 .
-docker push $REG/immob24-de/marketing-nginx:v1
+docker buildx build --platform linux/arm64 --provenance=false --sbom=false \
+  -t $REG/immob24-de/marketing-nginx:$TAG --push .
 
+# register a new task-def revision pointing at the new tag, then:
 aws ecs update-service --cluster immob24-de-cluster \
-  --service immob24-de-marketing --force-new-deployment
+  --service immob24-de-marketing --task-definition immob24-de-marketing-nginx:<rev>
 ```
 
 ## Restore the dashboard at / (once its image is rebuilt with VITE_WS_URL)
-```bash
-# point /* back to the dashboard target group, or delete the prio-35 rule:
-aws elbv2 delete-rule --rule-arn <prio-35-rule-arn>
-```
+The dashboard already owns `/login`, `/dashboard`, `/assets/*`, and the `/*`
+fallback. Marketing only holds `/`, `/de*`, `/en*`, `/mkt-assets/*`, the legal
+pages, and the root images — so the two coexist. To hand the bare `/` back to the
+dashboard, delete or repoint the prio-35 rule; the rest can stay.

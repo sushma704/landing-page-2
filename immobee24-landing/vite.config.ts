@@ -18,4 +18,12 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    // Marketing shares immob24.com with the dashboard app, which owns
+    // /assets/*. Emit our hashed bundle under /mkt-assets/ instead so the two
+    // sites never collide on the shared ALB. The ALB routes /mkt-assets/* to
+    // the marketing target group. Static files in public/ (logo, favicon,
+    // legal .html) still land at the web root and keep their own ALB rules.
+    assetsDir: 'mkt-assets',
+  },
 })

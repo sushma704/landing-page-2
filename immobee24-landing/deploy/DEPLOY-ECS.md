@@ -22,9 +22,15 @@ ALB rules that must point at `immob24-de-marketing-tg`:
 | 13 | `/de` `/de/*` `/en` `/en/*` | marketing SPA routes |
 | 17 | `/immob24-wordmark.png` `/immob24-wordmark-white.png` `/favicon.png` | root images |
 | 18 | `/privacy.html` `/terms.html` `/support.html` `/docs.html` | static legal pages (.html) |
+| 19 | `/google343c928c44c9906a.html` | Google Search Console verification token |
 | 35 | `/` | bare root |
 `/api`, `/ws`, `/actuator` go to the api-gateway; everything else (`/login`,
 `/dashboard`, `/assets/*`, `/*` fallback) is the dashboard's.
+
+**Gotcha for any new root-level file** (verification tokens, `ads.txt`, etc.):
+the `/*` fallback (prio 40) sends it to the *dashboard*, not marketing. Putting
+the file in `public/` alone is not enough — you must also add an explicit ALB
+rule pointing that exact path at `immob24-de-marketing-tg` (see prio 19 above).
 
 ## Redeploy after a content change
 ```bash

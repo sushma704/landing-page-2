@@ -38,16 +38,22 @@ set `noindex, nofollow`). `nginx-spa.conf` 301s `www` -> non-`www`. The sitemap
 lists only canonical indexable pages (thank-you pages excluded). After any deploy
 that changes indexability, resubmit the sitemap in Search Console.
 
-## Fargate capacity note
+## Fargate capacity + zero-downtime deploys
 Resolved (2026-07-11): the Fargate On-Demand vCPU quota (`L-3032A538`,
 eu-central-1) was raised **8 -> 48**, so the cluster (~14.5 vCPU) has ample
 headroom and marketing no longer flaps. `immob24-de-migration-service` — which
 was temporarily scaled to 0 on 2026-07-09 during the crunch — is back to 1/1.
-History for reference: when over quota, a rolling deploy that stopped marketing's
-0.25-vCPU task couldn't re-place it and the site 503'd. The marketing service
-still carries `minimumHealthyPercent=0 maximumPercent=100` +
-`availability-zone-rebalancing DISABLED` from that period (harmless with headroom;
-means deploys replace-in-place with a brief blip — reset to 100/200 if desired).
+
+The marketing service now runs **zero-downtime deploys**:
+`minimumHealthyPercent=100 maximumPercent=200` + `availability-zone-rebalancing
+ENABLED` (max>100 is required for AZR). ECS starts the new task and waits for it
+to be healthy before draining the old — no 503 blip. The `immob24-de-marketing-tg`
+**deregistration (drain) delay was cut 300 -> 15s** (static site, no long-lived
+connections), so the old task retires fast.
+History: during the over-quota crunch the service used `min0/max100` +
+AZR disabled, which replace-in-place and (with the old 300s drain) caused multi-
+minute 503s on every deploy. Don't revert to that unless the cluster is over quota
+again.
 
 **Gotcha for any new root-level file** (verification tokens, `ads.txt`, etc.):
 the `/*` fallback (prio 40) sends it to the *dashboard*, not marketing. Putting

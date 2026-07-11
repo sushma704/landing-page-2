@@ -355,7 +355,9 @@ export default function RealEstateAgentSoftwareMunich() {
       ]),
       {
         '@context': 'https://schema.org',
-        '@type': 'Product',
+        '@type': 'SoftwareApplication',
+        applicationCategory: 'BusinessApplication',
+        operatingSystem: 'Web',
         name: 'Immob24 real-estate agent software for Munich',
         description:
           'AI-powered real-estate agent software for brokerages in Munich — lead response in seconds, automatic qualification, scheduling.',

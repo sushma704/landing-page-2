@@ -329,7 +329,9 @@ export default function MaklersoftwareHamburg() {
       ]),
       {
         '@context': 'https://schema.org',
-        '@type': 'Product',
+        '@type': 'SoftwareApplication',
+        applicationCategory: 'BusinessApplication',
+        operatingSystem: 'Web',
         name: 'Immob24 Maklersoftware Hamburg',
         description:
           'KI-gestützte Maklersoftware für Immobilienmakler in Hamburg — Lead-Reaktion in Sekunden, automatische Qualifizierung, Terminlogik.',

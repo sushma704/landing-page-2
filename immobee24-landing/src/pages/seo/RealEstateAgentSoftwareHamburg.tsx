@@ -329,7 +329,9 @@ export default function RealEstateAgentSoftwareHamburg() {
       ]),
       {
         '@context': 'https://schema.org',
-        '@type': 'Product',
+        '@type': 'SoftwareApplication',
+        applicationCategory: 'BusinessApplication',
+        operatingSystem: 'Web',
         name: 'Immob24 real-estate agent software for Hamburg',
         description:
           'AI-powered real-estate agent software for brokerages in Hamburg — lead response in seconds, automatic qualification, scheduling logic.',

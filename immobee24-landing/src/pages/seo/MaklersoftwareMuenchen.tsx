@@ -361,7 +361,9 @@ export default function MaklersoftwareMuenchen() {
       ]),
       {
         '@context': 'https://schema.org',
-        '@type': 'Product',
+        '@type': 'SoftwareApplication',
+        applicationCategory: 'BusinessApplication',
+        operatingSystem: 'Web',
         name: 'Immob24 Maklersoftware München',
         description:
           'KI-gestützte Maklersoftware für Immobilienmakler in München — Lead-Reaktion in Sekunden, automatische Qualifizierung, Terminlogik.',

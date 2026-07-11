@@ -338,7 +338,9 @@ export default function MaklersoftwareBerlin() {
       ]),
       {
         '@context': 'https://schema.org',
-        '@type': 'Product',
+        '@type': 'SoftwareApplication',
+        applicationCategory: 'BusinessApplication',
+        operatingSystem: 'Web',
         name: 'Immob24 Maklersoftware Berlin',
         description:
           'KI-gestützte Maklersoftware für Immobilienmakler in Berlin — Lead-Reaktion in Sekunden, automatische Qualifizierung, Terminlogik, zweisprachig.',

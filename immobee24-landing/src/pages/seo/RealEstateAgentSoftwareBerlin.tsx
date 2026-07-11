@@ -335,7 +335,9 @@ export default function RealEstateAgentSoftwareBerlin() {
       ]),
       {
         '@context': 'https://schema.org',
-        '@type': 'Product',
+        '@type': 'SoftwareApplication',
+        applicationCategory: 'BusinessApplication',
+        operatingSystem: 'Web',
         name: 'Immob24 real-estate agent software for Berlin',
         description:
           'AI-powered real-estate agent software for brokerages in Berlin — bilingual lead response, automatic qualification, scheduling logic.',

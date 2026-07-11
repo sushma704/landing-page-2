@@ -39,11 +39,15 @@ lists only canonical indexable pages (thank-you pages excluded). After any deplo
 that changes indexability, resubmit the sitemap in Search Console.
 
 ## Fargate capacity note
-The cluster runs over its Fargate vCPU quota (8). `immob24-de-migration-service`
-was scaled to `desired-count 0` (2026-07-09) to give marketing stable headroom so
-it stops getting evicted. To restore it:
-`aws ecs update-service --cluster immob24-de-cluster --service immob24-de-migration-service --desired-count 1`
-— but only once the quota is raised, or marketing may start flapping again.
+Resolved (2026-07-11): the Fargate On-Demand vCPU quota (`L-3032A538`,
+eu-central-1) was raised **8 -> 48**, so the cluster (~14.5 vCPU) has ample
+headroom and marketing no longer flaps. `immob24-de-migration-service` — which
+was temporarily scaled to 0 on 2026-07-09 during the crunch — is back to 1/1.
+History for reference: when over quota, a rolling deploy that stopped marketing's
+0.25-vCPU task couldn't re-place it and the site 503'd. The marketing service
+still carries `minimumHealthyPercent=0 maximumPercent=100` +
+`availability-zone-rebalancing DISABLED` from that period (harmless with headroom;
+means deploys replace-in-place with a brief blip — reset to 100/200 if desired).
 
 **Gotcha for any new root-level file** (verification tokens, `ads.txt`, etc.):
 the `/*` fallback (prio 40) sends it to the *dashboard*, not marketing. Putting

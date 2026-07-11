@@ -90,12 +90,20 @@ export function productSchema(
   description: string,
   offers: Array<{ name: string; price: string; description: string }>,
 ): Schema {
+  // Modelled as SoftwareApplication, not Product. Immob24 is SaaS, so a
+  // Product+offers schema makes Google run Merchant-listing (Shopping)
+  // validation, which fails on fields a software page has no business
+  // supplying (shipping, returns, availability) -> GSC "Merchant listings:
+  // invalid". SoftwareApplication is the correct type, keeps the pricing
+  // offers, and isn't a Product subtype, so it skips shopping validation.
   return {
     '@context': 'https://schema.org',
-    '@type': 'Product',
+    '@type': 'SoftwareApplication',
     name: 'Immob24',
     description,
     inLanguage: inLanguage(lang),
+    applicationCategory: 'BusinessApplication',
+    operatingSystem: 'Web',
     brand: { '@type': 'Brand', name: 'Immob24' },
     offers: offers.map((o) => ({
       '@type': 'Offer',

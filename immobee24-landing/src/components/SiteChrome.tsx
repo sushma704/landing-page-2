@@ -99,7 +99,7 @@ const LanguageToggle = () => {
 };
 
 export const Header = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const localPath = useLocalizedPath();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -111,6 +111,11 @@ export const Header = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // AI-refinement: flagship nav entry (inline label — translations.ts untouched)
+  const aiFeaturesLink = {
+    to: localPath('aiFeatures'),
+    label: language === 'de' ? 'KI-Funktionen' : 'AI Features',
+  };
   const productLink = { to: localPath('produkt'), label: asString(t('nav.product')) };
   const howItWorksLink = {
     to: localPath('howItWorks'),
@@ -134,7 +139,7 @@ export const Header = () => {
         <Wordmark />
 
         <nav className="hidden lg:flex items-center gap-2 ml-6">
-          {[productLink, howItWorksLink, crmAltLink, pricingLink, demoLink, betaLink].map((l) => (
+          {[aiFeaturesLink, productLink, howItWorksLink, crmAltLink, pricingLink, demoLink, betaLink].map((l) => (
             <Link
               key={l.to}
               to={l.to}
@@ -170,7 +175,7 @@ export const Header = () => {
       {open && (
         <div className="lg:hidden border-t border-charcoal/5 bg-white">
           <div className="container py-3 flex flex-col gap-1">
-            {[productLink, howItWorksLink, crmAltLink, pricingLink, demoLink, betaLink].map((l) => (
+            {[aiFeaturesLink, productLink, howItWorksLink, crmAltLink, pricingLink, demoLink, betaLink].map((l) => (
               <Link
                 key={l.to}
                 to={l.to}
@@ -254,11 +259,16 @@ const LegalModal = ({
 type LegalModalKey = 'impressum' | 'datenschutz' | 'terms' | 'cookies';
 
 export const Footer = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const localPath = useLocalizedPath();
   const [activeModal, setActiveModal] = useState<LegalModalKey | null>(null);
 
+  const isDe = language === 'de';
   const pageLinks = [
+    // AI-refinement links (inline labels — translations.ts untouched)
+    { to: localPath('aiFeatures'), label: isDe ? 'KI-Funktionen' : 'AI Features' },
+    { to: localPath('whyImmob24'), label: isDe ? 'Warum Immob24' : 'Why immob24' },
+    { to: localPath('compliance'), label: 'Compliance' },
     { to: localPath('produkt'), label: asString(t('nav.product')) },
     { to: localPath('howItWorks'), label: asString(t('nav.howItWorks')) },
     { to: localPath('crmAlternative'), label: asString(t('nav.crmAlternative')) },

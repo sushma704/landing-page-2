@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
+import { BrowserRouter, HashRouter } from 'react-router-dom'
 import { ErrorBoundary } from './components/ErrorBoundary.tsx'
 import { LanguageProvider } from './i18n'
 import { bootstrapConsent } from './lib/consent'
@@ -28,14 +28,21 @@ import App from './App.tsx'
 // the old static <script> tags had).
 bootstrapConsent()
 
+// DRAFT-OFFLINE MODE (PO review only, never set in production builds):
+// VITE_DRAFT_OFFLINE=1 swaps BrowserRouter for HashRouter so the built site
+// navigates correctly when opened straight from an unzipped folder
+// (file:// — no web server). Production builds leave the flag unset and are
+// byte-identical in behaviour to before.
+const Router = import.meta.env.VITE_DRAFT_OFFLINE === '1' ? HashRouter : BrowserRouter
+
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <ErrorBoundary>
-      <BrowserRouter>
+      <Router>
         <LanguageProvider>
           <App />
         </LanguageProvider>
-      </BrowserRouter>
+      </Router>
     </ErrorBoundary>
   </StrictMode>,
 )

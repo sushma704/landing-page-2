@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
+import { WhyImmob24Teaser } from '../components/AiRefinementBands';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
@@ -650,6 +651,8 @@ export default function CrmAlternativeDE() {
     Framing,
     ComparisonTable,
     Competitors,
+    // AI-refinement (draft/ai-refinement): teaser linking to /warum-immob24
+    WhyImmob24Teaser,
     WhenCrm,
     WhenImmob,
     Fit,

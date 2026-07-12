@@ -13,6 +13,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
+import { SevenCoWorkersBand, ComplianceBadgesStrip } from '../components/AiRefinementBands';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
@@ -655,11 +656,15 @@ export default function ProduktDE() {
     AnswerBlock,
     ProblemFit,
     Features,
+    // AI-refinement (draft/ai-refinement): the 7 AI co-workers + demo video
+    SevenCoWorkersBand,
     UseCases,
     CrmComparison,
     WhoItsFor,
     HowItWorks,
     SocialProof,
+    // AI-refinement: compliance trust strip
+    ComplianceBadgesStrip,
     FAQ,
     FinalCTA,
   ];

@@ -9,7 +9,10 @@ export type PageKey =
   | 'crmAlternative'
   | 'pricing'
   | 'demo'
-  | 'beta';
+  | 'beta'
+  | 'aiFeatures'
+  | 'compliance'
+  | 'whyImmob24';
 
 type PagePaths = Record<Language, string>;
 
@@ -24,6 +27,11 @@ export const PAGE_PATHS: Record<PageKey, PagePaths> = {
   pricing: { de: '/de/preise', en: '/en/pricing' },
   demo: { de: '/de/demo', en: '/en/demo' },
   beta: { de: '/de/beta-agentenprogramm', en: '/en/beta-agent-program' },
+  // AI-refinement pages (draft/ai-refinement). EN slug avoids colliding with
+  // the existing /en/ai-for-real-estate-agents SEO page.
+  aiFeatures: { de: '/de/ki-funktionen', en: '/en/ai-features-platform' },
+  compliance: { de: '/de/compliance', en: '/en/compliance' },
+  whyImmob24: { de: '/de/warum-immob24', en: '/en/why-immob24' },
 };
 
 // DE is the primary market — used as x-default.

@@ -11,6 +11,10 @@ import HowItWorksDE from './pages/HowItWorksDE';
 import DemoDE from './pages/DemoDE';
 import CrmAlternativeDE from './pages/CrmAlternativeDE';
 import PricingDE from './pages/PricingDE';
+// AI-refinement pages (draft/ai-refinement)
+import AiFeaturesPage from './pages/AiFeaturesPage';
+import CompliancePage from './pages/CompliancePage';
+import WhyImmob24Page from './pages/WhyImmob24Page';
 // SEO landing pages — DE/EN pairs, staged under noindex pending entity registration
 import MaklersoftwareMuenchen from './pages/seo/MaklersoftwareMuenchen';
 import MaklersoftwareBerlin from './pages/seo/MaklersoftwareBerlin';
@@ -61,6 +65,14 @@ export default function App() {
 
         <Route path="/de/beta-agentenprogramm" element={<BetaProgrammDE />} />
         <Route path="/en/beta-agent-program" element={<BetaProgrammDE />} />
+
+        {/* AI-refinement pages (draft/ai-refinement) */}
+        <Route path="/de/ki-funktionen" element={<AiFeaturesPage />} />
+        <Route path="/en/ai-features-platform" element={<AiFeaturesPage />} />
+        <Route path="/de/compliance" element={<CompliancePage />} />
+        <Route path="/en/compliance" element={<CompliancePage />} />
+        <Route path="/de/warum-immob24" element={<WhyImmob24Page />} />
+        <Route path="/en/why-immob24" element={<WhyImmob24Page />} />
 
         {/*
           Tally redirects successful beta applicants here. The page fires

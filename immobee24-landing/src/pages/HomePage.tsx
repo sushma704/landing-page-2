@@ -22,6 +22,7 @@ import { useJsonLd } from '../lib/useJsonLd';
 import { organizationSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
+import { SevenCoWorkersBand, ComplianceBadgesStrip } from '../components/AiRefinementBands';
 
 const asString = (
   v: string | string[] | Array<{ q: string; a: string }> | string[][],
@@ -610,10 +611,16 @@ export default function HomePage() {
     AnswerBlock,
     Problem,
     Solution,
+    // AI-refinement (draft/ai-refinement): 7-co-worker band with demo-video
+    // teaser, additive between Solution and Features. Existing sections,
+    // forms and the chatbot stay untouched.
+    SevenCoWorkersBand,
     Features,
     CrmDifferentiation,
     HowItWorks,
     SocialProof,
+    // AI-refinement: compliance trust strip linking to /compliance.
+    ComplianceBadgesStrip,
     UseCases,
     PricingTeaser,
     FAQ,

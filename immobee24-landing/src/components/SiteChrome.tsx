@@ -1,6 +1,6 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ArrowRight, Menu, X } from 'lucide-react';
+import { ArrowRight, Check, ChevronDown, Globe, Menu, X } from 'lucide-react';
 import { useLanguage, languageOptions } from '../i18n';
 import type { Language } from '../i18n';
 import { pathFor } from '../i18n/pages';
@@ -67,33 +67,85 @@ export const Wordmark = ({ variant = 'dark' }: { variant?: 'dark' | 'light' }) =
   );
 };
 
+// AI-refinement: globe dropdown (Bitrix24-style) instead of inline pills —
+// shows every language with its native name and scales beyond 4 languages.
 const LanguageToggle = () => {
   const { language, switchLanguage } = useLanguage();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  // Close on outside click / Escape.
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  const current = languageOptions.find((o) => o.code === language);
   return (
-    <div
-      role="group"
-      aria-label="Sprache wählen"
-      className="inline-flex items-center rounded-full border border-charcoal/15 bg-white/80 backdrop-blur p-1 text-xs font-medium shadow-subtle"
-    >
-      {languageOptions.map((opt) => {
-        const active = opt.code === language;
-        return (
-          <button
-            key={opt.code}
-            type="button"
-            onClick={() => {
-              switchLanguage(opt.code as Language);
-              trackEvent('lang_toggle_click', { to: opt.code });
-            }}
-            aria-pressed={active}
-            className={`px-3 py-1 rounded-full transition-colors ${
-              active ? 'bg-charcoal text-white' : 'text-charcoal/70 hover:text-charcoal'
-            }`}
-          >
-            {opt.short}
-          </button>
-        );
-      })}
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((v) => !v)}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-label="Sprache wählen"
+        className="inline-flex items-center gap-1.5 rounded-full border border-charcoal/15 bg-white/80 backdrop-blur px-3 py-1.5 text-xs font-medium text-charcoal shadow-subtle hover:border-golden/50 transition-colors"
+      >
+        <Globe className="h-3.5 w-3.5 text-charcoal/60" />
+        {current?.short}
+        <ChevronDown
+          className={`h-3 w-3 text-charcoal/50 transition-transform ${open ? 'rotate-180' : ''}`}
+        />
+      </button>
+
+      {open && (
+        <div
+          role="listbox"
+          aria-label="Sprache wählen"
+          className="absolute end-0 top-full mt-2 w-48 rounded-xl border border-charcoal/10 bg-white shadow-card p-1.5 z-50"
+        >
+          {languageOptions.map((opt) => {
+            const active = opt.code === language;
+            return (
+              <button
+                key={opt.code}
+                type="button"
+                role="option"
+                aria-selected={active}
+                onClick={() => {
+                  setOpen(false);
+                  switchLanguage(opt.code as Language);
+                  trackEvent('lang_toggle_click', { to: opt.code });
+                }}
+                className={`w-full flex items-center justify-between rounded-lg px-3 py-2 text-sm text-start transition-colors ${
+                  active
+                    ? 'bg-golden/10 text-charcoal font-medium'
+                    : 'text-charcoal/75 hover:bg-cream'
+                }`}
+              >
+                <span>{opt.name}</span>
+                <span className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-semibold uppercase tracking-wide text-warm-gray">
+                    {opt.short}
+                  </span>
+                  {active && <Check className="h-3.5 w-3.5 text-golden-dark" />}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 };

@@ -22,6 +22,7 @@ import { useJsonLd } from '../lib/useJsonLd';
 import { organizationSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
+import { LiveInquiryCard } from '../components/LiveInquiryCard';
 import { SevenCoWorkersBand, ComplianceBadgesStrip } from '../components/AiRefinementBands';
 
 const asString = (
@@ -124,6 +125,10 @@ const Hero = () => {
               </li>
             ))}
           </ul>
+
+          {/* AI-refinement: live product moment — animated inquiry->reply
+              card (JSX/CSS only, fixed height, reduced-motion safe). */}
+          <LiveInquiryCard />
         </div>
       </div>
     </section>

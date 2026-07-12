@@ -2,6 +2,9 @@ import { useEffect } from 'react';
 
 type AlternateLink = { hreflang: string; href: string };
 
+// Site-wide social preview image — 1200x630, shipped from /public.
+const OG_IMAGE_URL = 'https://immob24.com/og-image.png';
+
 type MetaInput = {
   title?: string;
   description?: string;
@@ -88,6 +91,10 @@ export function useDocumentMeta({
       setCanonical(canonical);
       setProperty('og:url', canonical);
       setProperty('twitter:url', canonical);
+      // OG/Twitter images must be absolute URLs (relative paths are invalid
+      // for social crawlers). Re-assert the site-wide default on every route.
+      setProperty('og:image', OG_IMAGE_URL);
+      setProperty('twitter:image', OG_IMAGE_URL);
     }
     if (alternates) syncAlternates(alternates);
   }, [title, description, canonical, alternates, htmlLang]);

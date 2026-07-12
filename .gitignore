@@ -12,3 +12,4 @@ dist/
 .claude/settings.local.json
 **/public/videos/*.mp4
 **/dist-draft/
+**/media-master/

@@ -144,12 +144,14 @@ export const DemoVideoPlayer = () => {
           ref={videoRef}
           className="w-full aspect-video"
           controls={started}
-          preload="metadata"
+          preload="none"
           poster="/videos/demo-poster.jpg"
           onTimeUpdate={onTimeUpdate}
           onPlay={() => setStarted(true)}
         >
-          <source src="/videos/immob24-demo.mp4" type="video/mp4" />
+          {/* Web-optimised encode (H.264 1080p two-pass, faststart, <40MB).
+              The 317MB master stays out of the page entirely. */}
+          <source src="/videos/immob24-demo-web.mp4" type="video/mp4" />
         </video>
         {!started && (
           <button

@@ -1,29 +1,41 @@
-import { useEffect } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { ScrollToHash } from './lib/ScrollToHash';
 import { CookieBanner } from './components/CookieBanner';
 import { DEMO_BOOKING_URL } from './components/SiteChrome';
-import HomePage from './pages/HomePage';
-import ProduktDE from './pages/ProduktDE';
-import BetaProgrammDE from './pages/BetaProgrammDE';
-import BetaThankYou from './pages/BetaThankYou';
-import HowItWorksDE from './pages/HowItWorksDE';
-import DemoDE from './pages/DemoDE';
-import CrmAlternativeDE from './pages/CrmAlternativeDE';
-import PricingDE from './pages/PricingDE';
+
+// Route-level code splitting: every page is a lazy chunk so the initial
+// bundle carries only the shell (router, consent banner, SiteChrome, i18n).
+// Vite emits one chunk per page; shared pieces are hoisted automatically.
+const HomePage = lazy(() => import('./pages/HomePage'));
+const ProduktDE = lazy(() => import('./pages/ProduktDE'));
+const BetaProgrammDE = lazy(() => import('./pages/BetaProgrammDE'));
+const BetaThankYou = lazy(() => import('./pages/BetaThankYou'));
+const HowItWorksDE = lazy(() => import('./pages/HowItWorksDE'));
+const DemoDE = lazy(() => import('./pages/DemoDE'));
+const CrmAlternativeDE = lazy(() => import('./pages/CrmAlternativeDE'));
+const PricingDE = lazy(() => import('./pages/PricingDE'));
 // AI-refinement pages (draft/ai-refinement)
-import AiFeaturesPage from './pages/AiFeaturesPage';
-import CompliancePage from './pages/CompliancePage';
-import WhyImmob24Page from './pages/WhyImmob24Page';
+const AiFeaturesPage = lazy(() => import('./pages/AiFeaturesPage'));
+const CompliancePage = lazy(() => import('./pages/CompliancePage'));
+const WhyImmob24Page = lazy(() => import('./pages/WhyImmob24Page'));
 // SEO landing pages — DE/EN pairs, staged under noindex pending entity registration
-import MaklersoftwareMuenchen from './pages/seo/MaklersoftwareMuenchen';
-import MaklersoftwareBerlin from './pages/seo/MaklersoftwareBerlin';
-import MaklersoftwareHamburg from './pages/seo/MaklersoftwareHamburg';
-import KiFuerImmobilienmakler from './pages/seo/KiFuerImmobilienmakler';
-import RealEstateAgentSoftwareMunich from './pages/seo/RealEstateAgentSoftwareMunich';
-import RealEstateAgentSoftwareBerlin from './pages/seo/RealEstateAgentSoftwareBerlin';
-import RealEstateAgentSoftwareHamburg from './pages/seo/RealEstateAgentSoftwareHamburg';
-import AiForRealEstateAgents from './pages/seo/AiForRealEstateAgents';
+const MaklersoftwareMuenchen = lazy(() => import('./pages/seo/MaklersoftwareMuenchen'));
+const MaklersoftwareBerlin = lazy(() => import('./pages/seo/MaklersoftwareBerlin'));
+const MaklersoftwareHamburg = lazy(() => import('./pages/seo/MaklersoftwareHamburg'));
+const KiFuerImmobilienmakler = lazy(() => import('./pages/seo/KiFuerImmobilienmakler'));
+const RealEstateAgentSoftwareMunich = lazy(() => import('./pages/seo/RealEstateAgentSoftwareMunich'));
+const RealEstateAgentSoftwareBerlin = lazy(() => import('./pages/seo/RealEstateAgentSoftwareBerlin'));
+const RealEstateAgentSoftwareHamburg = lazy(() => import('./pages/seo/RealEstateAgentSoftwareHamburg'));
+const AiForRealEstateAgents = lazy(() => import('./pages/seo/AiForRealEstateAgents'));
+
+// Suspense fallback while a page chunk loads: centered golden spinner on the
+// site's cream ground (theme tokens only, no layout dependencies).
+const PageLoader = () => (
+  <div className="min-h-screen bg-cream flex items-center justify-center" role="status" aria-label="Loading">
+    <span className="h-10 w-10 rounded-full border-4 border-golden/25 border-t-golden animate-spin" />
+  </div>
+);
 
 export default function App() {
   // Any element marked with data-demo-cta opens the Cal.com booking page.
@@ -42,7 +54,8 @@ export default function App() {
     <>
       <ScrollToHash />
       <CookieBanner />
-      <Routes>
+      <Suspense fallback={<PageLoader />}>
+        <Routes>
         <Route path="/" element={<Navigate to="/de" replace />} />
 
         <Route path="/de" element={<HomePage />} />
@@ -142,8 +155,9 @@ export default function App() {
           element={<Navigate to="/en/beta-agent-program" replace />}
         />
 
-        <Route path="*" element={<HomePage />} />
-      </Routes>
+          <Route path="*" element={<HomePage />} />
+        </Routes>
+      </Suspense>
     </>
   );
 }

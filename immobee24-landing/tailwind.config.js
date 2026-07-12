@@ -57,7 +57,9 @@ module.exports = {
       fontFamily: {
         heading: ['Poppins', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
-        metric: ['DM Sans', 'sans-serif'],
+        // metric previously used DM Sans; consolidated to Inter (two-family
+        // font budget — see src/main.tsx).
+        metric: ['Inter', 'sans-serif'],
       },
       fontSize: {
         // Custom scale

@@ -9,16 +9,20 @@ import { bootstrapConsent } from './lib/consent'
 // declares (font-heading / font-body / font-metric). Loading from npm means no
 // request ever goes to fonts.googleapis.com — closes the LG München I (2022)
 // Google-Fonts GDPR exposure.
-import '@fontsource/poppins/500.css'
-import '@fontsource/poppins/600.css'
-import '@fontsource/poppins/700.css'
-import '@fontsource/inter/400.css'
-import '@fontsource/inter/500.css'
-import '@fontsource/inter/600.css'
-import '@fontsource/dm-sans/400.css'
-import '@fontsource/dm-sans/500.css'
-import '@fontsource/dm-sans/600.css'
-import '@fontsource/dm-sans/700.css'
+// Exactly two families: Poppins (headings, 600/700) and Inter (body/UI,
+// 400/500/600), latin + latin-ext subsets only. DM Sans was removed — the
+// font-metric token now resolves to Inter (tabular digits look identical at
+// metric sizes and we save ~200KB of font payload).
+import '@fontsource/poppins/latin-600.css'
+import '@fontsource/poppins/latin-ext-600.css'
+import '@fontsource/poppins/latin-700.css'
+import '@fontsource/poppins/latin-ext-700.css'
+import '@fontsource/inter/latin-400.css'
+import '@fontsource/inter/latin-ext-400.css'
+import '@fontsource/inter/latin-500.css'
+import '@fontsource/inter/latin-ext-500.css'
+import '@fontsource/inter/latin-600.css'
+import '@fontsource/inter/latin-ext-600.css'
 
 import './index.css'
 import App from './App.tsx'

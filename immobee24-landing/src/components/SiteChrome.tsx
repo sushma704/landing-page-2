@@ -26,7 +26,15 @@ export const DEMO_CTA_PROPS = {
   'data-demo-cta': 'true',
 };
 
-export const Wordmark = ({ variant = 'dark' }: { variant?: 'dark' | 'light' }) => {
+export const Wordmark = ({
+  variant = 'dark',
+  compact = false,
+}: {
+  variant?: 'dark' | 'light';
+  // compact: logo only — used in the fixed header so the whole bar stays one
+  // slim row (the tagline is ~280px wide and forced the nav to overflow).
+  compact?: boolean;
+}) => {
   const { language } = useLanguage();
   const { pathname } = useLocation();
   const homePath = pathFor('home', language);
@@ -47,13 +55,15 @@ export const Wordmark = ({ variant = 'dark' }: { variant?: 'dark' | 'light' }) =
         height={40}
         className="h-10 w-auto"
       />
-      <span
-        className={`hidden sm:block mt-1 text-[9px] font-medium uppercase tracking-[0.12em] whitespace-nowrap ${
-          variant === 'light' ? 'text-white/60' : 'text-slate'
-        }`}
-      >
-        The AI Operating System for Modern Real Estate
-      </span>
+      {!compact && (
+        <span
+          className={`hidden sm:block mt-1 text-[9px] font-medium uppercase tracking-[0.12em] whitespace-nowrap ${
+            variant === 'light' ? 'text-white/60' : 'text-slate'
+          }`}
+        >
+          The AI Operating System for Modern Real Estate
+        </span>
+      )}
     </>
   );
   return isHome ? (
@@ -185,7 +195,10 @@ export const Header = () => {
   };
   const pricingLink = { to: localPath('pricing'), label: asString(t('nav.pricing')) };
   const demoLink = { to: localPath('demo'), label: asString(t('nav.demo')) };
-  const betaLink = { to: localPath('beta'), label: asString(t('betaProgram.nav')) };
+  // Nav uses a short beta label so the bar stays one row; the page itself
+  // keeps its full name.
+  const BETA_NAV_LABEL: Record<string, string> = { de: 'Beta', en: 'Beta', fr: 'Bêta', ar: 'بيتا' };
+  const betaLink = { to: localPath('beta'), label: BETA_NAV_LABEL[language] ?? 'Beta' };
 
   return (
     <header
@@ -193,22 +206,22 @@ export const Header = () => {
         scrolled ? 'bg-white/90 backdrop-blur border-b border-charcoal/5' : 'bg-transparent'
       }`}
     >
-      <div className="container flex items-center justify-between py-4">
-        <Wordmark />
+      <div className="container flex items-center justify-between gap-4 py-4">
+        <Wordmark compact />
 
-        <nav className="hidden lg:flex items-center gap-2 ml-6">
+        <nav className="hidden xl:flex flex-1 items-center justify-center gap-0.5">
           {[aiFeaturesLink, productLink, howItWorksLink, crmAltLink, pricingLink, demoLink, betaLink].map((l) => (
             <Link
               key={l.to}
               to={l.to}
-              className="px-3 py-2 text-sm text-charcoal/70 hover:text-charcoal transition-colors whitespace-nowrap"
+              className="px-2.5 py-2 text-sm text-charcoal/70 hover:text-charcoal transition-colors whitespace-nowrap"
             >
               {l.label}
             </Link>
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-none items-center gap-2">
           <LanguageToggle />
           {/* AI-refinement: login entry to the immob24 app (dashboard is a
               separate application — always a full absolute URL). */}
@@ -231,7 +244,7 @@ export const Header = () => {
           <button
             type="button"
             aria-label="Menü"
-            className="lg:hidden p-2 -mr-2 text-charcoal"
+            className="xl:hidden p-2 -mr-2 text-charcoal"
             onClick={() => setOpen((v) => !v)}
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -240,7 +253,7 @@ export const Header = () => {
       </div>
 
       {open && (
-        <div className="lg:hidden border-t border-charcoal/5 bg-white">
+        <div className="xl:hidden border-t border-charcoal/5 bg-white">
           <div className="container py-3 flex flex-col gap-1">
             {[aiFeaturesLink, productLink, howItWorksLink, crmAltLink, pricingLink, demoLink, betaLink].map((l) => (
               <Link

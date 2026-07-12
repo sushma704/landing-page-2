@@ -25,5 +25,13 @@ export default defineConfig({
     // the marketing target group. Static files in public/ (logo, favicon,
     // legal .html) still land at the web root and keep their own ALB rules.
     assetsDir: 'mkt-assets',
+    // DRAFT-OFFLINE zip only: collapse the route-level lazy chunks back into
+    // one bundle. Dynamic import() is module-only syntax and cannot run from
+    // file:// (the PO opens the zip without a server); production builds keep
+    // full code splitting.
+    rollupOptions:
+      process.env.VITE_DRAFT_OFFLINE === '1'
+        ? { output: { inlineDynamicImports: true } }
+        : undefined,
   },
 })

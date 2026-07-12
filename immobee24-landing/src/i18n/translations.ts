@@ -1,7 +1,7 @@
 // Immob24 landing page translations.
 // German (de) is the source of truth; en translated from it.
 
-export type Language = 'en' | 'de';
+export type Language = 'en' | 'de' | 'fr' | 'ar';
 
 export const translations = {
   // ============================================

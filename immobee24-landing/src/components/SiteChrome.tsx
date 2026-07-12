@@ -112,9 +112,15 @@ export const Header = () => {
   }, []);
 
   // AI-refinement: flagship nav entry (inline label — translations.ts untouched)
+  const AI_NAV_LABEL: Record<string, string> = {
+    de: 'KI-Funktionen',
+    en: 'AI Features',
+    fr: 'Fonctions IA',
+    ar: 'ميزات الذكاء الاصطناعي',
+  };
   const aiFeaturesLink = {
     to: localPath('aiFeatures'),
-    label: language === 'de' ? 'KI-Funktionen' : 'AI Features',
+    label: AI_NAV_LABEL[language] ?? AI_NAV_LABEL.en,
   };
   const productLink = { to: localPath('produkt'), label: asString(t('nav.product')) };
   const howItWorksLink = {
@@ -152,6 +158,15 @@ export const Header = () => {
 
         <div className="flex items-center gap-3">
           <LanguageToggle />
+          {/* AI-refinement: login entry to the immob24 app (dashboard is a
+              separate application — always a full absolute URL). */}
+          <a
+            href="https://immob24.com/login"
+            onClick={() => trackEvent('header_login_click')}
+            className="hidden md:inline-flex items-center rounded-full border border-charcoal/15 px-4 py-2 text-sm font-medium text-charcoal hover:border-golden/50 hover:text-golden-dark transition-colors"
+          >
+            Login
+          </a>
           <button
             type="button"
             {...DEMO_CTA_PROPS}
@@ -185,6 +200,13 @@ export const Header = () => {
                 {l.label}
               </Link>
             ))}
+            <a
+              href="https://immob24.com/login"
+              onClick={() => setOpen(false)}
+              className="px-3 py-2 text-sm text-charcoal/80 hover:bg-cream rounded-lg"
+            >
+              Login
+            </a>
             <button
               type="button"
               {...DEMO_CTA_PROPS}
@@ -263,12 +285,20 @@ export const Footer = () => {
   const localPath = useLocalizedPath();
   const [activeModal, setActiveModal] = useState<LegalModalKey | null>(null);
 
-  const isDe = language === 'de';
+  const FOOT_AI: Record<string, string> = {
+    de: 'KI-Funktionen', en: 'AI Features', fr: 'Fonctions IA', ar: 'ميزات الذكاء الاصطناعي',
+  };
+  const FOOT_WHY: Record<string, string> = {
+    de: 'Warum Immob24', en: 'Why immob24', fr: 'Pourquoi immob24', ar: 'لماذا immob24',
+  };
+  const FOOT_COMPLIANCE: Record<string, string> = {
+    de: 'Compliance', en: 'Compliance', fr: 'Conformité', ar: 'الامتثال',
+  };
   const pageLinks = [
     // AI-refinement links (inline labels — translations.ts untouched)
-    { to: localPath('aiFeatures'), label: isDe ? 'KI-Funktionen' : 'AI Features' },
-    { to: localPath('whyImmob24'), label: isDe ? 'Warum Immob24' : 'Why immob24' },
-    { to: localPath('compliance'), label: 'Compliance' },
+    { to: localPath('aiFeatures'), label: FOOT_AI[language] ?? FOOT_AI.en },
+    { to: localPath('whyImmob24'), label: FOOT_WHY[language] ?? FOOT_WHY.en },
+    { to: localPath('compliance'), label: FOOT_COMPLIANCE[language] ?? FOOT_COMPLIANCE.en },
     { to: localPath('produkt'), label: asString(t('nav.product')) },
     { to: localPath('howItWorks'), label: asString(t('nav.howItWorks')) },
     { to: localPath('crmAlternative'), label: asString(t('nav.crmAlternative')) },

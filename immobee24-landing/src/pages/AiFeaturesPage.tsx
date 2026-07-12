@@ -4,7 +4,7 @@
 //   - Investor pitch deck slides 3–4 (7 AI co-workers, headline metrics)
 //   - immob24_India_v2 demo video content script (feature order + on-screen
 //     details; chapter times mirror DemoVideoPlayer)
-// Copy is inline DE/EN (SEO-page pattern) — translations.ts untouched.
+// Copy is inline DE/EN/FR/AR (SEO-page pattern) — translations.ts untouched.
 
 import type { LucideIcon } from 'lucide-react';
 import {
@@ -28,22 +28,30 @@ import { useDocumentMeta } from '../lib/useDocumentMeta';
 import { useJsonLd } from '../lib/useJsonLd';
 import { breadcrumbSchema } from '../lib/schema';
 import { useLanguage } from '../i18n';
+import type { Language } from '../i18n';
 import { SITE_ORIGIN, pathFor, urlFor } from '../i18n/pages';
 
 type Feature = {
   icon: LucideIcon;
-  title: { de: string; en: string };
-  lead: { de: string; en: string };
-  points: { de: string[]; en: string[] };
+  title: Record<Language, string>;
+  lead: Record<Language, string>;
+  points: Record<Language, string[]>;
 };
 
 const FEATURES: Feature[] = [
   {
     icon: FileText,
-    title: { de: 'PDF → KI-Exposé in 30 Sekunden', en: 'PDF to AI listing in 30 seconds' },
+    title: {
+      de: 'PDF → KI-Exposé in 30 Sekunden',
+      en: 'PDF to AI listing in 30 seconds',
+      fr: 'Du PDF à l’annonce IA en 30 secondes',
+      ar: 'من PDF إلى عرض عقاري بالذكاء الاصطناعي في 30 ثانية',
+    },
     lead: {
       de: 'Exposé-PDF hochladen — die KI extrahiert Daten, zählt Räume und Wohnfläche und erstellt ein veröffentlichungsfertiges Inserat.',
       en: 'Drop an exposé PDF — the AI extracts the data, counts rooms and living space, and produces a publish-ready listing.',
+      fr: 'Téléchargez un PDF d’exposé — l’IA extrait les données, compte les pièces et la surface habitable et crée une annonce prête à publier.',
+      ar: 'حمّلوا ملف PDF للعرض العقاري — يستخرج الذكاء الاصطناعي البيانات ويحسب عدد الغرف والمساحة السكنية وينشئ إعلانًا جاهزًا للنشر.',
     },
     points: {
       de: [
@@ -56,14 +64,31 @@ const FEATURES: Feature[] = [
         'Copy, details and formatting — fully generated',
         'Save as draft or publish straight away',
       ],
+      fr: [
+        'Extraction → enrichissement → révision dans un seul pipeline',
+        'Textes, détails et mise en forme — entièrement générés',
+        'Enregistrer comme brouillon ou publier directement',
+      ],
+      ar: [
+        'الاستخراج ← الإثراء ← المراجعة في مسار عمل واحد',
+        'النصوص والتفاصيل والتنسيق — مولَّدة بالكامل',
+        'الحفظ كمسودة أو النشر مباشرةً',
+      ],
     },
   },
   {
     icon: Sparkles,
-    title: { de: 'KI-Objektanreicherung', en: 'AI property enrichment' },
+    title: {
+      de: 'KI-Objektanreicherung',
+      en: 'AI property enrichment',
+      fr: 'Enrichissement immobilier par IA',
+      ar: 'إثراء بيانات العقارات بالذكاء الاصطناعي',
+    },
     lead: {
       de: 'Jedes Objekt bekommt automatisch Markt- und Lage-Intelligenz — von Nachbarschaftsdaten bis Preissimulation.',
       en: 'Every property is automatically enriched with market and locality intelligence — from neighborhood data to price simulation.',
+      fr: 'Chaque bien est automatiquement enrichi d’une intelligence de marché et de localisation — des données de quartier à la simulation de prix.',
+      ar: 'يحصل كل عقار تلقائيًا على معلومات ذكية عن السوق والموقع — من بيانات الحي إلى محاكاة الأسعار.',
     },
     points: {
       de: [
@@ -76,14 +101,31 @@ const FEATURES: Feature[] = [
         'AI description, media intelligence, target-audience profile',
         'Price intelligence and price simulation per property',
       ],
+      fr: [
+        'Intelligence de localisation : écoles, parcs, transports, bornes de recharge — collectée automatiquement',
+        'Description IA, analyse des médias, profil du groupe cible',
+        'Intelligence tarifaire et simulation de prix pour chaque bien',
+      ],
+      ar: [
+        'ذكاء الموقع: المدارس والحدائق والمواصلات العامة ومحطات الشحن — تُجمع تلقائيًا',
+        'وصف بالذكاء الاصطناعي، وتحليل الوسائط، وملف الجمهور المستهدف',
+        'ذكاء التسعير ومحاكاة السعر لكل عقار',
+      ],
     },
   },
   {
     icon: Link2,
-    title: { de: 'Smartes B-Link Objekt-Sharing', en: 'Smart B-Link property sharing' },
+    title: {
+      de: 'Smartes B-Link Objekt-Sharing',
+      en: 'Smart B-Link property sharing',
+      fr: 'Partage intelligent de biens avec B-Link',
+      ar: 'مشاركة ذكية للعقارات عبر B-Link',
+    },
     lead: {
       de: 'Ein Käufer-Link pro Objekt — mit integrierter KI, die Fragen sofort beantwortet und Interessenten aktiv begleitet.',
       en: 'One buyer link per property — with built-in AI that answers questions instantly and proactively engages visitors.',
+      fr: 'Un lien acheteur par bien — avec une IA intégrée qui répond instantanément aux questions et accompagne activement les prospects.',
+      ar: 'رابط واحد للمشترين لكل عقار — مع ذكاء اصطناعي مدمج يجيب عن الأسئلة فورًا ويرافق المهتمين بفاعلية.',
     },
     points: {
       de: [
@@ -96,14 +138,31 @@ const FEATURES: Feature[] = [
         'Link stats: views, chat sessions, call requests',
         'Buyers ask questions right on the listing',
       ],
+      fr: [
+        'Mode Q&R ou proactif, QR code, partage par WhatsApp et e-mail',
+        'Statistiques du lien : vues, sessions de chat, demandes de rappel',
+        'Les acheteurs posent leurs questions directement sur l’annonce',
+      ],
+      ar: [
+        'وضع الأسئلة والأجوبة أو الوضع الاستباقي، رمز QR، ومشاركة عبر WhatsApp والبريد الإلكتروني',
+        'إحصاءات الرابط: المشاهدات وجلسات المحادثة وطلبات الاتصال',
+        'يطرح المهتمون أسئلتهم مباشرةً على العرض العقاري',
+      ],
     },
   },
   {
     icon: MessageSquareText,
-    title: { de: '24/7 mehrsprachiger KI-Assistent', en: '24/7 multilingual AI assistant' },
+    title: {
+      de: '24/7 mehrsprachiger KI-Assistent',
+      en: '24/7 multilingual AI assistant',
+      fr: 'Assistant IA multilingue 24 h/24, 7 j/7',
+      ar: 'مساعد ذكاء اصطناعي متعدد اللغات على مدار الساعة',
+    },
     lead: {
       de: 'Bee beantwortet Anfragen rund um die Uhr — im Chat und sogar im Sprachanruf, in der Sprache des Interessenten.',
       en: 'Bee answers inquiries around the clock — in chat and even on voice calls, in the buyer’s language.',
+      fr: 'Bee répond aux demandes 24 h/24 — par chat et même par appel vocal, dans la langue du prospect.',
+      ar: 'يجيب Bee عن الاستفسارات على مدار الساعة — عبر المحادثة وحتى عبر المكالمات الصوتية، وبلغة العميل المهتم.',
     },
     points: {
       de: [
@@ -116,14 +175,31 @@ const FEATURES: Feature[] = [
         'Qualifies buyers and captures contact details in conversation',
         'Chat plus live voice calls with the AI agent',
       ],
+      fr: [
+        'Répond en 3 secondes, 24 h/24 et 7 j/7 — aucun lead ne se perd',
+        'Qualifie les prospects et recueille leurs coordonnées au fil de la conversation',
+        'Chat et appels vocaux en direct avec l’agente IA',
+      ],
+      ar: [
+        'يرد خلال 3 ثوانٍ، على مدار الساعة — لا يضيع أي عميل محتمل',
+        'يؤهّل المهتمين ويسجّل بيانات الاتصال أثناء المحادثة',
+        'محادثة نصية ومكالمات صوتية مباشرة مع وكيل الذكاء الاصطناعي',
+      ],
     },
   },
   {
     icon: UserCheck,
-    title: { de: 'KI-Chat mit menschlicher Kontrolle', en: 'AI chat with human control' },
+    title: {
+      de: 'KI-Chat mit menschlicher Kontrolle',
+      en: 'AI chat with human control',
+      fr: 'Chat IA sous contrôle humain',
+      ar: 'محادثة ذكاء اصطناعي بإشراف بشري',
+    },
     lead: {
       de: 'Volle Transparenz im Posteingang: Die KI antwortet — Sie übernehmen jederzeit mit einem Klick.',
       en: 'Full transparency in the inbox: the AI responds — you take over any conversation with one click.',
+      fr: 'Transparence totale dans la boîte de réception : l’IA répond — vous reprenez la main à tout moment d’un simple clic.',
+      ar: 'شفافية كاملة في صندوق الوارد: يجيب الذكاء الاصطناعي — وتتولّون زمام الأمور في أي وقت بنقرة واحدة.',
     },
     points: {
       de: [
@@ -136,14 +212,31 @@ const FEATURES: Feature[] = [
         'Lead scoring: HOT / WARM / COLD at a glance',
         'Every AI action visible and traceable',
       ],
+      fr: [
+        '« Take over / Release » — passage fluide entre l’IA et l’humain',
+        'Scoring des leads : HOT / WARM / COLD en un coup d’œil',
+        'Chaque action de l’IA est visible et traçable',
+      ],
+      ar: [
+        '"Take over / Release" — انتقال سلس بين الذكاء الاصطناعي والإنسان',
+        'تقييم العملاء المحتملين: HOT / WARM / COLD بنظرة واحدة',
+        'كل إجراء للذكاء الاصطناعي مرئي وقابل للتتبع',
+      ],
     },
   },
   {
     icon: KanbanSquare,
-    title: { de: 'Smarte Deal-Pipeline', en: 'Smart deal pipeline' },
+    title: {
+      de: 'Smarte Deal-Pipeline',
+      en: 'Smart deal pipeline',
+      fr: 'Pipeline de transactions intelligent',
+      ar: 'مسار صفقات ذكي',
+    },
     lead: {
       de: 'Vom ersten Kontakt bis zum Notartermin: Pipeline-Wert, gewichtete Prognose und Stillstands-Warnungen — bevor Deals kalt werden.',
       en: 'From first contact to closing: pipeline value, weighted forecast and stall-risk alerts — before deals go cold.',
+      fr: 'Du premier contact au rendez-vous chez le notaire : valeur du pipeline, prévisions pondérées et alertes de stagnation — avant que les deals ne refroidissent.',
+      ar: 'من أول تواصل حتى موعد التوقيع: قيمة مسار الصفقات، وتوقعات مرجّحة، وتنبيهات التعثر — قبل أن تفتر الصفقات.',
     },
     points: {
       de: [
@@ -156,14 +249,31 @@ const FEATURES: Feature[] = [
         'Probability, days-in-stage and an at-risk view per deal',
         'Proactive alerts before a deal stalls',
       ],
+      fr: [
+        'Kanban sur toutes les phases — de « Nouveau » à « Gagné »',
+        'Probabilité, jours par phase et vue à risque pour chaque deal',
+        'Alertes proactives avant qu’un deal ne s’enlise',
+      ],
+      ar: [
+        'لوحة كانبان عبر جميع المراحل — من "جديد" إلى "مكتمل"',
+        'الاحتمالية وعدد الأيام في كل مرحلة وعرض للصفقات المعرّضة للخطر',
+        'تنبيهات استباقية قبل أن تتعثر أي صفقة',
+      ],
     },
   },
   {
     icon: Megaphone,
-    title: { de: 'KI-Marketing-Kampagnen', en: 'AI marketing campaigns' },
+    title: {
+      de: 'KI-Marketing-Kampagnen',
+      en: 'AI marketing campaigns',
+      fr: 'Campagnes marketing pilotées par l’IA',
+      ar: 'حملات تسويقية بالذكاء الاصطناعي',
+    },
     lead: {
       de: 'Die KI erstellt Anzeigen, Zielgruppen und Budgets — und erklärt im Reasoning-Tab jede Entscheidung. Freigabe bleibt bei Ihnen.',
       en: 'The AI builds ads, audiences and budgets — and explains every decision in its reasoning tab. Approval stays with you.',
+      fr: 'L’IA crée les annonces, les audiences et les budgets — et explique chaque décision dans l’onglet Reasoning. La validation reste entre vos mains.',
+      ar: 'ينشئ الذكاء الاصطناعي الإعلانات والجماهير والميزانيات — ويشرح كل قرار في تبويب التحليل المنطقي. وتبقى الموافقة بأيديكم.',
     },
     points: {
       de: [
@@ -176,34 +286,52 @@ const FEATURES: Feature[] = [
         '“Pending approval” — no campaign launches without sign-off',
         'Reasoning: audience, budget pacing and variants transparently justified',
       ],
+      fr: [
+        'Campagnes Meta avec créations générées par l’IA (vidéo + carrousel)',
+        '« Pending Approval » — aucune campagne ne démarre sans validation',
+        'Reasoning : audience, répartition du budget et variantes justifiées en toute transparence',
+      ],
+      ar: [
+        'حملات Meta بمحتوى إبداعي مولَّد بالذكاء الاصطناعي (فيديو + عرض دوّار)',
+        '"Pending Approval" — لا تنطلق أي حملة دون موافقة',
+        'التحليل المنطقي: الجمهور المستهدف وتوزيع الميزانية والنسخ المختلفة مبررة بشفافية',
+      ],
     },
   },
 ];
 
-const COWORKERS: Array<{ de: string; en: string }> = [
-  { de: 'Lead-Responder', en: 'Lead Responder' },
-  { de: 'Conversation-Agent', en: 'Conversation Agent' },
-  { de: 'Viewing-Booker', en: 'Viewing Booker' },
-  { de: 'Listing-Creator', en: 'Listing Creator' },
-  { de: 'Deal-Monitor', en: 'Deal Monitor' },
-  { de: 'Daily-Brief-Agent', en: 'Daily Brief Agent' },
-  { de: 'Compliance-Guard', en: 'Compliance Guard' },
+const COWORKERS: Array<Record<Language, string>> = [
+  { de: 'Lead-Responder', en: 'Lead Responder', fr: 'Lead Responder', ar: 'Lead Responder' },
+  { de: 'Conversation-Agent', en: 'Conversation Agent', fr: 'Conversation Agent', ar: 'Conversation Agent' },
+  { de: 'Viewing-Booker', en: 'Viewing Booker', fr: 'Viewing Booker', ar: 'Viewing Booker' },
+  { de: 'Listing-Creator', en: 'Listing Creator', fr: 'Listing Creator', ar: 'Listing Creator' },
+  { de: 'Deal-Monitor', en: 'Deal Monitor', fr: 'Deal Monitor', ar: 'Deal Monitor' },
+  { de: 'Daily-Brief-Agent', en: 'Daily Brief Agent', fr: 'Daily Brief Agent', ar: 'Daily Brief Agent' },
+  { de: 'Compliance-Guard', en: 'Compliance Guard', fr: 'Compliance Guard', ar: 'Compliance Guard' },
 ];
 
 export default function AiFeaturesPage() {
   const { language } = useLanguage();
-  const isDe = language === 'de';
+  const L = <T,>(v: Record<Language, T>): T => v[language] ?? v.en;
   useDocumentMeta({
-    title: isDe
-      ? 'KI-Funktionen — 7 KI-Co-Worker für Immobilienmakler | Immob24'
-      : 'AI Features — 7 AI co-workers for real estate agents | Immob24',
-    description: isDe
-      ? 'PDF zu Exposé in 30 Sekunden, 24/7 KI-Assistent, Lead-Scoring, Deal-Pipeline und KI-Marketing — 7 KI-Co-Worker mit voller menschlicher Kontrolle.'
-      : 'PDF to listing in 30 seconds, 24/7 AI assistant, lead scoring, deal pipeline and AI marketing — 7 AI co-workers with full human control.',
+    title: L({
+      de: 'KI-Funktionen — 7 KI-Co-Worker für Immobilienmakler | Immob24',
+      en: 'AI Features — 7 AI co-workers for real estate agents | Immob24',
+      fr: 'Fonctions IA — 7 co-workers IA pour agents immobiliers | Immob24',
+      ar: 'وظائف الذكاء الاصطناعي — 7 مساعدين بالذكاء الاصطناعي لوكلاء العقارات | Immob24',
+    }),
+    description: L({
+      de: 'PDF zu Exposé in 30 Sekunden, 24/7 KI-Assistent, Lead-Scoring, Deal-Pipeline und KI-Marketing — 7 KI-Co-Worker mit voller menschlicher Kontrolle.',
+      en: 'PDF to listing in 30 seconds, 24/7 AI assistant, lead scoring, deal pipeline and AI marketing — 7 AI co-workers with full human control.',
+      fr: 'Du PDF à l’annonce en 30 secondes, assistant IA 24 h/24, scoring des leads, pipeline de transactions et marketing IA — 7 co-workers IA avec un contrôle humain total.',
+      ar: 'من PDF إلى إعلان في 30 ثانية، مساعد ذكاء اصطناعي على مدار الساعة، تقييم العملاء المحتملين، مسار الصفقات، وتسويق بالذكاء الاصطناعي — 7 مساعدين بالذكاء الاصطناعي مع تحكم بشري كامل.',
+    }),
     canonical: `${SITE_ORIGIN}${pathFor('aiFeatures', language)}`,
     alternates: [
       { hreflang: 'de', href: urlFor('aiFeatures', 'de') },
       { hreflang: 'en', href: urlFor('aiFeatures', 'en') },
+      { hreflang: 'fr', href: urlFor('aiFeatures', 'fr') },
+      { hreflang: 'ar', href: urlFor('aiFeatures', 'ar') },
       { hreflang: 'x-default', href: urlFor('aiFeatures', 'de') },
     ],
     htmlLang: language,
@@ -211,8 +339,19 @@ export default function AiFeaturesPage() {
   useJsonLd(
     [
       breadcrumbSchema([
-        { name: isDe ? 'Start' : 'Home', path: pathFor('home', language) },
-        { name: isDe ? 'KI-Funktionen' : 'AI Features', path: pathFor('aiFeatures', language) },
+        {
+          name: L({ de: 'Start', en: 'Home', fr: 'Accueil', ar: 'الرئيسية' }),
+          path: pathFor('home', language),
+        },
+        {
+          name: L({
+            de: 'KI-Funktionen',
+            en: 'AI Features',
+            fr: 'Fonctions IA',
+            ar: 'وظائف الذكاء الاصطناعي',
+          }),
+          path: pathFor('aiFeatures', language),
+        },
       ]),
     ],
     'ai-features',
@@ -231,17 +370,28 @@ export default function AiFeaturesPage() {
         <div className="container relative text-center max-w-3xl mx-auto">
           <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
             <Bot className="h-3.5 w-3.5" />
-            {isDe ? 'Die KI-Plattform' : 'The AI platform'}
+            {L({
+              de: 'Die KI-Plattform',
+              en: 'The AI platform',
+              fr: 'La plateforme IA',
+              ar: 'منصة الذكاء الاصطناعي',
+            })}
           </span>
           <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
-            {isDe
-              ? 'Jeder Makler bekommt 7 KI-Co-Worker'
-              : 'Every agent gets 7 AI co-workers'}
+            {L({
+              de: 'Jeder Makler bekommt 7 KI-Co-Worker',
+              en: 'Every agent gets 7 AI co-workers',
+              fr: 'Chaque agent immobilier dispose de 7 co-workers IA',
+              ar: 'كل وكيل عقاري يحصل على 7 مساعدين بالذكاء الاصطناعي',
+            })}
           </h1>
           <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">
-            {isDe
-              ? 'Sieben spezialisierte KI-Agenten übernehmen die operative Arbeit — vom Lead bis zum Abschluss. Sie behalten die volle Kontrolle und geben jede Aktion frei.'
-              : 'Seven specialised AI agents handle the operational load — from lead to close. You keep full visibility and approve every action.'}
+            {L({
+              de: 'Sieben spezialisierte KI-Agenten übernehmen die operative Arbeit — vom Lead bis zum Abschluss. Sie behalten die volle Kontrolle und geben jede Aktion frei.',
+              en: 'Seven specialised AI agents handle the operational load — from lead to close. You keep full visibility and approve every action.',
+              fr: 'Sept agents IA spécialisés prennent en charge le travail opérationnel — du lead à la signature. Vous gardez le contrôle total et validez chaque action.',
+              ar: 'سبعة وكلاء ذكاء اصطناعي متخصصين يتولّون العمل التشغيلي — من العميل المحتمل حتى إتمام الصفقة. تحتفظون بالسيطرة الكاملة وتوافقون على كل إجراء.',
+            })}
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-2">
             {COWORKERS.map((c) => (
@@ -249,7 +399,7 @@ export default function AiFeaturesPage() {
                 key={c.en}
                 className="rounded-full bg-white border border-charcoal/10 px-3.5 py-1.5 text-sm text-charcoal shadow-subtle"
               >
-                {isDe ? c.de : c.en}
+                {L(c)}
               </span>
             ))}
           </div>
@@ -261,12 +411,20 @@ export default function AiFeaturesPage() {
         <div className="container">
           <div className="max-w-2xl">
             <h2 className="font-heading text-section-mobile md:text-section text-charcoal">
-              {isDe ? 'Der Workflow — live im Video' : 'Watch the workflow live'}
+              {L({
+                de: 'Der Workflow — live im Video',
+                en: 'Watch the workflow live',
+                fr: 'Le workflow — en vidéo',
+                ar: 'سير العمل — مباشرةً في الفيديو',
+              })}
             </h2>
             <p className="mt-3 text-slate">
-              {isDe
-                ? 'Alle sieben Funktionen in 10 Minuten — direkt aus dem Produkt. Kapitel anklicken, um zu einer Funktion zu springen.'
-                : 'All seven features in 10 minutes — straight from the product. Click a chapter to jump to a feature.'}
+              {L({
+                de: 'Alle sieben Funktionen in 10 Minuten — direkt aus dem Produkt. Kapitel anklicken, um zu einer Funktion zu springen.',
+                en: 'All seven features in 10 minutes — straight from the product. Click a chapter to jump to a feature.',
+                fr: 'Les sept fonctions en 10 minutes — directement depuis le produit. Cliquez sur un chapitre pour accéder à une fonction.',
+                ar: 'جميع الوظائف السبع في 10 دقائق — مباشرةً من المنتج. انقروا على أحد الفصول للانتقال إلى الوظيفة المطلوبة.',
+              })}
             </p>
           </div>
           <div className="mt-8">
@@ -280,12 +438,20 @@ export default function AiFeaturesPage() {
         <div className="container">
           <div className="max-w-2xl">
             <h2 className="font-heading text-section-mobile md:text-section text-charcoal">
-              {isDe ? 'Sieben Funktionen, ein System' : 'Seven features, one system'}
+              {L({
+                de: 'Sieben Funktionen, ein System',
+                en: 'Seven features, one system',
+                fr: 'Sept fonctions, un seul système',
+                ar: 'سبع وظائف، نظام واحد',
+              })}
             </h2>
             <p className="mt-3 text-slate">
-              {isDe
-                ? 'Ein verbundenes System statt Insellösungen — kein Tool-Wechsel, keine Integrations-Kopfschmerzen.'
-                : 'One connected system instead of point solutions — no tool switching, no integration headaches.'}
+              {L({
+                de: 'Ein verbundenes System statt Insellösungen — kein Tool-Wechsel, keine Integrations-Kopfschmerzen.',
+                en: 'One connected system instead of point solutions — no tool switching, no integration headaches.',
+                fr: 'Un système connecté plutôt que des solutions isolées — pas de changement d’outil, pas de casse-tête d’intégration.',
+                ar: 'نظام واحد مترابط بدلًا من حلول متفرقة — لا تنقّل بين الأدوات ولا متاعب في التكامل.',
+              })}
             </p>
           </div>
 
@@ -302,11 +468,11 @@ export default function AiFeaturesPage() {
                   <span className="font-metric text-sm text-warm-gray">0{i + 1}</span>
                 </div>
                 <h3 className="mt-4 font-heading text-subhead text-charcoal">
-                  {isDe ? f.title.de : f.title.en}
+                  {L(f.title)}
                 </h3>
-                <p className="mt-2 text-slate">{isDe ? f.lead.de : f.lead.en}</p>
+                <p className="mt-2 text-slate">{L(f.lead)}</p>
                 <ul className="mt-4 space-y-2">
-                  {(isDe ? f.points.de : f.points.en).map((pt) => (
+                  {L(f.points).map((pt) => (
                     <li key={pt} className="flex items-start gap-2 text-sm text-slate">
                       <CheckCircle2 className="h-4 w-4 mt-0.5 flex-none text-honey-green" />
                       {pt}
@@ -326,18 +492,29 @@ export default function AiFeaturesPage() {
             <div className="flex items-center gap-2 text-golden">
               <ShieldCheck className="h-5 w-5" />
               <span className="text-xs font-semibold uppercase tracking-wide">
-                {isDe ? 'DSGVO · EU AI Act' : 'GDPR · EU AI Act'}
+                {L({
+                  de: 'DSGVO · EU AI Act',
+                  en: 'GDPR · EU AI Act',
+                  fr: 'RGPD · EU AI Act',
+                  ar: 'GDPR · EU AI Act',
+                })}
               </span>
             </div>
             <h2 className="mt-3 font-heading text-2xl md:text-3xl">
-              {isDe
-                ? 'KI mit Kontrolle: konform durch Architektur, nicht nachgerüstet'
-                : 'AI with control: compliant by architecture, not retrofitted'}
+              {L({
+                de: 'KI mit Kontrolle: konform durch Architektur, nicht nachgerüstet',
+                en: 'AI with control: compliant by architecture, not retrofitted',
+                fr: 'L’IA sous contrôle : conforme par architecture, pas par retouche',
+                ar: 'ذكاء اصطناعي تحت السيطرة: متوافق بحكم البنية، لا بالترقيع اللاحق',
+              })}
             </h2>
             <p className="mt-3 text-white/70 max-w-2xl">
-              {isDe
-                ? 'Jede KI-Aktion ist sichtbar, freigabepflichtig und protokolliert. KI-Chat und KI-Inhalte sind als solche gekennzeichnet.'
-                : 'Every AI action is visible, approval-gated and logged. AI chat and AI-generated content are labelled as such.'}
+              {L({
+                de: 'Jede KI-Aktion ist sichtbar, freigabepflichtig und protokolliert. KI-Chat und KI-Inhalte sind als solche gekennzeichnet.',
+                en: 'Every AI action is visible, approval-gated and logged. AI chat and AI-generated content are labelled as such.',
+                fr: 'Chaque action de l’IA est visible, soumise à validation et journalisée. Le chat IA et les contenus générés par l’IA sont signalés comme tels.',
+                ar: 'كل إجراء للذكاء الاصطناعي مرئي وخاضع للموافقة ومسجَّل. محادثات الذكاء الاصطناعي ومحتوياته موسومة بوضوح.',
+              })}
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
@@ -346,14 +523,24 @@ export default function AiFeaturesPage() {
               className="inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-2.5 text-sm font-medium hover:bg-white/10 transition-colors"
             >
               <BadgeCheck className="h-4 w-4" />
-              {isDe ? 'Compliance ansehen' : 'See compliance'}
+              {L({
+                de: 'Compliance ansehen',
+                en: 'See compliance',
+                fr: 'Voir la conformité',
+                ar: 'استعراض الامتثال',
+              })}
             </Link>
             <button
               type="button"
               {...DEMO_CTA_PROPS}
               className="inline-flex items-center gap-2 rounded-full bg-gradient-golden px-5 py-2.5 text-sm font-semibold text-charcoal shadow-golden"
             >
-              {isDe ? 'Demo anfragen' : 'Request a demo'}
+              {L({
+                de: 'Demo anfragen',
+                en: 'Request a demo',
+                fr: 'Demander une démo',
+                ar: 'طلب عرض توضيحي',
+              })}
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>

@@ -74,6 +74,31 @@ export default function App() {
         <Route path="/de/warum-immob24" element={<WhyImmob24Page />} />
         <Route path="/en/why-immob24" element={<WhyImmob24Page />} />
 
+        {/* AI-refinement: French + Arabic core routes (draft/ai-refinement).
+            Pages localise themselves via useLanguage(); untranslated strings
+            fall back to English. */}
+        <Route path="/fr" element={<HomePage />} />
+        <Route path="/ar" element={<HomePage />} />
+        <Route path="/fr/produit" element={<ProduktDE />} />
+        <Route path="/ar/product" element={<ProduktDE />} />
+        <Route path="/fr/comment-ca-marche" element={<HowItWorksDE />} />
+        <Route path="/ar/how-it-works" element={<HowItWorksDE />} />
+        <Route path="/fr/alternative-crm-immobilier" element={<CrmAlternativeDE />} />
+        <Route path="/ar/real-estate-crm-alternative" element={<CrmAlternativeDE />} />
+        <Route path="/fr/tarifs" element={<PricingDE />} />
+        <Route path="/ar/pricing" element={<PricingDE />} />
+        <Route path="/fr/demo" element={<DemoDE />} />
+        <Route path="/ar/demo" element={<DemoDE />} />
+        <Route path="/fr/programme-beta-agents" element={<BetaProgrammDE />} />
+        <Route path="/ar/beta-agent-program" element={<BetaProgrammDE />} />
+        <Route path="/fr/fonctions-ia" element={<AiFeaturesPage />} />
+        <Route path="/ar/ai-features-platform" element={<AiFeaturesPage />} />
+        <Route path="/fr/conformite" element={<CompliancePage />} />
+        <Route path="/ar/compliance" element={<CompliancePage />} />
+        <Route path="/fr/pourquoi-immob24" element={<WhyImmob24Page />} />
+        <Route path="/ar/why-immob24" element={<WhyImmob24Page />} />
+
+
         {/*
           Tally redirects successful beta applicants here. The page fires
           fbq('track', 'Lead') on mount so Meta Ads records the conversion

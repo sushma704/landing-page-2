@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Language, translations } from './translations';
+import { frOverlay } from './fr';
+import { arOverlay } from './ar';
 import { alternateForLanguage, languageFromPath } from './pages';
 import { trackEvent } from '../lib/analytics';
 
@@ -21,9 +23,11 @@ function detectInitialLanguage(): Language {
   const urlLang = languageFromPath(window.location.pathname);
   if (urlLang) return urlLang;
   const saved = localStorage.getItem(STORAGE_KEY);
-  if (saved === 'de' || saved === 'en') return saved;
+  if (saved === 'de' || saved === 'en' || saved === 'fr' || saved === 'ar') return saved;
   const browserLang = navigator.language?.toLowerCase() ?? '';
   if (browserLang.startsWith('en')) return 'en';
+  if (browserLang.startsWith('fr')) return 'fr';
+  if (browserLang.startsWith('ar')) return 'ar';
   return 'de';
 }
 
@@ -43,7 +47,8 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, language);
     document.documentElement.lang = language;
-    document.documentElement.dir = 'ltr';
+    // Arabic is right-to-left; all other supported languages are LTR.
+    document.documentElement.dir = language === 'ar' ? 'rtl' : 'ltr';
     trackEvent('language_change', { language });
   }, [language]);
 
@@ -56,8 +61,19 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
 
   const t = (path: string) => {
     const keys = path.split('.');
-    let result: any = translations;
 
+    // fr/ar live in overlay dictionaries (same nesting, plain values at the
+    // leaves). Missing keys fall back to English below — so partially
+    // translated languages degrade gracefully instead of showing key paths.
+    if (language === 'fr' || language === 'ar') {
+      let o: any = language === 'fr' ? frOverlay : arOverlay;
+      for (const key of keys) {
+        o = o && typeof o === 'object' ? o[key] : undefined;
+      }
+      if (typeof o === 'string' || Array.isArray(o)) return o;
+    }
+
+    let result: any = translations;
     for (const key of keys) {
       if (result && typeof result === 'object') {
         result = result[key];
@@ -70,6 +86,10 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     if (result && typeof result === 'object' && !Array.isArray(result)) {
       if (language in result) {
         return result[language];
+      }
+      // fr/ar leaf not present in the base dictionary -> English fallback.
+      if ('en' in result) {
+        return result.en;
       }
     }
 
@@ -95,4 +115,6 @@ export function useLanguage() {
 export const languageOptions: Array<{ code: Language; name: string; short: string }> = [
   { code: 'de', name: 'Deutsch', short: 'DE' },
   { code: 'en', name: 'English', short: 'EN' },
+  { code: 'fr', name: 'Français', short: 'FR' },
+  { code: 'ar', name: 'العربية', short: 'AR' },
 ];

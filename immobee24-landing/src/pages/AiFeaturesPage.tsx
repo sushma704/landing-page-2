@@ -33,6 +33,8 @@ import { SITE_ORIGIN, pathFor, urlFor } from '../i18n/pages';
 
 type Feature = {
   icon: LucideIcon;
+  // Product screenshot extracted from the demo video (public/videos/features/)
+  shot: string;
   title: Record<Language, string>;
   lead: Record<Language, string>;
   points: Record<Language, string[]>;
@@ -41,6 +43,7 @@ type Feature = {
 const FEATURES: Feature[] = [
   {
     icon: FileText,
+    shot: '/videos/features/f1-pdf-extraction.jpg',
     title: {
       de: 'PDF → KI-Exposé in 30 Sekunden',
       en: 'PDF to AI listing in 30 seconds',
@@ -78,6 +81,7 @@ const FEATURES: Feature[] = [
   },
   {
     icon: Sparkles,
+    shot: '/videos/features/f2-enrichment.jpg',
     title: {
       de: 'KI-Objektanreicherung',
       en: 'AI property enrichment',
@@ -115,6 +119,7 @@ const FEATURES: Feature[] = [
   },
   {
     icon: Link2,
+    shot: '/videos/features/f3-blink-buyer.jpg',
     title: {
       de: 'Smartes B-Link Objekt-Sharing',
       en: 'Smart B-Link property sharing',
@@ -152,6 +157,7 @@ const FEATURES: Feature[] = [
   },
   {
     icon: MessageSquareText,
+    shot: '/videos/features/f4-bee-chat.jpg',
     title: {
       de: '24/7 mehrsprachiger KI-Assistent',
       en: '24/7 multilingual AI assistant',
@@ -189,6 +195,7 @@ const FEATURES: Feature[] = [
   },
   {
     icon: UserCheck,
+    shot: '/videos/features/f5-human-control.jpg',
     title: {
       de: 'KI-Chat mit menschlicher Kontrolle',
       en: 'AI chat with human control',
@@ -226,6 +233,7 @@ const FEATURES: Feature[] = [
   },
   {
     icon: KanbanSquare,
+    shot: '/videos/features/f6-deal-pipeline.jpg',
     title: {
       de: 'Smarte Deal-Pipeline',
       en: 'Smart deal pipeline',
@@ -263,6 +271,7 @@ const FEATURES: Feature[] = [
   },
   {
     icon: Megaphone,
+    shot: '/videos/features/f7-campaigns.jpg',
     title: {
       de: 'KI-Marketing-Kampagnen',
       en: 'AI marketing campaigns',
@@ -455,12 +464,45 @@ export default function AiFeaturesPage() {
             </p>
           </div>
 
+          {/* Dashboard overview — real product screenshot from the demo video */}
+          <div className="mt-10 relative rounded-2xl overflow-hidden shadow-card border border-charcoal/10">
+            <img
+              src="/videos/features/dashboard-properties.jpg"
+              alt={L({
+                de: 'Immob24 Dashboard — Objektübersicht',
+                en: 'immob24 dashboard — property overview',
+                fr: 'Tableau de bord Immob24 — aperçu des biens',
+                ar: 'لوحة تحكم Immob24 — نظرة عامة على العقارات',
+              })}
+              width={1920}
+              height={1080}
+              loading="lazy"
+              className="w-full aspect-[2/1] object-cover object-top"
+            />
+            <span className="absolute bottom-3 start-3 rounded-full bg-charcoal/80 px-3 py-1 text-xs font-medium text-white">
+              {L({
+                de: 'Aus dem Produkt: das Immob24 Dashboard',
+                en: 'From the product: the immob24 dashboard',
+                fr: 'Extrait du produit : le tableau de bord Immob24',
+                ar: 'من المنتج: لوحة تحكم Immob24',
+              })}
+            </span>
+          </div>
+
           <div className="mt-10 grid md:grid-cols-2 gap-6">
             {FEATURES.map((f, i) => (
               <article
                 key={f.title.en}
                 className="rounded-2xl bg-white border border-charcoal/5 shadow-card p-7"
               >
+                <img
+                  src={f.shot}
+                  alt={L(f.title)}
+                  width={1920}
+                  height={1080}
+                  loading="lazy"
+                  className="mb-5 w-full aspect-video object-cover rounded-xl border border-charcoal/10"
+                />
                 <div className="flex items-center gap-3">
                   <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-golden/10 text-golden-dark">
                     <f.icon className="h-5 w-5" />

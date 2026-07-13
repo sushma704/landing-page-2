@@ -14,6 +14,16 @@ import {
   ListChecks,
   Workflow,
   Bell,
+  Bot,
+  Building2,
+  CalendarCheck2,
+  Clock,
+  LayoutGrid,
+  LineChart,
+  Megaphone,
+  MessageCircle,
+  ShieldCheck,
+  UserCheck,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
@@ -52,21 +62,195 @@ const asPairArray = (v: TVal): string[][] =>
   Array.isArray(v) && v.every((x) => Array.isArray(x)) ? (v as string[][]) : [];
 
 
+// ── Full-width hero carousel (HomeLead pattern, user request 2026-07-14):
+// three slides — module tiles + real dashboard shot, the 4-step journey,
+// and the hot-leads slide with the Bee transcript + floating stat chips.
+// Auto-advances every 9s (paused on hover, off under reduced motion).
+type HeroCopy = Record<string, string>;
+
+const H2_LINES: Array<{ top: HeroCopy; golden: HeroCopy; sub: HeroCopy }> = [
+  {
+    top: { de: '', en: '', fr: '', ar: '' }, // slide 1 uses the i18n headline
+    golden: { de: '', en: '', fr: '', ar: '' },
+    sub: { de: '', en: '', fr: '', ar: '' },
+  },
+  {
+    top: {
+      de: 'Verpassen Sie keine wertvollen Leads',
+      en: 'Stop missing valuable leads',
+      fr: 'Ne manquez plus aucun lead précieux',
+      ar: 'لا تفوتوا أي عميل محتمل ثمين',
+    },
+    golden: {
+      de: 'Automatisch bis zur Besichtigung',
+      en: 'Automatically through to the viewing',
+      fr: 'Automatiquement jusqu’à la visite',
+      ar: 'تلقائيًا حتى موعد المعاينة',
+    },
+    sub: {
+      de: 'Bee erfasst, antwortet und qualifiziert — Sie geben frei, der Termin landet im Kalender.',
+      en: 'Bee captures, replies and qualifies — you approve, and the viewing lands in the calendar.',
+      fr: 'Bee capte, répond et qualifie — vous validez, la visite arrive au calendrier.',
+      ar: 'يلتقط Bee الاستفسار ويرد ويؤهل — أنتم توافقون ويُحجز الموعد في التقويم.',
+    },
+  },
+  {
+    top: {
+      de: 'Keine heißen Leads mehr verlieren',
+      en: 'Stop losing hot leads',
+      fr: 'Ne perdez plus vos leads chauds',
+      ar: 'لا تخسروا العملاء المتحمسين بعد الآن',
+    },
+    golden: {
+      de: 'Bee antwortet sofort',
+      en: 'Bee replies instantly',
+      fr: 'Bee répond instantanément',
+      ar: 'Bee يرد فورًا',
+    },
+    sub: {
+      de: 'Die KI führt das Gespräch mit echten Objektdaten — nachvollziehbar, protokolliert, mit Freigabe.',
+      en: 'The AI runs the conversation on real listing data — explainable, logged, approval-gated.',
+      fr: 'L’IA mène la conversation sur de vraies données d’annonce — explicable, journalisée, soumise à validation.',
+      ar: 'يدير الذكاء الاصطناعي المحادثة ببيانات العقار الحقيقية — قابلة للتفسير ومسجلة وخاضعة للموافقة.',
+    },
+  },
+];
+
+const HERO_MODULES: Array<{ icon: ComponentType<{ className?: string }>; label: HeroCopy }> = [
+  { icon: LayoutGrid, label: { de: 'Dashboard', en: 'Dashboard', fr: 'Tableau de bord', ar: 'لوحة التحكم' } },
+  { icon: Building2, label: { de: 'Objekte', en: 'Properties', fr: 'Biens', ar: 'العقارات' } },
+  { icon: Users, label: { de: 'Leads', en: 'Leads', fr: 'Leads', ar: 'العملاء' } },
+  { icon: MessageCircle, label: { de: 'Nachrichten', en: 'Messages', fr: 'Messages', ar: 'الرسائل' } },
+  { icon: Megaphone, label: { de: 'Kampagnen', en: 'Campaigns', fr: 'Campagnes', ar: 'الحملات' } },
+  { icon: LineChart, label: { de: 'Analytics', en: 'Analytics', fr: 'Analytics', ar: 'التحليلات' } },
+];
+
+const HERO_STEPS: Array<{
+  icon: ComponentType<{ className?: string }>;
+  title: HeroCopy;
+  body: HeroCopy;
+}> = [
+  {
+    icon: Inbox,
+    title: { de: 'Lead erkannt', en: 'Lead detected', fr: 'Lead détecté', ar: 'تم رصد العميل' },
+    body: {
+      de: 'Anfrage aus Portal-E-Mail, Website oder Formular — sofort erfasst.',
+      en: 'Inquiry from portal email, website or form — captured instantly.',
+      fr: 'Demande via e-mail de portail, site ou formulaire — captée instantanément.',
+      ar: 'استفسار من بريد البوابة أو الموقع أو النموذج — يُلتقط فورًا.',
+    },
+  },
+  {
+    icon: Bot,
+    title: {
+      de: 'Bee antwortet & qualifiziert',
+      en: 'Bee replies & qualifies',
+      fr: 'Bee répond et qualifie',
+      ar: 'Bee يرد ويؤهل',
+    },
+    body: {
+      de: 'Antwort in Sekunden; Budget und Zeitraum direkt im Gespräch.',
+      en: 'A reply in seconds; budget and timeframe right in the conversation.',
+      fr: 'Réponse en quelques secondes ; budget et délai dans la conversation.',
+      ar: 'رد خلال ثوانٍ؛ الميزانية والإطار الزمني في المحادثة مباشرة.',
+    },
+  },
+  {
+    icon: UserCheck,
+    title: { de: 'Sie geben frei', en: 'You approve', fr: 'Vous validez', ar: 'أنتم توافقون' },
+    body: {
+      de: 'Terminvorschläge warten in der Freigabe-Warteschlange — Approve oder Decline.',
+      en: 'Booking requests wait in the approval queue — Approve or Decline.',
+      fr: 'Les demandes de rendez-vous attendent dans la file d’approbation.',
+      ar: 'تنتظر طلبات الحجز في قائمة الموافقات — موافقة أو رفض.',
+    },
+  },
+  {
+    icon: CalendarCheck2,
+    title: {
+      de: 'Termin & CRM aktuell',
+      en: 'Viewing booked, CRM updated',
+      fr: 'Visite réservée, CRM à jour',
+      ar: 'المعاينة محجوزة والنظام محدث',
+    },
+    body: {
+      de: 'Besichtigung im Kalender; Verlauf, Score und nächste Schritte dokumentiert.',
+      en: 'The viewing lands in the calendar; history, score and next steps documented.',
+      fr: 'La visite arrive au calendrier ; historique, score et étapes documentés.',
+      ar: 'تصل المعاينة إلى التقويم؛ ويُوثق السجل والتقييم والخطوات التالية.',
+    },
+  },
+];
+
+const HERO_STATS: Array<{ icon: ComponentType<{ className?: string }>; stat: string; label: HeroCopy }> = [
+  { icon: Zap, stat: '3s', label: { de: 'Erstantwort', en: 'First reply', fr: 'Première réponse', ar: 'الرد الأول' } },
+  { icon: Clock, stat: '24/7', label: { de: 'erreichbar', en: 'available', fr: 'disponible', ar: 'متاح' } },
+  { icon: ShieldCheck, stat: 'DSGVO', label: { de: 'EU-Hosting', en: 'EU-hosted', fr: 'hébergé en UE', ar: 'استضافة أوروبية' } },
+  { icon: UserCheck, stat: '100%', label: { de: 'Freigabe-Kontrolle', en: 'approval control', fr: 'contrôle de validation', ar: 'تحكم بالموافقات' } },
+];
+
+const BrowserFrame = ({ src, alt, path }: { src: string; alt: string; path: string }) => (
+  <div className="overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-card">
+    <div className="flex items-center gap-1.5 border-b border-charcoal/10 bg-cream/70 px-4 py-2.5">
+      <span className="h-2.5 w-2.5 rounded-full bg-health-crit/70" />
+      <span className="h-2.5 w-2.5 rounded-full bg-health-warn/70" />
+      <span className="h-2.5 w-2.5 rounded-full bg-honey-green/70" />
+      <span className="ms-3 truncate rounded-md bg-charcoal/5 px-3 py-0.5 text-[10px] text-slate">{path}</span>
+    </div>
+    <img src={src} alt={alt} width={1600} height={892} loading="eager" className="w-full" />
+  </div>
+);
+
 const Hero = () => {
-  const { t } = useLanguage();
-  const localPath = useLocalizedPath();
-  const bullets = asStringArray(t('produkt.hero.bullets'));
-  // Entrance (spec step 2): headline split into two balanced lines that fade
-  // up with a 90ms stagger; subtext/CTAs/badges follow. .hero-in is the
-  // shared mount animation (reduced-motion renders final state).
-  const headline = asString(t('produkt.hero.headline'));
-  const words = headline.split(' ');
-  const mid = Math.ceil(words.length / 2);
-  const lines = [words.slice(0, mid).join(' '), words.slice(mid).join(' ')];
+  const { t, language } = useLanguage();
+  const reduced = usePrefersReducedMotion();
+  const L = (v: HeroCopy) => v[language] ?? v.en;
+  const [active, setActive] = useState(0);
+  const hover = useRef(false);
+
+  useEffect(() => {
+    if (reduced) return;
+    const id = window.setInterval(() => {
+      if (!hover.current) setActive((a) => (a + 1) % 3);
+    }, 9000);
+    return () => window.clearInterval(id);
+  }, [reduced]);
+
+  const slideCls = (i: number) =>
+    `col-start-1 row-start-1 transition-all duration-700 ease-out ${
+      active === i
+        ? 'opacity-100 translate-x-0 pointer-events-auto'
+        : `opacity-0 pointer-events-none ${reduced ? '' : active > i ? '-translate-x-10' : 'translate-x-10'}`
+    }`;
+
+  const headlineBlock = (i: number) => {
+    if (i === 0)
+      return (
+        <>
+          <h1 className="font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
+            {asString(t('produkt.hero.headline'))}
+          </h1>
+          <p className="mt-5 text-body-lg text-slate max-w-2xl mx-auto">
+            {asString(t('produkt.hero.subheadline'))}
+          </p>
+        </>
+      );
+    const c = H2_LINES[i];
+    return (
+      <>
+        <h2 className="font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
+          <span className="block">{L(c.top)}</span>
+          <span className="block text-golden">{L(c.golden)}</span>
+        </h2>
+        <p className="mt-5 text-body-lg text-slate max-w-2xl mx-auto">{L(c.sub)}</p>
+      </>
+    );
+  };
+
   return (
     <section
       id="top"
-      className="relative pt-36 pb-20 md:pt-44 md:pb-28 overflow-hidden bg-gradient-to-b from-cream to-white"
+      className="relative pt-32 pb-16 md:pt-40 md:pb-20 overflow-hidden bg-gradient-to-b from-cream to-white"
     >
       <HeroWaves />
       <div
@@ -77,67 +261,158 @@ const Hero = () => {
         aria-hidden
         className="absolute -bottom-40 -left-24 w-[24rem] h-[24rem] rounded-full bg-golden/10 blur-3xl"
       />
-      <div className="container relative">
-        <div className="max-w-3xl mx-auto text-center">
-          <span
-            className="hero-in inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle"
-            style={{ animationDelay: '0.05s' }}
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            {asString(t('produkt.hero.eyebrow'))}
-          </span>
 
-          <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
-            {lines.map((line, i) => (
-              <span key={i} className="hero-in block" style={{ animationDelay: `${100 + i * 90}ms` }}>
-                {line}
+      {/* full-bleed: the hero uses the whole viewport width, not the container */}
+      <div
+        className="relative w-full px-5 sm:px-10 xl:px-16 2xl:px-24"
+        onMouseEnter={() => {
+          hover.current = true;
+        }}
+        onMouseLeave={() => {
+          hover.current = false;
+        }}
+      >
+        <div className="grid items-center">
+          {/* ── Slide 1: modules + real dashboard ── */}
+          <div className={slideCls(0)} aria-hidden={active !== 0}>
+            <div className="text-center max-w-3xl mx-auto hero-in" style={{ animationDelay: '0.05s' }}>
+              <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
+                <Sparkles className="h-3.5 w-3.5" />
+                {asString(t('produkt.hero.eyebrow'))}
               </span>
-            ))}
-          </h1>
-
-          <p
-            className="hero-in mt-6 text-body-lg text-slate max-w-2xl mx-auto"
-            style={{ animationDelay: '250ms' }}
-          >
-            {asString(t('produkt.hero.subheadline'))}
-          </p>
-
-          <div
-            className="hero-in mt-8 flex flex-col sm:flex-row items-center justify-center gap-3"
-            style={{ animationDelay: '350ms' }}
-          >
-            <button
-              type="button"
-              {...DEMO_CTA_PROPS}
-              onClick={() => trackEvent('produkt_hero_primary_cta_click')}
-              className="inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
-            >
-              {asString(t('produkt.hero.primaryCta'))}
-              <ArrowRight className="h-4 w-4" />
-            </button>
-            <a
-              href="#how-it-works"
-              onClick={() => trackEvent('produkt_hero_secondary_cta_click')}
-              className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
-            >
-              {asString(t('produkt.hero.secondaryCta'))}
-            </a>
+              <div className="mt-5">{headlineBlock(0)}</div>
+            </div>
+            <div className="mt-10 grid items-center gap-8 lg:grid-cols-[minmax(0,2fr),auto,minmax(0,3fr)] hero-in" style={{ animationDelay: '250ms' }}>
+              {/* module tiles, two offset columns like the reference */}
+              <div className="mx-auto grid max-w-sm grid-cols-2 gap-4 lg:mx-0">
+                {HERO_MODULES.map((mod, i) => (
+                  <div
+                    key={mod.label.en}
+                    className={`float-pill flex flex-col items-center gap-2 rounded-2xl border border-teal/25 bg-teal-wash px-4 py-5 text-center shadow-subtle ${
+                      i % 2 === 1 ? 'translate-y-4' : ''
+                    }`}
+                    style={{ animationDelay: `${i * 350}ms` }}
+                  >
+                    <mod.icon className="h-6 w-6 text-teal" />
+                    <span className="text-xs font-semibold text-charcoal">{L(mod.label)}</span>
+                  </div>
+                ))}
+              </div>
+              {/* connector hub */}
+              <div className="hidden lg:flex flex-col items-center gap-1 px-2">
+                <span className="rounded-2xl border border-charcoal/10 bg-white px-4 py-2.5 font-heading text-lg shadow-card whitespace-nowrap">
+                  <span className="text-teal">immob</span>
+                  <span className="text-golden">24</span>
+                </span>
+                <span className="h-16 w-px border-s border-dashed border-charcoal/25" aria-hidden />
+              </div>
+              <BrowserFrame
+                src="/screens/dashboard.webp"
+                alt="Immob24 dashboard"
+                path="app.immob24.com/dashboard"
+              />
+            </div>
           </div>
 
-          <ul
-            className="hero-in mt-10 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 max-w-2xl mx-auto text-left"
-            style={{ animationDelay: '450ms' }}
-          >
-            {bullets.map((b, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-slate">
-                <CheckCircle2 className="h-4 w-4 mt-0.5 text-honey-green flex-shrink-0" />
-                <span>{b}</span>
-              </li>
-            ))}
-          </ul>
+          {/* ── Slide 2: the 4-step journey ── */}
+          <div className={slideCls(1)} aria-hidden={active !== 1}>
+            <div className="text-center max-w-3xl mx-auto">{headlineBlock(1)}</div>
+            <div className="mt-12 grid gap-10 sm:gap-6 sm:grid-cols-2 xl:grid-cols-4 max-w-none">
+              {HERO_STEPS.map((st, i) => (
+                <div key={st.title.en} className="relative flex">
+                  <div className="relative w-full rounded-2xl border border-charcoal/15 bg-white/60 p-6 pt-12 text-center shadow-subtle backdrop-blur-sm">
+                    <span className="absolute -top-7 left-1/2 -translate-x-1/2 flex h-14 w-14 items-center justify-center rounded-full border-4 border-cream bg-gradient-golden text-[#1E1B16] shadow-golden">
+                      <st.icon className="h-6 w-6" />
+                    </span>
+                    <p className="font-heading text-lg text-charcoal">{L(st.title)}</p>
+                    <p className="mt-2 text-sm text-slate leading-relaxed">{L(st.body)}</p>
+                  </div>
+                  {i < HERO_STEPS.length - 1 && (
+                    <ArrowRight
+                      aria-hidden
+                      className="absolute top-1/2 -end-5 hidden h-5 w-5 -translate-y-1/2 text-golden xl:block rtl:rotate-180"
+                    />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
 
-          <ScrollCue targetId="product" className="hero-in mt-10" />
+          {/* ── Slide 3: hot leads — Bee transcript + floating stats ── */}
+          <div className={slideCls(2)} aria-hidden={active !== 2}>
+            <div className="text-center max-w-3xl mx-auto">{headlineBlock(2)}</div>
+            <div className="mt-10 grid items-center gap-6 lg:grid-cols-[1fr,minmax(0,3.2fr),1fr]">
+              <div className="flex flex-row flex-wrap justify-center gap-3 lg:flex-col lg:items-end">
+                {HERO_STATS.slice(0, 2).map((st, i) => (
+                  <div
+                    key={st.stat}
+                    className="float-pill flex items-center gap-3 rounded-2xl border border-charcoal/10 bg-white px-4 py-3 shadow-card"
+                    style={{ animationDelay: `${i * 600}ms` }}
+                  >
+                    <st.icon className="h-4 w-4 text-golden" />
+                    <span className="font-metric text-lg font-bold text-golden whitespace-nowrap">{st.stat}</span>
+                    <span className="text-xs text-slate">{L(st.label)}</span>
+                  </div>
+                ))}
+              </div>
+              <BrowserFrame
+                src="/screens/messages.webp"
+                alt="Bee B-Link transcript"
+                path="app.immob24.com/messages"
+              />
+              <div className="flex flex-row flex-wrap justify-center gap-3 lg:flex-col lg:items-start">
+                {HERO_STATS.slice(2).map((st, i) => (
+                  <div
+                    key={st.stat}
+                    className="float-pill flex items-center gap-3 rounded-2xl border border-charcoal/10 bg-white px-4 py-3 shadow-card"
+                    style={{ animationDelay: `${300 + i * 600}ms` }}
+                  >
+                    <st.icon className="h-4 w-4 text-golden" />
+                    <span className="font-metric text-lg font-bold text-golden whitespace-nowrap">{st.stat}</span>
+                    <span className="text-xs text-slate">{L(st.label)}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
+
+        {/* dots */}
+        <div className="mt-8 flex items-center justify-center gap-2">
+          {[0, 1, 2].map((i) => (
+            <button
+              key={i}
+              type="button"
+              aria-label={`Slide ${i + 1}`}
+              aria-pressed={active === i}
+              onClick={() => setActive(i)}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                active === i ? 'w-6 bg-golden' : 'w-2 bg-charcoal/20 hover:bg-charcoal/40'
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* persistent CTAs + cue */}
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 hero-in" style={{ animationDelay: '350ms' }}>
+          <button
+            type="button"
+            {...DEMO_CTA_PROPS}
+            onClick={() => trackEvent('produkt_hero_primary_cta_click')}
+            className="inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
+          >
+            {asString(t('produkt.hero.primaryCta'))}
+            <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+          </button>
+          <a
+            href="#how-it-works"
+            onClick={() => trackEvent('produkt_hero_secondary_cta_click')}
+            className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
+          >
+            {asString(t('produkt.hero.secondaryCta'))}
+          </a>
+        </div>
+        <ScrollCue targetId="product" className="hero-in mt-8" />
       </div>
     </section>
   );
@@ -168,7 +443,7 @@ const AnswerBlock = () => {
   return (
     <section className="pb-16 md:pb-24 bg-white">
       <div className="container">
-        <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-6 max-w-7xl mx-auto">
           {items.map((item, i) => (
             <div
               key={i}
@@ -203,7 +478,7 @@ const ProblemFit = () => {
           </p>
         </div>
 
-        <ul className="mt-12 grid sm:grid-cols-2 gap-4 max-w-4xl mx-auto">
+        <ul className="mt-12 grid sm:grid-cols-2 gap-4 max-w-6xl mx-auto">
           {points.map((p, i) => (
             <li
               key={i}
@@ -266,7 +541,7 @@ const Features = () => {
           </h2>
         </Reveal>
 
-        <RevealGroup className="mt-12 grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <RevealGroup className="mt-12 grid md:grid-cols-2 gap-6 max-w-7xl mx-auto">
           {items.map((item, i) => (
             <div
               key={i}
@@ -310,7 +585,7 @@ const UseCases = () => {
           </h2>
         </Reveal>
 
-        <RevealGroup className="mt-12 grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <RevealGroup className="mt-12 grid md:grid-cols-2 gap-6 max-w-7xl mx-auto">
           {cases.map((c, i) => (
             <div
               key={i}
@@ -346,7 +621,7 @@ const CrmComparison = () => {
         </div>
 
         {/* Desktop / tablet table */}
-        <div className="mt-12 hidden md:block max-w-5xl mx-auto overflow-hidden rounded-2xl bg-white border border-charcoal/10 shadow-card">
+        <div className="mt-12 hidden md:block max-w-7xl mx-auto overflow-hidden rounded-2xl bg-white border border-charcoal/10 shadow-card">
           <table className="w-full text-left">
             <thead>
               <tr className="band-dark bg-charcoal text-white text-sm uppercase tracking-wider">
@@ -432,7 +707,7 @@ const WhoItsFor = () => {
           </h2>
         </Reveal>
 
-        <RevealGroup className="mt-12 grid sm:grid-cols-2 gap-4 max-w-4xl mx-auto">
+        <RevealGroup className="mt-12 grid sm:grid-cols-2 gap-4 max-w-6xl mx-auto">
           {cards.map((c, i) => (
             <div
               key={i}
@@ -587,7 +862,7 @@ const SocialProof = () => {
           </p>
         </div>
 
-        <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-7xl mx-auto">
           {placeholders.map((quote, i) => (
             <figure
               key={i}
@@ -639,7 +914,7 @@ const ProcessDeepDive = () => {
           </h2>
         </Reveal>
 
-        <RevealGroup className="mt-12 grid gap-6 md:grid-cols-2 max-w-5xl mx-auto" as="ol">
+        <RevealGroup className="mt-12 grid gap-6 md:grid-cols-2 max-w-7xl mx-auto" as="ol">
           {items.map((step, i) => {
             const Icon = DEEP_STEP_ICONS[i] ?? CheckCircle2;
             return (
@@ -829,7 +1104,7 @@ const HumanControl = () => {
           </p>
         </Reveal>
 
-        <RevealGroup className="mt-10 grid gap-4 sm:grid-cols-3 max-w-4xl mx-auto" as="ul">
+        <RevealGroup className="mt-10 grid gap-4 sm:grid-cols-3 max-w-6xl mx-auto" as="ul">
           {bullets.map((b, i) => (
             <li key={i} className="rounded-xl bg-white border border-charcoal/10 p-5 list-none">
               <CheckCircle2 className="h-5 w-5 text-golden-dark" />

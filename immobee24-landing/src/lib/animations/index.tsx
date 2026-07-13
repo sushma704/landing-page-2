@@ -14,6 +14,7 @@
 import {
   createElement,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
   Children,
@@ -69,7 +70,10 @@ export function useInView<T extends HTMLElement = HTMLDivElement>(
   const [inView, setInView] = useState(false);
   const [immediate, setImmediate] = useState(false);
 
-  useEffect(() => {
+  // useLayoutEffect: measure synchronously before first paint, so the
+  // already-in-viewport check can't race a scroll that happens between
+  // paint and effect flush.
+  useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
     // Already visible on load → final state instantly, no animation.

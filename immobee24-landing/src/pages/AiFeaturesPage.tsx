@@ -423,7 +423,7 @@ export default function AiFeaturesPage() {
       </section>
 
       {/* Demo video with chapters */}
-      <section className="py-16 md:py-20 bg-white">
+      <section id="video" className="py-16 md:py-20 bg-white">
         <div className="container">
           <div className="max-w-2xl">
             <h2 className="font-heading text-section-mobile md:text-section text-charcoal">

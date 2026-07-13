@@ -10,6 +10,10 @@ import {
   Target,
   Users,
   Zap,
+  Inbox,
+  ListChecks,
+  Workflow,
+  Bell,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
@@ -110,13 +114,13 @@ const Hero = () => {
               {asString(t('produkt.hero.primaryCta'))}
               <ArrowRight className="h-4 w-4" />
             </button>
-            <Link
-              to={localPath('howItWorks')}
+            <a
+              href="#how-it-works"
               onClick={() => trackEvent('produkt_hero_secondary_cta_click')}
               className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
             >
               {asString(t('produkt.hero.secondaryCta'))}
-            </Link>
+            </a>
           </div>
 
           <ul
@@ -592,6 +596,88 @@ const SocialProof = () => {
   );
 };
 
+// ── Merged from the former /how-it-works page (unified IA, phase 1). ──
+// The scrollytelling above shows the flow; this is the step-by-step detail.
+type StepItem = { title: string; body: string };
+const asStepArray = (v: unknown): StepItem[] =>
+  Array.isArray(v)
+    ? v.filter(
+        (x): x is StepItem =>
+          !!x && typeof x === 'object' && 'title' in x && 'body' in x,
+      )
+    : [];
+
+const DEEP_STEP_ICONS = [Inbox, Zap, ListChecks, Workflow, Sparkles, Bell];
+
+const ProcessDeepDive = () => {
+  const { t } = useLanguage();
+  const items = asStepArray(t('howItWorksPage.steps.items') as unknown);
+  return (
+    <section id="process-detail" className="py-20 md:py-28 bg-white">
+      <div className="container">
+        <Reveal className="max-w-3xl mx-auto text-center">
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+            {asString(t('howItWorksPage.steps.headline'))}
+          </h2>
+        </Reveal>
+
+        <RevealGroup className="mt-12 grid gap-6 md:grid-cols-2 max-w-5xl mx-auto" as="ol">
+          {items.map((step, i) => {
+            const Icon = DEEP_STEP_ICONS[i] ?? CheckCircle2;
+            return (
+              <li
+                key={i}
+                className="rounded-2xl bg-cream border border-charcoal/10 p-6 md:p-8 shadow-subtle list-none"
+              >
+                <div className="flex items-start gap-5">
+                  <div className="flex-none flex flex-col items-center">
+                    <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-golden text-[#1E1B16] font-heading text-lg shadow-golden">
+                      {i + 1}
+                    </span>
+                    <Icon className="h-5 w-5 text-golden-dark mt-3" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-heading text-xl text-charcoal">{step.title}</h3>
+                    <p className="mt-3 text-slate leading-relaxed">{step.body}</p>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </RevealGroup>
+      </div>
+    </section>
+  );
+};
+
+const HumanControl = () => {
+  const { t } = useLanguage();
+  const bullets = asStringArray(t('howItWorksPage.control.bullets'));
+  return (
+    <section id="control" className="py-20 md:py-28 bg-cream">
+      <div className="container">
+        <Reveal className="max-w-3xl mx-auto text-center">
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+            {asString(t('howItWorksPage.control.headline'))}
+          </h2>
+          <p className="mt-6 text-body-lg text-slate">
+            {asString(t('howItWorksPage.control.body'))}
+          </p>
+        </Reveal>
+
+        <RevealGroup className="mt-10 grid gap-4 sm:grid-cols-3 max-w-4xl mx-auto" as="ul">
+          {bullets.map((b, i) => (
+            <li key={i} className="rounded-xl bg-white border border-charcoal/10 p-5 list-none">
+              <CheckCircle2 className="h-5 w-5 text-golden-dark" />
+              <p className="mt-3 text-sm text-charcoal/85 leading-relaxed">{b}</p>
+            </li>
+          ))}
+        </RevealGroup>
+      </div>
+    </section>
+  );
+};
+
 const FAQItem = ({ q, a }: { q: string; a: string }) => {
   const [open, setOpen] = useState(false);
   return (
@@ -622,7 +708,10 @@ const FAQItem = ({ q, a }: { q: string; a: string }) => {
 
 const FAQ = () => {
   const { t } = useLanguage();
-  const items = asFaqArray(t('produkt.faq.items'));
+  const items = [
+    ...asFaqArray(t('produkt.faq.items')),
+    ...asFaqArray(t('howItWorksPage.faq.items')),
+  ];
   return (
     <section className="py-20 md:py-28 bg-cream">
       <div className="container">
@@ -718,7 +807,11 @@ export default function ProduktDE() {
     titleKey: 'produkt.meta.title',
     descriptionKey: 'produkt.meta.description',
   });
-  useFaqSchema(asFaqArray(t('produkt.faq.items')), language, 'produkt');
+  useFaqSchema(
+    [...asFaqArray(t('produkt.faq.items')), ...asFaqArray(t('howItWorksPage.faq.items'))],
+    language,
+    'produkt',
+  );
   useJsonLd(
     [
       softwareApplicationSchema(language, asString(t('produkt.meta.description')), [
@@ -748,6 +841,8 @@ export default function ProduktDE() {
     CrmComparison,
     WhoItsFor,
     HowItWorks,
+    ProcessDeepDive,
+    HumanControl,
     SocialProof,
     // AI-refinement: compliance trust strip
     ComplianceBadgesStrip,
@@ -757,7 +852,16 @@ export default function ProduktDE() {
 
   // Sections with their own inner Reveals (or a mount entrance) are not
   // double-wrapped; the rest get a coarse section-level Reveal.
-  const selfAnimated = new Set<unknown>([Hero, Features, UseCases, WhoItsFor, HowItWorks, FAQ]);
+  const selfAnimated = new Set<unknown>([
+    Hero,
+    Features,
+    UseCases,
+    WhoItsFor,
+    HowItWorks,
+    ProcessDeepDive,
+    HumanControl,
+    FAQ,
+  ]);
 
   return (
     <div className="min-h-screen antialiased bg-white">

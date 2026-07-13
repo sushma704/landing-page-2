@@ -186,6 +186,76 @@ const LanguageToggle = ({ onDark = false }: { onDark?: boolean }) => {
   );
 };
 
+type NavItem = { to: string; label: string; desc?: string };
+
+// Desktop dropdown for grouped nav sections (Solutions, Resources).
+// Opens on hover or click, closes on outside click / route click.
+const NavDropdown = ({
+  label,
+  items,
+  onDark,
+}: {
+  label: string;
+  items: NavItem[];
+  onDark: boolean;
+}) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDown = (e: MouseEvent) => {
+      if (!ref.current?.contains(e.target as Node)) setOpen(false);
+    };
+    document.addEventListener('mousedown', onDown);
+    return () => document.removeEventListener('mousedown', onDown);
+  }, [open]);
+
+  return (
+    <div
+      ref={ref}
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button
+        type="button"
+        aria-expanded={open}
+        // open-only: hover already opened it on mouse devices, so a toggle
+        // would immediately close the menu on click. Mouse-leave and the
+        // outside-click handler do the closing (works for touch too).
+        onClick={() => setOpen(true)}
+        className={`flex items-center gap-1 px-2 py-2 text-sm transition-colors whitespace-nowrap ${
+          onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
+        }`}
+      >
+        {label}
+        <ChevronDown
+          className={`h-3.5 w-3.5 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+        />
+      </button>
+      {open && (
+        <div className="absolute start-0 top-full z-50 pt-1">
+          <div className="menu-pop min-w-[15rem] rounded-2xl border border-charcoal/10 bg-white p-2 shadow-card-hover">
+            {items.map((it, i) => (
+              <Link
+                key={it.to}
+                to={it.to}
+                onClick={() => setOpen(false)}
+                className="menu-item block rounded-xl px-3.5 py-2.5 hover:bg-cream"
+                style={{ animationDelay: `${i * 40}ms` }}
+              >
+                <span className="block text-sm font-medium text-charcoal">{it.label}</span>
+                {it.desc && <span className="block text-xs text-warm-gray">{it.desc}</span>}
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const Header = () => {
   const { t, language } = useLanguage();
   const localPath = useLocalizedPath();
@@ -205,32 +275,36 @@ export const Header = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // AI-refinement: flagship nav entry (inline label — translations.ts untouched)
-  const AI_NAV_LABEL: Record<string, string> = {
-    de: 'KI-Funktionen',
-    en: 'AI Features',
-    fr: 'Fonctions IA',
-    ar: 'ميزات الذكاء الاصطناعي',
+  // Unified IA (blueprint phase 1): Product · AI Agents · Solutions ▾ ·
+  // Pricing · Resources ▾ · Contact. Labels are inline 4-lang records —
+  // translations.ts untouched. Contact points at the demo page until the
+  // unified contact form ships (phase 2).
+  const NL: Record<string, Record<string, string>> = {
+    aiAgents: { de: 'KI-Agenten', en: 'AI Agents', fr: 'Agents IA', ar: 'وكلاء الذكاء الاصطناعي' },
+    aiNew: { de: 'Neu', en: 'New', fr: 'Nouveau', ar: 'جديد' },
+    solutions: { de: 'Lösungen', en: 'Solutions', fr: 'Solutions', ar: 'الحلول' },
+    resources: { de: 'Ressourcen', en: 'Resources', fr: 'Ressources', ar: 'الموارد' },
+    contact: { de: 'Kontakt', en: 'Contact', fr: 'Contact', ar: 'اتصال' },
+    whyImmob24: { de: 'Warum immob24', en: 'Why immob24', fr: 'Pourquoi immob24', ar: 'لماذا immob24' },
+    video: { de: 'Produkt-Video', en: 'Product video', fr: 'Vidéo produit', ar: 'فيديو المنتج' },
+    compliance: { de: 'Compliance & DSGVO', en: 'Compliance & GDPR', fr: 'Conformité & RGPD', ar: 'الامتثال وحماية البيانات' },
+    beta: { de: 'Beta-Programm', en: 'Beta program', fr: 'Programme bêta', ar: 'برنامج بيتا' },
   };
-  const aiFeaturesLink = {
-    to: localPath('aiFeatures'),
-    label: AI_NAV_LABEL[language] ?? AI_NAV_LABEL.en,
-  };
+  const nl = (k: keyof typeof NL) => NL[k][language] ?? NL[k].en;
+
   const productLink = { to: localPath('produkt'), label: asString(t('nav.product')) };
-  const howItWorksLink = {
-    to: localPath('howItWorks'),
-    label: asString(t('nav.howItWorks')),
-  };
-  const crmAltLink = {
-    to: localPath('crmAlternative'),
-    label: asString(t('nav.crmAlternative')),
-  };
+  const aiAgentsLink = { to: localPath('aiFeatures'), label: nl('aiAgents') };
   const pricingLink = { to: localPath('pricing'), label: asString(t('nav.pricing')) };
-  const demoLink = { to: localPath('demo'), label: asString(t('nav.demo')) };
-  // Nav uses a short beta label so the bar stays one row; the page itself
-  // keeps its full name.
-  const BETA_NAV_LABEL: Record<string, string> = { de: 'Beta', en: 'Beta', fr: 'Bêta', ar: 'بيتا' };
-  const betaLink = { to: localPath('beta'), label: BETA_NAV_LABEL[language] ?? 'Beta' };
+  const contactLink = { to: localPath('demo'), label: nl('contact') };
+  const solutionsItems: NavItem[] = [
+    { to: localPath('crmAlternative'), label: asString(t('nav.crmAlternative')) },
+    { to: localPath('whyImmob24'), label: nl('whyImmob24') },
+  ];
+  const resourcesItems: NavItem[] = [
+    { to: `${localPath('aiFeatures')}#video`, label: nl('video') },
+    { to: localPath('compliance'), label: nl('compliance') },
+    { to: localPath('beta'), label: nl('beta') },
+  ];
 
   return (
     <header
@@ -242,17 +316,43 @@ export const Header = () => {
         <Wordmark variant={onDark ? 'light' : 'dark'} />
 
         <nav className="hidden xl:flex flex-1 items-center justify-end gap-0.5 me-2">
-          {[aiFeaturesLink, productLink, howItWorksLink, crmAltLink, pricingLink, demoLink, betaLink].map((l) => (
-            <Link
-              key={l.to}
-              to={l.to}
-              className={`px-2 py-2 text-sm transition-colors whitespace-nowrap ${
-                onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
-              }`}
-            >
-              {l.label}
-            </Link>
-          ))}
+          <Link
+            to={productLink.to}
+            className={`px-2 py-2 text-sm transition-colors whitespace-nowrap ${
+              onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
+            }`}
+          >
+            {productLink.label}
+          </Link>
+          <Link
+            to={aiAgentsLink.to}
+            className={`flex items-center gap-1.5 px-2 py-2 text-sm transition-colors whitespace-nowrap ${
+              onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
+            }`}
+          >
+            {aiAgentsLink.label}
+            <span className="rounded-full bg-gradient-golden px-1.5 py-px text-[9px] font-bold uppercase tracking-wide text-[#1E1B16]">
+              {nl('aiNew')}
+            </span>
+          </Link>
+          <NavDropdown label={nl('solutions')} items={solutionsItems} onDark={onDark} />
+          <Link
+            to={pricingLink.to}
+            className={`px-2 py-2 text-sm transition-colors whitespace-nowrap ${
+              onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
+            }`}
+          >
+            {pricingLink.label}
+          </Link>
+          <NavDropdown label={nl('resources')} items={resourcesItems} onDark={onDark} />
+          <Link
+            to={contactLink.to}
+            className={`px-2 py-2 text-sm transition-colors whitespace-nowrap ${
+              onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
+            }`}
+          >
+            {contactLink.label}
+          </Link>
         </nav>
 
         <div className="flex flex-none items-center gap-2">
@@ -298,7 +398,7 @@ export const Header = () => {
       {open && (
         <div className="xl:hidden border-t border-charcoal/5 bg-white">
           <div className="container py-3 flex flex-col gap-1">
-            {[aiFeaturesLink, productLink, howItWorksLink, crmAltLink, pricingLink, demoLink, betaLink].map((l) => (
+            {[productLink, aiAgentsLink, pricingLink, contactLink].map((l) => (
               <Link
                 key={l.to}
                 to={l.to}
@@ -307,6 +407,28 @@ export const Header = () => {
               >
                 {l.label}
               </Link>
+            ))}
+            {(
+              [
+                [nl('solutions'), solutionsItems],
+                [nl('resources'), resourcesItems],
+              ] as Array<[string, NavItem[]]>
+            ).map(([group, items]) => (
+              <div key={group} className="mt-1">
+                <p className="px-3 pb-1 text-[11px] font-semibold uppercase tracking-wider text-warm-gray">
+                  {group}
+                </p>
+                {items.map((l) => (
+                  <Link
+                    key={l.to}
+                    to={l.to}
+                    onClick={() => setOpen(false)}
+                    className="block px-3 py-2 text-sm text-charcoal/80 hover:bg-cream rounded-lg"
+                  >
+                    {l.label}
+                  </Link>
+                ))}
+              </div>
             ))}
             <a
               href="https://immob24.com/login"
@@ -408,7 +530,7 @@ export const Footer = () => {
     { to: localPath('whyImmob24'), label: FOOT_WHY[language] ?? FOOT_WHY.en },
     { to: localPath('compliance'), label: FOOT_COMPLIANCE[language] ?? FOOT_COMPLIANCE.en },
     { to: localPath('produkt'), label: asString(t('nav.product')) },
-    { to: localPath('howItWorks'), label: asString(t('nav.howItWorks')) },
+    { to: `${localPath('produkt')}#how-it-works`, label: asString(t('nav.howItWorks')) },
     { to: localPath('crmAlternative'), label: asString(t('nav.crmAlternative')) },
     { to: localPath('pricing'), label: asString(t('nav.pricing')) },
     { to: localPath('demo'), label: asString(t('nav.demo')) },

@@ -11,7 +11,6 @@ const HomePage = lazy(() => import('./pages/HomePage'));
 const ProduktDE = lazy(() => import('./pages/ProduktDE'));
 const BetaProgrammDE = lazy(() => import('./pages/BetaProgrammDE'));
 const BetaThankYou = lazy(() => import('./pages/BetaThankYou'));
-const HowItWorksDE = lazy(() => import('./pages/HowItWorksDE'));
 const DemoDE = lazy(() => import('./pages/DemoDE'));
 const CrmAlternativeDE = lazy(() => import('./pages/CrmAlternativeDE'));
 const PricingDE = lazy(() => import('./pages/PricingDE'));
@@ -69,8 +68,9 @@ export default function App() {
         <Route path="/de/produkt" element={<ProduktDE />} />
         <Route path="/en/product" element={<ProduktDE />} />
 
-        <Route path="/de/how-it-works" element={<HowItWorksDE />} />
-        <Route path="/en/how-it-works" element={<HowItWorksDE />} />
+        {/* merged into /produkt (unified IA phase 1) — old URLs redirect to the anchor */}
+        <Route path="/de/how-it-works" element={<Navigate to="/de/produkt#how-it-works" replace />} />
+        <Route path="/en/how-it-works" element={<Navigate to="/en/product#how-it-works" replace />} />
 
         <Route path="/de/immobilien-crm-alternative" element={<CrmAlternativeDE />} />
         <Route path="/en/real-estate-crm-alternative" element={<CrmAlternativeDE />} />
@@ -99,8 +99,8 @@ export default function App() {
         <Route path="/ar" element={<HomePage />} />
         <Route path="/fr/produit" element={<ProduktDE />} />
         <Route path="/ar/product" element={<ProduktDE />} />
-        <Route path="/fr/comment-ca-marche" element={<HowItWorksDE />} />
-        <Route path="/ar/how-it-works" element={<HowItWorksDE />} />
+        <Route path="/fr/comment-ca-marche" element={<Navigate to="/fr/produit#how-it-works" replace />} />
+        <Route path="/ar/how-it-works" element={<Navigate to="/ar/product#how-it-works" replace />} />
         <Route path="/fr/alternative-crm-immobilier" element={<CrmAlternativeDE />} />
         <Route path="/ar/real-estate-crm-alternative" element={<CrmAlternativeDE />} />
         <Route path="/fr/tarifs" element={<PricingDE />} />

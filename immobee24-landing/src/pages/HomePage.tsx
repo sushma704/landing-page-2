@@ -136,7 +136,7 @@ const Hero = () => {
               <ArrowRight className="h-4 w-4" />
             </button>
             <Link
-              to={localPath('howItWorks')}
+              to={`${localPath('produkt')}#how-it-works`}
               onClick={() => trackEvent('hero_secondary_cta_click')}
               className="inline-flex items-center gap-2 rounded-full border border-white/25 px-7 py-3.5 font-medium text-white hover:bg-white/10 transition-colors"
             >
@@ -475,7 +475,7 @@ const HowItWorks = () => {
 
         <div className="mt-10 text-center">
           <Link
-            to={localPath('howItWorks')}
+            to={`${localPath('produkt')}#how-it-works`}
             onClick={() => trackEvent('home_how_cta_click')}
             className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
           >

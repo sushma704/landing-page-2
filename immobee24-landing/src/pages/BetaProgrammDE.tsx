@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer } from '../components/SiteChrome';
+import { HeroWaves } from '../components/HeroWaves';
 import { trackEvent } from '../lib/analytics';
 
 // External Tally form for beta sign-ups. Both "Apply for the beta" CTAs on
@@ -80,6 +81,7 @@ const Hero = () => {
       id="top"
       className="relative pt-36 pb-20 md:pt-44 md:pb-28 overflow-hidden bg-gradient-to-b from-cream to-white"
     >
+      <HeroWaves />
       <div
         aria-hidden
         className="absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full bg-gradient-golden opacity-20 blur-3xl"

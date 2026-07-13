@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { ArrowRight, Check, Sparkles, Star, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
+import { HeroWaves } from '../components/HeroWaves';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
@@ -70,6 +71,7 @@ const Hero = () => {
       id="top"
       className="relative pt-36 pb-12 md:pt-44 md:pb-16 overflow-hidden bg-gradient-to-b from-cream to-white"
     >
+      <HeroWaves />
       <div
         aria-hidden
         className="absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full bg-gradient-golden opacity-20 blur-3xl"

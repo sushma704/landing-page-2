@@ -6,7 +6,10 @@
 
 import { useEffect, useRef } from 'react';
 
-export const HeroWaves = () => {
+// forceDark: the home hero is a permanent dark canvas regardless of theme.
+// Otherwise the palette follows the .dark class (deep teal/amber on cream,
+// bright teal/amber on warm-ink).
+export const HeroWaves = ({ forceDark = false }: { forceDark?: boolean }) => {
   const ref = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
@@ -43,12 +46,16 @@ export const HeroWaves = () => {
         const amp1 = 30 + 42 * Math.sin(p * Math.PI); // strongest mid-screen
         const amp2 = 16 + 12 * p;
 
-        // teal on the left drifting into amber on the right
+        // teal on the left drifting into amber on the right; palette follows
+        // the active theme (checked per frame — a classList read is free)
+        const dark = forceDark || document.documentElement.classList.contains('dark');
         const grad = ctx.createLinearGradient(0, 0, w, 0);
-        const a = 0.1 + 0.12 * Math.sin(p * Math.PI);
-        grad.addColorStop(0, `rgba(63, 187, 166, ${a})`);
-        grad.addColorStop(0.55, `rgba(63, 187, 166, ${a * 0.5})`);
-        grad.addColorStop(1, `rgba(245, 166, 35, ${a * 0.85})`);
+        const a = (dark ? 0.1 : 0.09) + (dark ? 0.12 : 0.09) * Math.sin(p * Math.PI);
+        const tealC = dark ? '63, 187, 166' : '12, 111, 95';
+        const amberC = dark ? '245, 166, 35' : '199, 108, 5';
+        grad.addColorStop(0, `rgba(${tealC}, ${a})`);
+        grad.addColorStop(0.55, `rgba(${tealC}, ${a * 0.5})`);
+        grad.addColorStop(1, `rgba(${amberC}, ${a * 0.85})`);
         ctx.strokeStyle = grad;
         ctx.lineWidth = 1.2;
 

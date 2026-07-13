@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
+import { HeroWaves } from '../components/HeroWaves';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 import { useJsonLd } from '../lib/useJsonLd';
 import { breadcrumbSchema } from '../lib/schema';
@@ -448,6 +449,7 @@ export default function CompliancePage() {
 
       {/* Hero */}
       <section className="relative pt-36 pb-14 md:pt-44 md:pb-20 overflow-hidden bg-gradient-to-b from-cream to-white">
+      <HeroWaves />
         <div className="container relative text-center max-w-3xl mx-auto">
           <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
             <ShieldCheck className="h-3.5 w-3.5" />

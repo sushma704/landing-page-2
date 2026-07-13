@@ -45,14 +45,15 @@ export const Wordmark = ({
   // `light` (white "immob" + orange "24") for the charcoal footer. The
   // width/height are set explicitly so the surrounding chrome doesn't reflow
   // while the image loads (avoids CLS).
-  // The dark-text wordmark PNG carries a white background, so in dark theme
-  // we swap to the white-text variant via Tailwind's dark: classes. An
-  // explicitly light variant (charcoal footer / dark hero) stays light.
+  // Brand rule (brief §02): the wordmark is ALWAYS "immob" teal + "24" amber
+  // — never white, never one flat colour. Both PNGs are transparent; dark
+  // surfaces use the brightened-teal variant (#3FBBA6, the brief's own dark
+  // token) so "immob" stays legible on warm-ink backgrounds.
   const inner = (
     <>
       {variant === 'light' ? (
         <img
-          src="/immob24-wordmark-white.png"
+          src="/immob24-wordmark-teal-dark.png"
           alt="immob24"
           width={148}
           height={40}
@@ -68,7 +69,7 @@ export const Wordmark = ({
             className="h-10 w-auto dark:hidden"
           />
           <img
-            src="/immob24-wordmark-white.png"
+            src="/immob24-wordmark-teal-dark.png"
             alt="immob24"
             width={148}
             height={40}

@@ -112,7 +112,7 @@ const Hero = () => {
         style={{ background: 'radial-gradient(circle, #F5A623 0%, transparent 62%)', animationDelay: '-6s' }}
       />
       {/* flowing contour-line mesh (canvas, brand teal->amber) */}
-      <HeroWaves />
+      <HeroWaves forceDark />
 
       <div className="container relative flex-1 flex flex-col justify-center pt-32 pb-16 md:pt-36">
         <div className="max-w-3xl mx-auto text-center">

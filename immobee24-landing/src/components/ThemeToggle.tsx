@@ -24,12 +24,17 @@ export const ThemeToggle = ({ onDark = false }: { onDark?: boolean }) => {
   );
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', dark);
+    // 250ms crossfade on colors while the theme flips (v4 Part 1.4)
+    const html = document.documentElement;
+    html.classList.add('theme-xfade');
+    html.classList.toggle('dark', dark);
+    const t = window.setTimeout(() => html.classList.remove('theme-xfade'), 350);
     try {
       localStorage.setItem(KEY, dark ? 'dark' : 'light');
     } catch {
       /* no-op */
     }
+    return () => window.clearTimeout(t);
   }, [dark]);
 
   return (

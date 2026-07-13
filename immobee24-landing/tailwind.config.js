@@ -93,20 +93,18 @@ module.exports = {
         '3xl': '2rem',
       },
       boxShadow: {
-        // Dark-only theme: black drop shadows are invisible on near-black —
-        // cards get a hairline ring + soft amber glow instead (Part A.3).
-        'card': '0 0 0 1px rgba(245, 240, 230, 0.05), 0 0 24px rgba(245, 166, 35, 0.07)',
-        'card-hover': '0 0 0 1px rgba(245, 166, 35, 0.25), 0 8px 32px rgba(245, 166, 35, 0.12)',
-        'golden': '0 4px 24px rgba(245, 166, 35, 0.30)',
-        'subtle': '0 0 0 1px rgba(245, 240, 230, 0.04)',
+        // Theme-aware effect tokens (v4 Part 1): values live in index.css
+        // per theme — dark = ring+glow, light = drop shadows.
+        'card': 'var(--shadow-card)',
+        'card-hover': 'var(--shadow-card-hover)',
+        'golden': 'var(--shadow-golden)',
+        'subtle': 'var(--shadow-subtle)',
       },
       backgroundImage: {
         'gradient-golden': 'linear-gradient(135deg, #FFD700 0%, #F5A623 50%, #E09100 100%)',
         'gradient-golden-soft': 'linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(245, 166, 35, 0.05) 100%)',
       },
       animation: {
-        'fade-in': 'fadeIn 0.6s ease-out forwards',
-        'slide-up': 'slideUp 0.6s ease-out forwards',
       },
       keyframes: {
         fadeIn: {

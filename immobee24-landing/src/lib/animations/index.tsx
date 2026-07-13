@@ -23,7 +23,7 @@ import {
   type ReactNode,
 } from 'react';
 
-export const REVEAL_MS = 650;
+export const REVEAL_MS = 700;
 export const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
 export const STAGGER_MS = 80;
 
@@ -32,7 +32,9 @@ export const STAGGER_MS = 80;
 //   <div className="chor" style={chorSlot(280, 500)}>
 // ?slowmo=N multiplier (dev/localhost flag set in main.tsx) for JS-driven timings
 export const slowmoFactor = (): number =>
-  Number(getComputedStyle(document.documentElement).getPropertyValue('--slowmo') || 1) || 1;
+  import.meta.env.DEV
+    ? Number(getComputedStyle(document.documentElement).getPropertyValue('--slowmo') || 1) || 1
+    : 1;
 
 export const chorSlot = (delayMs: number, durMs = 600): CSSProperties =>
   ({ '--chor-delay': `${delayMs}ms`, '--chor-dur': `${durMs}ms` }) as CSSProperties;
@@ -133,7 +135,7 @@ export const Reveal = ({
   as = 'div',
   className = '',
   direction = 'up',
-  distance = 28,
+  distance = 36,
 }: RevealProps) => {
   const reduced = usePrefersReducedMotion();
   const [ref, inView, immediate] = useInView<HTMLElement>();
@@ -147,7 +149,9 @@ export const Reveal = ({
           transition: `opacity ${REVEAL_MS}ms ${EASE} ${delay}ms, transform ${REVEAL_MS}ms ${EASE} ${delay}ms`,
           willChange: show ? undefined : 'opacity, transform',
         };
-  return createElement(as, { ref, style, className }, children);
+  // .is-revealed lets CSS trigger dependent entrances (icon draw-in, Part 7)
+  const revealedCls = show && !reduced ? ' is-revealed' : reduced || immediate ? ' is-revealed' : '';
+  return createElement(as, { ref, style, className: className + revealedCls }, children);
 };
 
 type CascadeRhythm = 'wave' | 'read' | 'subtle';
@@ -155,7 +159,7 @@ type CascadeRhythm = 'wave' | 'read' | 'subtle';
 // wave: card grids (fast). read: content users read top-to-bottom
 // (FAQ, steps, checklists). subtle: footer columns.
 const RHYTHM: Record<CascadeRhythm, { gap: number; dur: number; distance: number }> = {
-  wave: { gap: STAGGER_MS, dur: REVEAL_MS, distance: 28 },
+  wave: { gap: STAGGER_MS, dur: REVEAL_MS, distance: 36 },
   read: { gap: 280, dur: 450, distance: 16 },
   subtle: { gap: 120, dur: 450, distance: 16 },
 };
@@ -312,9 +316,9 @@ type TypeCycleProps = {
 export const TypeCycle = ({
   words,
   className = '',
-  typeMs = 70,
-  eraseMs = 45,
-  holdMs = 1800,
+  typeMs = 45,
+  eraseMs = 25,
+  holdMs = 2200,
 }: TypeCycleProps) => {
   const reduced = usePrefersReducedMotion();
   const [wi, setWi] = useState(0);

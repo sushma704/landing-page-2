@@ -40,9 +40,10 @@ initTheme()
 
 // DEBUG (dev/localhost only): ?slowmo=5 multiplies all entrance-choreography
 // delays and durations, for verifying load sequences frame by frame.
+if (import.meta.env.DEV) {
 try {
   const slow = new URLSearchParams(window.location.search).get('slowmo')
-  if (slow && (import.meta.env.DEV || window.location.hostname === 'localhost')) {
+  if (slow) {
     document.documentElement.style.setProperty('--slowmo', String(Math.max(1, Number(slow) || 1)))
   }
 } catch { /* no-op */ }
@@ -51,7 +52,7 @@ try {
 // event (element + ms since first) so choreography is verifiable in console.
 try {
   const q = new URLSearchParams(window.location.search)
-  if ((q.has('slowmo') || q.has('debug-entrance')) && (import.meta.env.DEV || window.location.hostname === 'localhost')) {
+  if (q.has('slowmo') || q.has('debug-entrance')) {
     let t0: number | null = null
     const stamp = () => {
       if (t0 === null) t0 = performance.now()
@@ -72,6 +73,7 @@ try {
     }, true)
   }
 } catch { /* no-op */ }
+}
 
 // DRAFT-OFFLINE MODE (PO review only, never set in production builds):
 // VITE_DRAFT_OFFLINE=1 swaps BrowserRouter for HashRouter so the built site

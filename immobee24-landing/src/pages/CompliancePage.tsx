@@ -609,7 +609,7 @@ export default function CompliancePage() {
             <button
               type="button"
               {...DEMO_CTA_PROPS}
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-golden px-5 py-2.5 text-sm font-semibold text-charcoal shadow-golden"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-golden px-5 py-2.5 text-sm font-semibold text-[#1E1B16] shadow-golden"
             >
               {L({
                 de: 'Demo anfragen',

@@ -64,46 +64,97 @@ function useInView<T extends HTMLElement>(threshold = 0.15) {
   return { ref, inView };
 }
 
+// Brief re-skin: full-viewport immersive dark hero (HomeLead-style) — deep
+// warm-ink canvas with teal/amber ambient glows, staggered entrance, floating
+// stat pills around the live product moment, and a scroll cue. The hero is
+// deliberately dark in BOTH themes (single-look section); the rest of the
+// page follows the light/dark toggle.
+const HERO_PILLS: Array<{ stat: string; label: Record<string, string> }> = [
+  {
+    stat: '3s',
+    label: { de: 'Erstantwort auf Anfragen', en: 'First reply to inquiries', fr: 'Première réponse', ar: 'أول رد على الاستفسارات' },
+  },
+  {
+    stat: '24/7',
+    label: { de: 'KI-Assistent erreichbar', en: 'AI assistant available', fr: 'Assistant IA disponible', ar: 'مساعد ذكاء اصطناعي متاح' },
+  },
+  {
+    stat: 'DSGVO',
+    label: { de: 'By Design, EU-gehostet', en: 'By design, EU-hosted', fr: 'By design, hébergé en UE', ar: 'حسب التصميم، استضافة أوروبية' },
+  },
+  {
+    stat: 'DE·FR·EN·AR',
+    label: { de: 'Mehrsprachig nativ', en: 'Multilingual native', fr: 'Multilingue natif', ar: 'متعدد اللغات أصلاً' },
+  },
+];
+
 const Hero = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const localPath = useLocalizedPath();
   const bullets = asStringArray(t('hero.trustBullets'));
+  const pillLabel = (p: (typeof HERO_PILLS)[number]) => p.label[language] ?? p.label.en;
 
   return (
     <section
       id="top"
-      className="relative pt-36 pb-20 md:pt-44 md:pb-28 overflow-hidden bg-gradient-to-b from-cream to-white"
+      className="relative min-h-screen flex flex-col overflow-hidden bg-[#17140F] text-white"
     >
+      {/* ambient glows — teal top-left, amber right (drift slowly) */}
       <div
         aria-hidden
-        className="absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full bg-gradient-golden opacity-20 blur-3xl"
+        className="glow-drift absolute -top-40 -left-40 w-[42rem] h-[42rem] rounded-full opacity-25 blur-3xl"
+        style={{ background: 'radial-gradient(circle, #0C6F5F 0%, transparent 65%)' }}
       />
       <div
         aria-hidden
-        className="absolute -bottom-40 -left-24 w-[24rem] h-[24rem] rounded-full bg-golden/10 blur-3xl"
+        className="glow-drift absolute -top-24 -right-48 w-[46rem] h-[46rem] rounded-full opacity-20 blur-3xl"
+        style={{ background: 'radial-gradient(circle, #F5A623 0%, transparent 62%)', animationDelay: '-6s' }}
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{
+          backgroundImage:
+            'linear-gradient(rgba(245,240,230,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(245,240,230,0.035) 1px, transparent 1px)',
+          backgroundSize: '56px 56px',
+          maskImage: 'radial-gradient(ellipse 90% 70% at 50% 30%, black 30%, transparent 75%)',
+          WebkitMaskImage: 'radial-gradient(ellipse 90% 70% at 50% 30%, black 30%, transparent 75%)',
+        }}
       />
 
-      <div className="container relative">
+      <div className="container relative flex-1 flex flex-col justify-center pt-32 pb-16 md:pt-36">
         <div className="max-w-3xl mx-auto text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
+          <span
+            className="hero-in inline-flex items-center gap-2 rounded-full border border-golden/40 bg-white/5 backdrop-blur px-4 py-1.5 text-xs font-medium text-golden"
+            style={{ animationDelay: '0.05s' }}
+          >
             <Sparkles className="h-3.5 w-3.5" />
             {asString(t('hero.eyebrow'))}
           </span>
 
-          <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
+          <h1
+            className="hero-in mt-6 font-heading text-hero-mobile md:text-hero text-white text-balance"
+            style={{ animationDelay: '0.15s' }}
+          >
             {asString(t('hero.headline'))}
           </h1>
 
-          <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">
+          <p
+            className="hero-in mt-6 text-body-lg text-white/70 max-w-2xl mx-auto"
+            style={{ animationDelay: '0.28s' }}
+          >
             {asString(t('hero.subheadline'))}
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div
+            className="hero-in mt-8 flex flex-col sm:flex-row items-center justify-center gap-3"
+            style={{ animationDelay: '0.4s' }}
+          >
             <button
               type="button"
               {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('hero_primary_cta_click')}
-              className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-golden px-7 py-3.5 font-semibold text-[#1E1B16] shadow-golden transition-transform hover:scale-[1.03]"
             >
               {asString(t('hero.primaryCta'))}
               <ArrowRight className="h-4 w-4" />
@@ -111,25 +162,73 @@ const Hero = () => {
             <Link
               to={localPath('howItWorks')}
               onClick={() => trackEvent('hero_secondary_cta_click')}
-              className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
+              className="inline-flex items-center gap-2 rounded-full border border-white/25 px-7 py-3.5 font-medium text-white hover:bg-white/10 transition-colors"
             >
               {asString(t('hero.secondaryCta'))}
             </Link>
           </div>
 
-          <ul className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 max-w-2xl mx-auto text-left">
+          <ul
+            className="hero-in mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2"
+            style={{ animationDelay: '0.5s' }}
+          >
             {bullets.map((b, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-slate">
-                <CheckCircle2 className="h-4 w-4 mt-0.5 text-honey-green flex-shrink-0" />
+              <li key={i} className="flex items-center gap-2 text-sm text-white/60">
+                <CheckCircle2 className="h-4 w-4 text-honey-green flex-shrink-0" />
                 <span>{b}</span>
               </li>
             ))}
           </ul>
-
-          {/* AI-refinement: live product moment — animated inquiry->reply
-              card (JSX/CSS only, fixed height, reduced-motion safe). */}
-          <LiveInquiryCard />
         </div>
+
+        {/* product moment + floating stat pills */}
+        <div className="hero-in relative max-w-5xl mx-auto w-full" style={{ animationDelay: '0.62s' }}>
+          <div className="relative z-10">
+            <LiveInquiryCard />
+          </div>
+
+          {/* floating pills — desktop only, anchored around the card */}
+          <div aria-hidden className="hidden xl:block">
+            {HERO_PILLS.map((p, i) => {
+              const pos = [
+                'left-0 top-10',
+                'right-0 top-6',
+                'left-6 bottom-4',
+                'right-2 bottom-10',
+              ][i];
+              return (
+                <div
+                  key={p.stat}
+                  className={`float-pill absolute ${pos} z-20 flex items-center gap-3 rounded-2xl border border-white/15 bg-white/[0.07] backdrop-blur-md px-4 py-3 shadow-card`}
+                  style={{ animationDelay: `${-i * 1.4}s` }}
+                >
+                  <span className="font-metric text-lg font-bold text-golden whitespace-nowrap">{p.stat}</span>
+                  <span className="text-xs text-white/75 max-w-[130px] leading-snug">{pillLabel(p)}</span>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* mobile: pills as a compact row under the card */}
+          <div className="xl:hidden mt-6 flex flex-wrap justify-center gap-2">
+            {HERO_PILLS.map((p) => (
+              <span
+                key={p.stat}
+                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.07] px-3 py-1.5 text-xs text-white/75"
+              >
+                <b className="font-metric text-golden">{p.stat}</b>
+                {pillLabel(p)}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* scroll cue */}
+      <div aria-hidden className="relative pb-6 flex justify-center">
+        <span className="scroll-cue inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/60">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </span>
       </div>
     </section>
   );

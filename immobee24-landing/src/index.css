@@ -10,6 +10,39 @@
     --input: 220 13% 91%;
     --ring: 39 91% 55%;
     --radius: 0.75rem;
+
+    /* ── Brand neutrals (brief §02) as RGB triplets — light theme ──
+       Consumed by tailwind.config.js via rgb(var(--c-*) / <alpha-value>),
+       so every existing utility (bg-white, text-charcoal/70, bg-cream …)
+       re-skins and theme-flips automatically. */
+    --c-cream: 251 249 244;      /* warm cream  #FBF9F4 */
+    --c-surface: 255 255 255;    /* cards       #FFFFFF */
+    --c-muted: 244 240 231;      /* cream-2     #F4F0E7 */
+    --c-ink: 30 27 22;           /* warm ink    #1E1B16 */
+    --c-ink-soft: 85 80 63;      /* warm grey   #55503F */
+    --c-ink-faint: 141 132 113;  /* faint ink   #8D8471 */
+    --c-teal: 12 111 95;         /* wordmark teal #0C6F5F */
+    --c-teal-ink: 10 90 77;      /* teal ink    #0A5A4D */
+    --c-teal-wash: 220 238 233;  /* teal wash   #DCEEE9 */
+    color-scheme: light;
+  }
+
+  /* Dark theme (brief dark tokens) — toggled by ThemeToggle via .dark on <html> */
+  .dark {
+    --c-cream: 23 20 15;         /* #17140F */
+    --c-surface: 33 29 22;       /* #211D16 */
+    --c-muted: 30 26 20;         /* #1E1A14 */
+    --c-ink: 245 240 230;        /* #F5F0E6 */
+    --c-ink-soft: 180 171 152;   /* #B4AB98 */
+    --c-ink-faint: 140 132 115;  /* #8C8473 */
+    --c-teal: 63 187 166;        /* #3FBBA6 */
+    --c-teal-ink: 111 211 194;   /* #6FD3C2 */
+    --c-teal-wash: 18 48 41;     /* #123029 */
+    color-scheme: dark;
+  }
+
+  body {
+    transition: background-color 0.35s ease, color 0.35s ease;
   }
 
   * {
@@ -472,4 +505,69 @@
   .section {
     @apply py-40;
   }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   AI-refinement UI polish (brief re-skin): micro-interactions +
+   hero animations. All motion is disabled under reduced-motion.
+   ════════════════════════════════════════════════════════════════ */
+@layer utilities {
+  /* Cards lift subtly on hover — applies to every existing shadow-card */
+  .shadow-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  @media (hover: hover) {
+    .shadow-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 34px rgba(30, 27, 22, 0.12);
+    }
+    .dark .shadow-card:hover {
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  /* Hero entrance (staggered via inline animation-delay) */
+  .hero-in {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: heroIn 0.75s cubic-bezier(0.22, 0.8, 0.32, 1) forwards;
+  }
+  @keyframes heroIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Floating stat pills (HomeLead-style, gentler) */
+  .float-pill {
+    animation: floatY 5.5s ease-in-out infinite;
+  }
+  @keyframes floatY {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-9px); }
+  }
+
+  /* Ambient glow drift behind the hero */
+  .glow-drift {
+    animation: glowDrift 12s ease-in-out infinite alternate;
+  }
+  @keyframes glowDrift {
+    from { transform: translate3d(-2%, -1%, 0) scale(1); }
+    to { transform: translate3d(2%, 2%, 0) scale(1.08); }
+  }
+
+  /* Scroll cue chevron */
+  .scroll-cue {
+    animation: cueBounce 1.8s ease-in-out infinite;
+  }
+  @keyframes cueBounce {
+    0%, 100% { transform: translateY(0); opacity: 0.7; }
+    50% { transform: translateY(8px); opacity: 1; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-in { animation: none; opacity: 1; transform: none; }
+  .float-pill, .glow-drift, .scroll-cue { animation: none; }
+  .shadow-card, .shadow-card:hover { transition: none; transform: none; }
+  html { scroll-behavior: auto; }
 }

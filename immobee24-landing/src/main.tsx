@@ -4,6 +4,7 @@ import { BrowserRouter, HashRouter } from 'react-router-dom'
 import { ErrorBoundary } from './components/ErrorBoundary.tsx'
 import { LanguageProvider } from './i18n'
 import { bootstrapConsent } from './lib/consent'
+import { initTheme } from './components/ThemeToggle'
 
 // Self-hosted fonts. These weights match the families/weights tailwind.config.js
 // declares (font-heading / font-body / font-metric). Loading from npm means no
@@ -31,6 +32,9 @@ import App from './App.tsx'
 // the trackers are injected as early as possible (matches the behaviour
 // the old static <script> tags had).
 bootstrapConsent()
+
+// Apply the persisted light/dark theme before first paint (no flash).
+initTheme()
 
 // DRAFT-OFFLINE MODE (PO review only, never set in production builds):
 // VITE_DRAFT_OFFLINE=1 swaps BrowserRouter for HashRouter so the built site

@@ -65,7 +65,7 @@ export const SevenCoWorkersBand = () => {
             </div>
             <Link
               to={pathFor('aiFeatures', language)}
-              className="mt-7 inline-flex items-center gap-2 rounded-full bg-gradient-golden px-5 py-2.5 text-sm font-semibold text-charcoal shadow-golden"
+              className="mt-7 inline-flex items-center gap-2 rounded-full bg-gradient-golden px-5 py-2.5 text-sm font-semibold text-[#1E1B16] shadow-golden"
             >
               {L({
                 de: 'Alle KI-Funktionen ansehen',

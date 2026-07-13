@@ -5,6 +5,7 @@ import { useLanguage, languageOptions } from '../i18n';
 import type { Language } from '../i18n';
 import { pathFor } from '../i18n/pages';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
+import { ThemeToggle } from './ThemeToggle';
 import { trackEvent } from '../lib/analytics';
 import { NewsletterSignup } from './NewsletterSignup';
 import { openCookieSettings } from './CookieBanner';
@@ -44,17 +45,37 @@ export const Wordmark = ({
   // `light` (white "immob" + orange "24") for the charcoal footer. The
   // width/height are set explicitly so the surrounding chrome doesn't reflow
   // while the image loads (avoids CLS).
-  const logoSrc =
-    variant === 'light' ? '/immob24-wordmark-white.png' : '/immob24-wordmark.png';
+  // The dark-text wordmark PNG carries a white background, so in dark theme
+  // we swap to the white-text variant via Tailwind's dark: classes. An
+  // explicitly light variant (charcoal footer / dark hero) stays light.
   const inner = (
     <>
-      <img
-        src={logoSrc}
-        alt="immob24"
-        width={148}
-        height={40}
-        className="h-10 w-auto"
-      />
+      {variant === 'light' ? (
+        <img
+          src="/immob24-wordmark-white.png"
+          alt="immob24"
+          width={148}
+          height={40}
+          className="h-10 w-auto"
+        />
+      ) : (
+        <>
+          <img
+            src="/immob24-wordmark.png"
+            alt="immob24"
+            width={148}
+            height={40}
+            className="h-10 w-auto dark:hidden"
+          />
+          <img
+            src="/immob24-wordmark-white.png"
+            alt="immob24"
+            width={148}
+            height={40}
+            className="hidden h-10 w-auto dark:block"
+          />
+        </>
+      )}
       {!compact && (
         <span
           className={`hidden sm:block mt-1 text-[9px] font-medium uppercase tracking-[0.12em] whitespace-nowrap ${
@@ -79,7 +100,7 @@ export const Wordmark = ({
 
 // AI-refinement: globe dropdown (Bitrix24-style) instead of inline pills —
 // shows every language with its native name and scales beyond 4 languages.
-const LanguageToggle = () => {
+const LanguageToggle = ({ onDark = false }: { onDark?: boolean }) => {
   const { language, switchLanguage } = useLanguage();
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -110,12 +131,16 @@ const LanguageToggle = () => {
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-label="Sprache wählen"
-        className="inline-flex items-center gap-1.5 rounded-full border border-charcoal/15 bg-white/80 backdrop-blur px-3 py-1.5 text-xs font-medium text-charcoal shadow-subtle hover:border-golden/50 transition-colors"
+        className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-medium transition-colors ${
+          onDark
+            ? 'border-white/25 bg-white/10 text-white backdrop-blur hover:border-golden/60'
+            : 'border-charcoal/15 bg-white/80 text-charcoal backdrop-blur shadow-subtle hover:border-golden/50'
+        }`}
       >
-        <Globe className="h-3.5 w-3.5 text-charcoal/60" />
+        <Globe className={`h-3.5 w-3.5 ${onDark ? 'text-white/70' : 'text-charcoal/60'}`} />
         {current?.short}
         <ChevronDown
-          className={`h-3 w-3 text-charcoal/50 transition-transform ${open ? 'rotate-180' : ''}`}
+          className={`h-3 w-3 transition-transform ${onDark ? 'text-white/60' : 'text-charcoal/50'} ${open ? 'rotate-180' : ''}`}
         />
       </button>
 
@@ -163,8 +188,14 @@ const LanguageToggle = () => {
 export const Header = () => {
   const { t, language } = useLanguage();
   const localPath = useLocalizedPath();
+  const { pathname } = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+
+  // The home hero is a full-viewport dark canvas (brief re-skin); while the
+  // transparent header floats over it, links/controls render light-on-dark.
+  const isHome = pathname === pathFor('home', language) || pathname === '/';
+  const onDark = isHome && !scrolled && !open;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);
@@ -207,14 +238,16 @@ export const Header = () => {
       }`}
     >
       <div className="container flex items-center justify-between gap-4 py-4">
-        <Wordmark compact />
+        <Wordmark compact variant={onDark ? 'light' : 'dark'} />
 
         <nav className="hidden xl:flex flex-1 items-center justify-center gap-0.5">
           {[aiFeaturesLink, productLink, howItWorksLink, crmAltLink, pricingLink, demoLink, betaLink].map((l) => (
             <Link
               key={l.to}
               to={l.to}
-              className="px-2.5 py-2 text-sm text-charcoal/70 hover:text-charcoal transition-colors whitespace-nowrap"
+              className={`px-2.5 py-2 text-sm transition-colors whitespace-nowrap ${
+                onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
+              }`}
             >
               {l.label}
             </Link>
@@ -222,13 +255,18 @@ export const Header = () => {
         </nav>
 
         <div className="flex flex-none items-center gap-2">
-          <LanguageToggle />
+          <ThemeToggle onDark={onDark} />
+          <LanguageToggle onDark={onDark} />
           {/* AI-refinement: login entry to the immob24 app (dashboard is a
               separate application — always a full absolute URL). */}
           <a
             href="https://immob24.com/login"
             onClick={() => trackEvent('header_login_click')}
-            className="hidden md:inline-flex items-center rounded-full border border-charcoal/15 px-4 py-2 text-sm font-medium text-charcoal hover:border-golden/50 hover:text-golden-dark transition-colors"
+            className={`hidden md:inline-flex items-center rounded-full border px-4 py-2 text-sm font-medium transition-colors ${
+              onDark
+                ? 'border-white/25 text-white hover:border-golden/60 hover:text-golden'
+                : 'border-charcoal/15 text-charcoal hover:border-golden/50 hover:text-golden-dark'
+            }`}
           >
             Login
           </a>
@@ -236,7 +274,11 @@ export const Header = () => {
             type="button"
             {...DEMO_CTA_PROPS}
             onClick={() => trackEvent('header_cta_click')}
-            className="hidden md:inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-4 py-2 text-sm font-medium hover:bg-charcoal/90 transition-colors"
+            className={`hidden md:inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+              onDark
+                ? 'bg-golden text-[#1E1B16] hover:bg-golden/90 shadow-golden'
+                : 'bg-charcoal text-white hover:bg-charcoal/90'
+            }`}
           >
             {asString(t('nav.requestDemo'))}
             <ArrowRight className="h-4 w-4" />
@@ -244,7 +286,7 @@ export const Header = () => {
           <button
             type="button"
             aria-label="Menü"
-            className="xl:hidden p-2 -mr-2 text-charcoal"
+            className={`xl:hidden p-2 -mr-2 ${onDark ? 'text-white' : 'text-charcoal'}`}
             onClick={() => setOpen((v) => !v)}
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}

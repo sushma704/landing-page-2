@@ -488,7 +488,7 @@ export default function WhyImmob24Page() {
             <button
               type="button"
               {...DEMO_CTA_PROPS}
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-golden px-6 py-3 text-sm font-semibold text-charcoal shadow-golden"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-golden px-6 py-3 text-sm font-semibold text-[#1E1B16] shadow-golden"
             >
               {L({
                 de: 'Demo anfragen',

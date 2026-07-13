@@ -179,18 +179,7 @@
   /* ============================================
      HEXAGONAL CARD with golden border glow
      ============================================ */
-  .hex-card {
-    @apply relative bg-white rounded-2xl p-6 md:p-8
-           border border-golden/10
-           shadow-[0_4px_24px_rgba(0,0,0,0.06)]
-           transition-all duration-500 ease-out;
-    clip-path: polygon(5% 0%, 95% 0%, 100% 50%, 95% 100%, 5% 100%, 0% 50%);
-  }
 
-  .hex-card:hover {
-    @apply border-golden/30;
-    box-shadow: 0 8px 32px rgba(245, 166, 35, 0.2), 0 0 0 1px rgba(245, 166, 35, 0.1);
-  }
 
   /* ============================================
      METRIC CARD with honey fill animation
@@ -281,17 +270,8 @@
      GLOW EFFECTS
      Golden amber glow for premium feel
      ============================================ */
-  .glow-golden {
-    box-shadow: 0 0 60px -15px rgba(245, 166, 35, 0.5);
-  }
 
-  .glow-golden-sm {
-    box-shadow: 0 0 30px -10px rgba(245, 166, 35, 0.4);
-  }
 
-  .glow-amber {
-    box-shadow: 0 4px 20px rgba(245, 166, 35, 0.4);
-  }
 
   /* ============================================
      TIMELINE

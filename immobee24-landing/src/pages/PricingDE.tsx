@@ -257,8 +257,8 @@ const PricingCards = () => {
   const enterCls = (i: number) =>
     reduced ? 'flex' : `price-enter flex ${inView ? 'landed' : ''}`;
   const enterStyle = (i: number) =>
-    reduced ? undefined : { transitionDelay: `calc(var(--slowmo, 1) * ${ENTER_DELAY[i]}ms)` };
-  const breathStyle = (i: number) => ({ animationDelay: `calc(var(--slowmo, 1) * ${i * 60}ms)` });
+    reduced ? undefined : { transitionDelay: `${ENTER_DELAY[i] * slowmoFactor()}ms` };
+  const breathStyle = (i: number) => ({ animationDelay: `${i * 60 * slowmoFactor()}ms` });
 
   return (
     <section id="plans" className="py-16 md:py-20 bg-white">

@@ -161,7 +161,7 @@ export const MorphPrice = ({
     >
       <div
         className={`transition-all ease-[cubic-bezier(0.22,1,0.36,1)] ${cls}`}
-        style={{ transitionDuration: `calc(var(--slowmo, 1) * ${phase === 'out' ? 150 : 250}ms)` }}
+        style={{ transitionDuration: `${(phase === 'out' ? 150 : 250) * slowmoFactor()}ms` }}
       >
         <p
           className={

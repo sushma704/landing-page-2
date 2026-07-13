@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Bot, CalendarCheck2, LineChart, Mail } from 'lucide-react';
 import { useLanguage } from '../i18n';
 import type { Language } from '../i18n';
-import { LiveInquiryCard } from './LiveInquiryCard';
+import { SceneInquiryReply } from './scenes';
 
 type Step = {
   icon: typeof Mail;
@@ -113,9 +113,11 @@ export const HeroShowcase = () => {
       }}
     >
       <div className="grid">
-        {/* Slide 1 — live inquiry chat (the animated product moment) */}
+        {/* Slide 1 — live inquiry scene (the animated product moment) */}
         <div className={slideCls(0)} aria-hidden={active !== 0}>
-          <LiveInquiryCard />
+          <div className="mt-12 mx-auto w-full max-w-xl">
+            <SceneInquiryReply />
+          </div>
         </div>
 
         {/* Slide 2 — the lead journey, 4 steps */}

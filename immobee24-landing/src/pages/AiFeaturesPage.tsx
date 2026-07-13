@@ -24,6 +24,7 @@ import {
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
+import { SceneAgents, SceneApprovalGate } from '../components/scenes';
 import { DemoVideoPlayer } from '../components/DemoVideoPlayer';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 import { useJsonLd } from '../lib/useJsonLd';
@@ -414,6 +415,10 @@ export default function AiFeaturesPage() {
               </span>
             ))}
           </div>
+
+          <div className="mt-10 mx-auto max-w-xl text-start">
+            <SceneAgents />
+          </div>
         </div>
       </section>
 
@@ -531,7 +536,7 @@ export default function AiFeaturesPage() {
 
       {/* Compliance cross-link */}
       <section className="py-14 bg-charcoal text-white">
-        <div className="container grid md:grid-cols-[1fr,auto] items-center gap-8">
+        <div className="container grid lg:grid-cols-[1fr,minmax(300px,26rem)] items-center gap-8">
           <div>
             <div className="flex items-center gap-2 text-golden">
               <ShieldCheck className="h-5 w-5" />
@@ -544,7 +549,7 @@ export default function AiFeaturesPage() {
                 })}
               </span>
             </div>
-            <h2 className="mt-3 font-heading text-2xl md:text-3xl">
+            <h2 className="mt-3 font-heading text-2xl md:text-3xl text-white">
               {L({
                 de: 'KI mit Kontrolle: konform durch Architektur, nicht nachgerüstet',
                 en: 'AI with control: compliant by architecture, not retrofitted',
@@ -561,32 +566,35 @@ export default function AiFeaturesPage() {
               })}
             </p>
           </div>
-          <div className="flex flex-wrap gap-3">
-            <Link
-              to={pathFor('compliance', language)}
-              className="inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-2.5 text-sm font-medium hover:bg-white/10 transition-colors"
-            >
-              <BadgeCheck className="h-4 w-4" />
-              {L({
-                de: 'Compliance ansehen',
-                en: 'See compliance',
-                fr: 'Voir la conformité',
-                ar: 'استعراض الامتثال',
-              })}
-            </Link>
-            <button
-              type="button"
-              {...DEMO_CTA_PROPS}
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-golden px-5 py-2.5 text-sm font-semibold text-[#1E1B16] shadow-golden"
-            >
-              {L({
-                de: 'Demo anfragen',
-                en: 'Request a demo',
-                fr: 'Demander une démo',
-                ar: 'طلب عرض توضيحي',
-              })}
-              <ArrowRight className="h-4 w-4" />
-            </button>
+          <div className="space-y-5">
+            <SceneApprovalGate />
+            <div className="flex flex-wrap gap-3">
+              <Link
+                to={pathFor('compliance', language)}
+                className="inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-2.5 text-sm font-medium hover:bg-white/10 transition-colors"
+              >
+                <BadgeCheck className="h-4 w-4" />
+                {L({
+                  de: 'Compliance ansehen',
+                  en: 'See compliance',
+                  fr: 'Voir la conformité',
+                  ar: 'استعراض الامتثال',
+                })}
+              </Link>
+              <button
+                type="button"
+                {...DEMO_CTA_PROPS}
+                className="inline-flex items-center gap-2 rounded-full bg-gradient-golden px-5 py-2.5 text-sm font-semibold text-[#1E1B16] shadow-golden"
+              >
+                {L({
+                  de: 'Demo anfragen',
+                  en: 'Request a demo',
+                  fr: 'Demander une démo',
+                  ar: 'طلب عرض توضيحي',
+                })}
+                <ArrowRight className="h-4 w-4" />
+              </button>
+            </div>
           </div>
         </div>
       </section>

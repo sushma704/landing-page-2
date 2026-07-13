@@ -25,6 +25,7 @@ import {
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
+import { SceneApprovalGate } from '../components/scenes';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 import { useJsonLd } from '../lib/useJsonLd';
 import { breadcrumbSchema } from '../lib/schema';
@@ -573,7 +574,7 @@ export default function CompliancePage() {
 
       {/* Human-in-the-loop banner + CTA */}
       <section className="py-14 bg-charcoal text-white">
-        <div className="container grid md:grid-cols-[1fr,auto] items-center gap-8">
+        <div className="container grid lg:grid-cols-[1fr,minmax(300px,26rem)] items-center gap-8">
           <div>
             <div className="flex items-center gap-2 text-golden">
               <UserCheck className="h-5 w-5" />
@@ -586,7 +587,7 @@ export default function CompliancePage() {
                 })}
               </span>
             </div>
-            <h2 className="mt-3 font-heading text-2xl md:text-3xl max-w-2xl">
+            <h2 className="mt-3 font-heading text-2xl md:text-3xl max-w-2xl text-white">
               {L({
                 de: 'Keine Aktion ohne Sichtbarkeit. Keine Kampagne ohne Freigabe. Kein Scoring ohne Prüfweg.',
                 en: 'No action without visibility. No campaign without approval. No scoring without a review path.',
@@ -595,7 +596,9 @@ export default function CompliancePage() {
               })}
             </h2>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="space-y-5">
+            <SceneApprovalGate />
+            <div className="flex flex-wrap gap-3">
             <Link
               to={pathFor('aiFeatures', language)}
               className="inline-flex items-center gap-2 rounded-full border border-white/25 px-5 py-2.5 text-sm font-medium hover:bg-white/10 transition-colors"
@@ -621,6 +624,7 @@ export default function CompliancePage() {
               })}
               <ArrowRight className="h-4 w-4" />
             </button>
+            </div>
           </div>
         </div>
       </section>

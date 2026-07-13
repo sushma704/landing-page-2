@@ -15,6 +15,12 @@ import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
 import { Reveal, RevealGroup, usePrefersReducedMotion } from '../lib/animations';
+import {
+  SceneQualification,
+  SceneScheduling,
+  SceneFollowUp,
+  ScenePipeline,
+} from '../components/scenes';
 import { SevenCoWorkersBand, ComplianceBadgesStrip } from '../components/AiRefinementBands';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
@@ -210,20 +216,38 @@ type Feature = {
   icon: ComponentType<{ className?: string }>;
   titleKey: string;
   bodyKey: string;
+  /** self-playing product vignette paired with this feature */
+  scene?: ComponentType<{ className?: string }>;
 };
 
 const Features = () => {
   const { t } = useLanguage();
   const items: Feature[] = [
     { icon: Zap, titleKey: 'produkt.features.f1Title', bodyKey: 'produkt.features.f1Body' },
-    { icon: Target, titleKey: 'produkt.features.f2Title', bodyKey: 'produkt.features.f2Body' },
+    {
+      icon: Target,
+      titleKey: 'produkt.features.f2Title',
+      bodyKey: 'produkt.features.f2Body',
+      scene: SceneQualification,
+    },
     {
       icon: CalendarClock,
       titleKey: 'produkt.features.f3Title',
       bodyKey: 'produkt.features.f3Body',
+      scene: SceneScheduling,
     },
-    { icon: Repeat, titleKey: 'produkt.features.f4Title', bodyKey: 'produkt.features.f4Body' },
-    { icon: Layers, titleKey: 'produkt.features.f5Title', bodyKey: 'produkt.features.f5Body' },
+    {
+      icon: Repeat,
+      titleKey: 'produkt.features.f4Title',
+      bodyKey: 'produkt.features.f4Body',
+      scene: SceneFollowUp,
+    },
+    {
+      icon: Layers,
+      titleKey: 'produkt.features.f5Title',
+      bodyKey: 'produkt.features.f5Body',
+      scene: ScenePipeline,
+    },
   ];
 
   return (
@@ -253,6 +277,7 @@ const Features = () => {
                 {asString(t(item.titleKey))}
               </h3>
               <p className="mt-3 text-slate leading-relaxed">{asString(t(item.bodyKey))}</p>
+              {item.scene && <item.scene className="mt-6" />}
             </div>
           ))}
         </RevealGroup>

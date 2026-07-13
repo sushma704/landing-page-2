@@ -19,6 +19,9 @@ const PricingDE = lazy(() => import('./pages/PricingDE'));
 const AiFeaturesPage = lazy(() => import('./pages/AiFeaturesPage'));
 const CompliancePage = lazy(() => import('./pages/CompliancePage'));
 const WhyImmob24Page = lazy(() => import('./pages/WhyImmob24Page'));
+
+// Internal-only scene gallery (noindex) for design review
+const DevScenes = lazy(() => import('./pages/DevScenes'));
 // SEO landing pages — DE/EN pairs, staged under noindex pending entity registration
 const MaklersoftwareMuenchen = lazy(() => import('./pages/seo/MaklersoftwareMuenchen'));
 const MaklersoftwareBerlin = lazy(() => import('./pages/seo/MaklersoftwareBerlin'));
@@ -57,6 +60,8 @@ export default function App() {
       <Suspense fallback={<PageLoader />}>
         <Routes>
         <Route path="/" element={<Navigate to="/de" replace />} />
+
+        <Route path="/dev/scenes" element={<DevScenes />} />
 
         <Route path="/de" element={<HomePage />} />
         <Route path="/en" element={<HomePage />} />

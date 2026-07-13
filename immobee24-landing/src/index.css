@@ -685,3 +685,38 @@
   button.bg-gradient-golden:hover, a.bg-gradient-golden:hover, button[data-demo-cta]:hover,
   button.bg-gradient-golden:active, button[data-demo-cta]:active { transform: none !important; }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   Product scenes — self-playing UI vignettes (src/components/scenes).
+   Step-driven elements use .tr-scene transitions; only continuous
+   loops (typing dots, slot pulse) need keyframes. Transform/opacity
+   only — nothing here can shift layout.
+   ════════════════════════════════════════════════════════════════ */
+@layer utilities {
+  .tr-scene {
+    transition-property: opacity, transform, border-color, background-color;
+    transition-duration: 350ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+.scene-typing-dot {
+  animation: sceneTyping 1s infinite cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes sceneTyping {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
+  30% { transform: translateY(-3px); opacity: 1; }
+}
+
+.scene-ring {
+  animation: sceneRing 1.6s infinite cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes sceneRing {
+  0%, 100% { opacity: 0; transform: scale(0.92); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-typing-dot, .scene-ring { animation: none; }
+  .tr-scene { transition: none !important; }
+}

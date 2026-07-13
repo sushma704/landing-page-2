@@ -19,7 +19,7 @@ import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
 import { ScrollCue } from '../components/Wayfinding';
-import { Reveal, RevealGroup, usePrefersReducedMotion } from '../lib/animations';
+import { Reveal, RevealGroup, useInView, usePrefersReducedMotion } from '../lib/animations';
 import {
   SceneQualification,
   SceneScheduling,
@@ -615,8 +615,20 @@ const DEEP_STEP_ICONS = [Inbox, Zap, ListChecks, Workflow, Sparkles, Bell];
 const ProcessDeepDive = () => {
   const { t } = useLanguage();
   const items = asStepArray(t('howItWorksPage.steps.items') as unknown);
+  const reduced = usePrefersReducedMotion();
+  // HomeLead-style narrative highlight: one card glows at a time, walking
+  // the sequence in order while the section is on screen.
+  const [ref, inView] = useInView<HTMLDivElement>({ threshold: 0.3 });
+  const [active, setActive] = useState(-1);
+  useEffect(() => {
+    if (reduced || !inView || items.length === 0) return;
+    setActive(0);
+    const id = window.setInterval(() => setActive((a) => (a + 1) % items.length), 2200);
+    return () => window.clearInterval(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView, reduced, items.length]);
   return (
-    <section id="process-detail" className="py-20 md:py-28 bg-white">
+    <section id="process-detail" ref={ref} className="py-20 md:py-28 bg-white">
       <div className="container">
         <Reveal className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
@@ -630,7 +642,11 @@ const ProcessDeepDive = () => {
             return (
               <li
                 key={i}
-                className="rounded-2xl bg-cream border border-charcoal/10 p-6 md:p-8 shadow-subtle list-none"
+                className={`rounded-2xl bg-cream border p-6 md:p-8 shadow-subtle list-none transition-all duration-500 ${
+                  active === i
+                    ? 'border-golden/60 shadow-card-hover -translate-y-1'
+                    : 'border-charcoal/10'
+                }`}
               >
                 <div className="flex items-start gap-5">
                   <div className="flex-none flex flex-col items-center">
@@ -648,6 +664,130 @@ const ProcessDeepDive = () => {
             );
           })}
         </RevealGroup>
+      </div>
+    </section>
+  );
+};
+
+// ── Channel constellation (HomeLead "hub" pattern): your inquiry channels
+// radiating from immob24, dashed lines, one channel highlighted at a time.
+// Honest scope: only channels the site already claims (portals, email,
+// website, calendar, your CRM).
+const HUB_CHANNELS: Array<Record<string, string>> = [
+  { de: 'ImmoScout24', en: 'ImmoScout24', fr: 'ImmoScout24', ar: 'ImmoScout24' },
+  { de: 'Weitere Portale', en: 'More portals', fr: 'Autres portails', ar: 'بوابات أخرى' },
+  { de: 'E-Mail', en: 'Email', fr: 'E-mail', ar: 'البريد الإلكتروني' },
+  { de: 'Website', en: 'Website', fr: 'Site web', ar: 'الموقع الإلكتروني' },
+  { de: 'Kalender', en: 'Calendar', fr: 'Calendrier', ar: 'التقويم' },
+  { de: 'Ihr CRM', en: 'Your CRM', fr: 'Votre CRM', ar: 'نظام CRM لديكم' },
+];
+
+const HUB_COPY: Record<string, Record<string, string>> = {
+  headline: {
+    de: 'Ihre Kanäle. Ein Eingang.',
+    en: 'Your channels. One inbox.',
+    fr: 'Vos canaux. Une seule entrée.',
+    ar: 'قنواتكم. صندوق وارد واحد.',
+  },
+  body: {
+    de: 'Immob24 nimmt Anfragen dort an, wo sie entstehen — Portal, E-Mail oder Website — und führt sie in einem Arbeitsablauf zusammen. Termine landen im Kalender, Ergebnisse in Ihrem CRM.',
+    en: 'Immob24 picks inquiries up where they start — portal, email or your website — and merges them into one workflow. Viewings land in the calendar, results in your CRM.',
+    fr: 'Immob24 capte les demandes là où elles naissent — portail, e-mail ou site web — et les réunit dans un seul flux. Les visites arrivent au calendrier, les résultats dans votre CRM.',
+    ar: 'يلتقط Immob24 الاستفسارات من حيث تنشأ — بوابة أو بريد أو موقعكم — ويجمعها في مسار عمل واحد. تصل المعاينات إلى التقويم والنتائج إلى نظام CRM لديكم.',
+  },
+};
+
+const HUB_POS = HUB_CHANNELS.map((_, i) => {
+  const a = ((i * 360) / HUB_CHANNELS.length - 90) * (Math.PI / 180);
+  return {
+    x: Math.max(16, Math.min(84, 50 + 40 * Math.cos(a))),
+    y: 50 + 36 * Math.sin(a),
+  };
+});
+
+const IntegrationHub = () => {
+  const { language } = useLanguage();
+  const reduced = usePrefersReducedMotion();
+  const [ref, inView] = useInView<HTMLDivElement>({ threshold: 0.3 });
+  const [active, setActive] = useState(-1);
+  useEffect(() => {
+    if (reduced || !inView) return;
+    setActive(0);
+    const id = window.setInterval(() => setActive((a) => (a + 1) % HUB_CHANNELS.length), 1600);
+    return () => window.clearInterval(id);
+  }, [inView, reduced]);
+
+  return (
+    <section id="channels" ref={ref} className="py-20 md:py-28 bg-cream">
+      <div className="container">
+        <div className="grid items-center gap-10 lg:grid-cols-2 max-w-6xl mx-auto">
+          <div>
+            <Reveal direction="left">
+              <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+                {HUB_COPY.headline[language] ?? HUB_COPY.headline.en}
+              </h2>
+              <p className="mt-5 text-body-lg text-slate leading-relaxed">
+                {HUB_COPY.body[language] ?? HUB_COPY.body.en}
+              </p>
+            </Reveal>
+          </div>
+
+          <Reveal direction="scale">
+            <div className="relative mx-auto aspect-[16/13] w-full max-w-lg select-none">
+              {/* dashed spokes; the active channel's line brightens */}
+              <svg
+                aria-hidden
+                className="absolute inset-0 h-full w-full"
+                viewBox="0 0 100 100"
+                preserveAspectRatio="none"
+              >
+                {HUB_POS.map((p, i) => (
+                  <line
+                    key={i}
+                    x1="50"
+                    y1="50"
+                    x2={p.x}
+                    y2={p.y}
+                    strokeDasharray="2 2.5"
+                    strokeWidth={active === i ? 0.7 : 0.35}
+                    className={active === i ? 'stroke-golden' : 'stroke-charcoal/20'}
+                    style={{ transition: 'stroke 400ms ease-out, stroke-width 400ms ease-out' }}
+                  />
+                ))}
+              </svg>
+
+              {/* hub */}
+              <div
+                className="absolute flex -translate-x-1/2 -translate-y-1/2 items-center justify-center"
+                style={{ left: '50%', top: '50%' }}
+              >
+                <span className="rounded-2xl border border-charcoal/10 bg-white px-4 py-2.5 font-heading text-lg shadow-card">
+                  <span className="text-teal">immob</span>
+                  <span className="text-golden">24</span>
+                </span>
+              </div>
+
+              {/* channel chips */}
+              {HUB_CHANNELS.map((c, i) => (
+                <span
+                  key={c.en}
+                  className={`absolute whitespace-nowrap rounded-full border px-3 py-1.5 text-xs sm:text-sm font-medium transition-all duration-300 ${
+                    active === i
+                      ? 'border-golden bg-gradient-golden text-[#1E1B16] shadow-golden'
+                      : 'border-charcoal/10 bg-white text-slate'
+                  }`}
+                  style={{
+                    left: `${HUB_POS[i].x}%`,
+                    top: `${HUB_POS[i].y}%`,
+                    transform: `translate(-50%, -50%)${active === i ? ' scale(1.06)' : ''}`,
+                  }}
+                >
+                  {c[language] ?? c.en}
+                </span>
+              ))}
+            </div>
+          </Reveal>
+        </div>
       </div>
     </section>
   );
@@ -897,6 +1037,7 @@ export default function ProduktDE() {
     // AI-refinement (draft/ai-refinement): the 7 AI co-workers + demo video
     SevenCoWorkersBand,
     UseCases,
+    IntegrationHub,
     CrmComparison,
     WhoItsFor,
     HowItWorks,
@@ -919,6 +1060,7 @@ export default function ProduktDE() {
     HowItWorks,
     ProcessDeepDive,
     HumanControl,
+    IntegrationHub,
     FAQ,
   ]);
 

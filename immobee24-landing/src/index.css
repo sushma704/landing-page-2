@@ -835,3 +835,20 @@ button[data-demo-cta]:focus-visible {
   --c-teal-ink: 10 90 77;
   --c-teal-wash: 220 238 233;
 }
+
+/* Typewriter caret (TypeCycle) */
+.type-caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.95em;
+  margin-inline-start: 3px;
+  vertical-align: -0.08em;
+  background: currentColor;
+  animation: caretBlink 1s steps(1) infinite;
+}
+@keyframes caretBlink {
+  50% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .type-caret { animation: none; display: none; }
+}

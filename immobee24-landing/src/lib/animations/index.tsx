@@ -217,6 +217,65 @@ export const CountUp = ({ value, duration = 1200, className = '' }: CountUpProps
   );
 };
 
+type TypeCycleProps = {
+  /** words typed/erased in a loop; words[0] renders statically under reduced motion */
+  words: string[];
+  className?: string;
+  typeMs?: number;
+  eraseMs?: number;
+  holdMs?: number;
+};
+
+// Typewriter word rotation (HomeLead-style hero): types a word, holds,
+// erases, types the next. An invisible sizer containing the longest word
+// reserves the box, so the surrounding layout never shifts (CLS 0).
+export const TypeCycle = ({
+  words,
+  className = '',
+  typeMs = 70,
+  eraseMs = 45,
+  holdMs = 1800,
+}: TypeCycleProps) => {
+  const reduced = usePrefersReducedMotion();
+  const [wi, setWi] = useState(0);
+  const [len, setLen] = useState(0);
+  const [erasing, setErasing] = useState(false);
+
+  useEffect(() => {
+    if (reduced || words.length === 0) return;
+    const word = words[wi];
+    let t: number;
+    if (!erasing) {
+      if (len < word.length) t = window.setTimeout(() => setLen(len + 1), typeMs);
+      else t = window.setTimeout(() => setErasing(true), holdMs);
+    } else if (len > 0) {
+      t = window.setTimeout(() => setLen(len - 1), eraseMs);
+    } else {
+      setErasing(false);
+      setWi((wi + 1) % words.length);
+    }
+    return () => window.clearTimeout(t);
+  }, [len, erasing, wi, reduced, words, typeMs, eraseMs, holdMs]);
+
+  if (!words.length) return null;
+  if (reduced) return <span className={className}>{words[0]}</span>;
+  const longest = words.reduce((a, b) => (a.length >= b.length ? a : b));
+  return (
+    <span className={`relative inline-grid align-baseline ${className}`} aria-label={words[wi]}>
+      {/* sizer: reserves the widest/tallest state so nothing reflows.
+          text-start anchors typing so characters append without
+          re-centering the word (a centered word shifts every keystroke). */}
+      <span aria-hidden className="invisible col-start-1 row-start-1 whitespace-pre text-start">
+        {longest}
+      </span>
+      <span aria-hidden className="col-start-1 row-start-1 whitespace-pre text-start">
+        {words[wi].slice(0, len)}
+        <span className="type-caret" />
+      </span>
+    </span>
+  );
+};
+
 type MarqueeProps = {
   children: ReactNode;
   className?: string;

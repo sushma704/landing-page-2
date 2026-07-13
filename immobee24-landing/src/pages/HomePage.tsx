@@ -24,7 +24,7 @@ import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroShowcase } from '../components/HeroShowcase';
 import { HeroWaves } from '../components/HeroWaves';
-import { CountUp, Reveal, RevealGroup } from '../lib/animations';
+import { CountUp, Reveal, RevealGroup, TypeCycle } from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { SevenCoWorkersBand, ComplianceBadgesStrip } from '../components/AiRefinementBands';
 
@@ -69,6 +69,16 @@ const HERO_PILLS: Array<{ stat: string; label: Record<string, string> }> = [
   },
 ];
 
+// Typewriter hero headline (HomeLead-style): a static lead-in plus a cycling
+// audience word with blinking caret. Mirrors the Solutions roles. words[0]
+// renders statically under reduced motion.
+const HERO_TYPED: Record<string, { lead: string; words: string[] }> = {
+  de: { lead: 'KI-Software für', words: ['Immobilienmakler', 'Maklerteams', 'Hausverwaltungen'] },
+  en: { lead: 'AI software for', words: ['real estate brokers', 'brokerage teams', 'property managers'] },
+  fr: { lead: 'Le logiciel IA pour', words: ['les agents immobiliers', 'les équipes d’agence', 'les gestionnaires de biens'] },
+  ar: { lead: 'برنامج الذكاء الاصطناعي لـ', words: ['وسطاء العقارات', 'فرق الوساطة', 'إدارة العقارات'] },
+};
+
 const Hero = () => {
   const { t, language } = useLanguage();
   const localPath = useLocalizedPath();
@@ -106,13 +116,17 @@ const Hero = () => {
 
           <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-white text-balance">
             {(() => {
-              const words = asString(t('hero.headline')).split(' ');
-              const mid = Math.ceil(words.length / 2);
-              return [words.slice(0, mid).join(' '), words.slice(mid).join(' ')].map((line, i) => (
-                <span key={i} className="hero-in block" style={{ animationDelay: `${100 + i * 90}ms` }}>
-                  {line}
-                </span>
-              ));
+              const typed = HERO_TYPED[language] ?? HERO_TYPED.en;
+              return (
+                <>
+                  <span className="hero-in block" style={{ animationDelay: '100ms' }}>
+                    {typed.lead}
+                  </span>
+                  <span className="hero-in block text-golden" style={{ animationDelay: '190ms' }}>
+                    <TypeCycle words={typed.words} />
+                  </span>
+                </>
+              );
             })()}
           </h1>
 

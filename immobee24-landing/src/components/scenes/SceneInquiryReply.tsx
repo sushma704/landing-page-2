@@ -69,30 +69,31 @@ export const SceneInquiryReply = ({ className = '' }: { className?: string }) =>
             <p className="mt-1 text-xs sm:text-sm text-charcoal leading-snug">{L('inquiry')}</p>
           </div>
 
-          {/* typing indicator — only while the AI "writes" */}
-          <div
-            className={`tr-scene self-end rounded-2xl rounded-ee-md border border-teal/20 bg-teal-wash px-3.5 py-2.5 ${
-              step === 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-90 absolute'
-            }`}
-            aria-hidden={step !== 2}
-          >
-            <span className="flex items-center gap-1">
-              {[0, 1, 2].map((i) => (
-                <span
-                  key={i}
-                  className="scene-typing-dot h-1.5 w-1.5 rounded-full bg-teal"
-                  style={{ animationDelay: `${i * 150}ms` }}
-                />
-              ))}
-            </span>
-          </div>
-
-          {/* AI reply — slides up */}
-          <div
-            className={`tr-scene duration-500 max-w-[85%] self-end rounded-2xl rounded-ee-md border border-teal/20 bg-teal-wash px-3.5 py-2.5 ${
-              step >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
-            }`}
-          >
+          {/* AI reply zone — a neutral wrapper reserves the space; the reply
+              fades up inside it and the typing indicator is an absolute
+              overlay, so nothing ever reflows (CLS 0) */}
+          <div className="relative max-w-[85%] self-end">
+            <div
+              className={`tr-scene absolute top-0 end-0 z-10 rounded-2xl rounded-ee-md border border-teal/20 bg-teal-wash px-3.5 py-2.5 ${
+                step === 2 ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+              }`}
+              aria-hidden={step !== 2}
+            >
+              <span className="flex items-center gap-1">
+                {[0, 1, 2].map((i) => (
+                  <span
+                    key={i}
+                    className="scene-typing-dot h-1.5 w-1.5 rounded-full bg-teal"
+                    style={{ animationDelay: `${i * 150}ms` }}
+                  />
+                ))}
+              </span>
+            </div>
+            <div
+              className={`tr-scene duration-500 rounded-2xl rounded-ee-md border border-teal/20 bg-teal-wash px-3.5 py-2.5 ${
+                step >= 3 ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'
+              }`}
+            >
             <p className="text-xs sm:text-sm text-charcoal leading-snug">{L('reply')}</p>
             <span
               className={`tr-scene mt-2 inline-flex items-center gap-1 rounded-full bg-gradient-golden px-2.5 py-0.5 text-[10px] font-semibold text-[#1E1B16] ${
@@ -103,6 +104,7 @@ export const SceneInquiryReply = ({ className = '' }: { className?: string }) =>
               <Zap className="h-3 w-3" />
               {L('badge')}
             </span>
+            </div>
           </div>
 
           {/* qualified status chip */}

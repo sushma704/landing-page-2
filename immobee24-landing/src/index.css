@@ -852,3 +852,15 @@ button[data-demo-cta]:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   .type-caret { animation: none; display: none; }
 }
+
+/* Connector dashes that flow along the path (product hero linkage) */
+.dash-flow {
+  stroke-dasharray: 5 5;
+  animation: dashFlow 1.1s linear infinite;
+}
+@keyframes dashFlow {
+  to { stroke-dashoffset: -20; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dash-flow { animation: none; }
+}

@@ -29,7 +29,7 @@ import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
 import { ScrollCue } from '../components/Wayfinding';
-import { Reveal, RevealGroup, useInView, usePrefersReducedMotion } from '../lib/animations';
+import { Reveal, RevealGroup, TypeCycle, useInView, usePrefersReducedMotion } from '../lib/animations';
 import {
   SceneQualification,
   SceneScheduling,
@@ -115,6 +115,26 @@ const H2_LINES: Array<{ top: HeroCopy; golden: HeroCopy; sub: HeroCopy }> = [
     },
   },
 ];
+
+// Typewriter headline (slide 1) — lead-in stays, the promise word cycles.
+const PRODUCT_TYPED: Record<string, { lead: string; words: string[] }> = {
+  de: {
+    lead: 'Immob24 — KI-Software für',
+    words: ['schnellere Erstantworten', 'automatische Qualifizierung', 'gebuchte Besichtigungen'],
+  },
+  en: {
+    lead: 'Immob24 — AI software for',
+    words: ['faster lead response', 'automatic qualification', 'booked viewings'],
+  },
+  fr: {
+    lead: 'Immob24 — le logiciel IA pour',
+    words: ['des réponses plus rapides', 'la qualification automatique', 'des visites réservées'],
+  },
+  ar: {
+    lead: 'Immob24 — برنامج ذكاء اصطناعي من أجل',
+    words: ['ردود أولى أسرع', 'تأهيل تلقائي', 'معاينات محجوزة'],
+  },
+};
 
 const HERO_MODULES: Array<{ icon: ComponentType<{ className?: string }>; label: HeroCopy }> = [
   { icon: LayoutGrid, label: { de: 'Dashboard', en: 'Dashboard', fr: 'Tableau de bord', ar: 'لوحة التحكم' } },
@@ -241,17 +261,22 @@ const Hero = () => {
     }`;
 
   const headlineBlock = (i: number) => {
-    if (i === 0)
+    if (i === 0) {
+      const typed = PRODUCT_TYPED[language] ?? PRODUCT_TYPED.en;
       return (
         <>
           <h1 className="font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
-            {asString(t('produkt.hero.headline'))}
+            <span className="block">{typed.lead}</span>
+            <span className="block text-golden">
+              <TypeCycle words={typed.words} />
+            </span>
           </h1>
           <p className="mt-5 text-body-lg text-slate max-w-3xl mx-auto">
             {asString(t('produkt.hero.subheadline'))}
           </p>
         </>
       );
+    }
     const c = H2_LINES[i];
     return (
       <>
@@ -311,14 +336,25 @@ const Hero = () => {
                   </div>
                 ))}
               </div>
-              {/* connector: tiles ─ ─ immob24 ─ ─ dashboard (HomeLead-style linkage) */}
-              <div className="hidden lg:flex items-center">
-                <span aria-hidden className="w-12 xl:w-16 border-t-2 border-dashed border-teal/40" />
-                <span className="rounded-2xl border border-charcoal/10 bg-white px-4 py-2.5 font-heading text-lg shadow-card whitespace-nowrap">
+              {/* connector tree: Properties/Messages/Analytics branch into the
+                  hub, one golden line continues into the dashboard; dashes
+                  flow along the paths (.dash-flow). Mirrored under RTL. */}
+              <div className="relative hidden lg:block self-stretch min-h-[320px] w-40 xl:w-52 rtl:-scale-x-100">
+                <svg
+                  aria-hidden
+                  className="absolute inset-0 h-full w-full overflow-visible"
+                  viewBox="0 0 100 100"
+                  preserveAspectRatio="none"
+                >
+                  <path d="M 0 16 C 34 16, 34 50, 48 50" className="dash-flow stroke-teal/50" strokeWidth="1.5" fill="none" vectorEffect="non-scaling-stroke" />
+                  <path d="M 0 50 L 48 50" className="dash-flow stroke-teal/50" strokeWidth="1.5" fill="none" vectorEffect="non-scaling-stroke" />
+                  <path d="M 0 84 C 34 84, 34 50, 48 50" className="dash-flow stroke-teal/50" strokeWidth="1.5" fill="none" vectorEffect="non-scaling-stroke" />
+                  <path d="M 52 50 L 100 50" className="dash-flow stroke-golden/60" strokeWidth="1.5" fill="none" vectorEffect="non-scaling-stroke" />
+                </svg>
+                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-2xl border border-charcoal/10 bg-white px-4 py-2.5 font-heading text-lg shadow-card whitespace-nowrap rtl:-scale-x-100">
                   <span className="text-teal">immob</span>
                   <span className="text-golden">24</span>
                 </span>
-                <span aria-hidden className="w-12 xl:w-16 border-t-2 border-dashed border-golden/50" />
               </div>
               <BrowserFrame
                 src="/screens/dashboard.webp"

@@ -21,6 +21,7 @@ import {
 } from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { WhyImmob24Teaser } from '../components/AiRefinementBands';
+import { BeforeAfterSlider } from '../components/BeforeAfterSlider';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
@@ -120,6 +121,32 @@ const Framing = () => {
           <p className="mt-6 text-body-lg text-slate">
             <LineReveal masked={false} text={asString(t('crmAltPage.framing.body'))} />
           </p>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// v4 Part 8 — the approved-blueprint §06 before/after slider.
+const BA_HEAD: Record<string, string> = {
+  de: 'Sehen Sie den Unterschied',
+  en: 'See the difference',
+  fr: 'Voyez la différence',
+  ar: 'شاهدوا الفرق',
+};
+
+const BeforeAfter = () => {
+  const { language } = useLanguage();
+  return (
+    <section className="py-20 md:py-24 bg-cream">
+      <div className="container">
+        <div className="max-w-3xl mx-auto text-center">
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+            <LineReveal text={BA_HEAD[language] ?? BA_HEAD.en} />
+          </h2>
+        </div>
+        <div className="mt-12 max-w-4xl mx-auto">
+          <BeforeAfterSlider />
         </div>
       </div>
     </section>
@@ -652,6 +679,7 @@ export default function CrmAlternativeDE() {
   const sections: Array<() => ReactNode> = [
     Hero,
     Framing,
+    BeforeAfter,
     ComparisonTable,
     Competitors,
     // AI-refinement (draft/ai-refinement): teaser linking to /warum-immob24
@@ -670,6 +698,7 @@ export default function CrmAlternativeDE() {
   const selfAnimated = new Set<unknown>([
     Hero,
     Framing,
+    BeforeAfter,
     ComparisonTable,
     Competitors,
     WhenCrm,

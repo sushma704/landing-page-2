@@ -35,6 +35,15 @@ bootstrapConsent()
 // Apply the persisted light/dark theme before first paint (no flash).
 // Dark-only theme: <html class="dark"> is hardcoded in index.html.
 
+// DEBUG (dev/localhost only): ?slowmo=5 multiplies all entrance-choreography
+// delays and durations, for verifying load sequences frame by frame.
+try {
+  const slow = new URLSearchParams(window.location.search).get('slowmo')
+  if (slow && (import.meta.env.DEV || window.location.hostname === 'localhost')) {
+    document.documentElement.style.setProperty('--slowmo', String(Math.max(1, Number(slow) || 1)))
+  }
+} catch { /* no-op */ }
+
 // DRAFT-OFFLINE MODE (PO review only, never set in production builds):
 // VITE_DRAFT_OFFLINE=1 swaps BrowserRouter for HashRouter so the built site
 // navigates correctly when opened straight from an unzipped folder

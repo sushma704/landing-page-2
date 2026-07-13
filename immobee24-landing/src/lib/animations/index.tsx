@@ -175,12 +175,14 @@ type CountUpProps = {
   value: string; // e.g. "€249", "3s", "24/7", "94%"
   duration?: number;
   className?: string;
+  /** ms before counting starts once triggered (choreography slot) */
+  delay?: number;
 };
 
 // Animated count-up for numeric stats. Parses prefix/number/suffix from the
 // value string ("€249" → "€" + 249, "24/7" → 24 + "/7"); renders integers
 // with tabular numerals so surrounding text never reflows.
-export const CountUp = ({ value, duration = 1200, className = '' }: CountUpProps) => {
+export const CountUp = ({ value, duration = 1200, className = '', delay = 0 }: CountUpProps) => {
   const reduced = usePrefersReducedMotion();
   // Unlike Reveal, elements visible on mount DO count up — it's a mount
   // entrance (like the hero), and tabular-nums means zero layout shift.
@@ -199,15 +201,26 @@ export const CountUp = ({ value, duration = 1200, className = '' }: CountUpProps
     }
     if (!inView) return;
     let raf = 0;
-    const t0 = performance.now();
-    const tick = (now: number) => {
-      const k = Math.min(1, (now - t0) / duration);
-      const eased = 1 - Math.pow(1 - k, 3); // ease-out cubic
-      setN(Math.round(eased * target));
-      if (k < 1) raf = requestAnimationFrame(tick);
+    let timer = 0;
+    const slowmo = Number(
+      getComputedStyle(document.documentElement).getPropertyValue('--slowmo') || 1,
+    );
+    const start = () => {
+      const t0 = performance.now();
+      const tick = (now: number) => {
+        const k = Math.min(1, (now - t0) / duration);
+        const eased = 1 - Math.pow(1 - k, 3); // ease-out cubic
+        setN(Math.round(eased * target));
+        if (k < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
     };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    if (delay > 0) timer = window.setTimeout(start, delay * (slowmo || 1));
+    else start();
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(timer);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView, reduced, target, duration]);
 

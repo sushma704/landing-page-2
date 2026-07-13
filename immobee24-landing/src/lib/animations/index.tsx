@@ -150,36 +150,75 @@ export const Reveal = ({
   return createElement(as, { ref, style, className }, children);
 };
 
+type CascadeRhythm = 'wave' | 'read' | 'subtle';
+
+// wave: card grids (fast). read: content users read top-to-bottom
+// (FAQ, steps, checklists). subtle: footer columns.
+const RHYTHM: Record<CascadeRhythm, { gap: number; dur: number; distance: number }> = {
+  wave: { gap: STAGGER_MS, dur: REVEAL_MS, distance: 28 },
+  read: { gap: 280, dur: 450, distance: 16 },
+  subtle: { gap: 120, dur: 450, distance: 16 },
+};
+
+// Long cascades cap at 8 items — items 9+ share the 8th slot.
+export const cascadeDelay = (i: number, gap: number, base = 0): number =>
+  base + Math.min(i, 7) * gap;
+
 type RevealGroupProps = {
   children: ReactNode;
   as?: ElementType;
   className?: string;
   baseDelay?: number;
   direction?: RevealDirection;
-  /** per-child stagger in ms (default 80; footer uses a subtler 60) */
+  /** per-child stagger in ms (overrides rhythm gap) */
   stagger?: number;
+  rhythm?: CascadeRhythm;
 };
 
-// Applies Reveal to each direct child with a stagger.
+// Applies Reveal to each direct child with a rhythm-driven stagger.
 export const RevealGroup = ({
   children,
   as = 'div',
   className = '',
   baseDelay = 0,
   direction = 'up',
-  stagger = STAGGER_MS,
+  stagger,
+  rhythm = 'wave',
 }: RevealGroupProps) => {
+  const r = RHYTHM[rhythm];
+  const gap = stagger ?? r.gap;
   const items = Children.toArray(children);
   return createElement(
     as,
     { className },
     items.map((child, i) => (
-      <Reveal key={i} delay={baseDelay + i * stagger} direction={direction}>
+      <Reveal
+        key={i}
+        delay={cascadeDelay(i, gap, baseDelay)}
+        direction={direction}
+        distance={r.distance}
+      >
         {child}
       </Reveal>
     )),
   );
 };
+
+// ── Table cascade: container hook + CSS classes ──────────────────────────────
+// Tables can't be wrapped per-row without breaking semantics, so rows/cells
+// carry .cascade-item/.cascade-cell with inline transition delays and the
+// container flips .cascade-on when scrolled into view (once). Above-fold
+// tables render revealed instantly (no double animation with the entrance
+// choreography).
+export function useCascade<T extends HTMLElement = HTMLDivElement>(): [
+  React.RefObject<T | null>,
+  string,
+] {
+  const reduced = usePrefersReducedMotion();
+  const [ref, inView, immediate] = useInView<T>();
+  const on = reduced || immediate || inView;
+  return [ref, on ? 'cascade-on' : 'cascade-wait'];
+}
 
 type CountUpProps = {
   value: string; // e.g. "€249", "3s", "24/7", "94%"
@@ -358,6 +397,116 @@ export const TypeOnce = ({ text, className = '', charMs = 45, startDelay = 150 }
           </span>
         ),
       )}
+    </span>
+  );
+};
+
+type LineRevealProps = {
+  text: string;
+  className?: string;
+  /** masked: heading treatment (overflow-hidden mask, slide up from 110%).
+      unmasked: lead-paragraph treatment (plain fade-up per line). */
+  masked?: boolean;
+  lineGapMs?: number;
+  baseDelay?: number;
+};
+
+// Line-by-line text reveal. The text renders as word spans first (space
+// fully reserved), lines are measured synchronously before paint
+// (useLayoutEffect + offsetTop grouping — i18n safe: splitting happens on
+// RENDERED output), then each visual line animates in. Re-splits on resize.
+export const LineReveal = ({
+  text,
+  className = '',
+  masked = true,
+  lineGapMs,
+  baseDelay = 0,
+}: LineRevealProps) => {
+  const reduced = usePrefersReducedMotion();
+  const gap = lineGapMs ?? (masked ? 90 : 70);
+  const hostRef = useRef<HTMLSpanElement | null>(null);
+  const [lines, setLines] = useState<string[] | null>(null);
+  const [inViewRef, inView, immediate] = useInView<HTMLSpanElement>();
+
+  // share one element between measuring and display
+  const setRefs = (el: HTMLSpanElement | null) => {
+    hostRef.current = el;
+    (inViewRef as React.MutableRefObject<HTMLSpanElement | null>).current = el;
+  };
+
+  useLayoutEffect(() => {
+    if (reduced) return;
+    const el = hostRef.current;
+    if (!el || lines !== null) return;
+    const words = [...el.querySelectorAll<HTMLSpanElement>('[data-lr-word]')];
+    if (!words.length) return;
+    const grouped: string[] = [];
+    let top: number | null = null;
+    let current: string[] = [];
+    words.forEach((w) => {
+      if (top === null || Math.abs(w.offsetTop - top) > 2) {
+        if (current.length) grouped.push(current.join(' '));
+        current = [];
+        top = w.offsetTop;
+      }
+      current.push(w.textContent ?? '');
+    });
+    if (current.length) grouped.push(current.join(' '));
+    setLines(grouped);
+  }, [reduced, lines, text]);
+
+  // re-split on resize (line breaks change)
+  useEffect(() => {
+    if (reduced) return;
+    let t = 0;
+    const onResize = () => {
+      window.clearTimeout(t);
+      t = window.setTimeout(() => setLines(null), 150);
+    };
+    window.addEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      window.clearTimeout(t);
+    };
+  }, [reduced]);
+
+  useEffect(() => setLines(null), [text]);
+
+  if (reduced) return <span className={className}>{text}</span>;
+
+  if (lines === null) {
+    // measuring pass — words laid out normally, hidden until split
+    return (
+      <span ref={setRefs} className={className} style={{ visibility: 'hidden' }} aria-label={text}>
+        {text.split(' ').map((w, i) => (
+          <span key={i} data-lr-word aria-hidden>
+            {w}
+            {'\u0020'}
+          </span>
+        ))}
+      </span>
+    );
+  }
+
+  const show = inView || immediate;
+  return (
+    <span ref={setRefs} className={className} aria-label={text}>
+      {lines.map((line, i) => (
+        <span key={i} className={`block ${masked ? 'overflow-hidden' : ''}`} aria-hidden>
+          <span
+            className="block"
+            style={{
+              opacity: show ? 1 : 0,
+              transform: show ? 'none' : masked ? 'translateY(110%)' : 'translateY(16px)',
+              transition: `opacity ${masked ? 500 : 450}ms ${EASE} ${
+                baseDelay + i * gap
+              }ms, transform ${masked ? 500 : 450}ms ${EASE} ${baseDelay + i * gap}ms`,
+            }}
+          >
+            {line}
+          </span>
+        </span>
+      ))}
     </span>
   );
 };

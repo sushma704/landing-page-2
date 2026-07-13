@@ -44,6 +44,32 @@ try {
   }
 } catch { /* no-op */ }
 
+// DEBUG (dev/localhost): with ?slowmo or ?debug-entrance, log every entrance
+// event (element + ms since first) so choreography is verifiable in console.
+try {
+  const q = new URLSearchParams(window.location.search)
+  if ((q.has('slowmo') || q.has('debug-entrance')) && (import.meta.env.DEV || window.location.hostname === 'localhost')) {
+    let t0: number | null = null
+    const stamp = () => {
+      if (t0 === null) t0 = performance.now()
+      return Math.round(performance.now() - t0)
+    }
+    const label = (el: Element) =>
+      (el.textContent || '').trim().slice(0, 32) || el.tagName
+    document.addEventListener('animationstart', (e) => {
+      const n = (e as AnimationEvent).animationName
+      if (!/chorIn|chorScaleIn|heroIn|pulseGlow|badgePop|routeIn/.test(n)) return
+      console.log(`[entrance] t=${stamp()}ms ${n} — "${label(e.target as Element)}"`)
+    }, true)
+    document.addEventListener('transitionstart', (e) => {
+      const el = e.target as Element
+      if ((e as TransitionEvent).propertyName !== 'transform') return
+      if (!(el.classList?.contains('cascade-item') || el.classList?.contains('cascade-cell') || el.closest?.('.cascade-on'))) return
+      console.log(`[cascade] t=${stamp()}ms — "${label(el)}"`)
+    }, true)
+  }
+} catch { /* no-op */ }
+
 // DRAFT-OFFLINE MODE (PO review only, never set in production builds):
 // VITE_DRAFT_OFFLINE=1 swaps BrowserRouter for HashRouter so the built site
 // navigates correctly when opened straight from an unzipped folder

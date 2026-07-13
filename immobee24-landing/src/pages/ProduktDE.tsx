@@ -1,4 +1,11 @@
-import { useEffect, useRef, useState, type ComponentType, type ReactNode } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ComponentType,
+  type CSSProperties,
+  type ReactNode,
+} from 'react';
 import {
   ArrowRight,
   CalendarClock,
@@ -30,11 +37,14 @@ import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
 import { ScrollCue } from '../components/Wayfinding';
 import {
+  LineReveal,
   Reveal,
   RevealGroup,
   SkeletonReveal,
   TypeCycle,
+  cascadeDelay,
   chorSlot,
+  useCascade,
   useInView,
   usePrefersReducedMotion,
 } from '../lib/animations';
@@ -496,10 +506,10 @@ const Definition = () => {
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('produkt.definition.headline'))}
+            <LineReveal text={asString(t('produkt.definition.headline'))} />
           </h2>
           <p className="mt-6 text-body-lg text-slate">
-            {asString(t('produkt.definition.body'))}
+            <LineReveal masked={false} text={asString(t('produkt.definition.body'))} />
           </p>
         </div>
       </div>
@@ -542,10 +552,10 @@ const ProblemFit = () => {
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-balance text-white">
-            {asString(t('produkt.problemFit.headline'))}
+            <LineReveal text={asString(t('produkt.problemFit.headline'))} />
           </h2>
           <p className="mt-6 text-body-lg text-white/70">
-            {asString(t('produkt.problemFit.body'))}
+            <LineReveal masked={false} text={asString(t('produkt.problemFit.body'))} />
           </p>
         </div>
 
@@ -606,11 +616,11 @@ const Features = () => {
   return (
     <section className="py-20 md:py-28 bg-gradient-to-b from-cream to-white">
       <div className="container">
-        <Reveal className="max-w-3xl mx-auto text-center">
+        <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('produkt.features.headline'))}
+            <LineReveal text={asString(t('produkt.features.headline'))} />
           </h2>
-        </Reveal>
+          </div>
 
         <RevealGroup className="mt-12 grid md:grid-cols-2 gap-6 max-w-7xl mx-auto">
           {items.map((item, i) => (
@@ -650,11 +660,11 @@ const UseCases = () => {
   return (
     <section className="py-20 md:py-28 bg-white">
       <div className="container">
-        <Reveal className="max-w-3xl mx-auto text-center">
+        <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('produkt.useCases.headline'))}
+            <LineReveal text={asString(t('produkt.useCases.headline'))} />
           </h2>
-        </Reveal>
+          </div>
 
         <RevealGroup className="mt-12 grid md:grid-cols-2 gap-6 max-w-7xl mx-auto">
           {cases.map((c, i) => (
@@ -677,6 +687,7 @@ const UseCases = () => {
 const CrmComparison = () => {
   const { t } = useLanguage();
   const localPath = useLocalizedPath();
+  const [tableRef, tableOn] = useCascade<HTMLDivElement>();
   const rows = asPairArray(t('produkt.crmTable.rows'));
   const themaLabel = asString(t('produkt.crmTable.thema'));
   const classicalLabel = asString(t('produkt.crmTable.classicalCrm'));
@@ -687,23 +698,36 @@ const CrmComparison = () => {
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('produkt.crmTable.headline'))}
+            <LineReveal text={asString(t('produkt.crmTable.headline'))} />
           </h2>
         </div>
 
-        {/* Desktop / tablet table */}
-        <div className="mt-12 hidden md:block max-w-7xl mx-auto overflow-hidden rounded-2xl bg-white border border-charcoal/10 shadow-card">
+        {/* Desktop / tablet table — header first, rows cascade 280ms,
+            cells 60ms left-to-right; container reserves height (opacity/
+            transform only) */}
+        <div
+          ref={tableRef}
+          className={`${tableOn} mt-12 hidden md:block max-w-7xl mx-auto overflow-hidden rounded-2xl bg-white border border-charcoal/10 shadow-card`}
+        >
           <table className="w-full text-left">
             <thead>
               <tr className="band-dark bg-charcoal text-white text-sm uppercase tracking-wider">
-                <th className="px-5 py-4 font-semibold">{themaLabel}</th>
-                <th className="px-5 py-4 font-semibold">{classicalLabel}</th>
-                <th className="px-5 py-4 font-semibold">
-                  <span className="inline-flex items-center gap-2">
-                    <Sparkles className="h-4 w-4 text-golden" />
-                    {immobLabel}
-                  </span>
-                </th>
+                {[themaLabel, classicalLabel, immobLabel].map((h, j) => (
+                  <th
+                    key={j}
+                    className="cascade-cell px-5 py-4 font-semibold"
+                    style={{ '--casc-delay': `${j * 60}ms` } as CSSProperties}
+                  >
+                    {j === 2 ? (
+                      <span className="inline-flex items-center gap-2">
+                        <Sparkles className="h-4 w-4 text-golden" />
+                        {h}
+                      </span>
+                    ) : (
+                      h
+                    )}
+                  </th>
+                ))}
               </tr>
             </thead>
             <tbody>
@@ -714,9 +738,25 @@ const CrmComparison = () => {
                     i !== rows.length - 1 ? 'border-b border-charcoal/5' : ''
                   }`}
                 >
-                  <td className="px-5 py-4 font-medium text-charcoal">{row[0]}</td>
-                  <td className="px-5 py-4 text-slate">{row[1]}</td>
-                  <td className="px-5 py-4 text-charcoal bg-golden/5">{row[2]}</td>
+                  {row.map((cell, j) => (
+                    <td
+                      key={j}
+                      className={`cascade-cell px-5 py-4 ${
+                        j === 0
+                          ? 'font-medium text-charcoal'
+                          : j === 1
+                            ? 'text-slate'
+                            : 'text-charcoal bg-golden/5'
+                      }`}
+                      style={
+                        {
+                          '--casc-delay': `${cascadeDelay(i + 1, 280) + j * 60}ms`,
+                        } as CSSProperties
+                      }
+                    >
+                      {cell}
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>
@@ -772,11 +812,11 @@ const WhoItsFor = () => {
   return (
     <section id="for-whom" className="py-20 md:py-28 bg-white">
       <div className="container">
-        <Reveal className="max-w-3xl mx-auto text-center">
+        <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('produkt.whoFor.headline'))}
+            <LineReveal text={asString(t('produkt.whoFor.headline'))} />
           </h2>
-        </Reveal>
+          </div>
 
         <RevealGroup className="mt-12 grid sm:grid-cols-2 gap-4 max-w-6xl mx-auto">
           {cards.map((c, i) => (
@@ -846,11 +886,11 @@ const HowItWorks = () => {
   return (
     <section id="how-it-works" className="py-20 md:py-28 bg-gradient-to-b from-cream to-white">
       <div className="container">
-        <Reveal className="max-w-3xl mx-auto text-center">
+        <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('produkt.howItWorks.headline'))}
+            <LineReveal text={asString(t('produkt.howItWorks.headline'))} />
           </h2>
-        </Reveal>
+          </div>
 
         <div className="mt-12 lg:grid lg:grid-cols-2 lg:gap-12 max-w-6xl mx-auto">
           <ol className="relative max-w-3xl mx-auto lg:mx-0">
@@ -926,7 +966,7 @@ const SocialProof = () => {
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('produkt.socialProof.headline'))}
+            <LineReveal text={asString(t('produkt.socialProof.headline'))} />
           </h2>
           <p className="mt-4 text-sm text-warm-gray italic">
             {asString(t('produkt.socialProof.note'))}
@@ -979,11 +1019,11 @@ const ProcessDeepDive = () => {
   return (
     <section id="process-detail" ref={ref} className="py-20 md:py-28 bg-white">
       <div className="container">
-        <Reveal className="max-w-3xl mx-auto text-center">
+        <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('howItWorksPage.steps.headline'))}
+            <LineReveal text={asString(t('howItWorksPage.steps.headline'))} />
           </h2>
-        </Reveal>
+          </div>
 
         <RevealGroup className="mt-12 grid gap-6 md:grid-cols-2 max-w-7xl mx-auto" as="ol">
           {items.map((step, i) => {
@@ -1168,10 +1208,10 @@ const HumanControl = () => {
       <div className="container">
         <Reveal className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('howItWorksPage.control.headline'))}
+            <LineReveal text={asString(t('howItWorksPage.control.headline'))} />
           </h2>
           <p className="mt-6 text-body-lg text-slate">
-            {asString(t('howItWorksPage.control.body'))}
+            <LineReveal masked={false} text={asString(t('howItWorksPage.control.body'))} />
           </p>
         </Reveal>
 
@@ -1191,7 +1231,7 @@ const HumanControl = () => {
 const FAQItem = ({ q, a }: { q: string; a: string }) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-charcoal/10 last:border-b-0">
+    <div>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -1227,12 +1267,19 @@ const FAQ = () => {
       <div className="container">
         <div className="max-w-3xl mx-auto">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-center text-balance">
-            {asString(t('produkt.faq.headline'))}
+            <LineReveal text={asString(t('produkt.faq.headline'))} />
           </h2>
 
           <div className="mt-10 rounded-2xl bg-white border border-charcoal/10 px-6">
             {items.map((it, i) => (
-              <FAQItem key={i} q={it.q} a={it.a} />
+              <Reveal
+                key={i}
+                delay={cascadeDelay(i, 280)}
+                distance={16}
+                className="border-b border-charcoal/10 last:border-b-0"
+              >
+                <FAQItem q={it.q} a={it.a} />
+              </Reveal>
             ))}
           </div>
         </div>
@@ -1256,10 +1303,10 @@ const FinalCTA = () => {
       <div className="container relative">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('produkt.finalCta.headline'))}
+            <LineReveal text={asString(t('produkt.finalCta.headline'))} />
           </h2>
           <p className="mt-6 text-body-lg text-slate">
-            {asString(t('produkt.finalCta.body'))}
+            <LineReveal masked={false} text={asString(t('produkt.finalCta.body'))} />
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">

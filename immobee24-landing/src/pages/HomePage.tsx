@@ -24,7 +24,7 @@ import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroShowcase } from '../components/HeroShowcase';
 import { HeroWaves } from '../components/HeroWaves';
-import { CountUp, Reveal, RevealGroup, TypeCycle } from '../lib/animations';
+import { LineReveal, CountUp, Reveal, RevealGroup, TypeCycle } from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { BillingToggle, MorphPrice, type BillingPeriod } from '../components/PricingSwitch';
 import { SevenCoWorkersBand, ComplianceBadgesStrip } from '../components/AiRefinementBands';
@@ -359,11 +359,11 @@ const Features = () => {
   return (
     <section className="py-20 md:py-28 bg-white">
       <div className="container">
-        <Reveal className="max-w-3xl mx-auto text-center">
+        <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('features.headline'))}
+            <LineReveal text={asString(t('features.headline'))} />
           </h2>
-        </Reveal>
+          </div>
 
         <RevealGroup className="mt-12 grid md:grid-cols-2 gap-6 max-w-7xl mx-auto">
           {items.map((item, i) => (
@@ -662,7 +662,7 @@ const FAQ = () => {
       <div className="container">
         <div className="max-w-3xl mx-auto">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-center text-balance">
-            {asString(t('faq.headline'))}
+            <LineReveal text={asString(t('faq.headline'))} />
           </h2>
 
           <div className="mt-10 rounded-2xl bg-cream border border-charcoal/10 px-6">

@@ -1152,3 +1152,24 @@ section.bg-charcoal {
   .price-enter { transition: none; opacity: 1; transform: none; }
   .pulse-glow, .badge-pop, .card-breath { animation: none; }
 }
+
+/* Table/list cascade (useCascade): rows/cells reveal when the container
+   flips to .cascade-on. Space always reserved — opacity/transform only. */
+.cascade-wait .cascade-item,
+.cascade-wait .cascade-cell {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.cascade-on .cascade-item,
+.cascade-on .cascade-cell {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity calc(var(--slowmo, 1) * 450ms) cubic-bezier(0.22, 1, 0.36, 1),
+    transform calc(var(--slowmo, 1) * 450ms) cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--slowmo, 1) * var(--casc-delay, 0ms));
+}
+@media (prefers-reduced-motion: reduce) {
+  .cascade-wait .cascade-item, .cascade-wait .cascade-cell { opacity: 1; transform: none; }
+  .cascade-on .cascade-item, .cascade-on .cascade-cell { transition: none; }
+}

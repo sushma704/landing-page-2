@@ -611,7 +611,7 @@ export const Footer = () => {
             </div>
           </Reveal>
 
-          <Reveal className="lg:col-span-2" distance={16} delay={60}>
+          <Reveal className="lg:col-span-2" distance={16} delay={120}>
             <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
               {asString(t('footer.sectionsLabel'))}
             </p>
@@ -634,7 +634,7 @@ export const Footer = () => {
             </nav>
           </Reveal>
 
-          <Reveal className="lg:col-span-2" distance={16} delay={120}>
+          <Reveal className="lg:col-span-2" distance={16} delay={240}>
             <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
               {asString(t('footer.legalLabel'))}
             </p>
@@ -660,7 +660,7 @@ export const Footer = () => {
             </nav>
           </Reveal>
 
-          <Reveal className="lg:col-span-2" distance={16} delay={180}>
+          <Reveal className="lg:col-span-2" distance={16} delay={360}>
             <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
               {asString(t('footer.settingsLabel'))}
             </p>

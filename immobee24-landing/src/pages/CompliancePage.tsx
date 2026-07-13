@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
-import { Reveal, RevealGroup, TypeOnce } from '../lib/animations';
+import { chorSlot, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { SceneApprovalGate } from '../components/scenes';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
@@ -452,7 +452,7 @@ export default function CompliancePage() {
       {/* Hero */}
       <section className="relative pt-24 pb-14 md:pt-28 md:pb-20 overflow-hidden bg-gradient-to-b from-cream to-white">
         <div className="container relative text-center max-w-3xl mx-auto">
-          <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
+          <h1 className="chor mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance" style={chorSlot(0)}>
             <TypeOnce text={L({
               de: 'Konform für Europa gebaut — von Tag eins',
               en: 'Built compliant for Europe — from day one',
@@ -460,7 +460,7 @@ export default function CompliancePage() {
               ar: 'مبني ليكون متوافقًا مع أوروبا — منذ اليوم الأول',
             })} />
           </h1>
-          <p className="hero-in mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={{ animationDelay: '250ms' }}>
+          <p className="chor mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={chorSlot(280, 500)}>
             {L({
               de: 'Die meisten KI-Tools ignorieren europäische Regulierung. Immob24 ist andersherum gebaut: Das härteste Regulierungsumfeld Europas ist unsere Architektur-Vorgabe — nicht unser Nachtrag.',
               en: 'Most AI tools ignore European regulation. Immob24 is built the other way round: Europe’s hardest regulatory environment is our architectural requirement — not an afterthought.',

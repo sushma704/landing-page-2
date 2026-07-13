@@ -27,6 +27,12 @@ export const REVEAL_MS = 650;
 export const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
 export const STAGGER_MS = 80;
 
+// Entrance-choreography slot: literal delay/duration for .chor/.chor-scale
+// elements (multiplied by ?slowmo=N in dev). Usage:
+//   <div className="chor" style={chorSlot(280, 500)}>
+export const chorSlot = (delayMs: number, durMs = 600): CSSProperties =>
+  ({ '--chor-delay': `${delayMs}ms`, '--chor-dur': `${durMs}ms` }) as CSSProperties;
+
 export type RevealDirection = 'up' | 'left' | 'right' | 'scale';
 
 // pre-reveal transform per direction (Part B.2): up = 28px rise,

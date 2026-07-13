@@ -34,6 +34,7 @@ import {
   RevealGroup,
   SkeletonReveal,
   TypeCycle,
+  chorSlot,
   useInView,
   usePrefersReducedMotion,
 } from '../lib/animations';
@@ -275,12 +276,14 @@ const Hero = () => {
       return (
         <>
           <h1 className="font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
-            <span className="block">{typed.lead}</span>
-            <span className="block text-golden">
+            <span className="chor block" style={chorSlot(0)}>
+              {typed.lead}
+            </span>
+            <span className="chor block text-golden" style={chorSlot(120)}>
               <TypeCycle words={typed.words} />
             </span>
           </h1>
-          <p className="mt-5 text-body-lg text-slate max-w-3xl mx-auto">
+          <p className="chor mt-5 text-body-lg text-slate max-w-3xl mx-auto" style={chorSlot(280, 500)}>
             {asString(t('produkt.hero.subheadline'))}
           </p>
         </>
@@ -328,10 +331,13 @@ const Hero = () => {
         <div className="grid items-center">
           {/* ── Slide 1: modules + real dashboard ── */}
           <div className={slideCls(0)} aria-hidden={active !== 0}>
-            <div className="text-center max-w-4xl mx-auto hero-in" style={{ animationDelay: '0.05s' }}>
+            <div className="text-center max-w-4xl mx-auto">
               {headlineBlock(0)}
             </div>
-            <div className="mt-6 grid items-center gap-8 lg:gap-0 lg:grid-cols-[minmax(0,2fr),auto,minmax(0,3fr)] hero-in" style={{ animationDelay: '250ms' }}>
+            <div
+              className="chor-scale mt-6 grid items-center gap-8 lg:gap-0 lg:grid-cols-[minmax(0,2fr),auto,minmax(0,3fr)]"
+              style={chorSlot(650, 700)}
+            >
               {/* module tiles, two offset columns like the reference */}
               <div className="mx-auto grid max-w-sm grid-cols-2 gap-3 lg:ms-auto lg:me-0">
                 {HERO_MODULES.map((mod, i) => (
@@ -441,7 +447,7 @@ const Hero = () => {
         </div>
 
         {/* dots */}
-        <div className="mt-6 flex items-center justify-center gap-2">
+        <div className="chor mt-6 flex items-center justify-center gap-2" style={chorSlot(560, 450)}>
           {[0, 1, 2].map((i) => (
             <button
               key={i}
@@ -457,12 +463,13 @@ const Hero = () => {
         </div>
 
         {/* persistent CTAs + cue */}
-        <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 hero-in" style={{ animationDelay: '350ms' }}>
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3">
           <button
             type="button"
             {...DEMO_CTA_PROPS}
             onClick={() => trackEvent('produkt_hero_primary_cta_click')}
-            className="inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
+            className="chor inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
+            style={chorSlot(420, 450)}
           >
             {asString(t('produkt.hero.primaryCta'))}
             <ArrowRight className="h-4 w-4 rtl:rotate-180" />
@@ -470,12 +477,13 @@ const Hero = () => {
           <a
             href="#how-it-works"
             onClick={() => trackEvent('produkt_hero_secondary_cta_click')}
-            className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
+            className="chor inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
+            style={chorSlot(500, 450)}
           >
             {asString(t('produkt.hero.secondaryCta'))}
           </a>
         </div>
-        <ScrollCue targetId="product" className="hero-in mt-6" style={{ animationDelay: '500ms' }} />
+        <ScrollCue targetId="product" className="chor mt-6" style={chorSlot(900, 450)} />
       </div>
     </section>
   );

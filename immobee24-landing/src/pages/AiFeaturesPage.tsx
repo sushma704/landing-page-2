@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
-import { Reveal, RevealGroup, TypeOnce } from '../lib/animations';
+import { chorSlot, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { SceneAgents, SceneApprovalGate } from '../components/scenes';
 import { DemoVideoPlayer } from '../components/DemoVideoPlayer';
@@ -537,7 +537,7 @@ export default function AiFeaturesPage() {
           className="absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full bg-gradient-golden opacity-20 blur-3xl"
         />
         <div className="container relative text-center max-w-3xl mx-auto">
-          <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
+          <h1 className="chor mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance" style={chorSlot(0)}>
             <TypeOnce text={L({
               de: 'Jeder Makler bekommt 7 KI-Co-Worker',
               en: 'Every agent gets 7 AI co-workers',
@@ -545,7 +545,7 @@ export default function AiFeaturesPage() {
               ar: 'كل وكيل عقاري يحصل على 7 مساعدين بالذكاء الاصطناعي',
             })} />
           </h1>
-          <p className="hero-in mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={{ animationDelay: '250ms' }}>
+          <p className="chor mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={chorSlot(280, 500)}>
             {L({
               de: 'Sieben spezialisierte KI-Agenten übernehmen die operative Arbeit — vom Lead bis zum Abschluss. Sie behalten die volle Kontrolle und geben jede Aktion frei.',
               en: 'Seven specialised AI agents handle the operational load — from lead to close. You keep full visibility and approve every action.',
@@ -553,7 +553,7 @@ export default function AiFeaturesPage() {
               ar: 'سبعة وكلاء ذكاء اصطناعي متخصصين يتولّون العمل التشغيلي — من العميل المحتمل حتى إتمام الصفقة. تحتفظون بالسيطرة الكاملة وتوافقون على كل إجراء.',
             })}
           </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-2">
+          <div className="chor mt-8 flex flex-wrap justify-center gap-2" style={chorSlot(560, 450)}>
             {COWORKERS.map((c) => (
               <span
                 key={c.en}
@@ -564,9 +564,9 @@ export default function AiFeaturesPage() {
             ))}
           </div>
 
-          <Reveal direction="scale" className="mt-10 mx-auto max-w-xl text-start">
+          <div className="chor-scale mt-10 mx-auto max-w-xl text-start" style={chorSlot(650, 700)}>
             <SceneAgents />
-          </Reveal>
+          </div>
 
           <ScrollCue targetId="video" className="mt-10" />
         </div>

@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
-import { Reveal, RevealGroup, TypeOnce } from '../lib/animations';
+import { chorSlot, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
 import { SceneInquiryReply, SceneFollowUp } from '../components/scenes';
 import { WhyImmob24Teaser } from '../components/AiRefinementBands';
 import { useLanguage } from '../i18n';
@@ -274,10 +274,10 @@ export default function SolutionsPage() {
       {/* Hero */}
       <section className="relative pt-24 pb-14 md:pt-28 md:pb-20 overflow-hidden bg-gradient-to-b from-cream to-white">
         <div className="container relative text-center max-w-3xl mx-auto">
-          <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
+          <h1 className="chor mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance" style={chorSlot(0)}>
             <TypeOnce text={L('headline')} />
           </h1>
-          <p className="hero-in mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={{ animationDelay: '250ms' }}>{L('sub')}</p>
+          <p className="chor mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={chorSlot(280, 500)}>{L('sub')}</p>
         </div>
       </section>
 

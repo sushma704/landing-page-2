@@ -6,7 +6,7 @@
 import { Anchor, ArrowRight, ChevronRight, Clock, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../../components/SiteChrome';
-import { Reveal, RevealGroup } from '../../lib/animations';
+import { chorSlot, Reveal, RevealGroup } from '../../lib/animations';
 import { trackEvent } from '../../lib/analytics';
 import { useDocumentMeta } from '../../lib/useDocumentMeta';
 import { useFaqSchema } from '../../lib/useFaqSchema';
@@ -55,11 +55,11 @@ const Hero = () => (
         <MapPin className="h-3.5 w-3.5" /> Local focus: Hamburg
       </p>
 
-      <h1 className="hero-in mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight max-w-3xl" style={{ animationDelay: '100ms' }}>
+      <h1 className="chor mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight max-w-3xl" style={chorSlot(0)}>
         Real-estate agent software for brokerages in Hamburg
       </h1>
 
-      <p className="hero-in mt-5 max-w-2xl text-lg text-slate leading-relaxed" style={{ animationDelay: '250ms' }}>
+      <p className="chor mt-5 max-w-2xl text-lg text-slate leading-relaxed" style={chorSlot(280, 500)}>
         The Hamburg market rewards speed. Immob24 replies to every inquiry
         in under three seconds, qualifies prospects against the criteria
         that matter, and hands your team only the viewings that are

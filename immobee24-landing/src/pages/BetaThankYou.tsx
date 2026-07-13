@@ -6,7 +6,7 @@ import { trackEvent } from '../lib/analytics';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 import { useLanguage } from '../i18n';
 import { pathFor, SITE_ORIGIN } from '../i18n/pages';
-import { Reveal } from '../lib/animations';
+import { chorSlot, Reveal } from '../lib/animations';
 
 // Thank-you page rendered after a successful Tally beta application.
 // Tally is configured to redirect submitters here after their submission

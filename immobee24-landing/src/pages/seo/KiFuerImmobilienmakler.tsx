@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../../components/SiteChrome';
-import { Reveal, RevealGroup } from '../../lib/animations';
+import { chorSlot, Reveal, RevealGroup } from '../../lib/animations';
 import { trackEvent } from '../../lib/analytics';
 import { useDocumentMeta } from '../../lib/useDocumentMeta';
 import { useFaqSchema } from '../../lib/useFaqSchema';
@@ -89,7 +89,7 @@ const Hero = () => (
         <Sparkles className="h-3.5 w-3.5" /> Ratgeber — Lesezeit ca. 8 Minuten
       </p>
 
-      <h1 className="hero-in mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight" style={{ animationDelay: '100ms' }}>
+      <h1 className="chor mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight" style={chorSlot(0)}>
         KI für Immobilienmakler: So nutzen Sie künstliche Intelligenz in Ihrem Maklerbüro
       </h1>
 

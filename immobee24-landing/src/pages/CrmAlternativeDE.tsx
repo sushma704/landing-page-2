@@ -10,7 +10,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
-import { Reveal, RevealGroup, TypeOnce } from '../lib/animations';
+import { chorSlot, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { WhyImmob24Teaser } from '../components/AiRefinementBands';
 import { trackEvent } from '../lib/analytics';
@@ -53,11 +53,11 @@ const Hero = () => {
       <div className="container relative">
         <div className="max-w-3xl mx-auto text-center">
 
-          <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
+          <h1 className="chor mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance" style={chorSlot(0)}>
             <TypeOnce text={asString(t('crmAltPage.hero.headline'))} />
           </h1>
 
-          <p className="hero-in mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={{ animationDelay: '250ms' }}>
+          <p className="chor mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={chorSlot(280, 500)}>
             {asString(t('crmAltPage.hero.subheadline'))}
           </p>
 
@@ -66,14 +66,14 @@ const Hero = () => {
               type="button"
               {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('crmalt_hero_primary_cta_click')}
-              className="inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
+              className="chor inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors" style={chorSlot(420, 450)}
             >
               {asString(t('crmAltPage.hero.primaryCta'))}
               <ArrowRight className="h-4 w-4" />
             </button>
             <Link
               to={localPath('produkt')}
-              className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
+              className="chor inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors" style={chorSlot(500, 450)}
             >
               {asString(t('crmAltPage.hero.secondaryCta'))}
             </Link>

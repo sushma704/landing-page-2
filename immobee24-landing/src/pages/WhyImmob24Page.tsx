@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
-import { Reveal, RevealGroup, CountUp, TypeOnce } from '../lib/animations';
+import { chorSlot, Reveal, RevealGroup, CountUp, TypeOnce } from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 import { useJsonLd } from '../lib/useJsonLd';
@@ -229,7 +229,7 @@ export default function WhyImmob24Page() {
           className="absolute -top-32 -left-32 w-[28rem] h-[28rem] rounded-full bg-gradient-golden opacity-20 blur-3xl"
         />
         <div className="container relative text-center max-w-3xl mx-auto">
-          <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
+          <h1 className="chor mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance" style={chorSlot(0)}>
             <TypeOnce text={L({
               de: 'Warum Immob24?',
               en: 'Why immob24?',
@@ -237,7 +237,7 @@ export default function WhyImmob24Page() {
               ar: 'لماذا Immob24؟',
             })} />
           </h1>
-          <p className="hero-in mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={{ animationDelay: '250ms' }}>
+          <p className="chor mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={chorSlot(280, 500)}>
             {L({
               de: 'Makler verlieren 60–70 % ihres Tages an operative Arbeit — und die meisten KI-Tools ignorieren die europäische Regulierung. Immob24 löst beides.',
               en: 'Agents lose 60–70% of their day to ops — and most AI tools ignore European regulation. Immob24 solves both.',

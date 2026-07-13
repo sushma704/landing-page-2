@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { Header, Footer, DEMO_BOOKING_URL } from '../components/SiteChrome';
-import { Reveal, RevealGroup, TypeOnce } from '../lib/animations';
+import { chorSlot, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
 import { SHEET_ENDPOINT } from '../components/NewsletterSignup';
 import { useLanguage } from '../i18n';
 import type { Language, TranslationKey } from '../i18n';
@@ -267,17 +267,17 @@ export default function ContactPage() {
       {/* Hero */}
       <section className="relative pt-24 pb-10 md:pt-28 md:pb-14 overflow-hidden bg-gradient-to-b from-cream to-white">
         <div className="container relative text-center max-w-3xl mx-auto">
-          <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
+          <h1 className="chor mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance" style={chorSlot(0)}>
             <TypeOnce text={L('headline')} />
           </h1>
-          <p className="hero-in mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={{ animationDelay: '250ms' }}>{L('sub')}</p>
+          <p className="chor mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={chorSlot(280, 500)}>{L('sub')}</p>
         </div>
       </section>
 
       {/* Form + what happens next */}
       <section className="py-10 md:py-16 bg-white">
         <div className="container grid gap-10 lg:grid-cols-[minmax(0,1.4fr),minmax(260px,1fr)] max-w-5xl mx-auto">
-          <Reveal direction="left">
+          <div className="chor" style={chorSlot(420)}>
             <div className="no-fill rounded-2xl border border-charcoal/10 bg-cream p-6 md:p-8 shadow-subtle">
               {/* intent selector */}
               <div className="grid grid-cols-3 gap-2 rounded-xl bg-white p-1.5 border border-charcoal/10">
@@ -450,10 +450,10 @@ export default function ContactPage() {
                 </form>
               )}
             </div>
-          </Reveal>
+          </div>
 
           {/* what happens next */}
-          <Reveal direction="right" delay={120}>
+          <div className="chor" style={chorSlot(560)}>
             <div className="lg:pt-2">
               <h2 className="font-heading text-xl text-charcoal">{L('nextTitle')}</h2>
               <ul className="mt-5 space-y-4">
@@ -479,7 +479,7 @@ export default function ContactPage() {
                 DSGVO · EU-Hosting
               </div>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
 

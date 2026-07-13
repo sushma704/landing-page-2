@@ -240,7 +240,7 @@ export const Header = () => {
       <div className="container flex items-center justify-between gap-4 py-4">
         <Wordmark variant={onDark ? 'light' : 'dark'} />
 
-        <nav className="hidden xl:flex flex-1 items-center justify-center gap-0.5">
+        <nav className="hidden xl:flex flex-1 items-center justify-end gap-0.5 me-2">
           {[aiFeaturesLink, productLink, howItWorksLink, crmAltLink, pricingLink, demoLink, betaLink].map((l) => (
             <Link
               key={l.to}

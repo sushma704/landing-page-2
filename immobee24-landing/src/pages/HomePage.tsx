@@ -25,6 +25,7 @@ import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroShowcase } from '../components/HeroShowcase';
 import { HeroWaves } from '../components/HeroWaves';
 import { CountUp, Reveal, RevealGroup } from '../lib/animations';
+import { ScrollCue } from '../components/Wayfinding';
 import { SevenCoWorkersBand, ComplianceBadgesStrip } from '../components/AiRefinementBands';
 
 const asString = (
@@ -77,7 +78,7 @@ const Hero = () => {
   return (
     <section
       id="top"
-      className="relative min-h-screen flex flex-col overflow-hidden bg-[#17140F] text-white"
+      className="band-dark relative min-h-screen flex flex-col overflow-hidden bg-[#17140F] text-white"
     >
       {/* ambient glows — teal top-left, amber right (drift slowly) */}
       <div
@@ -227,7 +228,8 @@ const Hero = () => {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </span>
       </div>
-    </section>
+      <ScrollCue onDark className="relative mt-10" />
+      </section>
   );
 };
 
@@ -263,7 +265,7 @@ const Problem = () => {
   const { t } = useLanguage();
   const points = asStringArray(t('problem.painpoints'));
   return (
-    <section className="py-20 md:py-28 bg-charcoal text-white">
+    <section className="py-20 md:py-28 band-dark bg-charcoal text-white">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-balance text-white">
@@ -477,7 +479,7 @@ const HowItWorks = () => {
           <Link
             to={`${localPath('produkt')}#how-it-works`}
             onClick={() => trackEvent('home_how_cta_click')}
-            className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
+            className="inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
           >
             {asString(t('howItWorks.cta'))}
             <ArrowRight className="h-4 w-4" />
@@ -577,7 +579,7 @@ const PricingTeaser = () => {
           <Link
             to={localPath('pricing')}
             onClick={() => trackEvent('home_pricing_cta_click')}
-            className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
+            className="inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
           >
             {asString(t('pricingTeaser.pricingCta'))}
             <ArrowRight className="h-4 w-4" />

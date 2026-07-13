@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../../components/SiteChrome';
+import { Reveal, RevealGroup } from '../../lib/animations';
 import { trackEvent } from '../../lib/analytics';
 import { useDocumentMeta } from '../../lib/useDocumentMeta';
 import { useFaqSchema } from '../../lib/useFaqSchema';
@@ -275,7 +276,7 @@ const Positioning = () => (
           type="button"
           {...DEMO_CTA_PROPS}
           onClick={() => trackEvent('seo_hub_cta_click', { position: 'positioning-en' })}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 text-base font-semibold hover:bg-charcoal/90 transition-colors"
+          className="inline-flex items-center justify-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 text-base font-semibold hover:bg-charcoal/90 transition-colors"
         >
           Request a demo
           <ArrowRight className="h-4 w-4" />
@@ -301,7 +302,7 @@ const CityLinks = () => (
         How AI plays out in practice depends on the local market. See our
         city pages for the specifics:
       </p>
-      <div className="mt-6 grid sm:grid-cols-2 gap-3">
+      <RevealGroup className="mt-6 grid sm:grid-cols-2 gap-3">
         {[
           {
             title: 'AI real-estate agent software in Munich',
@@ -336,7 +337,7 @@ const CityLinks = () => (
             </p>
           </Link>
         ))}
-      </div>
+      </RevealGroup>
     </div>
   </section>
 );
@@ -363,10 +364,10 @@ const Faq = () => (
 );
 
 const FinalCta = () => (
-  <section className="py-20 bg-charcoal text-white">
+  <section className="py-20 band-dark bg-charcoal text-white">
     <div className="container max-w-3xl text-center">
       <Bot className="h-10 w-10 text-golden mx-auto" />
-      <h2 className="mt-4 font-heading text-3xl md:text-4xl font-bold">
+      <h2 className="mt-4 font-heading text-3xl md:text-4xl font-bold text-white">
         Ready to test AI in your brokerage?
       </h2>
       <p className="mt-5 text-white/75 leading-relaxed">
@@ -379,7 +380,7 @@ const FinalCta = () => (
           type="button"
           {...DEMO_CTA_PROPS}
           onClick={() => trackEvent('seo_hub_cta_click', { position: 'final-en' })}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-golden text-charcoal px-6 py-3 text-base font-semibold hover:bg-golden/90 transition-colors"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-golden text-[#1E1B16] px-6 py-3 text-base font-semibold hover:bg-golden/90 transition-colors"
         >
           Request a demo
           <ArrowRight className="h-4 w-4" />
@@ -445,12 +446,24 @@ export default function AiForRealEstateAgents() {
     <div className="min-h-screen bg-white">
       <Header />
       <Hero />
-      <Overview />
-      <PainPoints />
-      <Positioning />
-      <CityLinks />
-      <Faq />
-      <FinalCta />
+      <Reveal>
+        <Overview />
+      </Reveal>
+      <Reveal>
+        <PainPoints />
+      </Reveal>
+      <Reveal>
+        <Positioning />
+      </Reveal>
+      <Reveal>
+        <CityLinks />
+      </Reveal>
+      <Reveal>
+        <Faq />
+      </Reveal>
+      <Reveal>
+        <FinalCta />
+      </Reveal>
       <Footer />
     </div>
   );

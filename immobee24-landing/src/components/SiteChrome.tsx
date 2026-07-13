@@ -5,7 +5,7 @@ import { useLanguage, languageOptions } from '../i18n';
 import type { Language } from '../i18n';
 import { pathFor } from '../i18n/pages';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
-import { ThemeToggle } from './ThemeToggle';
+import { Reveal } from '../lib/animations';
 import { trackEvent } from '../lib/analytics';
 import { NewsletterSignup } from './NewsletterSignup';
 import { openCookieSettings } from './CookieBanner';
@@ -225,7 +225,7 @@ const NavDropdown = ({
         // would immediately close the menu on click. Mouse-leave and the
         // outside-click handler do the closing (works for touch too).
         onClick={() => setOpen(true)}
-        className={`flex items-center gap-1 px-2 py-2 text-sm transition-colors whitespace-nowrap ${
+        className={`flex items-center gap-1 nav-underline px-2 py-2 text-sm transition-colors whitespace-nowrap ${
           onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
         }`}
       >
@@ -312,7 +312,7 @@ export const Header = () => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-colors ${
         scrolled ? 'bg-white/90 backdrop-blur border-b border-charcoal/5' : 'bg-transparent'
-      }`}
+      } ${onDark ? 'band-dark' : ''}`}
     >
       <div className="container flex items-center justify-between gap-4 py-4">
         <Wordmark variant={onDark ? 'light' : 'dark'} />
@@ -320,7 +320,7 @@ export const Header = () => {
         <nav className="hidden xl:flex flex-1 items-center justify-end gap-0.5 me-2">
           <Link
             to={productLink.to}
-            className={`px-2 py-2 text-sm transition-colors whitespace-nowrap ${
+            className={`nav-underline px-2 py-2 text-sm transition-colors whitespace-nowrap ${
               onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
             }`}
           >
@@ -328,7 +328,7 @@ export const Header = () => {
           </Link>
           <Link
             to={aiAgentsLink.to}
-            className={`flex items-center gap-1.5 px-2 py-2 text-sm transition-colors whitespace-nowrap ${
+            className={`flex items-center gap-1.5 nav-underline px-2 py-2 text-sm transition-colors whitespace-nowrap ${
               onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
             }`}
           >
@@ -340,7 +340,7 @@ export const Header = () => {
           <NavDropdown label={nl('solutions')} items={solutionsItems} onDark={onDark} />
           <Link
             to={pricingLink.to}
-            className={`px-2 py-2 text-sm transition-colors whitespace-nowrap ${
+            className={`nav-underline px-2 py-2 text-sm transition-colors whitespace-nowrap ${
               onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
             }`}
           >
@@ -349,7 +349,7 @@ export const Header = () => {
           <NavDropdown label={nl('resources')} items={resourcesItems} onDark={onDark} />
           <Link
             to={contactLink.to}
-            className={`px-2 py-2 text-sm transition-colors whitespace-nowrap ${
+            className={`nav-underline px-2 py-2 text-sm transition-colors whitespace-nowrap ${
               onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
             }`}
           >
@@ -358,7 +358,6 @@ export const Header = () => {
         </nav>
 
         <div className="flex flex-none items-center gap-2">
-          <ThemeToggle onDark={onDark} />
           <LanguageToggle onDark={onDark} />
           {/* AI-refinement: login entry to the immob24 app (dashboard is a
               separate application — always a full absolute URL). */}
@@ -380,7 +379,7 @@ export const Header = () => {
             className={`hidden md:inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
               onDark
                 ? 'bg-golden text-[#1E1B16] hover:bg-golden/90 shadow-golden'
-                : 'bg-charcoal text-white hover:bg-charcoal/90'
+                : 'band-dark bg-charcoal text-white hover:bg-charcoal/90'
             }`}
           >
             {asString(t('nav.requestDemo'))}
@@ -446,7 +445,7 @@ export const Header = () => {
                 setOpen(false);
                 trackEvent('mobile_cta_click');
               }}
-              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-charcoal text-white px-4 py-2 text-sm font-medium"
+              className="mt-2 inline-flex items-center justify-center gap-2 rounded-full band-dark bg-charcoal text-white px-4 py-2 text-sm font-medium"
             >
               {asString(t('nav.requestDemo'))}
               <ArrowRight className="h-4 w-4" />
@@ -587,7 +586,7 @@ export const Footer = () => {
   const linkBtnClass = 'text-left text-sm text-white/75 hover:text-white';
 
   return (
-    <footer className="bg-charcoal text-white py-16 border-t border-white/5">
+    <footer className="band-dark bg-charcoal text-white py-16 border-t border-white/5">
       <div className="container">
         {/*
           Wordmark column takes 6/12 (so its tagline "THE AI OPERATING
@@ -596,14 +595,16 @@ export const Footer = () => {
           the remaining half of the row, with equal gaps between them.
         */}
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-12">
-          <div className="lg:col-span-6">
+          {/* Part C.6 — columns reveal subtly (16px, 60ms stagger); Reveal
+              itself carries the col-span so the 12-col grid stays intact */}
+          <Reveal className="lg:col-span-6" distance={16}>
             <div className="flex flex-col items-start gap-4">
               <Wordmark variant="light" />
               <NewsletterSignup />
             </div>
-          </div>
+          </Reveal>
 
-          <div className="lg:col-span-2">
+          <Reveal className="lg:col-span-2" distance={16} delay={60}>
             <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
               {asString(t('footer.sectionsLabel'))}
             </p>
@@ -624,9 +625,9 @@ export const Footer = () => {
                 {asString(t('footer.contact'))}
               </a>
             </nav>
-          </div>
+          </Reveal>
 
-          <div className="lg:col-span-2">
+          <Reveal className="lg:col-span-2" distance={16} delay={120}>
             <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
               {asString(t('footer.legalLabel'))}
             </p>
@@ -650,9 +651,9 @@ export const Footer = () => {
                 ),
               )}
             </nav>
-          </div>
+          </Reveal>
 
-          <div className="lg:col-span-2">
+          <Reveal className="lg:col-span-2" distance={16} delay={180}>
             <p className="text-xs font-semibold uppercase tracking-wider text-white/40">
               {asString(t('footer.settingsLabel'))}
             </p>
@@ -674,7 +675,7 @@ export const Footer = () => {
                 ),
               )}
             </nav>
-          </div>
+          </Reveal>
         </div>
 
         <div className="mt-12 pt-6 border-t border-white/10 text-xs text-white/40 flex flex-col md:flex-row md:items-center md:justify-between gap-2">

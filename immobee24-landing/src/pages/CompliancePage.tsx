@@ -25,6 +25,8 @@ import {
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
+import { Reveal, RevealGroup } from '../lib/animations';
+import { ScrollCue } from '../components/Wayfinding';
 import { SceneApprovalGate } from '../components/scenes';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 import { useJsonLd } from '../lib/useJsonLd';
@@ -477,21 +479,23 @@ export default function CompliancePage() {
               ar: 'تتجاهل معظم أدوات الذكاء الاصطناعي التنظيم الأوروبي. أما Immob24 فمبنية بالاتجاه المعاكس: البيئة التنظيمية الأكثر صرامة في أوروبا هي متطلبنا المعماري — وليست فكرة لاحقة.',
             })}
           </p>
+
+          <ScrollCue targetId="pillars" className="mt-10" />
         </div>
       </section>
 
       {/* Five pillars */}
-      <section className="py-16 md:py-20 bg-white">
+      <section id="pillars" className="py-16 md:py-20 bg-white">
         <div className="container">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal max-w-2xl">
+          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal max-w-2xl">
             {L({
               de: 'Fünf Prinzipien, in die Plattform gebaut',
               en: 'Five principles, built into the platform',
               fr: 'Cinq principes, intégrés à la plateforme',
               ar: 'خمسة مبادئ مدمجة في المنصة',
             })}
-          </h2>
-          <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          </Reveal>
+          <RevealGroup className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {PILLARS.map((p) => (
               <article
                 key={p.title.en}
@@ -504,14 +508,14 @@ export default function CompliancePage() {
                 <p className="mt-2 text-sm text-slate">{L(p.body)}</p>
               </article>
             ))}
-          </div>
+          </RevealGroup>
         </div>
       </section>
 
       {/* GDPR / AI Act table */}
       <section className="py-16 md:py-20">
         <div className="container">
-          <div className="flex items-center gap-3">
+          <Reveal className="flex items-center gap-3">
             <Lock className="h-6 w-6 text-golden-dark" />
             <h2 className="font-heading text-section-mobile md:text-section text-charcoal">
               {L({
@@ -521,25 +525,25 @@ export default function CompliancePage() {
                 ar: 'حماية البيانات والإشراف على الذكاء الاصطناعي',
               })}
             </h2>
-          </div>
-          <p className="mt-3 max-w-2xl text-slate">
+          </Reveal>
+          <Reveal delay={100} as="p" className="mt-3 max-w-2xl text-slate">
             {L({
               de: 'Wie die Plattform zentrale DSGVO-Artikel und die KI-Transparenzpflichten umsetzt.',
               en: 'How the platform implements core GDPR articles and AI-transparency duties.',
               fr: 'Comment la plateforme met en œuvre les articles clés du RGPD et les obligations de transparence de l’IA.',
               ar: 'كيف تطبِّق المنصة المواد الأساسية من اللائحة العامة لحماية البيانات والتزامات شفافية الذكاء الاصطناعي.',
             })}
-          </p>
-          <div className="mt-8">
+          </Reveal>
+          <Reveal className="mt-8">
             <LawTable rows={GDPR_ROWS} language={language} />
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* German real-estate law table */}
       <section className="py-16 md:py-20 bg-white">
         <div className="container">
-          <div className="flex items-center gap-3">
+          <Reveal className="flex items-center gap-3">
             <Landmark className="h-6 w-6 text-golden-dark" />
             <h2 className="font-heading text-section-mobile md:text-section text-charcoal">
               {L({
@@ -549,18 +553,18 @@ export default function CompliancePage() {
                 ar: 'قانون الوساطة العقارية الألماني — مدمج',
               })}
             </h2>
-          </div>
-          <p className="mt-3 max-w-2xl text-slate">
+          </Reveal>
+          <Reveal delay={100} as="p" className="mt-3 max-w-2xl text-slate">
             {L({
               de: 'Vom Provisionsrecht über Energieausweis-Pflichten bis zur revisionssicheren Aufbewahrung: Die Regeln des deutschen Maklergeschäfts sind Teil der Plattform-Logik.',
               en: 'From commission law and energy-certificate duties to tamper-proof retention: the rules of German brokerage are part of the platform logic.',
               fr: 'Du droit de la commission et des obligations du certificat énergétique jusqu’à la conservation à valeur probante : les règles du courtage immobilier allemand font partie de la logique de la plateforme.',
               ar: 'من قانون العمولة والتزامات شهادة الطاقة إلى الحفظ المؤمَّن ضد التلاعب: قواعد الوساطة العقارية الألمانية جزء من منطق المنصة.',
             })}
-          </p>
-          <div className="mt-8">
+          </Reveal>
+          <Reveal className="mt-8">
             <LawTable rows={GERMAN_RE_ROWS} language={language} />
-          </div>
+          </Reveal>
           <p className="mt-4 text-xs text-warm-gray max-w-2xl">
             {L({
               de: 'Hinweis: Diese Seite beschreibt Produktfunktionen und Architekturprinzipien. Sie ist keine Rechtsberatung und keine Zertifizierung.',
@@ -573,9 +577,9 @@ export default function CompliancePage() {
       </section>
 
       {/* Human-in-the-loop banner + CTA */}
-      <section className="py-14 bg-charcoal text-white">
+      <section className="py-14 band-dark bg-charcoal text-white">
         <div className="container grid lg:grid-cols-[1fr,minmax(300px,26rem)] items-center gap-8">
-          <div>
+          <Reveal direction="left">
             <div className="flex items-center gap-2 text-golden">
               <UserCheck className="h-5 w-5" />
               <span className="text-xs font-semibold uppercase tracking-wide">
@@ -595,8 +599,8 @@ export default function CompliancePage() {
                 ar: 'لا إجراء دون رؤية. لا حملة دون موافقة. لا تقييم دون مسار مراجعة.',
               })}
             </h2>
-          </div>
-          <div className="space-y-5">
+          </Reveal>
+          <Reveal direction="right" className="space-y-5">
             <SceneApprovalGate />
             <div className="flex flex-wrap gap-3">
             <Link
@@ -625,7 +629,7 @@ export default function CompliancePage() {
               <ArrowRight className="h-4 w-4" />
             </button>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 

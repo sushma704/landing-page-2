@@ -7,6 +7,7 @@
 import { ArrowRight, ChevronRight, Globe2, MapPin, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../../components/SiteChrome';
+import { Reveal, RevealGroup } from '../../lib/animations';
 import { trackEvent } from '../../lib/analytics';
 import { useDocumentMeta } from '../../lib/useDocumentMeta';
 import { useFaqSchema } from '../../lib/useFaqSchema';
@@ -75,7 +76,7 @@ const Hero = () => (
           type="button"
           {...DEMO_CTA_PROPS}
           onClick={() => trackEvent('seo_city_cta_click', { city: 'berlin', position: 'hero' })}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 text-base font-semibold hover:bg-charcoal/90 transition-colors"
+          className="inline-flex items-center justify-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 text-base font-semibold hover:bg-charcoal/90 transition-colors"
         >
           Demo für Berlin anfragen
           <ArrowRight className="h-4 w-4" />
@@ -113,7 +114,7 @@ const Challenge = () => (
         heute noch zeigen, sind in diesem Wettbewerb nicht mehr tragfähig.
       </p>
 
-      <div className="mt-10 grid md:grid-cols-3 gap-4">
+      <RevealGroup className="mt-10 grid md:grid-cols-3 gap-4">
         {[
           {
             icon: Sparkles,
@@ -137,7 +138,7 @@ const Challenge = () => (
             <p className="mt-2 text-sm text-slate leading-relaxed">{c.body}</p>
           </div>
         ))}
-      </div>
+      </RevealGroup>
     </div>
   </section>
 );
@@ -168,7 +169,7 @@ const Solution = () => (
 const Features = () => (
   <section className="py-20 bg-white">
     <div className="container">
-      <div className="grid md:grid-cols-3 gap-8">
+      <RevealGroup className="grid md:grid-cols-3 gap-8">
         <div>
           <h3 className="font-heading text-xl font-bold text-charcoal">
             Sofortige Antwort auf Portal-Anfragen
@@ -199,7 +200,7 @@ const Features = () => (
             sinnvollen Pufferzeiten zwischen Berliner Adressen.
           </p>
         </div>
-      </div>
+      </RevealGroup>
     </div>
   </section>
 );
@@ -262,7 +263,7 @@ const RelatedCities = () => (
       <h2 className="font-heading text-2xl font-bold text-charcoal">
         Auch interessant für Makler in:
       </h2>
-      <div className="mt-5 flex flex-wrap gap-3">
+      <RevealGroup stagger={60} className="mt-5 flex flex-wrap gap-3">
         {[
           { label: 'München', path: '/de/maklersoftware/muenchen' },
           { label: 'Hamburg', path: '/de/maklersoftware/hamburg' },
@@ -277,15 +278,15 @@ const RelatedCities = () => (
             {l.label}
           </Link>
         ))}
-      </div>
+      </RevealGroup>
     </div>
   </section>
 );
 
 const FinalCta = () => (
-  <section className="py-20 bg-charcoal text-white">
+  <section className="py-20 band-dark bg-charcoal text-white">
     <div className="container max-w-3xl text-center">
-      <h2 className="font-heading text-3xl md:text-4xl font-bold">
+      <h2 className="font-heading text-3xl md:text-4xl font-bold text-white">
         Jetzt starten: Immob24 für Ihr Berliner Maklerbüro
       </h2>
       <p className="mt-5 text-white/75 leading-relaxed">
@@ -299,7 +300,7 @@ const FinalCta = () => (
           type="button"
           {...DEMO_CTA_PROPS}
           onClick={() => trackEvent('seo_city_cta_click', { city: 'berlin', position: 'final' })}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-golden text-charcoal px-6 py-3 text-base font-semibold hover:bg-golden/90 transition-colors"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-golden text-[#1E1B16] px-6 py-3 text-base font-semibold hover:bg-golden/90 transition-colors"
         >
           Demo für Berlin anfragen
           <ArrowRight className="h-4 w-4" />
@@ -367,13 +368,27 @@ export default function MaklersoftwareBerlin() {
     <div className="min-h-screen bg-white">
       <Header />
       <Hero />
-      <Challenge />
-      <Solution />
-      <Features />
-      <WhyBerlin />
-      <Faq />
-      <RelatedCities />
-      <FinalCta />
+      <Reveal>
+        <Challenge />
+      </Reveal>
+      <Reveal>
+        <Solution />
+      </Reveal>
+      <Reveal>
+        <Features />
+      </Reveal>
+      <Reveal>
+        <WhyBerlin />
+      </Reveal>
+      <Reveal>
+        <Faq />
+      </Reveal>
+      <Reveal>
+        <RelatedCities />
+      </Reveal>
+      <Reveal>
+        <FinalCta />
+      </Reveal>
       <Footer />
     </div>
   );

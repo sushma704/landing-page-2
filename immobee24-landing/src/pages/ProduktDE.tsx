@@ -18,6 +18,7 @@ import {
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
+import { ScrollCue } from '../components/Wayfinding';
 import { Reveal, RevealGroup, usePrefersReducedMotion } from '../lib/animations';
 import {
   SceneQualification,
@@ -109,7 +110,7 @@ const Hero = () => {
               type="button"
               {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('produkt_hero_primary_cta_click')}
-              className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
+              className="inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
             >
               {asString(t('produkt.hero.primaryCta'))}
               <ArrowRight className="h-4 w-4" />
@@ -134,6 +135,8 @@ const Hero = () => {
               </li>
             ))}
           </ul>
+
+          <ScrollCue targetId="product" className="hero-in mt-10" />
         </div>
       </div>
     </section>
@@ -189,7 +192,7 @@ const ProblemFit = () => {
   const { t } = useLanguage();
   const points = asStringArray(t('produkt.problemFit.points'));
   return (
-    <section className="py-20 md:py-28 bg-charcoal text-white">
+    <section className="py-20 md:py-28 band-dark bg-charcoal text-white">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-balance text-white">
@@ -346,7 +349,7 @@ const CrmComparison = () => {
         <div className="mt-12 hidden md:block max-w-5xl mx-auto overflow-hidden rounded-2xl bg-white border border-charcoal/10 shadow-card">
           <table className="w-full text-left">
             <thead>
-              <tr className="bg-charcoal text-white text-sm uppercase tracking-wider">
+              <tr className="band-dark bg-charcoal text-white text-sm uppercase tracking-wider">
                 <th className="px-5 py-4 font-semibold">{themaLabel}</th>
                 <th className="px-5 py-4 font-semibold">{classicalLabel}</th>
                 <th className="px-5 py-4 font-semibold">
@@ -555,7 +558,7 @@ const HowItWorks = () => {
             type="button"
             {...DEMO_CTA_PROPS}
             onClick={() => trackEvent('produkt_how_cta_click')}
-            className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
+            className="inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
           >
             {asString(t('produkt.howItWorks.cta'))}
             <ArrowRight className="h-4 w-4" />
@@ -799,6 +802,62 @@ const FinalCTA = () => {
   );
 };
 
+// Part E.3 — sticky in-page section nav (long page wayfinding). Highlights
+// the section crossing the viewport center via IntersectionObserver.
+const SUBNAV: Array<{ id: string; label: Record<string, string> }> = [
+  { id: 'product', label: { de: 'Produkt', en: 'Product', fr: 'Produit', ar: 'المنتج' } },
+  { id: 'crm-alternative', label: { de: 'CRM-Vergleich', en: 'CRM comparison', fr: 'Comparatif CRM', ar: 'مقارنة CRM' } },
+  { id: 'how-it-works', label: { de: 'Ablauf', en: 'How it works', fr: 'Fonctionnement', ar: 'كيف يعمل' } },
+  { id: 'process-detail', label: { de: 'Schritte', en: 'Steps', fr: 'Étapes', ar: 'الخطوات' } },
+  { id: 'control', label: { de: 'Kontrolle', en: 'Control', fr: 'Contrôle', ar: 'التحكم' } },
+  { id: 'book-demo', label: { de: 'Demo', en: 'Demo', fr: 'Démo', ar: 'عرض' } },
+];
+
+const SectionSubnav = () => {
+  const { language } = useLanguage();
+  const [active, setActive] = useState('');
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) setActive(e.target.id);
+        });
+      },
+      { rootMargin: '-45% 0px -45% 0px' },
+    );
+    SUBNAV.forEach(({ id }) => {
+      const el = document.getElementById(id);
+      if (el) obs.observe(el);
+    });
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <nav
+      aria-label="Page sections"
+      className="sticky top-[72px] z-30 hidden lg:block border-y border-charcoal/10 bg-cream/85 backdrop-blur"
+    >
+      <div className="container flex items-center gap-1 py-2">
+        {SUBNAV.map(({ id, label }) => (
+          <a
+            key={id}
+            href={`#${id}`}
+            aria-current={active === id ? 'true' : undefined}
+            className={`nav-underline rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
+              active === id
+                ? 'bg-golden/15 text-golden'
+                : 'text-slate hover:text-charcoal'
+            }`}
+          >
+            {label[language] ?? label.en}
+          </a>
+        ))}
+      </div>
+    </nav>
+  );
+};
+
 export default function ProduktDE() {
   const { t, language } = useLanguage();
 
@@ -866,6 +925,7 @@ export default function ProduktDE() {
   return (
     <div className="min-h-screen antialiased bg-white">
       <Header />
+      <SectionSubnav />
       <main className="relative">
         {sections.map((Section, i) =>
           selfAnimated.has(Section) ? (

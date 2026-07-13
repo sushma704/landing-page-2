@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { ScrollToHash } from './lib/ScrollToHash';
 import { CookieBanner } from './components/CookieBanner';
 import { DEMO_BOOKING_URL } from './components/SiteChrome';
+import { ScrollProgressRing } from './components/Wayfinding';
 
 // Route-level code splitting: every page is a lazy chunk so the initial
 // bundle carries only the shell (router, consent banner, SiteChrome, i18n).
@@ -56,6 +57,7 @@ export default function App() {
   return (
     <>
       <ScrollToHash />
+      <ScrollProgressRing />
       <CookieBanner />
       <Suspense fallback={<PageLoader />}>
         <Routes>

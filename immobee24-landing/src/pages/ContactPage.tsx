@@ -21,7 +21,7 @@ import {
 import { useSearchParams } from 'react-router-dom';
 import { Header, Footer, DEMO_BOOKING_URL } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
-import { Reveal } from '../lib/animations';
+import { Reveal, RevealGroup } from '../lib/animations';
 import { SHEET_ENDPOINT } from '../components/NewsletterSignup';
 import { useLanguage } from '../i18n';
 import type { Language, TranslationKey } from '../i18n';
@@ -283,7 +283,7 @@ export default function ContactPage() {
       {/* Form + what happens next */}
       <section className="py-10 md:py-16 bg-white">
         <div className="container grid gap-10 lg:grid-cols-[minmax(0,1.4fr),minmax(260px,1fr)] max-w-5xl mx-auto">
-          <Reveal>
+          <Reveal direction="left">
             <div className="rounded-2xl border border-charcoal/10 bg-cream p-6 md:p-8 shadow-subtle">
               {/* intent selector */}
               <div className="grid grid-cols-3 gap-2 rounded-xl bg-white p-1.5 border border-charcoal/10">
@@ -459,7 +459,7 @@ export default function ContactPage() {
           </Reveal>
 
           {/* what happens next */}
-          <Reveal delay={120}>
+          <Reveal direction="right" delay={120}>
             <div className="lg:pt-2">
               <h2 className="font-heading text-xl text-charcoal">{L('nextTitle')}</h2>
               <ul className="mt-5 space-y-4">
@@ -512,17 +512,17 @@ const WhatYouSee = ({ t }: { t: TFn }) => {
             {asString(t('demoPage.whatYouSee.headline') as TVal)}
           </h2>
         </Reveal>
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2 max-w-4xl mx-auto">
+        <RevealGroup className="mt-10 grid gap-4 sm:grid-cols-2 max-w-4xl mx-auto">
           {bullets.map((b, i) => (
-            <li
+            <div
               key={i}
               className="flex items-start gap-3 rounded-xl bg-white border border-charcoal/10 px-5 py-4"
             >
               <CheckCircle2 className="h-5 w-5 text-golden-dark mt-0.5 flex-none" />
               <span className="text-charcoal/85">{b}</span>
-            </li>
+            </div>
           ))}
-        </ul>
+        </RevealGroup>
         <p className="mt-10 text-center text-slate max-w-2xl mx-auto">
           {asString(t('demoPage.whatYouSee.support') as TVal)}
         </p>
@@ -546,14 +546,14 @@ const NotADemo = ({ t }: { t: TFn }) => {
             {asString(t('demoPage.notDemo.body') as TVal)}
           </p>
         </Reveal>
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2 max-w-4xl mx-auto">
+        <RevealGroup className="mt-10 grid gap-4 sm:grid-cols-2 max-w-4xl mx-auto">
           {bullets.map((b, i) => (
-            <li key={i} className="rounded-xl bg-cream border border-charcoal/10 p-5">
+            <div key={i} className="rounded-xl bg-cream border border-charcoal/10 p-5">
               <CheckCircle2 className="h-5 w-5 text-golden-dark" />
               <p className="mt-3 text-charcoal/85 leading-relaxed">{b}</p>
-            </li>
+            </div>
           ))}
-        </ul>
+        </RevealGroup>
       </div>
     </section>
   );
@@ -602,11 +602,11 @@ const DemoFaq = ({ t }: { t: TFn }) => {
               {asString(t('demoPage.faq.headline') as TVal)}
             </h2>
           </Reveal>
-          <div className="mt-10 rounded-2xl bg-white border border-charcoal/10 px-6">
+          <Reveal delay={100} className="mt-10 rounded-2xl bg-white border border-charcoal/10 px-6">
             {items.map((it, i) => (
               <FaqItem key={i} q={it.q} a={it.a} />
             ))}
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

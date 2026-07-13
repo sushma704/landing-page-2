@@ -22,9 +22,22 @@ import {
   type ReactNode,
 } from 'react';
 
-export const REVEAL_MS = 600;
+export const REVEAL_MS = 650;
 export const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
 export const STAGGER_MS = 80;
+
+export type RevealDirection = 'up' | 'left' | 'right' | 'scale';
+
+// pre-reveal transform per direction (Part B.2): up = 28px rise,
+// left/right = slide in from that side, scale = 0.94 → 1.
+// `distance` lets subtle contexts (footer: 16px) shorten the travel.
+const hiddenTransform = (direction: RevealDirection, distance: number): string =>
+  ({
+    up: `translateY(${distance}px)`,
+    left: `translateX(-${distance}px)`,
+    right: `translateX(${distance}px)`,
+    scale: 'scale(0.94)',
+  })[direction];
 
 export function usePrefersReducedMotion(): boolean {
   const [reduced, setReduced] = useState(
@@ -76,7 +89,7 @@ export function useInView<T extends HTMLElement = HTMLDivElement>(
         });
       },
       {
-        rootMargin: options.rootMargin ?? '0px 0px -12% 0px',
+        rootMargin: options.rootMargin ?? '0px 0px -10% 0px',
         threshold: options.threshold ?? 0.15,
       },
     );
@@ -93,10 +106,21 @@ type RevealProps = {
   delay?: number;
   as?: ElementType;
   className?: string;
+  direction?: RevealDirection;
+  /** travel in px for up/left/right (default 28) */
+  distance?: number;
 };
 
-// Fade-up reveal: opacity 0 + translateY(24px) → visible. 600ms, precise ease.
-export const Reveal = ({ children, delay = 0, as = 'div', className = '' }: RevealProps) => {
+// Scroll reveal: opacity 0 + direction offset → final. 650ms, precise ease.
+// will-change is set only while hidden and dropped once revealed (Part B.6).
+export const Reveal = ({
+  children,
+  delay = 0,
+  as = 'div',
+  className = '',
+  direction = 'up',
+  distance = 28,
+}: RevealProps) => {
   const reduced = usePrefersReducedMotion();
   const [ref, inView, immediate] = useInView<HTMLElement>();
   const show = reduced || inView;
@@ -105,7 +129,7 @@ export const Reveal = ({ children, delay = 0, as = 'div', className = '' }: Reve
       ? {}
       : {
           opacity: show ? 1 : 0,
-          transform: show ? 'translateY(0)' : 'translateY(24px)',
+          transform: show ? 'none' : hiddenTransform(direction, distance),
           transition: `opacity ${REVEAL_MS}ms ${EASE} ${delay}ms, transform ${REVEAL_MS}ms ${EASE} ${delay}ms`,
           willChange: show ? undefined : 'opacity, transform',
         };
@@ -117,21 +141,26 @@ type RevealGroupProps = {
   as?: ElementType;
   className?: string;
   baseDelay?: number;
+  direction?: RevealDirection;
+  /** per-child stagger in ms (default 80; footer uses a subtler 60) */
+  stagger?: number;
 };
 
-// Applies Reveal to each direct child with an 80ms stagger.
+// Applies Reveal to each direct child with a stagger.
 export const RevealGroup = ({
   children,
   as = 'div',
   className = '',
   baseDelay = 0,
+  direction = 'up',
+  stagger = STAGGER_MS,
 }: RevealGroupProps) => {
   const items = Children.toArray(children);
   return createElement(
     as,
     { className },
     items.map((child, i) => (
-      <Reveal key={i} delay={baseDelay + i * STAGGER_MS}>
+      <Reveal key={i} delay={baseDelay + i * stagger} direction={direction}>
         {child}
       </Reveal>
     )),

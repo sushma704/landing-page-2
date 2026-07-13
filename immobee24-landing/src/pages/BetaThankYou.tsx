@@ -6,6 +6,7 @@ import { trackEvent } from '../lib/analytics';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 import { useLanguage } from '../i18n';
 import { pathFor, SITE_ORIGIN } from '../i18n/pages';
+import { Reveal } from '../lib/animations';
 
 // Thank-you page rendered after a successful Tally beta application.
 // Tally is configured to redirect submitters here after their submission
@@ -60,22 +61,22 @@ export default function BetaThankYou() {
               <CheckCircle2 className="h-9 w-9" strokeWidth={2.5} />
             </span>
 
-            <h1 className="mt-8 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
+            <Reveal as="h1" className="mt-8 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
               {isDe
                 ? 'Danke für deine Bewerbung!'
                 : 'Thanks for your application!'}
-            </h1>
+            </Reveal>
 
-            <p className="mt-6 text-body-lg text-slate max-w-xl mx-auto">
+            <Reveal delay={100} as="p" className="mt-6 text-body-lg text-slate max-w-xl mx-auto">
               {isDe
                 ? 'Wir haben deine Bewerbung für das Beta-Agentenprogramm erhalten. Das Gründerteam meldet sich innerhalb von 48 Stunden persönlich bei dir, um die nächsten Schritte zu besprechen.'
                 : 'We have received your application for the Beta Agent Program. The founding team will personally reach out within 48 hours to walk you through the next steps.'}
-            </p>
+            </Reveal>
 
-            <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Reveal delay={200} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
                 to={homeHref}
-                className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
+                className="inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
               >
                 {isDe ? 'Zur Startseite' : 'Back to home'}
               </Link>
@@ -85,7 +86,7 @@ export default function BetaThankYou() {
               >
                 {isDe ? 'Programm-Details ansehen' : 'See program details'}
               </Link>
-            </div>
+            </Reveal>
 
             <p className="mt-12 text-sm text-warm-gray">
               {isDe ? (

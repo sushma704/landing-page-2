@@ -6,7 +6,7 @@
 import { ArrowRight, Bot, PlayCircle, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../i18n';
-import { Marquee } from '../lib/animations';
+import { Marquee, Reveal, RevealGroup } from '../lib/animations';
 import type { Language } from '../i18n';
 import { pathFor } from '../i18n/pages';
 
@@ -29,6 +29,7 @@ export const SevenCoWorkersBand = () => {
       <div className="container">
         <div className="grid lg:grid-cols-2 gap-10 items-center">
           <div>
+            <Reveal as="span" className="inline-block">
             <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-cream px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
               <Bot className="h-3.5 w-3.5" />
               {L({
@@ -38,22 +39,23 @@ export const SevenCoWorkersBand = () => {
                 ar: 'جديد: منصة الذكاء الاصطناعي بالتفصيل',
               })}
             </span>
-            <h2 className="mt-5 font-heading text-section-mobile md:text-section text-charcoal">
+            </Reveal>
+            <Reveal delay={80} as="h2" className="mt-5 font-heading text-section-mobile md:text-section text-charcoal">
               {L({
                 de: 'Jeder Makler bekommt 7 KI-Co-Worker',
                 en: 'Every agent gets 7 AI co-workers',
                 fr: 'Chaque agent immobilier dispose de 7 co-workers IA',
                 ar: 'كل وكيل عقاري يحصل على 7 مساعدين بالذكاء الاصطناعي',
               })}
-            </h2>
-            <p className="mt-4 text-slate max-w-xl">
+            </Reveal>
+            <Reveal delay={150} as="p" className="mt-4 text-slate max-w-xl">
               {L({
                 de: 'Sieben spezialisierte KI-Agenten übernehmen die operative Arbeit — vom Lead bis zum Abschluss. Volle Sichtbarkeit und Freigabe bei jeder Aktion.',
                 en: 'Seven specialised AI agents handle the operational load — from lead to close. Full visibility and approval on every action.',
                 fr: 'Sept agents IA spécialisés prennent en charge le travail opérationnel — du lead à la signature. Visibilité totale et validation à chaque action.',
                 ar: 'سبعة وكلاء ذكاء اصطناعي متخصصين يتولّون العمل التشغيلي — من العميل المحتمل حتى إتمام الصفقة. رؤية كاملة وموافقة على كل إجراء.',
               })}
-            </p>
+            </Reveal>
             {/* Spec step 6: infinite chip marquee (pause on hover; static
                 wrapped row under reduced motion). */}
             <Marquee className="mt-6" durationS={30}>
@@ -66,6 +68,7 @@ export const SevenCoWorkersBand = () => {
                 </span>
               ))}
             </Marquee>
+            <Reveal delay={200}>
             <Link
               to={pathFor('aiFeatures', language)}
               className="mt-7 inline-flex items-center gap-2 rounded-full bg-gradient-golden px-5 py-2.5 text-sm font-semibold text-[#1E1B16] shadow-golden"
@@ -78,8 +81,11 @@ export const SevenCoWorkersBand = () => {
               })}
               <ArrowRight className="h-4 w-4" />
             </Link>
+            </Reveal>
           </div>
 
+          {/* large visual: scale-reveal (Part C.3); Reveal is the grid child */}
+          <Reveal direction="scale">
           <Link
             to={pathFor('aiFeatures', language)}
             className="group relative block rounded-2xl overflow-hidden shadow-card"
@@ -119,6 +125,7 @@ export const SevenCoWorkersBand = () => {
               })}
             </span>
           </Link>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -157,7 +164,7 @@ export const ComplianceBadgesStrip = () => {
   ];
   return (
     <section className="py-8 bg-charcoal">
-      <div className="container flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+      <RevealGroup stagger={60} className="container flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
         {items.map((i) => (
           <span key={i.en} className="inline-flex items-center gap-2 text-sm text-white/80">
             <ShieldCheck className="h-4 w-4 text-golden" />
@@ -176,7 +183,7 @@ export const ComplianceBadgesStrip = () => {
           })}
           <ArrowRight className="h-3.5 w-3.5" />
         </Link>
-      </div>
+      </RevealGroup>
     </section>
   );
 };
@@ -188,7 +195,7 @@ export const WhyImmob24Teaser = () => {
   return (
     <section className="py-14 bg-cream">
       <div className="container">
-        <div className="rounded-2xl border border-golden/25 bg-white shadow-card p-8 md:p-10 grid md:grid-cols-[1fr,auto] items-center gap-6">
+        <Reveal className="rounded-2xl border border-golden/25 bg-white shadow-card p-8 md:p-10 grid md:grid-cols-[1fr,auto] items-center gap-6">
           <div>
             <h2 className="font-heading text-2xl md:text-3xl text-charcoal">
               {L({
@@ -209,7 +216,7 @@ export const WhyImmob24Teaser = () => {
           </div>
           <Link
             to={pathFor('whyImmob24', language)}
-            className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 text-sm font-medium hover:bg-charcoal/90 transition-colors whitespace-nowrap"
+            className="inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 text-sm font-medium hover:bg-charcoal/90 transition-colors whitespace-nowrap"
           >
             {L({
               de: 'Der Vergleich',
@@ -219,7 +226,7 @@ export const WhyImmob24Teaser = () => {
             })}
             <ArrowRight className="h-4 w-4" />
           </Link>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

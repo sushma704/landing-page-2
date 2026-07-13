@@ -4,33 +4,10 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 10%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 39 91% 55%;
-    --radius: 0.75rem;
-
-    /* ── Brand neutrals (brief §02) as RGB triplets — light theme ──
-       Consumed by tailwind.config.js via rgb(var(--c-*) / <alpha-value>),
-       so every existing utility (bg-white, text-charcoal/70, bg-cream …)
-       re-skins and theme-flips automatically. */
-    --c-cream: 251 249 244;      /* warm cream  #FBF9F4 */
-    --c-surface: 255 255 255;    /* cards       #FFFFFF */
-    --c-muted: 244 240 231;      /* cream-2     #F4F0E7 */
-    --c-ink: 30 27 22;           /* warm ink    #1E1B16 */
-    --c-ink-soft: 85 80 63;      /* warm grey   #55503F */
-    --c-ink-faint: 141 132 113;  /* faint ink   #8D8471 */
-    --c-teal: 12 111 95;         /* wordmark teal #0C6F5F */
-    --c-teal-ink: 10 90 77;      /* teal ink    #0A5A4D */
-    --c-teal-wash: 220 238 233;  /* teal wash   #DCEEE9 */
-    color-scheme: light;
-  }
-
-  /* Dark theme (brief dark tokens) — toggled by ThemeToggle via .dark on <html> */
-  .dark {
-    --c-cream: 23 20 15;         /* #17140F */
-    --c-surface: 33 29 22;       /* #211D16 */
+    /* Dark-only theme (Part A): the former .dark palette is now the root
+       default. There is no light mode and no toggle. */
+    --c-cream: 23 20 15;         /* page ground  #17140F */
+    --c-surface: 33 29 22;       /* cards        #211D16 */
     --c-muted: 30 26 20;         /* #1E1A14 */
     --c-ink: 245 240 230;        /* #F5F0E6 */
     --c-ink-soft: 180 171 152;   /* #B4AB98 */
@@ -40,6 +17,10 @@
     --c-teal-wash: 18 48 41;     /* #123029 */
     color-scheme: dark;
   }
+
+  /* Dark theme (brief dark tokens) — toggled by ThemeToggle via .dark on <html> */
+  /* .dark variable overrides removed — dark is the root default.
+     <html class="dark"> remains so `dark:` utilities keep working. */
 
   body {
     transition: background-color 0.35s ease, color 0.35s ease;
@@ -740,4 +721,117 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .menu-pop, .menu-item { animation: none; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Part D — hover states on everything interactive (dark theme).
+   Hover-only styles live behind @media (hover: hover) so touch
+   devices never get stuck states; every hover has a :focus-visible
+   twin for keyboard users. Transform/opacity/box-shadow only.
+   ════════════════════════════════════════════════════════════════ */
+
+/* D.1 — cards: lift + accent border + glow + inner icon scale */
+.shadow-card,
+.shadow-subtle {
+  transition: transform 200ms ease-out, box-shadow 200ms ease-out,
+    border-color 200ms ease-out;
+}
+.shadow-card svg,
+.shadow-subtle svg {
+  transition: transform 200ms ease-out;
+}
+@media (hover: hover) {
+  .shadow-card:hover,
+  .shadow-subtle:hover {
+    transform: translateY(-4px);
+    border-color: rgba(245, 166, 35, 0.4);
+    box-shadow: 0 0 0 1px rgba(245, 166, 35, 0.25), 0 8px 32px rgba(245, 166, 35, 0.12);
+  }
+  .shadow-card:hover > * svg:first-of-type,
+  .shadow-subtle:hover > * svg:first-of-type {
+    transform: scale(1.08);
+  }
+  /* D.4 — screenshots inside cards zoom subtly (frames are overflow-hidden) */
+  .shadow-card:hover img {
+    transform: scale(1.03);
+  }
+}
+.shadow-card img {
+  transition: transform 300ms ease-out;
+}
+.shadow-card:focus-visible,
+.shadow-subtle:focus-visible,
+a:has(> .shadow-card):focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(245, 166, 35, 0.4);
+  box-shadow: 0 0 0 2px rgba(245, 166, 35, 0.6);
+  outline: none;
+}
+
+/* D.2 — focus twin for primary CTAs (hover variants exist above) */
+button.bg-gradient-golden:focus-visible,
+a.bg-gradient-golden:focus-visible,
+button[data-demo-cta]:focus-visible {
+  transform: scale(1.03);
+  box-shadow: 0 0 0 2px rgba(245, 166, 35, 0.6), 0 4px 24px rgba(245, 166, 35, 0.3);
+  outline: none;
+}
+
+/* D.3 — nav & footer links: animated underline, scaleX 0 → 1 from the start side */
+.nav-underline {
+  position: relative;
+}
+.nav-underline::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0.5rem;
+  bottom: 0.25rem;
+  height: 1.5px;
+  background: currentColor;
+  border-radius: 1px;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 200ms ease-out;
+}
+[dir='rtl'] .nav-underline::after {
+  transform-origin: 100% 50%;
+}
+@media (hover: hover) {
+  .nav-underline:hover::after {
+    transform: scaleX(1);
+  }
+}
+.nav-underline:focus-visible::after {
+  transform: scaleX(1);
+}
+.nav-underline:focus-visible {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shadow-card, .shadow-subtle, .shadow-card svg, .shadow-subtle svg,
+  .shadow-card img, .nav-underline::after {
+    transition: none !important;
+  }
+  .shadow-card:hover, .shadow-subtle:hover { transform: none; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   .band-dark — scoped token restore for deliberately-dark surfaces.
+   The dark-only theme inverts the neutral tokens site-wide, which
+   made "dark bands" (bg-charcoal + text-white) render as light
+   bands and the home hero text near-invisible. Inside .band-dark
+   the ORIGINAL light-theme palette applies, so these surfaces
+   render exactly as designed: dark band, white text, white cards.
+   ════════════════════════════════════════════════════════════════ */
+.band-dark {
+  --c-cream: 251 249 244;
+  --c-surface: 255 255 255;
+  --c-muted: 244 240 231;
+  --c-ink: 30 27 22;
+  --c-ink-soft: 85 80 63;
+  --c-ink-faint: 141 132 113;
+  --c-teal: 12 111 95;
+  --c-teal-ink: 10 90 77;
+  --c-teal-wash: 220 238 233;
 }

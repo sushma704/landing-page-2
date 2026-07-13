@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import {
   ArrowRight,
   CheckCircle2,
@@ -11,6 +11,8 @@ import {
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
+import { Reveal, RevealGroup } from '../lib/animations';
+import { ScrollCue } from '../components/Wayfinding';
 import { WhyImmob24Teaser } from '../components/AiRefinementBands';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
@@ -35,42 +37,6 @@ const asFaqArray = (v: TVal): Array<{ q: string; a: string }> =>
   v.every((x) => typeof x === 'object' && x !== null && 'q' in x && 'a' in x)
     ? (v as Array<{ q: string; a: string }>)
     : [];
-
-function useInView<T extends HTMLElement>(threshold = 0.1) {
-  const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    if (!ref.current) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setInView(true);
-            obs.disconnect();
-          }
-        });
-      },
-      { threshold },
-    );
-    obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, inView };
-}
-
-const RevealOnScroll = ({ children }: { children: ReactNode }) => {
-  const { ref, inView } = useInView<HTMLDivElement>(0.05);
-  return (
-    <div
-      ref={ref}
-      className={`transition-all duration-700 ease-out ${
-        inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-      }`}
-    >
-      {children}
-    </div>
-  );
-};
 
 const Hero = () => {
   const { t } = useLanguage();
@@ -106,7 +72,7 @@ const Hero = () => {
               type="button"
               {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('crmalt_hero_primary_cta_click')}
-              className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
+              className="inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
             >
               {asString(t('crmAltPage.hero.primaryCta'))}
               <ArrowRight className="h-4 w-4" />
@@ -132,6 +98,8 @@ const Hero = () => {
               ))}
             </ul>
           )}
+
+          <ScrollCue targetId="framing" className="mt-10" />
         </div>
       </div>
     </section>
@@ -141,15 +109,15 @@ const Hero = () => {
 const Framing = () => {
   const { t } = useLanguage();
   return (
-    <section className="py-20 md:py-24 bg-white">
+    <section id="framing" className="py-20 md:py-24 bg-white">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('crmAltPage.framing.headline'))}
-          </h2>
-          <p className="mt-6 text-body-lg text-slate">
+          </Reveal>
+          <Reveal as="p" delay={100} className="mt-6 text-body-lg text-slate">
             {asString(t('crmAltPage.framing.body'))}
-          </p>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -164,16 +132,16 @@ const ComparisonTable = () => {
     <section id="comparison" className="py-20 md:py-24 bg-cream">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('crmAltPage.table.headline'))}
-          </h2>
+          </Reveal>
         </div>
 
         <div className="mt-12 max-w-5xl mx-auto">
           {/* Desktop / tablet table */}
-          <div className="hidden md:block overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-card">
+          <Reveal direction="scale" className="hidden md:block overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-card">
             <table className="w-full text-left">
-              <thead className="bg-charcoal text-white">
+              <thead className="band-dark bg-charcoal text-white">
                 <tr>
                   {headers.map((h, i) => (
                     <th
@@ -213,10 +181,10 @@ const ComparisonTable = () => {
                 ))}
               </tbody>
             </table>
-          </div>
+          </Reveal>
 
           {/* Mobile stacked cards */}
-          <div className="md:hidden grid gap-4">
+          <RevealGroup className="md:hidden grid gap-4">
             {rows.map((row, rIdx) => (
               <div
                 key={rIdx}
@@ -239,23 +207,23 @@ const ComparisonTable = () => {
                 </div>
               </div>
             ))}
-          </div>
+          </RevealGroup>
 
-          <p className="mt-8 text-center text-sm text-warm-gray italic">
+          <Reveal as="p" delay={100} className="mt-8 text-center text-sm text-warm-gray italic">
             {asString(t('crmAltPage.table.caption'))}
-          </p>
+          </Reveal>
 
-          <div className="mt-10 flex justify-center">
+          <Reveal delay={150} className="mt-10 flex justify-center">
             <button
               type="button"
               {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('crmalt_table_cta_click')}
-              className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
+              className="inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
             >
               {asString(t('crmAltPage.hero.primaryCta'))}
               <ArrowRight className="h-4 w-4" />
             </button>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -269,29 +237,29 @@ const Competitors = () => {
     <section className="py-20 md:py-24 bg-white">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('crmAltPage.competitors.headline'))}
-          </h2>
-          <p className="mt-6 text-body-lg text-slate">
+          </Reveal>
+          <Reveal as="p" delay={100} className="mt-6 text-body-lg text-slate">
             {asString(t('crmAltPage.competitors.intro'))}
-          </p>
+          </Reveal>
         </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
+        <RevealGroup className="mt-12 grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
           {items.map((it, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-charcoal/10 bg-cream p-6 shadow-subtle"
+              className="h-full rounded-2xl border border-charcoal/10 bg-cream p-6 shadow-subtle"
             >
               <h3 className="font-heading text-xl text-charcoal">{it[0]}</h3>
               <p className="mt-3 text-slate leading-relaxed">{it[1]}</p>
             </div>
           ))}
-        </div>
+        </RevealGroup>
 
-        <p className="mt-10 text-center text-slate max-w-2xl mx-auto">
+        <Reveal as="p" delay={100} className="mt-10 text-center text-slate max-w-2xl mx-auto">
           {asString(t('crmAltPage.competitors.note'))}
-        </p>
+        </Reveal>
       </div>
     </section>
   );
@@ -303,26 +271,28 @@ const WhenCrm = () => {
   return (
     <section className="py-20 md:py-24 bg-white">
       <div className="container">
-        <div className="max-w-3xl mx-auto text-center">
+        <Reveal className="max-w-3xl mx-auto text-center">
           <Database className="h-8 w-8 text-charcoal/60 mx-auto" />
           <h2 className="mt-4 font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('crmAltPage.whenCrm.headline'))}
           </h2>
-        </div>
+        </Reveal>
         <ul className="mt-10 grid gap-4 max-w-3xl mx-auto">
           {bullets.map((b, i) => (
-            <li
+            <Reveal
+              as="li"
               key={i}
+              delay={i * 80}
               className="flex items-start gap-3 rounded-xl bg-cream border border-charcoal/10 px-5 py-4"
             >
               <CheckCircle2 className="h-5 w-5 text-charcoal/60 mt-0.5 flex-none" />
               <span className="text-charcoal/85">{b}</span>
-            </li>
+            </Reveal>
           ))}
         </ul>
-        <p className="mt-10 text-center text-slate max-w-2xl mx-auto">
+        <Reveal as="p" delay={100} className="mt-10 text-center text-slate max-w-2xl mx-auto">
           {asString(t('crmAltPage.whenCrm.support'))}
-        </p>
+        </Reveal>
       </div>
     </section>
   );
@@ -334,21 +304,23 @@ const WhenImmob = () => {
   return (
     <section className="py-20 md:py-24 bg-cream">
       <div className="container">
-        <div className="max-w-3xl mx-auto text-center">
+        <Reveal className="max-w-3xl mx-auto text-center">
           <Zap className="h-8 w-8 text-golden mx-auto" />
           <h2 className="mt-4 font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('crmAltPage.whenImmob.headline'))}
           </h2>
-        </div>
+        </Reveal>
         <ul className="mt-10 grid gap-4 sm:grid-cols-2 max-w-4xl mx-auto">
           {bullets.map((b, i) => (
-            <li
+            <Reveal
+              as="li"
               key={i}
+              delay={i * 80}
               className="flex items-start gap-3 rounded-xl bg-white border border-charcoal/10 px-5 py-4"
             >
               <CheckCircle2 className="h-5 w-5 text-golden mt-0.5 flex-none" />
               <span className="text-charcoal/85">{b}</span>
-            </li>
+            </Reveal>
           ))}
         </ul>
       </div>
@@ -364,12 +336,12 @@ const Fit = () => {
     <section className="py-20 md:py-24 bg-white">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('crmAltPage.fit.headline'))}
-          </h2>
+          </Reveal>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
-          <div className="rounded-2xl bg-cream border border-charcoal/10 p-6">
+          <Reveal direction="left" className="rounded-2xl bg-cream border border-charcoal/10 p-6">
             <div className="flex items-center gap-2 text-golden-dark">
               <CheckCircle2 className="h-5 w-5" />
               <h3 className="font-heading text-lg">
@@ -384,8 +356,8 @@ const Fit = () => {
                 </li>
               ))}
             </ul>
-          </div>
-          <div className="rounded-2xl bg-white border border-charcoal/10 p-6">
+          </Reveal>
+          <Reveal direction="right" className="rounded-2xl bg-white border border-charcoal/10 p-6">
             <div className="flex items-center gap-2 text-charcoal/60">
               <XCircle className="h-5 w-5" />
               <h3 className="font-heading text-lg">
@@ -400,7 +372,7 @@ const Fit = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -437,14 +409,14 @@ const Objections = () => {
     <section className="py-20 md:py-24 bg-cream">
       <div className="container">
         <div className="max-w-3xl mx-auto">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance text-center">
+          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal text-balance text-center">
             {asString(t('crmAltPage.objections.headline'))}
-          </h2>
-          <div className="mt-10 rounded-2xl bg-white border border-charcoal/10 px-6">
+          </Reveal>
+          <Reveal delay={100} className="mt-10 rounded-2xl bg-white border border-charcoal/10 px-6">
             {items.map((it, i) => (
               <FAQItem key={i} q={it.q} a={it.a} />
             ))}
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -458,14 +430,14 @@ const FAQ = () => {
     <section className="py-20 md:py-24 bg-white">
       <div className="container">
         <div className="max-w-3xl mx-auto">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance text-center">
+          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal text-balance text-center">
             {asString(t('crmAltPage.faq.headline'))}
-          </h2>
-          <div className="mt-10 rounded-2xl bg-cream border border-charcoal/10 px-6">
+          </Reveal>
+          <Reveal delay={100} className="mt-10 rounded-2xl bg-cream border border-charcoal/10 px-6">
             {items.map((it, i) => (
               <FAQItem key={i} q={it.q} a={it.a} />
             ))}
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -664,15 +636,33 @@ export default function CrmAlternativeDE() {
     FinalCTA,
   ];
 
+  // Sections with their own inner Reveals render bare; the rest get a
+  // coarse section-level Reveal (same pattern as ProduktDE).
+  const selfAnimated = new Set<unknown>([
+    Hero,
+    Framing,
+    ComparisonTable,
+    Competitors,
+    WhenCrm,
+    WhenImmob,
+    Fit,
+    Objections,
+    FAQ,
+  ]);
+
   return (
     <div className="min-h-screen antialiased bg-white">
       <Header />
       <main className="relative">
-        {sections.map((Section, i) => (
-          <RevealOnScroll key={i}>
-            <Section />
-          </RevealOnScroll>
-        ))}
+        {sections.map((Section, i) =>
+          selfAnimated.has(Section) ? (
+            <Section key={i} />
+          ) : (
+            <Reveal key={i}>
+              <Section />
+            </Reveal>
+          ),
+        )}
       </main>
       <Footer />
     </div>

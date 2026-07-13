@@ -18,6 +18,8 @@ import {
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
+import { Reveal, RevealGroup, CountUp } from '../lib/animations';
+import { ScrollCue } from '../components/Wayfinding';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 import { useJsonLd } from '../lib/useJsonLd';
 import { breadcrumbSchema } from '../lib/schema';
@@ -254,23 +256,26 @@ export default function WhyImmob24Page() {
               ar: 'يخسر الوسطاء 60–70% من يومهم في الأعمال التشغيلية — وتتجاهل معظم أدوات الذكاء الاصطناعي التنظيم الأوروبي. Immob24 تحل المشكلتين معًا.',
             })}
           </p>
+          <ScrollCue targetId="problem" className="mt-8" />
         </div>
       </section>
 
       {/* The problem */}
-      <section className="py-16 md:py-20 bg-white">
+      <section id="problem" className="py-16 md:py-20 bg-white">
         <div className="container">
           <div className="flex items-end justify-between flex-wrap gap-4">
-            <h2 className="font-heading text-section-mobile md:text-section text-charcoal max-w-xl">
+            <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal max-w-xl">
               {L({
                 de: 'Wo der Tag wirklich hingeht',
                 en: 'Where the day actually goes',
                 fr: 'Où passe réellement la journée',
                 ar: 'أين يذهب اليوم فعلًا',
               })}
-            </h2>
-            <div className="text-right">
-              <div className="font-metric text-metric-mobile md:text-metric text-golden-dark">60–70%</div>
+            </Reveal>
+            <Reveal delay={100} className="text-right">
+              <div className="font-metric text-metric-mobile md:text-metric text-golden-dark">
+                <CountUp value="60–70%" />
+              </div>
               <div className="text-sm text-warm-gray">
                 {L({
                   de: 'des Maklertags geht an Ops verloren',
@@ -279,39 +284,39 @@ export default function WhyImmob24Page() {
                   ar: 'من يوم الوسيط تضيع في الأعمال التشغيلية',
                 })}
               </div>
-            </div>
+            </Reveal>
           </div>
-          <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <RevealGroup className="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {PROBLEMS.map((p) => (
-              <article key={p.title.en} className="rounded-2xl border border-charcoal/5 bg-cream/60 p-6">
+              <article key={p.title.en} className="h-full rounded-2xl border border-charcoal/5 bg-cream/60 p-6">
                 <h3 className="font-heading text-lg text-charcoal">{L(p.title)}</h3>
                 <p className="mt-2 text-sm text-slate">{L(p.body)}</p>
               </article>
             ))}
-          </div>
-          <p className="mt-8 text-slate max-w-2xl">
+          </RevealGroup>
+          <Reveal as="p" delay={100} className="mt-8 text-slate max-w-2xl">
             {L({
               de: 'Europäische Maklerbüros brauchen KI, die innerhalb ihrer regulatorischen Realität arbeitet — nicht dagegen.',
               en: 'European agencies need AI that works within their regulatory reality — not against it.',
               fr: 'Les agences européennes ont besoin d’une IA qui travaille dans leur réalité réglementaire — pas contre elle.',
               ar: 'تحتاج المكاتب العقارية الأوروبية إلى ذكاء اصطناعي يعمل ضمن واقعها التنظيمي — لا ضده.',
             })}
-          </p>
+          </Reveal>
         </div>
       </section>
 
       {/* Comparison table */}
       <section className="py-16 md:py-24">
         <div className="container">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal max-w-2xl">
+          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal max-w-2xl">
             {L({
               de: 'Immob24 vs. der Markt',
               en: 'immob24 vs. the market',
               fr: 'Immob24 vs le marché',
               ar: 'Immob24 مقابل السوق',
             })}
-          </h2>
-          <div className="mt-10 overflow-x-auto rounded-2xl border border-charcoal/5 bg-white shadow-card">
+          </Reveal>
+          <Reveal direction="scale" className="mt-10 overflow-x-auto rounded-2xl border border-charcoal/5 bg-white shadow-card">
             <table className="w-full min-w-[720px] text-left text-sm">
               <thead>
                 <tr className="border-b border-charcoal/10">
@@ -355,8 +360,8 @@ export default function WhyImmob24Page() {
                 ))}
               </tbody>
             </table>
-          </div>
-          <div className="mt-6 flex flex-wrap gap-3">
+          </Reveal>
+          <Reveal delay={100} className="mt-6 flex flex-wrap gap-3">
             <Link
               to={pathFor('aiFeatures', language)}
               className="inline-flex items-center gap-2 rounded-full bg-white border border-charcoal/10 px-5 py-2.5 text-sm font-medium text-charcoal shadow-subtle hover:border-golden/40 transition-colors"
@@ -381,14 +386,14 @@ export default function WhyImmob24Page() {
                 ar: 'الامتثال بالتفصيل',
               })}
             </Link>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* Market / Germany-first */}
       <section className="py-16 md:py-20 bg-white">
         <div className="container grid lg:grid-cols-2 gap-10 items-center">
-          <div>
+          <Reveal direction="left">
             <h2 className="font-heading text-section-mobile md:text-section text-charcoal">
               {L({
                 de: 'Deutschland zuerst — mit Absicht',
@@ -443,9 +448,11 @@ export default function WhyImmob24Page() {
                 </li>
               ))}
             </ul>
-          </div>
-          <div className="rounded-2xl bg-charcoal text-white p-8 md:p-10">
-            <div className="font-metric text-5xl md:text-6xl text-golden">€12B+</div>
+          </Reveal>
+          <Reveal direction="right" className="rounded-2xl band-dark bg-charcoal text-white p-8 md:p-10">
+            <div className="font-metric text-5xl md:text-6xl text-golden">
+              <CountUp value="€12B+" />
+            </div>
             <p className="mt-2 text-white/80">
               {L({
                 de: 'jährlicher Provisionsmarkt im europäischen Immobiliengeschäft — fragmentiert und reif für KI',
@@ -463,30 +470,30 @@ export default function WhyImmob24Page() {
                 ar: 'ما قبل الإطلاق · نسخة تجريبية مغلقة مع 10–20 وسيطًا ألمانيًا كأول مجموعة',
               })}
             </p>
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* CTA */}
       <section className="py-16">
         <div className="container text-center max-w-2xl mx-auto">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal">
+          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal">
             {L({
               de: 'Konforme KI für europäische Immobilien',
               en: 'Compliant AI for European real estate',
               fr: 'Une IA conforme pour l’immobilier européen',
               ar: 'ذكاء اصطناعي متوافق للعقارات الأوروبية',
             })}
-          </h2>
-          <p className="mt-3 text-slate">
+          </Reveal>
+          <Reveal as="p" delay={100} className="mt-3 text-slate">
             {L({
               de: 'Sichern Sie sich frühen Zugang — oder sehen Sie die Plattform live in einer Demo.',
               en: 'Get early access — or see the platform live in a demo.',
               fr: 'Obtenez un accès anticipé — ou découvrez la plateforme en direct lors d’une démo.',
               ar: 'احصلوا على وصول مبكر — أو شاهدوا المنصة مباشرة في عرض توضيحي.',
             })}
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
+          </Reveal>
+          <Reveal delay={150} className="mt-8 flex flex-wrap justify-center gap-3">
             <button
               type="button"
               {...DEMO_CTA_PROPS}
@@ -511,7 +518,7 @@ export default function WhyImmob24Page() {
                 ar: 'انضم إلى البرنامج التجريبي',
               })}
             </Link>
-          </div>
+          </Reveal>
         </div>
       </section>
 

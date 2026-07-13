@@ -93,10 +93,12 @@ module.exports = {
         '3xl': '2rem',
       },
       boxShadow: {
-        'card': '0 4px 24px rgba(0, 0, 0, 0.06)',
-        'card-hover': '0 8px 32px rgba(245, 166, 35, 0.15)',
-        'golden': '0 4px 20px rgba(245, 166, 35, 0.35)',
-        'subtle': '0 2px 12px rgba(0, 0, 0, 0.04)',
+        // Dark-only theme: black drop shadows are invisible on near-black —
+        // cards get a hairline ring + soft amber glow instead (Part A.3).
+        'card': '0 0 0 1px rgba(245, 240, 230, 0.05), 0 0 24px rgba(245, 166, 35, 0.07)',
+        'card-hover': '0 0 0 1px rgba(245, 166, 35, 0.25), 0 8px 32px rgba(245, 166, 35, 0.12)',
+        'golden': '0 4px 24px rgba(245, 166, 35, 0.30)',
+        'subtle': '0 0 0 1px rgba(245, 240, 230, 0.04)',
       },
       backgroundImage: {
         'gradient-golden': 'linear-gradient(135deg, #FFD700 0%, #F5A623 50%, #E09100 100%)',

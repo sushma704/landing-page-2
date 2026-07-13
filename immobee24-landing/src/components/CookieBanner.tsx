@@ -99,7 +99,7 @@ export const CookieBanner = () => {
           role="dialog"
           aria-modal="false"
           aria-label={tr('bannerTitle')}
-          className="fixed inset-x-0 bottom-0 z-[150] bg-charcoal text-white shadow-card-hover"
+          className="fixed inset-x-0 bottom-0 z-[150] band-dark bg-charcoal text-white shadow-card-hover"
         >
           <div className="container py-5 flex flex-col gap-4 md:flex-row md:items-start md:gap-6">
             <div className="flex-1">

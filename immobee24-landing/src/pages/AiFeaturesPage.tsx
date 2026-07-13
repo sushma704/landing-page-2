@@ -23,6 +23,8 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
+import { Reveal, RevealGroup } from '../lib/animations';
+import { ScrollCue } from '../components/Wayfinding';
 import { HeroWaves } from '../components/HeroWaves';
 import { SceneAgents, SceneApprovalGate } from '../components/scenes';
 import { DemoVideoPlayer } from '../components/DemoVideoPlayer';
@@ -416,16 +418,18 @@ export default function AiFeaturesPage() {
             ))}
           </div>
 
-          <div className="mt-10 mx-auto max-w-xl text-start">
+          <Reveal direction="scale" className="mt-10 mx-auto max-w-xl text-start">
             <SceneAgents />
-          </div>
+          </Reveal>
+
+          <ScrollCue targetId="video" className="mt-10" />
         </div>
       </section>
 
       {/* Demo video with chapters */}
       <section id="video" className="py-16 md:py-20 bg-white">
         <div className="container">
-          <div className="max-w-2xl">
+          <Reveal className="max-w-2xl">
             <h2 className="font-heading text-section-mobile md:text-section text-charcoal">
               {L({
                 de: 'Der Workflow — live im Video',
@@ -442,17 +446,17 @@ export default function AiFeaturesPage() {
                 ar: 'جميع الوظائف السبع في 10 دقائق — مباشرةً من المنتج. انقروا على أحد الفصول للانتقال إلى الوظيفة المطلوبة.',
               })}
             </p>
-          </div>
-          <div className="mt-8">
+          </Reveal>
+          <Reveal direction="scale" className="mt-8">
             <DemoVideoPlayer />
-          </div>
+          </Reveal>
         </div>
       </section>
 
       {/* The 7 features */}
       <section className="py-16 md:py-24">
         <div className="container">
-          <div className="max-w-2xl">
+          <Reveal className="max-w-2xl">
             <h2 className="font-heading text-section-mobile md:text-section text-charcoal">
               {L({
                 de: 'Sieben Funktionen, ein System',
@@ -469,10 +473,10 @@ export default function AiFeaturesPage() {
                 ar: 'نظام واحد مترابط بدلًا من حلول متفرقة — لا تنقّل بين الأدوات ولا متاعب في التكامل.',
               })}
             </p>
-          </div>
+          </Reveal>
 
           {/* Dashboard overview — real product screenshot from the demo video */}
-          <div className="mt-10 relative rounded-2xl overflow-hidden shadow-card border border-charcoal/10">
+          <Reveal direction="scale" className="mt-10 relative rounded-2xl overflow-hidden shadow-card border border-charcoal/10">
             <img
               src="/videos/features/dashboard-properties.jpg"
               alt={L({
@@ -494,9 +498,9 @@ export default function AiFeaturesPage() {
                 ar: 'من المنتج: لوحة تحكم Immob24',
               })}
             </span>
-          </div>
+          </Reveal>
 
-          <div className="mt-10 grid md:grid-cols-2 gap-6">
+          <RevealGroup className="mt-10 grid md:grid-cols-2 gap-6">
             {FEATURES.map((f, i) => (
               <article
                 key={f.title.en}
@@ -530,14 +534,14 @@ export default function AiFeaturesPage() {
                 </ul>
               </article>
             ))}
-          </div>
+          </RevealGroup>
         </div>
       </section>
 
       {/* Compliance cross-link */}
-      <section className="py-14 bg-charcoal text-white">
+      <section className="py-14 band-dark bg-charcoal text-white">
         <div className="container grid lg:grid-cols-[1fr,minmax(300px,26rem)] items-center gap-8">
-          <div>
+          <Reveal direction="left">
             <div className="flex items-center gap-2 text-golden">
               <ShieldCheck className="h-5 w-5" />
               <span className="text-xs font-semibold uppercase tracking-wide">
@@ -565,8 +569,8 @@ export default function AiFeaturesPage() {
                 ar: 'كل إجراء للذكاء الاصطناعي مرئي وخاضع للموافقة ومسجَّل. محادثات الذكاء الاصطناعي ومحتوياته موسومة بوضوح.',
               })}
             </p>
-          </div>
-          <div className="space-y-5">
+          </Reveal>
+          <Reveal direction="right" className="space-y-5">
             <SceneApprovalGate />
             <div className="flex flex-wrap gap-3">
               <Link
@@ -595,7 +599,7 @@ export default function AiFeaturesPage() {
                 <ArrowRight className="h-4 w-4" />
               </button>
             </div>
-          </div>
+          </Reveal>
         </div>
       </section>
 

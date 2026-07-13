@@ -350,15 +350,20 @@ export default function SolutionsPage() {
           </Reveal>
 
           <div className="mt-10 space-y-8">
-            {scenarios.map((sc, i) => (
-              <Reveal key={sc.title}>
+            {scenarios.map((sc, i) => {
+              // alternating rows (Part C.4): text slides in from its visual
+              // side, the visual from the opposite one
+              const textDir = i % 2 === 1 ? 'right' : 'left';
+              const visualDir = i % 2 === 1 ? 'left' : 'right';
+              return (
                 <div
+                  key={sc.title}
                   id={sc.id}
                   className={`grid items-center gap-8 rounded-2xl border border-charcoal/10 bg-white p-6 md:p-10 shadow-subtle lg:grid-cols-2 ${
                     i % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : ''
                   }`}
                 >
-                  <div>
+                  <Reveal direction={textDir}>
                     <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-golden-soft text-golden-dark">
                       <sc.icon className="h-5 w-5" />
                     </span>
@@ -374,33 +379,37 @@ export default function SolutionsPage() {
                       {sc.linkLabel}
                       <ArrowRight className="h-4 w-4 rtl:rotate-180" />
                     </Link>
-                  </div>
+                  </Reveal>
                   {sc.visual ? (
-                    <div className="mx-auto w-full max-w-md">{sc.visual}</div>
+                    <Reveal direction={visualDir}>
+                      <div className="mx-auto w-full max-w-md">{sc.visual}</div>
+                    </Reveal>
                   ) : (
-                    <div className="mx-auto grid w-full max-w-md grid-cols-3 gap-3 text-center">
-                      {[Zap, CalendarClock, Building2].map((Ic, j) => (
-                        <div
-                          key={j}
-                          className="rounded-xl border border-charcoal/10 bg-cream p-4"
-                        >
-                          <Ic className="mx-auto h-5 w-5 text-golden-dark" />
-                          <p className="mt-2 text-[11px] font-medium text-warm-gray">
-                            {
-                              [
-                                { de: 'Ausführung', en: 'Execution', fr: 'Exécution', ar: 'تنفيذ' },
-                                { de: 'Koordination', en: 'Coordination', fr: 'Coordination', ar: 'تنسيق' },
-                                { de: 'Ihr CRM bleibt', en: 'Your CRM stays', fr: 'Votre CRM reste', ar: 'يبقى نظامكم' },
-                              ][j][language] ?? ''
-                            }
-                          </p>
-                        </div>
-                      ))}
-                    </div>
+                    <Reveal direction={visualDir}>
+                      <div className="mx-auto grid w-full max-w-md grid-cols-3 gap-3 text-center">
+                        {[Zap, CalendarClock, Building2].map((Ic, j) => (
+                          <div
+                            key={j}
+                            className="rounded-xl border border-charcoal/10 bg-cream p-4"
+                          >
+                            <Ic className="mx-auto h-5 w-5 text-golden-dark" />
+                            <p className="mt-2 text-[11px] font-medium text-warm-gray">
+                              {
+                                [
+                                  { de: 'Ausführung', en: 'Execution', fr: 'Exécution', ar: 'تنفيذ' },
+                                  { de: 'Koordination', en: 'Coordination', fr: 'Coordination', ar: 'تنسيق' },
+                                  { de: 'Ihr CRM bleibt', en: 'Your CRM stays', fr: 'Votre CRM reste', ar: 'يبقى نظامكم' },
+                                ][j][language] ?? ''
+                              }
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </Reveal>
                   )}
                 </div>
-              </Reveal>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>

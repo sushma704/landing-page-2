@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import {
   ArrowRight,
   CalendarDays,
@@ -20,6 +20,8 @@ import { useFaqSchema } from '../lib/useFaqSchema';
 import { useJsonLd } from '../lib/useJsonLd';
 import { productSchema, breadcrumbSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
+import { Reveal, RevealGroup } from '../lib/animations';
+import { ScrollCue } from '../components/Wayfinding';
 import { useLanguage } from '../i18n';
 import { pathFor } from '../i18n/pages';
 
@@ -41,42 +43,6 @@ const asFaqArray = (v: TVal): Array<{ q: string; a: string }> =>
   v.every((x) => typeof x === 'object' && x !== null && 'q' in x && 'a' in x)
     ? (v as Array<{ q: string; a: string }>)
     : [];
-
-function useInView<T extends HTMLElement>(threshold = 0.1) {
-  const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    if (!ref.current) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setInView(true);
-            obs.disconnect();
-          }
-        });
-      },
-      { threshold },
-    );
-    obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, inView };
-}
-
-const RevealOnScroll = ({ children }: { children: ReactNode }) => {
-  const { ref, inView } = useInView<HTMLDivElement>(0.05);
-  return (
-    <div
-      ref={ref}
-      className={`transition-all duration-700 ease-out ${
-        inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-      }`}
-    >
-      {children}
-    </div>
-  );
-};
 
 const Hero = () => {
   const { t } = useLanguage();
@@ -111,7 +77,7 @@ const Hero = () => {
               type="button"
               {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('pricing_hero_primary_cta_click')}
-              className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
+              className="inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
             >
               {asString(t('pricingPage.hero.primaryCta'))}
               <ArrowRight className="h-4 w-4" />
@@ -126,6 +92,8 @@ const Hero = () => {
           <p className="mt-4 text-sm text-warm-gray">
             {asString(t('pricingPage.hero.microcopy'))}
           </p>
+
+          <ScrollCue targetId="plans" className="mt-8" />
         </div>
       </div>
     </section>
@@ -164,15 +132,15 @@ const PricingCard = ({
   support,
 }: CardProps) => {
   const wrapperBase =
-    'relative flex flex-col rounded-2xl border bg-white p-6 md:p-8 transition-shadow';
+    'relative flex w-full flex-col rounded-2xl border bg-white p-6 md:p-8 transition-shadow';
   const wrapperVariant = recommended
     ? 'border-golden shadow-card-hover ring-1 ring-golden/40'
     : 'border-charcoal/10 shadow-card hover:shadow-card-hover';
   const ctaClassBase =
     'mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 font-medium transition-colors';
   const ctaClass = recommended
-    ? `${ctaClassBase} bg-gradient-golden text-white shadow-golden hover:opacity-95`
-    : `${ctaClassBase} bg-charcoal text-white hover:bg-charcoal/90`;
+    ? `${ctaClassBase} bg-gradient-golden text-[#1E1B16] shadow-golden hover:opacity-95`
+    : `${ctaClassBase} band-dark bg-charcoal text-white hover:bg-charcoal/90`;
 
   const ctaContent = (
     <>
@@ -184,7 +152,7 @@ const PricingCard = ({
   return (
     <div className={`${wrapperBase} ${wrapperVariant}`}>
       {recommended && (
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 rounded-full bg-gradient-golden text-white px-3 py-1 text-xs font-semibold shadow-golden">
+        <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 rounded-full bg-gradient-golden text-[#1E1B16] px-3 py-1 text-xs font-semibold shadow-golden">
           <Star className="h-3 w-3" /> {recommendedLabel}
         </span>
       )}
@@ -234,13 +202,15 @@ const PricingCards = () => {
   return (
     <section id="plans" className="py-16 md:py-20 bg-white">
       <div className="container">
-        <div className="max-w-3xl mx-auto text-center">
+        <Reveal className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('pricingPage.cards.sectionHeadline'))}
           </h2>
-        </div>
+        </Reveal>
 
         <div className="mt-12 grid gap-6 md:gap-8 md:grid-cols-3 max-w-6xl mx-auto items-stretch">
+          {/* each Reveal is the grid item (flex, so the card stretches to equal height) */}
+          <Reveal className="flex">
           <PricingCard
             label={asString(t('pricingPage.cards.beta.label'))}
             audience={asString(t('pricingPage.cards.beta.audience'))}
@@ -253,7 +223,9 @@ const PricingCards = () => {
             onCta={() => trackEvent('pricing_card_cta_click', { plan: 'beta' })}
             support={asString(t('pricingPage.cards.beta.support'))}
           />
+          </Reveal>
 
+          <Reveal className="flex" delay={80}>
           <PricingCard
             recommended
             recommendedLabel={asString(t('pricingPage.cards.recommendedBadge'))}
@@ -267,7 +239,9 @@ const PricingCards = () => {
             ctaAttrs={DEMO_CTA_PROPS}
             onCta={() => trackEvent('pricing_card_cta_click', { plan: 'team' })}
           />
+          </Reveal>
 
+          <Reveal className="flex" delay={160}>
           <PricingCard
             label={asString(t('pricingPage.cards.custom.label'))}
             audience={asString(t('pricingPage.cards.custom.audience'))}
@@ -280,6 +254,7 @@ const PricingCards = () => {
             onCta={() => trackEvent('pricing_card_cta_click', { plan: 'custom' })}
             support={asString(t('pricingPage.cards.custom.support'))}
           />
+          </Reveal>
         </div>
       </div>
     </section>
@@ -293,15 +268,15 @@ const QuickComparison = () => {
   return (
     <section className="py-20 md:py-24 bg-cream">
       <div className="container">
-        <div className="max-w-3xl mx-auto text-center">
+        <Reveal className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('pricingPage.quickComparison.headline'))}
           </h2>
-        </div>
+        </Reveal>
 
-        <div className="mt-10 max-w-3xl mx-auto overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-subtle">
+        <Reveal direction="scale" className="mt-10 max-w-3xl mx-auto overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-subtle">
           <table className="w-full text-left">
-            <thead className="bg-charcoal text-white">
+            <thead className="band-dark bg-charcoal text-white">
               <tr>
                 {headers.map((h, i) => (
                   <th
@@ -327,11 +302,11 @@ const QuickComparison = () => {
               ))}
             </tbody>
           </table>
-        </div>
+        </Reveal>
 
-        <p className="mt-6 text-center text-sm text-warm-gray italic">
+        <Reveal delay={100} as="p" className="mt-6 text-center text-sm text-warm-gray italic">
           {asString(t('pricingPage.quickComparison.caption'))}
-        </p>
+        </Reveal>
       </div>
     </section>
   );
@@ -343,23 +318,23 @@ const Trust = () => {
   return (
     <section className="py-20 md:py-24 bg-white">
       <div className="container">
-        <div className="max-w-3xl mx-auto text-center">
+        <Reveal className="max-w-3xl mx-auto text-center">
           <Users className="h-8 w-8 text-golden mx-auto" />
           <h2 className="mt-4 font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('pricingPage.trust.headline'))}
           </h2>
-        </div>
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2 max-w-4xl mx-auto">
+        </Reveal>
+        <RevealGroup className="mt-10 grid gap-4 sm:grid-cols-2 max-w-4xl mx-auto">
           {bullets.map((b, i) => (
-            <li
+            <div
               key={i}
               className="flex items-start gap-3 rounded-xl bg-cream border border-charcoal/10 px-5 py-4"
             >
               <Check className="h-5 w-5 text-golden mt-0.5 flex-none" />
               <span className="text-charcoal/85">{b}</span>
-            </li>
+            </div>
           ))}
-        </ul>
+        </RevealGroup>
       </div>
     </section>
   );
@@ -393,7 +368,7 @@ const BetaProgram = () => {
   return (
     <section id="beta" className="py-20 md:py-28 bg-cream">
       <div className="container">
-        <div className="max-w-3xl mx-auto text-center">
+        <Reveal className="max-w-3xl mx-auto text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
             <Rocket className="h-3.5 w-3.5" />
             {asString(t('betaProgram.hero.eyebrow'))}
@@ -404,11 +379,11 @@ const BetaProgram = () => {
           <p className="mt-5 text-body-lg text-slate">
             {asString(t('betaProgram.hero.subheadline'))}
           </p>
-        </div>
+        </Reveal>
 
         <div className="mt-12 grid gap-6 lg:grid-cols-2 max-w-5xl mx-auto">
-          {/* what you get */}
-          <div className="rounded-2xl border border-charcoal/10 bg-white p-6 md:p-8 shadow-card">
+          {/* what you get — slides in from the left; the pilot from the right */}
+          <Reveal direction="left" className="rounded-2xl border border-charcoal/10 bg-white p-6 md:p-8 shadow-card">
             <h3 className="font-heading text-xl text-charcoal">
               {asString(t('betaProgram.whatYouGet.headline'))}
             </h3>
@@ -420,10 +395,10 @@ const BetaProgram = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </Reveal>
 
           {/* the pilot, 3 phases */}
-          <div className="rounded-2xl border border-charcoal/10 bg-white p-6 md:p-8 shadow-card">
+          <Reveal direction="right" className="rounded-2xl border border-charcoal/10 bg-white p-6 md:p-8 shadow-card">
             <h3 className="font-heading text-xl text-charcoal">
               {asString(t('betaProgram.pilot.headline'))}
             </h3>
@@ -440,10 +415,10 @@ const BetaProgram = () => {
                 </li>
               ))}
             </ol>
-          </div>
+          </Reveal>
         </div>
 
-        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+        <Reveal delay={150} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
           <a
             href={BETA_APPLY_URL}
             target="_blank"
@@ -460,7 +435,7 @@ const BetaProgram = () => {
           >
             {ASK[language] ?? ASK.en}
           </Link>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -507,11 +482,13 @@ const RoiEstimator = () => {
     <section className="py-20 md:py-28 bg-white">
       <div className="container">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {c('headline')}
-          </h2>
+          <Reveal>
+            <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+              {c('headline')}
+            </h2>
+          </Reveal>
 
-          <div className="mt-10 rounded-2xl border border-charcoal/10 bg-cream p-6 md:p-10 shadow-subtle">
+          <Reveal direction="scale" className="mt-10 rounded-2xl border border-charcoal/10 bg-cream p-6 md:p-10 shadow-subtle">
             <div className="flex items-baseline justify-between gap-4">
               <label htmlFor="roi-slider" className="text-sm font-medium text-charcoal text-start">
                 {c('label')}
@@ -541,7 +518,7 @@ const RoiEstimator = () => {
             </p>
             <p className="mt-2 text-sm font-medium text-charcoal">{c('result')}</p>
             <p className="mt-6 text-xs text-warm-gray max-w-md mx-auto">{c('assumption')}</p>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -581,14 +558,16 @@ const FAQ = () => {
     <section className="py-20 md:py-24 bg-cream">
       <div className="container">
         <div className="max-w-3xl mx-auto">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance text-center">
-            {asString(t('pricingPage.faq.headline'))}
-          </h2>
-          <div className="mt-10 rounded-2xl bg-white border border-charcoal/10 px-6">
+          <Reveal>
+            <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance text-center">
+              {asString(t('pricingPage.faq.headline'))}
+            </h2>
+          </Reveal>
+          <Reveal delay={100} className="mt-10 rounded-2xl bg-white border border-charcoal/10 px-6">
             {items.map((it, i) => (
               <FAQItem key={i} q={it.q} a={it.a} />
             ))}
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>
@@ -606,18 +585,20 @@ const FinalCTA = () => {
       />
       <div className="container relative">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('pricingPage.finalCta.headline'))}
-          </h2>
-          <p className="mt-6 text-body-lg text-slate">
+          <Reveal>
+            <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+              {asString(t('pricingPage.finalCta.headline'))}
+            </h2>
+          </Reveal>
+          <Reveal delay={100} as="p" className="mt-6 text-body-lg text-slate">
             {asString(t('pricingPage.finalCta.body'))}
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          </Reveal>
+          <Reveal delay={150} className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               type="button"
               {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('pricing_final_primary_cta_click')}
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-golden text-white px-7 py-3.5 font-semibold shadow-golden hover:opacity-95 transition-opacity"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-golden text-[#1E1B16] px-7 py-3.5 font-semibold shadow-golden hover:opacity-95 transition-opacity"
             >
               {asString(t('pricingPage.finalCta.primaryCta'))}
               <ArrowRight className="h-4 w-4" />
@@ -636,7 +617,7 @@ const FinalCTA = () => {
             >
               {asString(t('pricingPage.finalCta.tertiaryCta'))}
             </button>
-          </div>
+          </Reveal>
 
           <p className="mt-6 text-sm text-slate">
             <span className="text-warm-gray">
@@ -713,14 +694,13 @@ export default function PricingDE() {
     FinalCTA,
   ];
 
+  // Every section carries its own inner Reveals now — render bare.
   return (
     <div className="min-h-screen antialiased bg-white">
       <Header />
       <main className="relative">
         {sections.map((Section, i) => (
-          <RevealOnScroll key={i}>
-            <Section />
-          </RevealOnScroll>
+          <Section key={i} />
         ))}
       </main>
       <Footer />

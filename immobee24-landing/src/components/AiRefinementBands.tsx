@@ -3,7 +3,15 @@
 // altering any existing section, form, CTA wiring or chatbot behaviour.
 // Sources: pitch deck slides 3/5/6 + the demo-video content script.
 
-import { ArrowRight, Bot, PlayCircle, ShieldCheck } from 'lucide-react';
+import {
+  ArrowRight,
+  Bot,
+  FileCheck2,
+  Landmark,
+  PlayCircle,
+  ShieldCheck,
+  UserCheck,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../i18n';
 import { Marquee, Reveal, RevealGroup } from '../lib/animations';
@@ -136,44 +144,72 @@ export const SevenCoWorkersBand = () => {
 export const ComplianceBadgesStrip = () => {
   const { language } = useLanguage();
   const L = <T,>(v: Record<Language, T>): T => v[language] ?? v.en;
-  const items: Array<Record<Language, string>> = [
+  const items: Array<{ icon: typeof ShieldCheck; label: Record<Language, string> }> = [
     {
-      de: 'DSGVO by Design',
-      en: 'GDPR by design',
-      fr: 'RGPD dès la conception',
-      ar: 'متوافق مع GDPR بحكم التصميم',
+      icon: ShieldCheck,
+      label: {
+        de: 'DSGVO by Design',
+        en: 'GDPR by design',
+        fr: 'RGPD dès la conception',
+        ar: 'متوافق مع GDPR بحكم التصميم',
+      },
     },
     {
-      de: 'EU AI Act ready',
-      en: 'EU AI Act ready',
-      fr: 'Prêt pour l’EU AI Act',
-      ar: 'جاهز لـ EU AI Act',
+      icon: Landmark,
+      label: {
+        de: 'EU AI Act ready',
+        en: 'EU AI Act ready',
+        fr: 'Prêt pour l’EU AI Act',
+        ar: 'جاهز لـ EU AI Act',
+      },
     },
     {
-      de: 'Mensch behält Kontrolle',
-      en: 'Human stays in control',
-      fr: 'L’humain garde le contrôle',
-      ar: 'الإنسان يحتفظ بزمام السيطرة',
+      icon: UserCheck,
+      label: {
+        de: 'Mensch behält Kontrolle',
+        en: 'Human stays in control',
+        fr: 'L’humain garde le contrôle',
+        ar: 'الإنسان يحتفظ بزمام السيطرة',
+      },
     },
     {
-      de: 'Audit-Trail eingebaut',
-      en: 'Audit trail built in',
-      fr: 'Piste d’audit intégrée',
-      ar: 'سجل تدقيق مدمج',
+      icon: FileCheck2,
+      label: {
+        de: 'Audit-Trail eingebaut',
+        en: 'Audit trail built in',
+        fr: 'Piste d’audit intégrée',
+        ar: 'سجل تدقيق مدمج',
+      },
     },
   ];
   return (
-    <section className="py-8 bg-charcoal">
-      <RevealGroup stagger={60} className="container flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+    // Trust strip: stays on the dark ground (no inverted band), glassy badge
+    // cards with a faint amber glow behind the row.
+    <section className="relative overflow-hidden border-y border-charcoal/10 py-10 bg-cream">
+      <div
+        aria-hidden
+        className="absolute left-1/2 top-1/2 h-[22rem] w-[60rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-golden opacity-[0.05] blur-3xl"
+      />
+      <RevealGroup
+        stagger={60}
+        className="container relative flex flex-wrap items-stretch justify-center gap-3"
+      >
         {items.map((i) => (
-          <span key={i.en} className="inline-flex items-center gap-2 text-sm text-white/80">
-            <ShieldCheck className="h-4 w-4 text-golden" />
-            {L(i)}
+          <span
+            key={i.label.en}
+            className="inline-flex items-center gap-3 rounded-2xl border border-charcoal/10 bg-white px-4 py-3 shadow-card"
+          >
+            <span className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-gradient-golden-soft text-golden">
+              <i.icon className="h-[18px] w-[18px]" />
+            </span>
+            <span className="text-sm font-medium text-charcoal whitespace-nowrap">
+              {L(i.label)}
+            </span>
           </span>
         ))}
         <Link
           to={pathFor('compliance', language)}
-          className="inline-flex items-center gap-1.5 text-sm font-medium text-golden hover:text-golden-light transition-colors"
+          className="inline-flex items-center gap-2 self-center rounded-2xl border border-golden/40 px-4 py-3 text-sm font-semibold text-golden transition-colors hover:bg-golden/10"
         >
           {L({
             de: 'Compliance im Detail',
@@ -181,7 +217,7 @@ export const ComplianceBadgesStrip = () => {
             fr: 'La conformité en détail',
             ar: 'الامتثال بالتفصيل',
           })}
-          <ArrowRight className="h-3.5 w-3.5" />
+          <ArrowRight className="h-4 w-4 rtl:rotate-180" />
         </Link>
       </RevealGroup>
     </section>

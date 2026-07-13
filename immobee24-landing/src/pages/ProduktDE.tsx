@@ -250,7 +250,7 @@ const Hero = () => {
   return (
     <section
       id="top"
-      className="relative pt-32 pb-16 md:pt-40 md:pb-20 overflow-hidden bg-gradient-to-b from-cream to-white"
+      className="relative pt-24 pb-10 md:pt-28 md:pb-14 overflow-hidden bg-gradient-to-b from-cream to-white"
     >
       <HeroWaves />
       <div
@@ -272,7 +272,7 @@ const Hero = () => {
           hover.current = false;
         }}
       >
-        <div className="grid items-center">
+        <div className="grid items-start">
           {/* ── Slide 1: modules + real dashboard ── */}
           <div className={slideCls(0)} aria-hidden={active !== 0}>
             <div className="text-center max-w-3xl mx-auto hero-in" style={{ animationDelay: '0.05s' }}>
@@ -282,7 +282,7 @@ const Hero = () => {
               </span>
               <div className="mt-5">{headlineBlock(0)}</div>
             </div>
-            <div className="mt-10 grid items-center gap-8 lg:grid-cols-[minmax(0,2fr),auto,minmax(0,3fr)] hero-in" style={{ animationDelay: '250ms' }}>
+            <div className="mt-8 grid items-center gap-8 lg:grid-cols-[minmax(0,2fr),auto,minmax(0,3fr)] hero-in" style={{ animationDelay: '250ms' }}>
               {/* module tiles, two offset columns like the reference */}
               <div className="mx-auto grid max-w-sm grid-cols-2 gap-4 lg:mx-0">
                 {HERO_MODULES.map((mod, i) => (
@@ -317,7 +317,7 @@ const Hero = () => {
           {/* ── Slide 2: the 4-step journey ── */}
           <div className={slideCls(1)} aria-hidden={active !== 1}>
             <div className="text-center max-w-3xl mx-auto">{headlineBlock(1)}</div>
-            <div className="mt-12 grid gap-10 sm:gap-6 sm:grid-cols-2 xl:grid-cols-4 max-w-none">
+            <div className="mt-14 grid gap-10 sm:gap-6 sm:grid-cols-2 xl:grid-cols-4 max-w-none">
               {HERO_STEPS.map((st, i) => (
                 <div key={st.title.en} className="relative flex">
                   <div className="relative w-full rounded-2xl border border-charcoal/15 bg-white/60 p-6 pt-12 text-center shadow-subtle backdrop-blur-sm">
@@ -378,7 +378,7 @@ const Hero = () => {
         </div>
 
         {/* dots */}
-        <div className="mt-8 flex items-center justify-center gap-2">
+        <div className="mt-6 flex items-center justify-center gap-2">
           {[0, 1, 2].map((i) => (
             <button
               key={i}
@@ -394,7 +394,7 @@ const Hero = () => {
         </div>
 
         {/* persistent CTAs + cue */}
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3 hero-in" style={{ animationDelay: '350ms' }}>
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-3 hero-in" style={{ animationDelay: '350ms' }}>
           <button
             type="button"
             {...DEMO_CTA_PROPS}
@@ -412,7 +412,7 @@ const Hero = () => {
             {asString(t('produkt.hero.secondaryCta'))}
           </a>
         </div>
-        <ScrollCue targetId="product" className="hero-in mt-8" />
+        <ScrollCue targetId="product" className="hero-in mt-6" />
       </div>
     </section>
   );

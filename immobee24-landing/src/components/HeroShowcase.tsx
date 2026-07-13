@@ -156,7 +156,7 @@ export const HeroShowcase = () => {
             </div>
             <div className="relative">
               <img
-                src="/videos/features/dashboard-properties.jpg"
+                src="/screens/dashboard.webp"
                 alt={L(CAPTION)}
                 width={1920}
                 height={1080}

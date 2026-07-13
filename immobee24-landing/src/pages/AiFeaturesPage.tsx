@@ -323,6 +323,163 @@ const COWORKERS: Array<Record<Language, string>> = [
   { de: 'Compliance-Guard', en: 'Compliance Guard', fr: 'Compliance Guard', ar: 'Compliance Guard' },
 ];
 
+// ── Real product screens (user-provided dashboard screenshots, 2026-07-14).
+// Copy is grounded in what each screenshot actually shows — no invented
+// features. Files live in public/screens/*.webp (1600w, ~460KB total).
+type Screen = {
+  img: string;
+  name: Record<Language, string>;
+  tagline: Record<Language, string>;
+  body: Record<Language, string>;
+};
+
+const SCREENS: Screen[] = [
+  {
+    img: '/screens/dashboard.webp',
+    name: { de: 'Dashboard', en: 'Dashboard', fr: 'Tableau de bord', ar: 'لوحة التحكم' },
+    tagline: {
+      de: 'Ihr Tag — schon priorisiert',
+      en: 'Your day, decided for you',
+      fr: 'Votre journée, déjà priorisée',
+      ar: 'يومك — مرتب الأولويات مسبقًا',
+    },
+    body: {
+      de: 'Der AI Daily Brief listet die nächsten Schritte in Prioritätsreihenfolge — mit Direktlink zu Lead oder Objekt. Dazu vier Live-Kennzahlen, der Portfolio-Gesundheits-Ring und die heutigen Besichtigungen auf einen Blick.',
+      en: 'The AI Daily Brief ranks your next actions — each deep-linking straight to the lead or property. Four live KPI tiles, the portfolio-health donut and today’s viewings sit alongside.',
+      fr: 'L’AI Daily Brief classe vos prochaines actions — chacune avec un lien direct vers le lead ou le bien. À côté : quatre indicateurs en direct, l’anneau de santé du portefeuille et les visites du jour.',
+      ar: 'يرتب الملخص اليومي بالذكاء الاصطناعي خطواتكم التالية حسب الأولوية — مع رابط مباشر إلى العميل أو العقار. وبجانبه أربعة مؤشرات حية وحلقة صحة المحفظة ومعاينات اليوم.',
+    },
+  },
+  {
+    img: '/screens/properties.webp',
+    name: { de: 'Objekte', en: 'Properties', fr: 'Biens', ar: 'العقارات' },
+    tagline: {
+      de: 'Inserate, die sich selbst anreichern und bewerten',
+      en: 'Listings that enrich and score themselves',
+      fr: 'Des annonces qui s’enrichissent et se notent elles-mêmes',
+      ar: 'إعلانات تثري وتقيّم نفسها بنفسها',
+    },
+    body: {
+      de: 'Jede Karte trägt ihren Health-Score und den Status „AI Enriched“. Grid-, Listen- und Kartenansicht, B-Link-Chat pro Inserat und Exposé-Upload — sortiert nach KI-Priorität.',
+      en: 'Every card carries its health-score badge and “AI Enriched” status. Grid, list and map views, a B-Link chat per listing and exposé upload — sorted by AI priority.',
+      fr: 'Chaque fiche porte son score de santé et le statut « AI Enriched ». Vues grille, liste et carte, chat B-Link par annonce et import d’exposé — le tout trié par priorité IA.',
+      ar: 'كل بطاقة تحمل درجة صحتها وحالة «مُثرى بالذكاء الاصطناعي». عرض شبكي وقائمة وخريطة، ودردشة B-Link لكل إعلان، ورفع العروض — مرتبة حسب أولوية الذكاء الاصطناعي.',
+    },
+  },
+  {
+    img: '/screens/leads.webp',
+    name: { de: 'Leads', en: 'Leads', fr: 'Leads', ar: 'العملاء المحتملون' },
+    tagline: {
+      de: 'Wissen, wen Sie zuerst anrufen',
+      en: 'Know exactly who to call first',
+      fr: 'Savoir exactement qui appeler en premier',
+      ar: 'اعرفوا بالضبط بمن تتصلون أولًا',
+    },
+    body: {
+      de: 'Jeder Lead bekommt einen Score von 0–100 und landet in HOT-, WARM- oder COLD-Tabs. „Why Hot?“ erklärt die Einstufung, „AI replied · BLINK“ zeigt die Herkunft — und eine Kennzahl, wie viel die KI bereits übernommen hat.',
+      en: 'Every lead gets a 0–100 score and lands in HOT, WARM or COLD tabs. “Why Hot?” explains the rating, “AI replied · BLINK” shows the origin — plus a live figure for how much the AI already handled.',
+      fr: 'Chaque lead reçoit un score de 0 à 100 et se classe en onglets HOT, WARM ou COLD. « Why Hot? » explique la note, « AI replied · BLINK » montre l’origine — avec la part déjà traitée par l’IA.',
+      ar: 'يحصل كل عميل محتمل على درجة من 0 إلى 100 ويُصنف في تبويبات ساخن/دافئ/بارد. «لماذا ساخن؟» يشرح التقييم، و«رد الذكاء الاصطناعي · BLINK» يوضح المصدر — مع نسبة ما تولاه الذكاء الاصطناعي.',
+    },
+  },
+  {
+    img: '/screens/messages.webp',
+    name: { de: 'Nachrichten', en: 'Messages', fr: 'Messages', ar: 'الرسائل' },
+    tagline: {
+      de: 'Bee — Ihre KI verkauft mit',
+      en: 'Bee, your AI, selling on your behalf',
+      fr: 'Bee, votre IA, vend pour vous',
+      ar: 'Bee — ذكاؤكم الاصطناعي يبيع نيابة عنكم',
+    },
+    body: {
+      de: 'Das B-Link-Protokoll zeigt Bee im Einsatz: Antworten aus echten Inseratsdaten — Zimmer, Energieklasse D, KfW55 — und gleichzeitig Qualifizierung des Käufers. „Why this reply?“ macht jede Antwort nachvollziehbar, der Qualifizierungs-Snapshot fasst zusammen.',
+      en: 'The B-Link transcript shows Bee at work: answering from real listing facts — rooms, Energy Class D, KfW55 — while qualifying the buyer in the same conversation. “Why this reply?” makes every answer explainable; the qualification snapshot sums it up.',
+      fr: 'La transcription B-Link montre Bee à l’œuvre : des réponses tirées des vraies données de l’annonce — pièces, classe énergie D, KfW55 — tout en qualifiant l’acheteur. « Why this reply? » rend chaque réponse explicable ; le récapitulatif de qualification synthétise.',
+      ar: 'يُظهر سجل B-Link عمل Bee: إجابات من بيانات الإعلان الحقيقية — الغرف، فئة الطاقة D، شهادة KfW55 — مع تأهيل المشتري في المحادثة نفسها. «لماذا هذا الرد؟» يجعل كل إجابة قابلة للتفسير، ولقطة التأهيل تلخص النتيجة.',
+    },
+  },
+  {
+    img: '/screens/portfolio.webp',
+    name: { de: 'Portfolio', en: 'Portfolio', fr: 'Portefeuille', ar: 'المحفظة' },
+    tagline: {
+      de: 'Health-Scoring plus KI-Empfehlungen zum Handeln',
+      en: 'Health scoring + AI fix-it recommendations',
+      fr: 'Score de santé + recommandations IA actionnables',
+      ar: 'تقييم الصحة + توصيات ذكاء اصطناعي قابلة للتنفيذ',
+    },
+    body: {
+      de: 'Der Portfolio-Health-Score (0–100) und Days-on-Market zeigen, wo es hakt. Die KI empfiehlt konkrete Maßnahmen — „Dieses Inserat mit einer Kampagne pushen — DRINGEND“ — mit einem Klick auf „Act“ ausgelöst.',
+      en: 'The portfolio health score (0–100) and days-on-market show where things stall. The AI recommends concrete fixes — “Boost this listing with a paid campaign — URGENT” — triggered with one click on “Act”.',
+      fr: 'Le score de santé du portefeuille (0–100) et les jours sur le marché montrent où ça bloque. L’IA recommande des actions concrètes — « Boostez cette annonce avec une campagne — URGENT » — déclenchées d’un clic sur « Act ».',
+      ar: 'تُظهر درجة صحة المحفظة (0–100) وأيام العرض في السوق مواضع التعثر. ويوصي الذكاء الاصطناعي بإجراءات ملموسة — «عزّزوا هذا الإعلان بحملة مدفوعة — عاجل» — تُطلق بنقرة واحدة على «Act».',
+    },
+  },
+  {
+    img: '/screens/campaigns.webp',
+    name: { de: 'Kampagnen', en: 'Campaigns', fr: 'Campagnes', ar: 'الحملات' },
+    tagline: {
+      de: 'KI-geführte Anzeigen auf Meta',
+      en: 'AI-guided paid advertising',
+      fr: 'Publicité payante guidée par l’IA',
+      ar: 'إعلانات مدفوعة بتوجيه الذكاء الاصطناعي',
+    },
+    body: {
+      de: 'Facebook- und Instagram-Kampagnen pro Objekt, direkt aus der Plattform: Spend-by-Platform-Ring, Impressionen, CTR und Cost-per-Lead — live aus der Meta-Verbindung.',
+      en: 'Facebook and Instagram campaigns per property, straight from the platform: the spend-by-platform donut, impressions, CTR and cost-per-lead — live from the Meta connection.',
+      fr: 'Des campagnes Facebook et Instagram par bien, directement depuis la plateforme : anneau de dépense par canal, impressions, CTR et coût par lead — en direct depuis la connexion Meta.',
+      ar: 'حملات فيسبوك وإنستغرام لكل عقار مباشرة من المنصة: حلقة الإنفاق حسب القناة، ومرات الظهور، ونسبة النقر، وتكلفة العميل المحتمل — مباشرة من اتصال Meta.',
+    },
+  },
+  {
+    img: '/screens/analytics.webp',
+    name: { de: 'Analytics', en: 'Analytics', fr: 'Analytics', ar: 'التحليلات' },
+    tagline: {
+      de: 'Das ganze Geschäft auf einen Blick',
+      en: 'Your whole business at a glance',
+      fr: 'Toute votre activité en un coup d’œil',
+      ar: 'أعمالكم كلها في لمحة',
+    },
+    body: {
+      de: 'Pipeline nach Phase, Lead-Temperatur, Lead-Quellen, Portfolio-Gesundheit und Objektstatus — live, ohne Reporting-Handarbeit.',
+      en: 'Pipeline by stage, lead temperature, lead sources, portfolio health and property status — live, with zero manual reporting.',
+      fr: 'Pipeline par étape, température des leads, sources, santé du portefeuille et statut des biens — en direct, sans reporting manuel.',
+      ar: 'مسار الصفقات حسب المرحلة، وحرارة العملاء، ومصادرهم، وصحة المحفظة وحالة العقارات — مباشرةً ودون أي تقارير يدوية.',
+    },
+  },
+  {
+    img: '/screens/ai-control.webp',
+    name: { de: 'AI Control', en: 'AI Control', fr: 'AI Control', ar: 'التحكم بالذكاء الاصطناعي' },
+    tagline: {
+      de: 'Die KI handelt — Sie behalten die Kontrolle',
+      en: 'The AI acts, you stay in control',
+      fr: 'L’IA agit, vous gardez le contrôle',
+      ar: 'الذكاء الاصطناعي يعمل — وأنتم تحتفظون بالسيطرة',
+    },
+    body: {
+      de: 'Die Freigabe-Warteschlange für Buchungen: Approve oder Decline pro Termin, 24-Stunden-Auto-Ablauf mit Alternativvorschlägen an den Käufer, Pending- und History-Tab. Das ist gelebte Human-in-the-Loop-Architektur.',
+      en: 'The booking-approval queue: Approve or Decline per viewing, 24-hour auto-expiry that emails the buyer alternatives, Pending and History tabs. Human-in-the-loop, in practice.',
+      fr: 'La file d’approbation des réservations : Approve ou Decline par visite, expiration automatique après 24 h avec alternatives envoyées à l’acheteur, onglets Pending et History. L’humain dans la boucle, en pratique.',
+      ar: 'قائمة الموافقات على الحجوزات: موافقة أو رفض لكل معاينة، وانتهاء تلقائي بعد 24 ساعة مع إرسال بدائل للمشتري، وتبويبا قيد الانتظار والسجل. الإنسان في حلقة القرار — عمليًا.',
+    },
+  },
+];
+
+const SCREENS_HEAD: Record<string, Record<Language, string>> = {
+  eyebrow: { de: 'Aus dem Produkt', en: 'Inside the product', fr: 'Dans le produit', ar: 'من داخل المنتج' },
+  headline: {
+    de: 'Echte Screens, echte Funktionen',
+    en: 'Real screens, real functionality',
+    fr: 'De vrais écrans, de vraies fonctions',
+    ar: 'شاشات حقيقية ووظائف حقيقية',
+  },
+  sub: {
+    de: 'Keine Mockups: So sieht das Immob24-Dashboard heute aus — vom Daily Brief bis zur Freigabe-Warteschlange.',
+    en: 'No mockups: this is the Immob24 dashboard today — from the daily brief to the approval queue.',
+    fr: 'Pas de maquettes : voici le tableau de bord Immob24 aujourd’hui — du brief quotidien à la file d’approbation.',
+    ar: 'لا نماذج وهمية: هكذا تبدو لوحة تحكم Immob24 اليوم — من الملخص اليومي إلى قائمة الموافقات.',
+  },
+};
+
 export default function AiFeaturesPage() {
   const { language } = useLanguage();
   const L = <T,>(v: Record<Language, T>): T => v[language] ?? v.en;
@@ -535,6 +692,69 @@ export default function AiFeaturesPage() {
               </article>
             ))}
           </RevealGroup>
+        </div>
+      </section>
+
+      {/* Real product screens (user screenshots) */}
+      <section id="screens" className="py-16 md:py-24 bg-white">
+        <div className="container">
+          <Reveal className="max-w-2xl">
+            <p className="text-xs font-semibold uppercase tracking-wider text-golden-dark">
+              {SCREENS_HEAD.eyebrow[language] ?? SCREENS_HEAD.eyebrow.en}
+            </p>
+            <h2 className="mt-2 font-heading text-section-mobile md:text-section text-charcoal">
+              {SCREENS_HEAD.headline[language] ?? SCREENS_HEAD.headline.en}
+            </h2>
+          </Reveal>
+          <Reveal delay={100} as="p" className="mt-3 max-w-2xl text-slate">
+            {SCREENS_HEAD.sub[language] ?? SCREENS_HEAD.sub.en}
+          </Reveal>
+
+          <div className="mt-12 space-y-14 md:space-y-20">
+            {SCREENS.map((sc, i) => {
+              const reversed = i % 2 === 1;
+              return (
+                <div
+                  key={sc.img}
+                  className={`grid items-center gap-8 lg:grid-cols-[1.25fr,1fr] ${
+                    reversed ? 'lg:[&>*:first-child]:order-2' : ''
+                  }`}
+                >
+                  <Reveal direction={reversed ? 'right' : 'left'}>
+                    <div className="overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-card">
+                      <div className="flex items-center gap-1.5 border-b border-charcoal/10 bg-cream/70 px-4 py-2.5">
+                        <span className="h-2.5 w-2.5 rounded-full bg-health-crit/70" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-health-warn/70" />
+                        <span className="h-2.5 w-2.5 rounded-full bg-honey-green/70" />
+                        <span className="ms-3 truncate rounded-md bg-charcoal/5 px-3 py-0.5 text-[10px] text-slate">
+                          app.immob24.com/{sc.img.replace('/screens/', '').replace('.webp', '')}
+                        </span>
+                      </div>
+                      <img
+                        src={sc.img}
+                        alt={`${sc.name[language] ?? sc.name.en} — ${sc.tagline[language] ?? sc.tagline.en}`}
+                        width={1600}
+                        height={892}
+                        loading="lazy"
+                        className="w-full"
+                      />
+                    </div>
+                  </Reveal>
+                  <Reveal direction={reversed ? 'left' : 'right'}>
+                    <p className="text-xs font-semibold uppercase tracking-wider text-golden-dark">
+                      {sc.name[language] ?? sc.name.en}
+                    </p>
+                    <h3 className="mt-2 font-heading text-2xl text-charcoal text-balance">
+                      {sc.tagline[language] ?? sc.tagline.en}
+                    </h3>
+                    <p className="mt-4 text-slate leading-relaxed">
+                      {sc.body[language] ?? sc.body.en}
+                    </p>
+                  </Reveal>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 

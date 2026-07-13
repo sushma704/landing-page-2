@@ -459,12 +459,15 @@ const WhoItsFor = () => {
 
 // Existing per-step product imagery reused for the sticky walkthrough panel
 // (spec step 5) — no new artwork.
+// Real dashboard screens (user screenshots 2026-07-14) — step order:
+// inquiry lands (dashboard) → Bee chats (messages) → human approves
+// (ai-control) → pipeline moves (analytics) → marketing follows (campaigns)
 const HOW_VISUALS = [
-  '/videos/features/dashboard-properties.jpg',
-  '/videos/features/f4-bee-chat.jpg',
-  '/videos/features/f5-human-control.jpg',
-  '/videos/features/f6-deal-pipeline.jpg',
-  '/videos/features/f7-campaigns.jpg',
+  '/screens/dashboard.webp',
+  '/screens/messages.webp',
+  '/screens/ai-control.webp',
+  '/screens/analytics.webp',
+  '/screens/campaigns.webp',
 ];
 
 const HowItWorks = () => {

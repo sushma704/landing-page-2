@@ -1,3 +1,4 @@
+import { type CSSProperties } from 'react';
 // Compliance page — /de/compliance + /en/compliance (+ fr/ar)
 //
 // Content sources (draft/ai-refinement):
@@ -24,7 +25,15 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
-import { chorSlot, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
+import {
+  LineReveal,
+  Reveal,
+  RevealGroup,
+  TypeOnce,
+  cascadeDelay,
+  chorSlot,
+  useCascade,
+} from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { SceneApprovalGate } from '../components/scenes';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
@@ -375,36 +384,53 @@ const TABLE_HEADERS: { law: Copy; what: Copy; how: Copy } = {
   },
 };
 
-const LawTable = ({ rows, language }: { rows: LawRow[]; language: Language }) => (
-  <div className="overflow-x-auto rounded-2xl border border-charcoal/5 bg-white shadow-subtle">
-    <table className="w-full min-w-[640px] text-left text-sm">
-      <thead>
-        <tr className="border-b border-charcoal/10 text-xs uppercase tracking-wide text-warm-gray">
-          <th className="px-5 py-3 font-semibold">
-            {TABLE_HEADERS.law[language] ?? TABLE_HEADERS.law.en}
-          </th>
-          <th className="px-5 py-3 font-semibold">
-            {TABLE_HEADERS.what[language] ?? TABLE_HEADERS.what.en}
-          </th>
-          <th className="px-5 py-3 font-semibold">
-            {TABLE_HEADERS.how[language] ?? TABLE_HEADERS.how.en}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        {rows.map((r) => (
-          <tr key={r.law.en} className="border-b border-charcoal/5 last:border-none align-top">
-            <td className="px-5 py-4 font-metric font-semibold text-charcoal whitespace-nowrap">
-              {r.law[language] ?? r.law.en}
-            </td>
-            <td className="px-5 py-4 text-charcoal">{r.what[language] ?? r.what.en}</td>
-            <td className="px-5 py-4 text-slate">{r.how[language] ?? r.how.en}</td>
+const LawTable = ({ rows, language }: { rows: LawRow[]; language: Language }) => {
+  // header row first, body rows cascade 280ms top-to-bottom, cells +60ms
+  // left-to-right; container reserves full height (opacity/transform only)
+  const [ref, cascadeCls] = useCascade<HTMLDivElement>();
+  const cell = (i: number, j: number): CSSProperties =>
+    ({ '--casc-delay': `${cascadeDelay(i + 1, 280) + j * 60}ms` }) as CSSProperties;
+  return (
+    <div
+      ref={ref}
+      className={`${cascadeCls} overflow-x-auto rounded-2xl border border-charcoal/5 bg-white shadow-subtle`}
+    >
+      <table className="w-full min-w-[640px] text-left text-sm">
+        <thead>
+          <tr className="border-b border-charcoal/10 text-xs uppercase tracking-wide text-warm-gray">
+            {([TABLE_HEADERS.law, TABLE_HEADERS.what, TABLE_HEADERS.how] as const).map((h, j) => (
+              <th
+                key={j}
+                className="cascade-cell px-5 py-3 font-semibold"
+                style={{ '--casc-delay': `${j * 60}ms` } as CSSProperties}
+              >
+                {h[language] ?? h.en}
+              </th>
+            ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-);
+        </thead>
+        <tbody>
+          {rows.map((r, i) => (
+            <tr key={r.law.en} className="border-b border-charcoal/5 last:border-none align-top">
+              <td
+                className="cascade-cell px-5 py-4 font-metric font-semibold text-charcoal whitespace-nowrap"
+                style={cell(i, 0)}
+              >
+                {r.law[language] ?? r.law.en}
+              </td>
+              <td className="cascade-cell px-5 py-4 text-charcoal" style={cell(i, 1)}>
+                {r.what[language] ?? r.what.en}
+              </td>
+              <td className="cascade-cell px-5 py-4 text-slate" style={cell(i, 2)}>
+                {r.how[language] ?? r.how.en}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+};
 
 export default function CompliancePage() {
   const { language } = useLanguage();
@@ -476,14 +502,16 @@ export default function CompliancePage() {
       {/* Five pillars */}
       <section id="pillars" className="py-16 md:py-20 bg-white">
         <div className="container">
-          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal max-w-2xl">
-            {L({
-              de: 'Fünf Prinzipien, in die Plattform gebaut',
-              en: 'Five principles, built into the platform',
-              fr: 'Cinq principes, intégrés à la plateforme',
-              ar: 'خمسة مبادئ مدمجة في المنصة',
-            })}
-          </Reveal>
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal max-w-2xl">
+            <LineReveal
+              text={L({
+                de: 'Fünf Prinzipien, in die Plattform gebaut',
+                en: 'Five principles, built into the platform',
+                fr: 'Cinq principes, intégrés à la plateforme',
+                ar: 'خمسة مبادئ مدمجة في المنصة',
+              })}
+            />
+          </h2>
           <RevealGroup className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {PILLARS.map((p) => (
               <article
@@ -504,56 +532,56 @@ export default function CompliancePage() {
       {/* GDPR / AI Act table */}
       <section className="py-16 md:py-20">
         <div className="container">
-          <Reveal className="flex items-center gap-3">
+          <div className="flex items-center gap-3">
             <Lock className="h-6 w-6 text-golden-dark" />
             <h2 className="font-heading text-section-mobile md:text-section text-charcoal">
-              {L({
+              <LineReveal text={L({
                 de: 'Datenschutz & KI-Aufsicht',
                 en: 'Data protection & AI oversight',
                 fr: 'Protection des données & supervision de l’IA',
                 ar: 'حماية البيانات والإشراف على الذكاء الاصطناعي',
-              })}
+              })} />
             </h2>
-          </Reveal>
-          <Reveal delay={100} as="p" className="mt-3 max-w-2xl text-slate">
-            {L({
+          </div>
+          <p className="mt-3 max-w-2xl text-slate">
+            <LineReveal masked={false} text={L({
               de: 'Wie die Plattform zentrale DSGVO-Artikel und die KI-Transparenzpflichten umsetzt.',
               en: 'How the platform implements core GDPR articles and AI-transparency duties.',
               fr: 'Comment la plateforme met en œuvre les articles clés du RGPD et les obligations de transparence de l’IA.',
               ar: 'كيف تطبِّق المنصة المواد الأساسية من اللائحة العامة لحماية البيانات والتزامات شفافية الذكاء الاصطناعي.',
-            })}
-          </Reveal>
-          <Reveal className="mt-8">
+            })} />
+          </p>
+          <div className="mt-8">
             <LawTable rows={GDPR_ROWS} language={language} />
-          </Reveal>
+          </div>
         </div>
       </section>
 
       {/* German real-estate law table */}
       <section className="py-16 md:py-20 bg-white">
         <div className="container">
-          <Reveal className="flex items-center gap-3">
+          <div className="flex items-center gap-3">
             <Landmark className="h-6 w-6 text-golden-dark" />
             <h2 className="font-heading text-section-mobile md:text-section text-charcoal">
-              {L({
+              <LineReveal text={L({
                 de: 'Deutsches Maklerrecht — eingebaut',
                 en: 'German brokerage law — built in',
                 fr: 'Droit allemand du courtage — intégré',
                 ar: 'قانون الوساطة العقارية الألماني — مدمج',
-              })}
+              })} />
             </h2>
-          </Reveal>
-          <Reveal delay={100} as="p" className="mt-3 max-w-2xl text-slate">
-            {L({
+          </div>
+          <p className="mt-3 max-w-2xl text-slate">
+            <LineReveal masked={false} text={L({
               de: 'Vom Provisionsrecht über Energieausweis-Pflichten bis zur revisionssicheren Aufbewahrung: Die Regeln des deutschen Maklergeschäfts sind Teil der Plattform-Logik.',
               en: 'From commission law and energy-certificate duties to tamper-proof retention: the rules of German brokerage are part of the platform logic.',
               fr: 'Du droit de la commission et des obligations du certificat énergétique jusqu’à la conservation à valeur probante : les règles du courtage immobilier allemand font partie de la logique de la plateforme.',
               ar: 'من قانون العمولة والتزامات شهادة الطاقة إلى الحفظ المؤمَّن ضد التلاعب: قواعد الوساطة العقارية الألمانية جزء من منطق المنصة.',
-            })}
-          </Reveal>
-          <Reveal className="mt-8">
+            })} />
+          </p>
+          <div className="mt-8">
             <LawTable rows={GERMAN_RE_ROWS} language={language} />
-          </Reveal>
+          </div>
           <p className="mt-4 text-xs text-warm-gray max-w-2xl">
             {L({
               de: 'Hinweis: Diese Seite beschreibt Produktfunktionen und Architekturprinzipien. Sie ist keine Rechtsberatung und keine Zertifizierung.',

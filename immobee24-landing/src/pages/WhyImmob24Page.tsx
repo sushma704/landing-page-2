@@ -4,6 +4,7 @@
 // slide 5 ("Why immob24 Wins" comparison), slide 7 (market / Germany-first).
 // Copy inline DE/EN/FR/AR — translations.ts untouched.
 
+import type { CSSProperties } from 'react';
 import {
   ArrowRight,
   Check,
@@ -17,7 +18,16 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
-import { chorSlot, Reveal, RevealGroup, CountUp, TypeOnce } from '../lib/animations';
+import {
+  CountUp,
+  LineReveal,
+  Reveal,
+  RevealGroup,
+  TypeOnce,
+  cascadeDelay,
+  chorSlot,
+  useCascade,
+} from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 import { useJsonLd } from '../lib/useJsonLd';
@@ -174,6 +184,7 @@ const COMPARISON: Array<{
 export default function WhyImmob24Page() {
   const { language } = useLanguage();
   const L = <T,>(v: Record<Language, T>): T => v[language] ?? v.en;
+  const [tableRef, tableOn] = useCascade<HTMLDivElement>();
   useDocumentMeta({
     title: L({
       de: 'Warum Immob24 — Das KI-Betriebssystem für Immobilien | Immob24',
@@ -253,14 +264,16 @@ export default function WhyImmob24Page() {
       <section id="problem" className="py-16 md:py-20 bg-white">
         <div className="container">
           <div className="flex items-end justify-between flex-wrap gap-4">
-            <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal max-w-xl">
-              {L({
-                de: 'Wo der Tag wirklich hingeht',
-                en: 'Where the day actually goes',
-                fr: 'Où passe réellement la journée',
-                ar: 'أين يذهب اليوم فعلًا',
-              })}
-            </Reveal>
+            <h2 className="font-heading text-section-mobile md:text-section text-charcoal max-w-xl">
+              <LineReveal
+                text={L({
+                  de: 'Wo der Tag wirklich hingeht',
+                  en: 'Where the day actually goes',
+                  fr: 'Où passe réellement la journée',
+                  ar: 'أين يذهب اليوم فعلًا',
+                })}
+              />
+            </h2>
             <Reveal delay={100} className="text-right">
               <div className="font-metric text-metric-mobile md:text-metric text-golden-dark">
                 <CountUp value="60–70%" />
@@ -283,39 +296,58 @@ export default function WhyImmob24Page() {
               </article>
             ))}
           </RevealGroup>
-          <Reveal as="p" delay={100} className="mt-8 text-slate max-w-2xl">
-            {L({
-              de: 'Europäische Maklerbüros brauchen KI, die innerhalb ihrer regulatorischen Realität arbeitet — nicht dagegen.',
-              en: 'European agencies need AI that works within their regulatory reality — not against it.',
-              fr: 'Les agences européennes ont besoin d’une IA qui travaille dans leur réalité réglementaire — pas contre elle.',
-              ar: 'تحتاج المكاتب العقارية الأوروبية إلى ذكاء اصطناعي يعمل ضمن واقعها التنظيمي — لا ضده.',
-            })}
-          </Reveal>
+          <p className="mt-8 text-slate max-w-2xl">
+            <LineReveal
+              masked={false}
+              text={L({
+                de: 'Europäische Maklerbüros brauchen KI, die innerhalb ihrer regulatorischen Realität arbeitet — nicht dagegen.',
+                en: 'European agencies need AI that works within their regulatory reality — not against it.',
+                fr: 'Les agences européennes ont besoin d’une IA qui travaille dans leur réalité réglementaire — pas contre elle.',
+                ar: 'تحتاج المكاتب العقارية الأوروبية إلى ذكاء اصطناعي يعمل ضمن واقعها التنظيمي — لا ضده.',
+              })}
+            />
+          </p>
         </div>
       </section>
 
       {/* Comparison table */}
       <section className="py-16 md:py-24">
         <div className="container">
-          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal max-w-2xl">
-            {L({
-              de: 'Immob24 vs. der Markt',
-              en: 'immob24 vs. the market',
-              fr: 'Immob24 vs le marché',
-              ar: 'Immob24 مقابل السوق',
-            })}
-          </Reveal>
-          <Reveal direction="scale" className="mt-10 overflow-x-auto rounded-2xl border border-charcoal/5 bg-white shadow-card">
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal max-w-2xl">
+            <LineReveal
+              text={L({
+                de: 'Immob24 vs. der Markt',
+                en: 'immob24 vs. the market',
+                fr: 'Immob24 vs le marché',
+                ar: 'Immob24 مقابل السوق',
+              })}
+            />
+          </h2>
+          {/* header first, rows cascade 280ms, cells 60ms LTR — container
+              reserves full height (opacity/transform only) */}
+          <div
+            ref={tableRef}
+            className={`${tableOn} mt-10 overflow-x-auto rounded-2xl border border-charcoal/5 bg-white shadow-card`}
+          >
             <table className="w-full min-w-[720px] text-left text-sm">
               <thead>
                 <tr className="border-b border-charcoal/10">
-                  <th className="px-5 py-4 w-32" />
-                  <th className="px-5 py-4">
+                  <th
+                    className="cascade-cell px-5 py-4 w-32"
+                    style={{ '--casc-delay': '0ms' } as CSSProperties}
+                  />
+                  <th
+                    className="cascade-cell px-5 py-4"
+                    style={{ '--casc-delay': '60ms' } as CSSProperties}
+                  >
                     <span className="inline-flex items-center gap-2 font-heading text-base text-charcoal">
                       <span className="h-2.5 w-2.5 rounded-full bg-golden" /> immob24
                     </span>
                   </th>
-                  <th className="px-5 py-4">
+                  <th
+                    className="cascade-cell px-5 py-4"
+                    style={{ '--casc-delay': '120ms' } as CSSProperties}
+                  >
                     <span className="font-heading text-base text-warm-gray">
                       {L({
                         de: 'Der Markt',
@@ -328,18 +360,27 @@ export default function WhyImmob24Page() {
                 </tr>
               </thead>
               <tbody>
-                {COMPARISON.map((row) => (
+                {COMPARISON.map((row, i) => (
                   <tr key={row.dim.en} className="border-b border-charcoal/5 last:border-none align-top">
-                    <td className="px-5 py-5 text-xs font-semibold uppercase tracking-wide text-warm-gray whitespace-nowrap">
+                    <td
+                      className="cascade-cell px-5 py-5 text-xs font-semibold uppercase tracking-wide text-warm-gray whitespace-nowrap"
+                      style={{ '--casc-delay': `${cascadeDelay(i + 1, 280)}ms` } as CSSProperties}
+                    >
                       {L(row.dim)}
                     </td>
-                    <td className="px-5 py-5">
+                    <td
+                      className="cascade-cell px-5 py-5"
+                      style={{ '--casc-delay': `${cascadeDelay(i + 1, 280) + 60}ms` } as CSSProperties}
+                    >
                       <div className="flex items-start gap-2 text-charcoal">
                         <Check className="h-4 w-4 mt-0.5 flex-none text-honey-green" />
                         {L(row.immob)}
                       </div>
                     </td>
-                    <td className="px-5 py-5">
+                    <td
+                      className="cascade-cell px-5 py-5"
+                      style={{ '--casc-delay': `${cascadeDelay(i + 1, 280) + 120}ms` } as CSSProperties}
+                    >
                       <div className="flex items-start gap-2 text-slate">
                         <X className="h-4 w-4 mt-0.5 flex-none text-warm-gray" />
                         {L(row.market)}
@@ -349,7 +390,7 @@ export default function WhyImmob24Page() {
                 ))}
               </tbody>
             </table>
-          </Reveal>
+          </div>
           <Reveal delay={100} className="mt-6 flex flex-wrap gap-3">
             <Link
               to={pathFor('aiFeatures', language)}
@@ -466,22 +507,27 @@ export default function WhyImmob24Page() {
       {/* CTA */}
       <section className="py-16">
         <div className="container text-center max-w-2xl mx-auto">
-          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal">
-            {L({
-              de: 'Konforme KI für europäische Immobilien',
-              en: 'Compliant AI for European real estate',
-              fr: 'Une IA conforme pour l’immobilier européen',
-              ar: 'ذكاء اصطناعي متوافق للعقارات الأوروبية',
-            })}
-          </Reveal>
-          <Reveal as="p" delay={100} className="mt-3 text-slate">
-            {L({
-              de: 'Sichern Sie sich frühen Zugang — oder sehen Sie die Plattform live in einer Demo.',
-              en: 'Get early access — or see the platform live in a demo.',
-              fr: 'Obtenez un accès anticipé — ou découvrez la plateforme en direct lors d’une démo.',
-              ar: 'احصلوا على وصول مبكر — أو شاهدوا المنصة مباشرة في عرض توضيحي.',
-            })}
-          </Reveal>
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal">
+            <LineReveal
+              text={L({
+                de: 'Konforme KI für europäische Immobilien',
+                en: 'Compliant AI for European real estate',
+                fr: 'Une IA conforme pour l’immobilier européen',
+                ar: 'ذكاء اصطناعي متوافق للعقارات الأوروبية',
+              })}
+            />
+          </h2>
+          <p className="mt-3 text-slate">
+            <LineReveal
+              masked={false}
+              text={L({
+                de: 'Sichern Sie sich frühen Zugang — oder sehen Sie die Plattform live in einer Demo.',
+                en: 'Get early access — or see the platform live in a demo.',
+                fr: 'Obtenez un accès anticipé — ou découvrez la plateforme en direct lors d’une démo.',
+                ar: 'احصلوا على وصول مبكر — أو شاهدوا المنصة مباشرة في عرض توضيحي.',
+              })}
+            />
+          </p>
           <Reveal delay={150} className="mt-8 flex flex-wrap justify-center gap-3">
             <button
               type="button"

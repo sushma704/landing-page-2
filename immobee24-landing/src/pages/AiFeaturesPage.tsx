@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
-import { chorSlot, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
+import { cascadeDelay, LineReveal, chorSlot, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { SceneAgents, SceneApprovalGate } from '../components/scenes';
 import { DemoVideoPlayer } from '../components/DemoVideoPlayer';
@@ -575,24 +575,24 @@ export default function AiFeaturesPage() {
       {/* Demo video with chapters */}
       <section id="video" className="py-16 md:py-20 bg-white">
         <div className="container">
-          <Reveal className="max-w-2xl">
+          <div className="max-w-2xl">
             <h2 className="font-heading text-section-mobile md:text-section text-charcoal">
-              {L({
+              <LineReveal text={L({
                 de: 'Der Workflow — live im Video',
                 en: 'Watch the workflow live',
                 fr: 'Le workflow — en vidéo',
                 ar: 'سير العمل — مباشرةً في الفيديو',
-              })}
+              })} />
             </h2>
             <p className="mt-3 text-slate">
-              {L({
+              <LineReveal masked={false} text={L({
                 de: 'Alle sieben Funktionen in 10 Minuten — direkt aus dem Produkt. Kapitel anklicken, um zu einer Funktion zu springen.',
                 en: 'All seven features in 10 minutes — straight from the product. Click a chapter to jump to a feature.',
                 fr: 'Les sept fonctions en 10 minutes — directement depuis le produit. Cliquez sur un chapitre pour accéder à une fonction.',
                 ar: 'جميع الوظائف السبع في 10 دقائق — مباشرةً من المنتج. انقروا على أحد الفصول للانتقال إلى الوظيفة المطلوبة.',
-              })}
+              })} />
             </p>
-          </Reveal>
+          </div>
           <Reveal direction="scale" className="mt-8">
             <DemoVideoPlayer />
           </Reveal>
@@ -602,24 +602,24 @@ export default function AiFeaturesPage() {
       {/* The 7 features */}
       <section className="py-16 md:py-24">
         <div className="container">
-          <Reveal className="max-w-2xl">
+          <div className="max-w-2xl">
             <h2 className="font-heading text-section-mobile md:text-section text-charcoal">
-              {L({
+              <LineReveal text={L({
                 de: 'Sieben Funktionen, ein System',
                 en: 'Seven features, one system',
                 fr: 'Sept fonctions, un seul système',
                 ar: 'سبع وظائف، نظام واحد',
-              })}
+              })} />
             </h2>
             <p className="mt-3 text-slate">
-              {L({
+              <LineReveal masked={false} text={L({
                 de: 'Ein verbundenes System statt Insellösungen — kein Tool-Wechsel, keine Integrations-Kopfschmerzen.',
                 en: 'One connected system instead of point solutions — no tool switching, no integration headaches.',
                 fr: 'Un système connecté plutôt que des solutions isolées — pas de changement d’outil, pas de casse-tête d’intégration.',
                 ar: 'نظام واحد مترابط بدلًا من حلول متفرقة — لا تنقّل بين الأدوات ولا متاعب في التكامل.',
-              })}
+              })} />
             </p>
-          </Reveal>
+          </div>
 
           {/* Dashboard overview — real product screenshot from the demo video */}
           <Reveal direction="scale" className="mt-10 relative rounded-2xl overflow-hidden shadow-card border border-charcoal/10">
@@ -671,11 +671,17 @@ export default function AiFeaturesPage() {
                 </h3>
                 <p className="mt-2 text-slate">{L(f.lead)}</p>
                 <ul className="mt-4 space-y-2">
-                  {L(f.points).map((pt) => (
-                    <li key={pt} className="flex items-start gap-2 text-sm text-slate">
+                  {L(f.points).map((pt, j) => (
+                    <Reveal
+                      key={pt}
+                      as="li"
+                      delay={cascadeDelay(j, 280)}
+                      distance={16}
+                      className="flex items-start gap-2 text-sm text-slate"
+                    >
                       <CheckCircle2 className="h-4 w-4 mt-0.5 flex-none text-honey-green" />
                       {pt}
-                    </li>
+                    </Reveal>
                   ))}
                 </ul>
               </article>
@@ -687,17 +693,17 @@ export default function AiFeaturesPage() {
       {/* Real product screens (user screenshots) */}
       <section id="screens" className="py-16 md:py-24 bg-white">
         <div className="container">
-          <Reveal className="max-w-2xl">
+          <div className="max-w-2xl">
             <p className="text-xs font-semibold uppercase tracking-wider text-golden-dark">
               {SCREENS_HEAD.eyebrow[language] ?? SCREENS_HEAD.eyebrow.en}
             </p>
             <h2 className="mt-2 font-heading text-section-mobile md:text-section text-charcoal">
-              {SCREENS_HEAD.headline[language] ?? SCREENS_HEAD.headline.en}
+              <LineReveal text={SCREENS_HEAD.headline[language] ?? SCREENS_HEAD.headline.en} />
             </h2>
-          </Reveal>
-          <Reveal delay={100} as="p" className="mt-3 max-w-2xl text-slate">
-            {SCREENS_HEAD.sub[language] ?? SCREENS_HEAD.sub.en}
-          </Reveal>
+          </div>
+          <p className="mt-3 max-w-2xl text-slate">
+            <LineReveal masked={false} text={SCREENS_HEAD.sub[language] ?? SCREENS_HEAD.sub.en} />
+          </p>
 
           <div className="mt-12 space-y-14 md:space-y-20">
             {SCREENS.map((sc, i) => {

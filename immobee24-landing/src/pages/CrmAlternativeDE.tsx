@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useState, type CSSProperties, type ReactNode } from 'react';
 import {
   ArrowRight,
   CheckCircle2,
@@ -10,7 +10,15 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
-import { chorSlot, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
+import {
+  LineReveal,
+  Reveal,
+  RevealGroup,
+  TypeOnce,
+  cascadeDelay,
+  chorSlot,
+  useCascade,
+} from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { WhyImmob24Teaser } from '../components/AiRefinementBands';
 import { trackEvent } from '../lib/analytics';
@@ -106,12 +114,12 @@ const Framing = () => {
     <section id="framing" className="py-20 md:py-24 bg-white">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
-          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('crmAltPage.framing.headline'))}
-          </Reveal>
-          <Reveal as="p" delay={100} className="mt-6 text-body-lg text-slate">
-            {asString(t('crmAltPage.framing.body'))}
-          </Reveal>
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+            <LineReveal text={asString(t('crmAltPage.framing.headline'))} />
+          </h2>
+          <p className="mt-6 text-body-lg text-slate">
+            <LineReveal masked={false} text={asString(t('crmAltPage.framing.body'))} />
+          </p>
         </div>
       </div>
     </section>
@@ -120,29 +128,35 @@ const Framing = () => {
 
 const ComparisonTable = () => {
   const { t } = useLanguage();
+  const [tableRef, tableOn] = useCascade<HTMLDivElement>();
   const headers = asStringArray(t('crmAltPage.table.headers'));
   const rows = asStringMatrix(t('crmAltPage.table.rows'));
   return (
     <section id="comparison" className="py-20 md:py-24 bg-cream">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
-          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('crmAltPage.table.headline'))}
-          </Reveal>
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+            <LineReveal text={asString(t('crmAltPage.table.headline'))} />
+          </h2>
         </div>
 
         <div className="mt-12 max-w-5xl mx-auto">
-          {/* Desktop / tablet table */}
-          <Reveal direction="scale" className="hidden md:block overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-card">
+          {/* Desktop / tablet table — header first, rows cascade 280ms,
+              cells 60ms left-to-right; container reserves height */}
+          <div
+            ref={tableRef}
+            className={`${tableOn} hidden md:block overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-card`}
+          >
             <table className="w-full text-left">
               <thead className="band-dark bg-charcoal text-white">
                 <tr>
                   {headers.map((h, i) => (
                     <th
                       key={i}
-                      className={`p-5 font-heading text-sm uppercase tracking-wider ${
+                      className={`cascade-cell p-5 font-heading text-sm uppercase tracking-wider ${
                         i === 2 ? 'text-golden' : ''
                       }`}
+                      style={{ '--casc-delay': `${i * 60}ms` } as CSSProperties}
                     >
                       {h}
                     </th>
@@ -160,13 +174,18 @@ const ComparisonTable = () => {
                     {row.map((cell, cIdx) => (
                       <td
                         key={cIdx}
-                        className={`p-5 align-top ${
+                        className={`cascade-cell p-5 align-top ${
                           cIdx === 0
                             ? 'font-heading text-charcoal w-1/4'
                             : cIdx === 2
                               ? 'text-charcoal/90 bg-golden/5'
                               : 'text-slate'
                         }`}
+                        style={
+                          {
+                            '--casc-delay': `${cascadeDelay(rIdx + 1, 280) + cIdx * 60}ms`,
+                          } as CSSProperties
+                        }
                       >
                         {cell}
                       </td>
@@ -175,10 +194,10 @@ const ComparisonTable = () => {
                 ))}
               </tbody>
             </table>
-          </Reveal>
+          </div>
 
           {/* Mobile stacked cards */}
-          <RevealGroup className="md:hidden grid gap-4">
+          <RevealGroup rhythm="read" className="md:hidden grid gap-4">
             {rows.map((row, rIdx) => (
               <div
                 key={rIdx}
@@ -231,12 +250,12 @@ const Competitors = () => {
     <section className="py-20 md:py-24 bg-white">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
-          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('crmAltPage.competitors.headline'))}
-          </Reveal>
-          <Reveal as="p" delay={100} className="mt-6 text-body-lg text-slate">
-            {asString(t('crmAltPage.competitors.intro'))}
-          </Reveal>
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+            <LineReveal text={asString(t('crmAltPage.competitors.headline'))} />
+          </h2>
+          <p className="mt-6 text-body-lg text-slate">
+            <LineReveal masked={false} text={asString(t('crmAltPage.competitors.intro'))} />
+          </p>
         </div>
 
         <RevealGroup className="mt-12 grid gap-6 md:grid-cols-3 max-w-5xl mx-auto">
@@ -265,18 +284,19 @@ const WhenCrm = () => {
   return (
     <section className="py-20 md:py-24 bg-white">
       <div className="container">
-        <Reveal className="max-w-3xl mx-auto text-center">
+        <div className="max-w-3xl mx-auto text-center">
           <Database className="h-8 w-8 text-charcoal/60 mx-auto" />
           <h2 className="mt-4 font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('crmAltPage.whenCrm.headline'))}
+            <LineReveal text={asString(t('crmAltPage.whenCrm.headline'))} />
           </h2>
-        </Reveal>
+        </div>
         <ul className="mt-10 grid gap-4 max-w-3xl mx-auto">
           {bullets.map((b, i) => (
             <Reveal
               as="li"
               key={i}
-              delay={i * 80}
+              delay={cascadeDelay(i, 280)}
+              distance={16}
               className="flex items-start gap-3 rounded-xl bg-cream border border-charcoal/10 px-5 py-4"
             >
               <CheckCircle2 className="h-5 w-5 text-charcoal/60 mt-0.5 flex-none" />
@@ -298,18 +318,19 @@ const WhenImmob = () => {
   return (
     <section className="py-20 md:py-24 bg-cream">
       <div className="container">
-        <Reveal className="max-w-3xl mx-auto text-center">
+        <div className="max-w-3xl mx-auto text-center">
           <Zap className="h-8 w-8 text-golden mx-auto" />
           <h2 className="mt-4 font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('crmAltPage.whenImmob.headline'))}
+            <LineReveal text={asString(t('crmAltPage.whenImmob.headline'))} />
           </h2>
-        </Reveal>
+        </div>
         <ul className="mt-10 grid gap-4 sm:grid-cols-2 max-w-4xl mx-auto">
           {bullets.map((b, i) => (
             <Reveal
               as="li"
               key={i}
-              delay={i * 80}
+              delay={cascadeDelay(i, 280)}
+              distance={16}
               className="flex items-start gap-3 rounded-xl bg-white border border-charcoal/10 px-5 py-4"
             >
               <CheckCircle2 className="h-5 w-5 text-golden mt-0.5 flex-none" />
@@ -330,9 +351,9 @@ const Fit = () => {
     <section className="py-20 md:py-24 bg-white">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
-          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('crmAltPage.fit.headline'))}
-          </Reveal>
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+            <LineReveal text={asString(t('crmAltPage.fit.headline'))} />
+          </h2>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-2 max-w-4xl mx-auto">
           <Reveal direction="left" className="rounded-2xl bg-cream border border-charcoal/10 p-6">
@@ -376,7 +397,7 @@ const Fit = () => {
 const FAQItem = ({ q, a }: { q: string; a: string }) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-charcoal/10 last:border-b-0">
+    <div>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -403,14 +424,21 @@ const Objections = () => {
     <section className="py-20 md:py-24 bg-cream">
       <div className="container">
         <div className="max-w-3xl mx-auto">
-          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal text-balance text-center">
-            {asString(t('crmAltPage.objections.headline'))}
-          </Reveal>
-          <Reveal delay={100} className="mt-10 rounded-2xl bg-white border border-charcoal/10 px-6">
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance text-center">
+            <LineReveal text={asString(t('crmAltPage.objections.headline'))} />
+          </h2>
+          <div className="mt-10 rounded-2xl bg-white border border-charcoal/10 px-6">
             {items.map((it, i) => (
-              <FAQItem key={i} q={it.q} a={it.a} />
+              <Reveal
+                key={i}
+                delay={cascadeDelay(i, 280)}
+                distance={16}
+                className="border-b border-charcoal/10 last:border-b-0"
+              >
+                <FAQItem q={it.q} a={it.a} />
+              </Reveal>
             ))}
-          </Reveal>
+          </div>
         </div>
       </div>
     </section>
@@ -424,14 +452,21 @@ const FAQ = () => {
     <section className="py-20 md:py-24 bg-white">
       <div className="container">
         <div className="max-w-3xl mx-auto">
-          <Reveal as="h2" className="font-heading text-section-mobile md:text-section text-charcoal text-balance text-center">
-            {asString(t('crmAltPage.faq.headline'))}
-          </Reveal>
-          <Reveal delay={100} className="mt-10 rounded-2xl bg-cream border border-charcoal/10 px-6">
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance text-center">
+            <LineReveal text={asString(t('crmAltPage.faq.headline'))} />
+          </h2>
+          <div className="mt-10 rounded-2xl bg-cream border border-charcoal/10 px-6">
             {items.map((it, i) => (
-              <FAQItem key={i} q={it.q} a={it.a} />
+              <Reveal
+                key={i}
+                delay={cascadeDelay(i, 280)}
+                distance={16}
+                className="border-b border-charcoal/10 last:border-b-0"
+              >
+                <FAQItem q={it.q} a={it.a} />
+              </Reveal>
             ))}
-          </Reveal>
+          </div>
         </div>
       </div>
     </section>

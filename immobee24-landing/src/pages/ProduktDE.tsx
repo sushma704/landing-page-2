@@ -220,7 +220,7 @@ const BrowserFrame = ({
   path: string;
   imgClass?: string;
 }) => (
-  <div className="overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-card">
+  <div className="no-fill overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-card">
     <div className="flex items-center gap-1.5 border-b border-charcoal/10 bg-cream/70 px-4 py-2.5">
       <span className="h-2.5 w-2.5 rounded-full bg-health-crit/70" />
       <span className="h-2.5 w-2.5 rounded-full bg-health-warn/70" />
@@ -282,7 +282,9 @@ const Hero = () => {
       <>
         <h2 className="font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
           <span className="block">{L(c.top)}</span>
-          <span className="block text-golden">{L(c.golden)}</span>
+          <span className="block text-golden">
+            <TypeCycle words={[L(c.golden)]} holdMs={2600} />
+          </span>
         </h2>
         <p className="mt-5 text-body-lg text-slate max-w-2xl mx-auto">{L(c.sub)}</p>
       </>
@@ -499,7 +501,7 @@ const AnswerBlock = () => {
           {items.map((item, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-charcoal/10 bg-cream p-6 md:p-8 shadow-subtle"
+              className="card-sweep rounded-2xl border border-charcoal/10 bg-cream p-6 md:p-8 shadow-subtle"
             >
               <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-golden-dark">
                 <HelpCircle className="h-4 w-4" />
@@ -597,7 +599,7 @@ const Features = () => {
           {items.map((item, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-charcoal/10 bg-white p-6 md:p-8 shadow-subtle hover:shadow-card-hover hover:border-golden/30 transition-all"
+              className="card-sweep rounded-2xl border border-charcoal/10 bg-white p-6 md:p-8 shadow-subtle transition-all"
             >
               <div className="flex items-center gap-3">
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-golden-soft text-golden-dark">

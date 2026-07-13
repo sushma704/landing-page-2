@@ -149,7 +149,7 @@ const LanguageToggle = ({ onDark = false }: { onDark?: boolean }) => {
         <div
           role="listbox"
           aria-label="Sprache wählen"
-          className="absolute end-0 top-full mt-2 w-48 rounded-xl border border-charcoal/10 bg-white shadow-card p-1.5 z-50"
+          className="no-fill absolute end-0 top-full mt-2 w-48 rounded-xl border border-charcoal/10 bg-white shadow-card p-1.5 z-50"
         >
           {languageOptions.map((opt) => {
             const active = opt.code === language;

@@ -280,6 +280,51 @@ export const TypeCycle = ({
   );
 };
 
+type TypeOnceProps = {
+  text: string;
+  className?: string;
+  charMs?: number;
+  startDelay?: number;
+};
+
+// One-shot typewriter for page headings: characters REVEAL in place
+// (visibility, not insertion), so centered multi-line headings never
+// reflow — zero CLS. A caret rides the newest character while typing.
+// Under reduced motion the text renders complete and static.
+export const TypeOnce = ({ text, className = '', charMs = 45, startDelay = 150 }: TypeOnceProps) => {
+  const reduced = usePrefersReducedMotion();
+  const [ref, inView] = useInView<HTMLSpanElement>();
+  const [len, setLen] = useState(0);
+  const done = len >= text.length;
+
+  useEffect(() => {
+    if (reduced || !inView || done) return;
+    const t = window.setTimeout(() => setLen((n) => n + 1), len === 0 ? startDelay : charMs);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView, len, reduced, done, charMs, startDelay]);
+
+  if (reduced) return <span className={className}>{text}</span>;
+  const chars = [...text];
+  return (
+    <span ref={ref} className={className} aria-label={text}>
+      {chars.map((c, i) =>
+        c === ' ' ? (
+          ' '
+        ) : (
+          <span
+            key={i}
+            aria-hidden
+            className={`${i < len ? '' : 'invisible'} ${!done && i === len - 1 ? 'type-head' : ''}`}
+          >
+            {c}
+          </span>
+        ),
+      )}
+    </span>
+  );
+};
+
 type MarqueeProps = {
   children: ReactNode;
   className?: string;

@@ -18,7 +18,7 @@ import {
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
-import { Reveal, RevealGroup, CountUp } from '../lib/animations';
+import { Reveal, RevealGroup, CountUp, TypeOnce } from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 import { useJsonLd } from '../lib/useJsonLd';
@@ -241,12 +241,12 @@ export default function WhyImmob24Page() {
             })}
           </span>
           <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
-            {L({
+            <TypeOnce text={L({
               de: 'Warum Immob24?',
               en: 'Why immob24?',
               fr: 'Pourquoi Immob24 ?',
               ar: 'لماذا Immob24؟',
-            })}
+            })} />
           </h1>
           <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">
             {L({

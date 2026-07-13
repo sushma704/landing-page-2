@@ -139,7 +139,7 @@ export const DemoVideoPlayer = () => {
 
   return (
     <div className="grid lg:grid-cols-[1fr,320px] gap-6 items-start">
-      <div className="relative rounded-2xl overflow-hidden bg-charcoal shadow-card">
+      <div className="no-fill relative rounded-2xl overflow-hidden bg-charcoal shadow-card">
         <video
           ref={videoRef}
           className="w-full aspect-video"
@@ -181,7 +181,7 @@ export const DemoVideoPlayer = () => {
         )}
       </div>
 
-      <div className="rounded-2xl border border-charcoal/5 bg-white shadow-subtle p-4">
+      <div className="no-fill rounded-2xl border border-charcoal/5 bg-white shadow-subtle p-4">
         <p className="px-2 pb-2 text-xs font-semibold uppercase tracking-wide text-warm-gray">
           {L({ de: 'Kapitel', en: 'Chapters', fr: 'Chapitres', ar: 'الفصول' })}
         </p>

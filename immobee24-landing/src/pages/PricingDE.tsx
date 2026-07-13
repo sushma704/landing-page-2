@@ -20,7 +20,7 @@ import { useFaqSchema } from '../lib/useFaqSchema';
 import { useJsonLd } from '../lib/useJsonLd';
 import { productSchema, breadcrumbSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
-import { Reveal, RevealGroup } from '../lib/animations';
+import { Reveal, RevealGroup, TypeOnce } from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { useLanguage } from '../i18n';
 import { pathFor } from '../i18n/pages';
@@ -65,7 +65,7 @@ const Hero = () => {
           </span>
 
           <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
-            {asString(t('pricingPage.hero.headline'))}
+            <TypeOnce text={asString(t('pricingPage.hero.headline'))} />
           </h1>
 
           <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">
@@ -134,8 +134,8 @@ const PricingCard = ({
   const wrapperBase =
     'relative flex w-full flex-col rounded-2xl border bg-white p-6 md:p-8 transition-shadow';
   const wrapperVariant = recommended
-    ? 'border-golden shadow-card-hover ring-1 ring-golden/40'
-    : 'border-charcoal/10 shadow-card hover:shadow-card-hover';
+    ? 'fill-darken no-fill border-golden shadow-card-hover ring-1 ring-golden/40'
+    : 'border-charcoal/10 shadow-card';
   const ctaClassBase =
     'mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 font-medium transition-colors';
   const ctaClass = recommended

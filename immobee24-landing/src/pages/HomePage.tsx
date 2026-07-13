@@ -366,7 +366,7 @@ const Features = () => {
           {items.map((item, i) => (
             <div
               key={i}
-              className={`rounded-2xl border p-6 md:p-8 transition-all duration-500 ${
+              className={`card-sweep shadow-subtle rounded-2xl border p-6 md:p-8 transition-all duration-500 ${
                 pulse === i
                   ? 'border-golden/50 bg-gradient-golden-soft shadow-golden -translate-y-1'
                   : 'border-charcoal/10 bg-white shadow-subtle hover:shadow-card-hover hover:border-golden/30'

@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
-import { Reveal, RevealGroup } from '../lib/animations';
+import { Reveal, RevealGroup, TypeOnce } from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { HeroWaves } from '../components/HeroWaves';
 import { SceneAgents, SceneApprovalGate } from '../components/scenes';
@@ -549,12 +549,12 @@ export default function AiFeaturesPage() {
             })}
           </span>
           <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
-            {L({
+            <TypeOnce text={L({
               de: 'Jeder Makler bekommt 7 KI-Co-Worker',
               en: 'Every agent gets 7 AI co-workers',
               fr: 'Chaque agent immobilier dispose de 7 co-workers IA',
               ar: 'كل وكيل عقاري يحصل على 7 مساعدين بالذكاء الاصطناعي',
-            })}
+            })} />
           </h1>
           <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">
             {L({
@@ -721,7 +721,7 @@ export default function AiFeaturesPage() {
                   }`}
                 >
                   <Reveal direction={reversed ? 'right' : 'left'}>
-                    <div className="overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-card">
+                    <div className="no-fill overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-card">
                       <div className="flex items-center gap-1.5 border-b border-charcoal/10 bg-cream/70 px-4 py-2.5">
                         <span className="h-2.5 w-2.5 rounded-full bg-health-crit/70" />
                         <span className="h-2.5 w-2.5 rounded-full bg-health-warn/70" />

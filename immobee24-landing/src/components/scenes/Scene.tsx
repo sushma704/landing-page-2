@@ -191,7 +191,7 @@ export const Scene = ({
   return (
     <div
       ref={ref}
-      className={`overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-card select-none ${className}`}
+      className={`no-fill overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-card select-none ${className}`}
     >
       <div className="flex items-center gap-1.5 border-b border-charcoal/10 bg-cream/70 px-3.5 py-2">
         <span className="h-2 w-2 rounded-full bg-health-crit/70" />

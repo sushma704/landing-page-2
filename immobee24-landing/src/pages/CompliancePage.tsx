@@ -25,7 +25,7 @@ import {
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
-import { Reveal, RevealGroup } from '../lib/animations';
+import { Reveal, RevealGroup, TypeOnce } from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { SceneApprovalGate } from '../components/scenes';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
@@ -464,12 +464,12 @@ export default function CompliancePage() {
             })}
           </span>
           <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
-            {L({
+            <TypeOnce text={L({
               de: 'Konform für Europa gebaut — von Tag eins',
               en: 'Built compliant for Europe — from day one',
               fr: 'Conçu conforme pour l’Europe — dès le premier jour',
               ar: 'مبني ليكون متوافقًا مع أوروبا — منذ اليوم الأول',
-            })}
+            })} />
           </h1>
           <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">
             {L({

@@ -145,7 +145,7 @@ export const HeroShowcase = () => {
 
         {/* Slide 3 — real dashboard screenshot in a browser frame */}
         <div className={slideCls(2)} aria-hidden={active !== 2}>
-          <div className="mt-12 mx-auto w-full max-w-xl overflow-hidden rounded-2xl border border-white/10 bg-[#211D16] shadow-card select-none">
+          <div className="no-fill mt-12 mx-auto w-full max-w-xl overflow-hidden rounded-2xl border border-white/10 bg-[#211D16] shadow-card select-none">
             <div className="flex items-center gap-1.5 border-b border-white/10 px-4 py-2.5">
               <span className="h-2.5 w-2.5 rounded-full bg-health-crit/80" />
               <span className="h-2.5 w-2.5 rounded-full bg-health-warn/80" />

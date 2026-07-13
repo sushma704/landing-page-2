@@ -11,7 +11,7 @@ import {
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
-import { Reveal, RevealGroup } from '../lib/animations';
+import { Reveal, RevealGroup, TypeOnce } from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { WhyImmob24Teaser } from '../components/AiRefinementBands';
 import { trackEvent } from '../lib/analytics';
@@ -60,7 +60,7 @@ const Hero = () => {
           </span>
 
           <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
-            {asString(t('crmAltPage.hero.headline'))}
+            <TypeOnce text={asString(t('crmAltPage.hero.headline'))} />
           </h1>
 
           <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">

@@ -46,7 +46,7 @@ export const ScrollProgressRing = () => {
       type="button"
       aria-label="Back to top"
       onClick={() => window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' })}
-      className={`fixed bottom-6 end-6 z-40 h-12 w-12 rounded-full border border-charcoal/15 bg-white/90 backdrop-blur shadow-card transition-opacity duration-300 ${
+      className={`no-fill fixed bottom-6 end-6 z-40 h-12 w-12 rounded-full border border-charcoal/15 bg-white/90 backdrop-blur shadow-card transition-opacity duration-300 ${
         visible ? 'opacity-100' : 'pointer-events-none opacity-0'
       }`}
     >

@@ -30,6 +30,10 @@ export const STAGGER_MS = 80;
 // Entrance-choreography slot: literal delay/duration for .chor/.chor-scale
 // elements (multiplied by ?slowmo=N in dev). Usage:
 //   <div className="chor" style={chorSlot(280, 500)}>
+// ?slowmo=N multiplier (dev/localhost flag set in main.tsx) for JS-driven timings
+export const slowmoFactor = (): number =>
+  Number(getComputedStyle(document.documentElement).getPropertyValue('--slowmo') || 1) || 1;
+
 export const chorSlot = (delayMs: number, durMs = 600): CSSProperties =>
   ({ '--chor-delay': `${delayMs}ms`, '--chor-dur': `${durMs}ms` }) as CSSProperties;
 
@@ -183,12 +187,20 @@ type CountUpProps = {
   className?: string;
   /** ms before counting starts once triggered (choreography slot) */
   delay?: number;
+  /** duration when morphing between successive values (price toggle) */
+  morphMs?: number;
 };
 
 // Animated count-up for numeric stats. Parses prefix/number/suffix from the
 // value string ("€249" → "€" + 249, "24/7" → 24 + "/7"); renders integers
 // with tabular numerals so surrounding text never reflows.
-export const CountUp = ({ value, duration = 1200, className = '', delay = 0 }: CountUpProps) => {
+export const CountUp = ({
+  value,
+  duration = 1200,
+  className = '',
+  delay = 0,
+  morphMs = 500,
+}: CountUpProps) => {
   const reduced = usePrefersReducedMotion();
   // Unlike Reveal, elements visible on mount DO count up — it's a mount
   // entrance (like the hero), and tabular-nums means zero layout shift.
@@ -198,6 +210,9 @@ export const CountUp = ({ value, duration = 1200, className = '', delay = 0 }: C
   const prefix = m ? m[1] : '';
   const suffix = m ? m[3] : '';
   const [n, setN] = useState(reduced ? target : 0);
+  const nRef = useRef(n);
+  nRef.current = n;
+  const ranOnce = useRef(false);
 
   useEffect(() => {
     if (!m) return;
@@ -208,20 +223,23 @@ export const CountUp = ({ value, duration = 1200, className = '', delay = 0 }: C
     if (!inView) return;
     let raf = 0;
     let timer = 0;
-    const slowmo = Number(
-      getComputedStyle(document.documentElement).getPropertyValue('--slowmo') || 1,
-    );
+    const slowmo = slowmoFactor();
+    // first trigger counts 0 → target; later target changes MORPH from the
+    // currently displayed value (price toggle: 249 → 207), never reflowing.
+    const from = ranOnce.current ? nRef.current : 0;
+    const dur = (ranOnce.current ? morphMs : duration) * slowmo;
     const start = () => {
+      ranOnce.current = true;
       const t0 = performance.now();
       const tick = (now: number) => {
-        const k = Math.min(1, (now - t0) / duration);
+        const k = Math.min(1, (now - t0) / dur);
         const eased = 1 - Math.pow(1 - k, 3); // ease-out cubic
-        setN(Math.round(eased * target));
+        setN(Math.round(from + eased * (target - from)));
         if (k < 1) raf = requestAnimationFrame(tick);
       };
       raf = requestAnimationFrame(tick);
     };
-    if (delay > 0) timer = window.setTimeout(start, delay * (slowmo || 1));
+    if (delay > 0 && !ranOnce.current) timer = window.setTimeout(start, delay * slowmo);
     else start();
     return () => {
       cancelAnimationFrame(raf);

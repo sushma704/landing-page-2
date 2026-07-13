@@ -1108,3 +1108,47 @@ section.bg-charcoal {
 @media (prefers-reduced-motion: reduce) {
   .chor, .chor-scale { animation: none; opacity: 1; transform: none; }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   Pricing switcher: ordered card entrance, recommended pulse,
+   badge pop, swap breath. All slowmo-aware via calc(var(--slowmo)).
+   ════════════════════════════════════════════════════════════════ */
+.price-enter {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity calc(var(--slowmo, 1) * 600ms) cubic-bezier(0.22, 1, 0.36, 1),
+    transform calc(var(--slowmo, 1) * 600ms) cubic-bezier(0.22, 1, 0.36, 1);
+}
+.price-enter.landed {
+  opacity: 1;
+  transform: translateY(0);
+}
+.pulse-glow {
+  animation: pulseGlow calc(var(--slowmo, 1) * 900ms) ease-out 1;
+}
+@keyframes pulseGlow {
+  from { box-shadow: 0 0 0 0 rgba(245, 166, 35, 0.25), 0 0 42px rgba(245, 166, 35, 0.25); }
+  to { box-shadow: 0 0 0 26px rgba(245, 166, 35, 0), 0 0 42px rgba(245, 166, 35, 0); }
+}
+.badge-pop {
+  animation: badgePop calc(var(--slowmo, 1) * 350ms) cubic-bezier(0.22, 1, 0.36, 1) 1;
+}
+@keyframes badgePop {
+  0% { transform: translateX(-50%) scale(0.6); }
+  70% { transform: translateX(-50%) scale(1.05); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+.card-breath {
+  animation: cardBreath calc(var(--slowmo, 1) * 400ms) cubic-bezier(0.22, 1, 0.36, 1) 1;
+}
+@keyframes cardBreath {
+  0% { transform: scale(1); }
+  40% { transform: scale(0.99); }
+  100% { transform: scale(1); }
+}
+.duration-250 { transition-duration: 250ms; }
+@media (prefers-reduced-motion: reduce) {
+  .price-enter { transition: none; opacity: 1; transform: none; }
+  .pulse-glow, .badge-pop, .card-breath { animation: none; }
+}

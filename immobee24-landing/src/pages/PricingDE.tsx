@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import {
   ArrowRight,
   CalendarDays,
@@ -19,7 +19,17 @@ import { useFaqSchema } from '../lib/useFaqSchema';
 import { useJsonLd } from '../lib/useJsonLd';
 import { productSchema, breadcrumbSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
-import { chorSlot, CountUp, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
+import {
+  chorSlot,
+  CountUp,
+  Reveal,
+  RevealGroup,
+  TypeOnce,
+  slowmoFactor,
+  useInView,
+  usePrefersReducedMotion,
+} from '../lib/animations';
+import { BillingToggle, MorphPrice, type BillingPeriod } from '../components/PricingSwitch';
 import { ScrollCue } from '../components/Wayfinding';
 import { useLanguage } from '../i18n';
 import { pathFor } from '../i18n/pages';
@@ -103,6 +113,10 @@ type CardProps = {
   included: string[];
   ctaLabel: string;
   onCta: () => void;
+  priceOverride?: ReactNode;
+  priceDelay?: number;
+  cardClass?: string;
+  badgeClass?: string;
   ctaAttrs?: Record<string, string>;
   ctaHref?: string;
   recommended?: boolean;
@@ -121,6 +135,10 @@ const PricingCard = ({
   onCta,
   ctaAttrs,
   ctaHref,
+  priceOverride,
+  priceDelay = 0,
+  cardClass,
+  badgeClass,
   recommended,
   recommendedLabel,
   support,
@@ -144,9 +162,13 @@ const PricingCard = ({
   );
 
   return (
-    <div className={`${wrapperBase} ${wrapperVariant}`}>
+    <div className={`${wrapperBase} ${wrapperVariant} ${cardClass ?? ''}`}>
       {recommended && (
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 rounded-full bg-gradient-golden text-[#1E1B16] px-3 py-1 text-xs font-semibold shadow-golden">
+        <span
+          className={`absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 rounded-full bg-gradient-golden text-[#1E1B16] px-3 py-1 text-xs font-semibold shadow-golden ${
+            badgeClass ?? ''
+          }`}
+        >
           <Star className="h-3 w-3" /> {recommendedLabel}
         </span>
       )}
@@ -157,9 +179,11 @@ const PricingCard = ({
       </div>
 
       <div className="mt-6">
-        <p className="font-heading text-3xl md:text-4xl text-charcoal">
-          {/^\D*\d/.test(price) ? <CountUp value={price} /> : price}
-        </p>
+        {priceOverride ?? (
+          <p className="font-heading text-3xl md:text-4xl text-charcoal">
+            {/^\D*\d/.test(price) ? <CountUp value={price} delay={priceDelay} duration={800} /> : price}
+          </p>
+        )}
         <p className="mt-2 text-sm text-slate">{subtext}</p>
       </div>
 
@@ -195,6 +219,38 @@ const PricingCard = ({
 
 const PricingCards = () => {
   const { t } = useLanguage();
+  const reduced = usePrefersReducedMotion();
+  const [period, setPeriod] = useState<BillingPeriod>('monthly');
+  // ordered entrance: beta (0) → custom (120) → recommended Team LAST (240),
+  // then the one-time attention pulse on the Team card
+  const [gridRef, inView] = useInView<HTMLDivElement>({ threshold: 0.2 });
+  const [pulsed, setPulsed] = useState(false);
+  useEffect(() => {
+    if (!inView || reduced || pulsed) return;
+    const t = window.setTimeout(() => setPulsed(true), (240 + 600) * slowmoFactor());
+    return () => window.clearTimeout(t);
+  }, [inView, reduced, pulsed]);
+
+  const [breathing, setBreathing] = useState(false);
+  const onPeriod = (p: BillingPeriod) => {
+    setPeriod(p);
+    if (reduced) return;
+    // restart the breath WITHOUT remounting (a remount would reset the
+    // CountUp and kill the price morph)
+    setBreathing(false);
+    requestAnimationFrame(() => {
+      setBreathing(true);
+      window.setTimeout(() => setBreathing(false), 420 * slowmoFactor());
+    });
+  };
+
+  const ENTER_DELAY = [0, 240, 120]; // beta, TEAM LAST, custom
+  const enterCls = (i: number) =>
+    reduced ? 'flex' : `price-enter flex ${inView ? 'landed' : ''}`;
+  const enterStyle = (i: number) =>
+    reduced ? undefined : { transitionDelay: `calc(var(--slowmo, 1) * ${ENTER_DELAY[i]}ms)` };
+  const breathStyle = (i: number) => ({ animationDelay: `calc(var(--slowmo, 1) * ${i * 60}ms)` });
+
   return (
     <section id="plans" className="py-16 md:py-20 bg-white">
       <div className="container">
@@ -204,53 +260,68 @@ const PricingCards = () => {
           </h2>
         </Reveal>
 
-        <div className="mt-12 grid gap-6 md:gap-8 md:grid-cols-3 max-w-6xl mx-auto items-stretch">
-          {/* each Reveal is the grid item (flex, so the card stretches to equal height) */}
-          <Reveal className="flex">
-          <PricingCard
-            label={asString(t('pricingPage.cards.beta.label'))}
-            audience={asString(t('pricingPage.cards.beta.audience'))}
-            price={asString(t('pricingPage.cards.beta.price'))}
-            subtext={asString(t('pricingPage.cards.beta.subtext'))}
-            description={asString(t('pricingPage.cards.beta.description'))}
-            included={asStringArray(t('pricingPage.cards.beta.included'))}
-            ctaLabel={asString(t('pricingPage.cards.beta.cta'))}
-            ctaHref="#beta"
-            onCta={() => trackEvent('pricing_card_cta_click', { plan: 'beta' })}
-            support={asString(t('pricingPage.cards.beta.support'))}
-          />
-          </Reveal>
+        <div className="mt-8 flex justify-center">
+          <BillingToggle period={period} onChange={onPeriod} />
+        </div>
 
-          <Reveal className="flex" delay={80}>
-          <PricingCard
-            recommended
-            recommendedLabel={asString(t('pricingPage.cards.recommendedBadge'))}
-            label={asString(t('pricingPage.cards.team.label'))}
-            audience={asString(t('pricingPage.cards.team.audience'))}
-            price={asString(t('pricingPage.cards.team.price'))}
-            subtext={asString(t('pricingPage.cards.team.subtext'))}
-            description={asString(t('pricingPage.cards.team.description'))}
-            included={asStringArray(t('pricingPage.cards.team.included'))}
-            ctaLabel={asString(t('pricingPage.cards.team.cta'))}
-            ctaAttrs={DEMO_CTA_PROPS}
-            onCta={() => trackEvent('pricing_card_cta_click', { plan: 'team' })}
-          />
-          </Reveal>
+        <div
+          ref={gridRef}
+          className="mt-10 grid gap-6 md:gap-8 md:grid-cols-3 max-w-6xl mx-auto items-stretch"
+        >
+          <div className={enterCls(0)} style={enterStyle(0)}>
+            <div className={`flex w-full ${breathing ? 'card-breath' : ''}`} style={breathStyle(0)}>
+            <PricingCard
+              label={asString(t('pricingPage.cards.beta.label'))}
+              audience={asString(t('pricingPage.cards.beta.audience'))}
+              price={asString(t('pricingPage.cards.beta.price'))}
+              subtext={asString(t('pricingPage.cards.beta.subtext'))}
+              description={asString(t('pricingPage.cards.beta.description'))}
+              included={asStringArray(t('pricingPage.cards.beta.included'))}
+              ctaLabel={asString(t('pricingPage.cards.beta.cta'))}
+              ctaHref="#beta"
+              onCta={() => trackEvent('pricing_card_cta_click', { plan: 'beta' })}
+              support={asString(t('pricingPage.cards.beta.support'))}
+            />
+            </div>
+          </div>
 
-          <Reveal className="flex" delay={160}>
-          <PricingCard
-            label={asString(t('pricingPage.cards.custom.label'))}
-            audience={asString(t('pricingPage.cards.custom.audience'))}
-            price={asString(t('pricingPage.cards.custom.price'))}
-            subtext={asString(t('pricingPage.cards.custom.subtext'))}
-            description={asString(t('pricingPage.cards.custom.description'))}
-            included={asStringArray(t('pricingPage.cards.custom.included'))}
-            ctaLabel={asString(t('pricingPage.cards.custom.cta'))}
-            ctaAttrs={DEMO_CTA_PROPS}
-            onCta={() => trackEvent('pricing_card_cta_click', { plan: 'custom' })}
-            support={asString(t('pricingPage.cards.custom.support'))}
-          />
-          </Reveal>
+          <div className={enterCls(1)} style={enterStyle(1)}>
+            <div className={`flex w-full ${breathing ? 'card-breath' : ''}`} style={breathStyle(1)}>
+            <PricingCard
+              recommended
+              recommendedLabel={asString(t('pricingPage.cards.recommendedBadge'))}
+              label={asString(t('pricingPage.cards.team.label'))}
+              audience={asString(t('pricingPage.cards.team.audience'))}
+              price={asString(t('pricingPage.cards.team.price'))}
+              subtext={asString(t('pricingPage.cards.team.subtext'))}
+              description={asString(t('pricingPage.cards.team.description'))}
+              included={asStringArray(t('pricingPage.cards.team.included'))}
+              ctaLabel={asString(t('pricingPage.cards.team.cta'))}
+              ctaAttrs={DEMO_CTA_PROPS}
+              onCta={() => trackEvent('pricing_card_cta_click', { plan: 'team' })}
+              priceOverride={<MorphPrice period={period} entranceDelay={440} />}
+              cardClass={pulsed ? 'pulse-glow' : ''}
+              badgeClass={pulsed ? 'badge-pop' : ''}
+            />
+            </div>
+          </div>
+
+          <div className={enterCls(2)} style={enterStyle(2)}>
+            <div className={`flex w-full ${breathing ? 'card-breath' : ''}`} style={breathStyle(2)}>
+            <PricingCard
+              label={asString(t('pricingPage.cards.custom.label'))}
+              audience={asString(t('pricingPage.cards.custom.audience'))}
+              price={asString(t('pricingPage.cards.custom.price'))}
+              subtext={asString(t('pricingPage.cards.custom.subtext'))}
+              description={asString(t('pricingPage.cards.custom.description'))}
+              included={asStringArray(t('pricingPage.cards.custom.included'))}
+              ctaLabel={asString(t('pricingPage.cards.custom.cta'))}
+              ctaAttrs={DEMO_CTA_PROPS}
+              onCta={() => trackEvent('pricing_card_cta_click', { plan: 'custom' })}
+              support={asString(t('pricingPage.cards.custom.support'))}
+            />
+            </div>
+          </div>
         </div>
       </div>
     </section>

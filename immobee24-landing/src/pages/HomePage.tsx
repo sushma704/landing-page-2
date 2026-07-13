@@ -26,6 +26,7 @@ import { HeroShowcase } from '../components/HeroShowcase';
 import { HeroWaves } from '../components/HeroWaves';
 import { CountUp, Reveal, RevealGroup, TypeCycle } from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
+import { BillingToggle, MorphPrice, type BillingPeriod } from '../components/PricingSwitch';
 import { SevenCoWorkersBand, ComplianceBadgesStrip } from '../components/AiRefinementBands';
 
 const asString = (
@@ -566,6 +567,7 @@ const PricingTeaser = () => {
   const { t } = useLanguage();
   const localPath = useLocalizedPath();
   const plans = asPairArray(t('pricingTeaser.plans'));
+  const [period, setPeriod] = useState<BillingPeriod>('monthly');
   return (
     <section id="pricing" className="py-20 md:py-28 bg-white">
       <div className="container">
@@ -576,7 +578,11 @@ const PricingTeaser = () => {
           <p className="mt-6 text-body-lg text-slate">{asString(t('pricingTeaser.body'))}</p>
         </div>
 
-        <div className="mt-12 grid sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
+        <div className="mt-8 flex justify-center">
+          <BillingToggle period={period} onChange={setPeriod} />
+        </div>
+
+        <div className="mt-10 grid sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
           {plans.map((plan, i) => (
             <div
               key={i}
@@ -586,7 +592,13 @@ const PricingTeaser = () => {
                 <Tag className="h-5 w-5" />
               </span>
               <h3 className="mt-4 font-heading text-xl text-charcoal">{plan[0] ?? ''}</h3>
-              <p className="mt-2 text-slate">{plan[1] ?? ''}</p>
+              {i === 1 ? (
+                <div className="mt-2 flex justify-center">
+                  <MorphPrice period={period} size="sm" />
+                </div>
+              ) : (
+                <p className="mt-2 text-slate">{plan[1] ?? ''}</p>
+              )}
             </div>
           ))}
         </div>

@@ -67,11 +67,11 @@ const Hero = () => (
         <MapPin className="h-3.5 w-3.5" /> Local focus: Munich
       </p>
 
-      <h1 className="mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight max-w-3xl">
+      <h1 className="hero-in mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight max-w-3xl" style={{ animationDelay: '100ms' }}>
         Real-estate agent software for brokerages in Munich
       </h1>
 
-      <p className="mt-5 max-w-2xl text-lg text-slate leading-relaxed">
+      <p className="hero-in mt-5 max-w-2xl text-lg text-slate leading-relaxed" style={{ animationDelay: '250ms' }}>
         Munich inquiries don't wait. Immob24 responds in under three seconds,
         qualifies prospects automatically, and takes over scheduling and
         follow-up — so your brokerage wins mandates instead of losing them to

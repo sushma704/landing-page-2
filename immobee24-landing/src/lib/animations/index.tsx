@@ -325,6 +325,45 @@ export const TypeOnce = ({ text, className = '', charMs = 45, startDelay = 150 }
   );
 };
 
+type SkeletonRevealProps = {
+  children: ReactNode;
+  className?: string;
+  /** shimmer duration before the real content crossfades in */
+  holdMs?: number;
+};
+
+// "Data loading in": neutral shimmer blocks hold for ~400ms, then the real
+// content crossfades over them. Space is reserved by the children themselves
+// (they render at opacity 0 underneath) — zero layout shift. Use sparingly:
+// hero mockups and at most one dashboard visual per page.
+export const SkeletonReveal = ({ children, className = '', holdMs = 400 }: SkeletonRevealProps) => {
+  const reduced = usePrefersReducedMotion();
+  const [ready, setReady] = useState(reduced);
+  useEffect(() => {
+    if (reduced) {
+      setReady(true);
+      return;
+    }
+    const t = window.setTimeout(() => setReady(true), holdMs);
+    return () => window.clearTimeout(t);
+  }, [reduced, holdMs]);
+  return (
+    <div className={`relative ${className}`}>
+      <div className={`transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}>
+        {children}
+      </div>
+      {!ready && (
+        <div aria-hidden className="absolute inset-0 flex flex-col gap-3 p-5">
+          <div className="skel-block h-6 w-1/3" />
+          <div className="skel-block h-4 w-2/3" />
+          <div className="skel-block h-4 w-1/2" />
+          <div className="skel-block flex-1" />
+        </div>
+      )}
+    </div>
+  );
+};
+
 type MarqueeProps = {
   children: ReactNode;
   className?: string;

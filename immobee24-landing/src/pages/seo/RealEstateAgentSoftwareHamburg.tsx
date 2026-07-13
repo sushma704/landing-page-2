@@ -55,11 +55,11 @@ const Hero = () => (
         <MapPin className="h-3.5 w-3.5" /> Local focus: Hamburg
       </p>
 
-      <h1 className="mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight max-w-3xl">
+      <h1 className="hero-in mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight max-w-3xl" style={{ animationDelay: '100ms' }}>
         Real-estate agent software for brokerages in Hamburg
       </h1>
 
-      <p className="mt-5 max-w-2xl text-lg text-slate leading-relaxed">
+      <p className="hero-in mt-5 max-w-2xl text-lg text-slate leading-relaxed" style={{ animationDelay: '250ms' }}>
         The Hamburg market rewards speed. Immob24 replies to every inquiry
         in under three seconds, qualifies prospects against the criteria
         that matter, and hands your team only the viewings that are

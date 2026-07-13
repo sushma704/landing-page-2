@@ -237,7 +237,7 @@ export default function WhyImmob24Page() {
               ar: 'لماذا Immob24؟',
             })} />
           </h1>
-          <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">
+          <p className="hero-in mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={{ animationDelay: '250ms' }}>
             {L({
               de: 'Makler verlieren 60–70 % ihres Tages an operative Arbeit — und die meisten KI-Tools ignorieren die europäische Regulierung. Immob24 löst beides.',
               en: 'Agents lose 60–70% of their day to ops — and most AI tools ignore European regulation. Immob24 solves both.',

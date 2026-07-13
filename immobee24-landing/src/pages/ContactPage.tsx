@@ -270,7 +270,7 @@ export default function ContactPage() {
           <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
             <TypeOnce text={L('headline')} />
           </h1>
-          <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">{L('sub')}</p>
+          <p className="hero-in mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={{ animationDelay: '250ms' }}>{L('sub')}</p>
         </div>
       </section>
 

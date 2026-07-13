@@ -60,11 +60,11 @@ const Hero = () => (
         <MapPin className="h-3.5 w-3.5" /> Lokaler Fokus: Berlin
       </p>
 
-      <h1 className="mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight max-w-3xl">
+      <h1 className="hero-in mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight max-w-3xl" style={{ animationDelay: '100ms' }}>
         Maklersoftware für Immobilienmakler in Berlin
       </h1>
 
-      <p className="mt-5 max-w-2xl text-lg text-slate leading-relaxed">
+      <p className="hero-in mt-5 max-w-2xl text-lg text-slate leading-relaxed" style={{ animationDelay: '250ms' }}>
         Berlin ist Deutschlands schnellster Maklermarkt. Immob24 nimmt jede
         Portal- und Website-Anfrage in unter drei Sekunden an, qualifiziert
         Interessenten zweisprachig (Deutsch und Englisch) und übergibt Ihrem

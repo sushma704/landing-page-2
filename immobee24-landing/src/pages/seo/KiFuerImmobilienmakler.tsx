@@ -89,7 +89,7 @@ const Hero = () => (
         <Sparkles className="h-3.5 w-3.5" /> Ratgeber — Lesezeit ca. 8 Minuten
       </p>
 
-      <h1 className="mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight">
+      <h1 className="hero-in mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight" style={{ animationDelay: '100ms' }}>
         KI für Immobilienmakler: So nutzen Sie künstliche Intelligenz in Ihrem Maklerbüro
       </h1>
 

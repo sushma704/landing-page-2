@@ -460,7 +460,7 @@ export default function CompliancePage() {
               ar: 'مبني ليكون متوافقًا مع أوروبا — منذ اليوم الأول',
             })} />
           </h1>
-          <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">
+          <p className="hero-in mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={{ animationDelay: '250ms' }}>
             {L({
               de: 'Die meisten KI-Tools ignorieren europäische Regulierung. Immob24 ist andersherum gebaut: Das härteste Regulierungsumfeld Europas ist unsere Architektur-Vorgabe — nicht unser Nachtrag.',
               en: 'Most AI tools ignore European regulation. Immob24 is built the other way round: Europe’s hardest regulatory environment is our architectural requirement — not an afterthought.',

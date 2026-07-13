@@ -1007,3 +1007,74 @@ section.band-dark.bg-charcoal,
 section.bg-charcoal {
   background-color: rgb(var(--c-ink) / 1);
 }
+
+/* ════════════════════════════════════════════════════════════════
+   Page-load choreography (entrance orchestration).
+   .route-in / .route-out: SPA navigation crossfade — outgoing page
+   fades 150ms, incoming fades 250ms; content is keyed per route so
+   the hero-in cascade (the per-page choreography) reruns exactly
+   once per mount, including back/forward. Interaction is never
+   blocked. .entrance-nav: the header fades in once on first load.
+   ════════════════════════════════════════════════════════════════ */
+.route-in { animation: routeIn 250ms ease-out both; }
+.route-out { animation: routeOut 150ms ease-in forwards; }
+@keyframes routeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes routeOut { to { opacity: 0; } }
+.entrance-nav { animation: routeIn 300ms ease-out both; }
+
+/* ── Data-population utilities (shared mechanism) ──
+   Delays are set inline (style="animation-delay") — stagger lives in
+   CSS, no JS timers per element. Transform/opacity only. */
+.fill-grow {
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  animation: fillGrow 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+[dir='rtl'] .fill-grow { transform-origin: 100% 50%; }
+@keyframes fillGrow { to { transform: scaleX(1); } }
+
+.bar-grow {
+  transform: scaleY(0);
+  transform-origin: 50% 100%;
+  animation: barGrow 900ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes barGrow { to { transform: scaleY(1); } }
+
+.draw-line {
+  stroke-dasharray: var(--draw-len, 300);
+  stroke-dashoffset: var(--draw-len, 300);
+  animation: drawLine 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes drawLine { to { stroke-dashoffset: 0; } }
+
+/* skeleton shimmer for "live data loading" mockups (hero visuals only) */
+.skel-block {
+  background: rgb(var(--c-ink) / 0.06);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.skel-block::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgb(var(--c-ink) / 0.08) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmerSweep 1s linear infinite;
+}
+@keyframes shimmerSweep {
+  from { background-position: 180% 0; }
+  to { background-position: -20% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .route-in, .route-out, .entrance-nav { animation: none; opacity: 1; }
+  .fill-grow, .bar-grow { animation: none; transform: none; }
+  .draw-line { animation: none; stroke-dashoffset: 0; }
+  .skel-block::after { animation: none; }
+}

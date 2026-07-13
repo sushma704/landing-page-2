@@ -89,7 +89,7 @@ const Hero = () => (
         <Sparkles className="h-3.5 w-3.5" /> Guide — about 8 min read
       </p>
 
-      <h1 className="mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight">
+      <h1 className="hero-in mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight" style={{ animationDelay: '100ms' }}>
         AI for real-estate agents: how to use artificial intelligence in your brokerage
       </h1>
 

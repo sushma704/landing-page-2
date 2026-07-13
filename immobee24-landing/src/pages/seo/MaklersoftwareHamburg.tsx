@@ -56,11 +56,11 @@ const Hero = () => (
         <MapPin className="h-3.5 w-3.5" /> Lokaler Fokus: Hamburg
       </p>
 
-      <h1 className="mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight max-w-3xl">
+      <h1 className="hero-in mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight max-w-3xl" style={{ animationDelay: '100ms' }}>
         Maklersoftware für Immobilienmakler in Hamburg
       </h1>
 
-      <p className="mt-5 max-w-2xl text-lg text-slate leading-relaxed">
+      <p className="hero-in mt-5 max-w-2xl text-lg text-slate leading-relaxed" style={{ animationDelay: '250ms' }}>
         Der Hamburger Markt belohnt Geschwindigkeit. Immob24 antwortet in unter
         drei Sekunden auf jede Anfrage, qualifiziert Interessenten anhand der
         wichtigsten Kriterien und übergibt Ihrem Team nur die Termine, die

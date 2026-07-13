@@ -29,7 +29,14 @@ import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
 import { ScrollCue } from '../components/Wayfinding';
-import { Reveal, RevealGroup, TypeCycle, useInView, usePrefersReducedMotion } from '../lib/animations';
+import {
+  Reveal,
+  RevealGroup,
+  SkeletonReveal,
+  TypeCycle,
+  useInView,
+  usePrefersReducedMotion,
+} from '../lib/animations';
 import {
   SceneQualification,
   SceneScheduling,
@@ -220,6 +227,7 @@ const BrowserFrame = ({
   path: string;
   imgClass?: string;
 }) => (
+  <SkeletonReveal>
   <div className="no-fill overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-card">
     <div className="flex items-center gap-1.5 border-b border-charcoal/10 bg-cream/70 px-4 py-2.5">
       <span className="h-2.5 w-2.5 rounded-full bg-health-crit/70" />
@@ -236,6 +244,7 @@ const BrowserFrame = ({
       className={`${imgClass} w-full object-cover object-top`}
     />
   </div>
+  </SkeletonReveal>
 );
 
 const Hero = () => {
@@ -466,7 +475,7 @@ const Hero = () => {
             {asString(t('produkt.hero.secondaryCta'))}
           </a>
         </div>
-        <ScrollCue targetId="product" className="hero-in mt-6" />
+        <ScrollCue targetId="product" className="hero-in mt-6" style={{ animationDelay: '500ms' }} />
       </div>
     </section>
   );

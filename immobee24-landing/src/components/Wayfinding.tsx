@@ -2,7 +2,7 @@
 // bouncing hero scroll cue. Progress is driven by requestAnimationFrame (the
 // scroll listener only schedules a frame — no per-event layout reads).
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { ArrowUp, ChevronDown } from 'lucide-react';
 import { useLanguage } from '../i18n';
 import type { Language } from '../i18n';
@@ -86,11 +86,13 @@ export const ScrollCue = ({
   targetId,
   onDark = false,
   className = '',
+  style,
 }: {
   /** id of the next section; falls back to scrolling one viewport down */
   targetId?: string;
   onDark?: boolean;
   className?: string;
+  style?: CSSProperties;
 }) => {
   const { language } = useLanguage();
   const reduced = usePrefersReducedMotion();
@@ -114,6 +116,7 @@ export const ScrollCue = ({
     <button
       type="button"
       onClick={go}
+      style={style}
       className={`group mx-auto flex flex-col items-center gap-1 transition-opacity duration-500 ${
         gone ? 'pointer-events-none opacity-0' : 'opacity-100'
       } ${onDark ? 'text-white/60 hover:text-white' : 'text-warm-gray hover:text-charcoal'} ${className}`}

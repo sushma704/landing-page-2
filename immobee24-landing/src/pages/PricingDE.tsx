@@ -19,7 +19,7 @@ import { useFaqSchema } from '../lib/useFaqSchema';
 import { useJsonLd } from '../lib/useJsonLd';
 import { productSchema, breadcrumbSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
-import { Reveal, RevealGroup, TypeOnce } from '../lib/animations';
+import { CountUp, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { useLanguage } from '../i18n';
 import { pathFor } from '../i18n/pages';
@@ -62,7 +62,7 @@ const Hero = () => {
             <TypeOnce text={asString(t('pricingPage.hero.headline'))} />
           </h1>
 
-          <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">
+          <p className="hero-in mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={{ animationDelay: '250ms' }}>
             {asString(t('pricingPage.hero.subheadline'))}
           </p>
 
@@ -157,7 +157,9 @@ const PricingCard = ({
       </div>
 
       <div className="mt-6">
-        <p className="font-heading text-3xl md:text-4xl text-charcoal">{price}</p>
+        <p className="font-heading text-3xl md:text-4xl text-charcoal">
+          {/^\D*\d/.test(price) ? <CountUp value={price} /> : price}
+        </p>
         <p className="mt-2 text-sm text-slate">{subtext}</p>
       </div>
 

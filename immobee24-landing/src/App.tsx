@@ -1,5 +1,5 @@
-import { Suspense, lazy, useEffect } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Suspense, lazy, useEffect, useState } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 import { ScrollToHash } from './lib/ScrollToHash';
 import { CookieBanner } from './components/CookieBanner';
 import { DEMO_BOOKING_URL } from './components/SiteChrome';
@@ -42,7 +42,28 @@ const PageLoader = () => (
   </div>
 );
 
+// SPA navigation choreography: the outgoing page fades 150ms, then the new
+// route mounts (keyed) so its hero-in cascade runs exactly once — including
+// back/forward. Interaction is never blocked (opacity only). Reduced motion
+// swaps instantly.
+function useRouteTransition() {
+  const location = useLocation();
+  const [shown, setShown] = useState(location);
+  const leaving = location.key !== shown.key;
+  useEffect(() => {
+    if (location.key === shown.key) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setShown(location);
+      return;
+    }
+    const t = window.setTimeout(() => setShown(location), 150);
+    return () => window.clearTimeout(t);
+  }, [location, shown.key]);
+  return { shown, leaving };
+}
+
 export default function App() {
+  const { shown, leaving } = useRouteTransition();
   // Any element marked with data-demo-cta opens the Cal.com booking page.
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -67,7 +88,8 @@ export default function App() {
       <ScrollProgressRing />
       <CookieBanner />
       <Suspense fallback={<PageLoader />}>
-        <Routes>
+        <div key={shown.key} className={leaving ? 'route-out' : 'route-in'}>
+        <Routes location={shown}>
         <Route path="/" element={<Navigate to="/de" replace />} />
 
         <Route path="/dev/scenes" element={<DevScenes />} />
@@ -182,6 +204,7 @@ export default function App() {
 
           <Route path="*" element={<HomePage />} />
         </Routes>
+        </div>
       </Suspense>
     </>
   );

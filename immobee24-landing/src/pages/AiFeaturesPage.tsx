@@ -545,7 +545,7 @@ export default function AiFeaturesPage() {
               ar: 'كل وكيل عقاري يحصل على 7 مساعدين بالذكاء الاصطناعي',
             })} />
           </h1>
-          <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">
+          <p className="hero-in mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={{ animationDelay: '250ms' }}>
             {L({
               de: 'Sieben spezialisierte KI-Agenten übernehmen die operative Arbeit — vom Lead bis zum Abschluss. Sie behalten die volle Kontrolle und geben jede Aktion frei.',
               en: 'Seven specialised AI agents handle the operational load — from lead to close. You keep full visibility and approve every action.',

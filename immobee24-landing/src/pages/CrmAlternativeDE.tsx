@@ -57,7 +57,7 @@ const Hero = () => {
             <TypeOnce text={asString(t('crmAltPage.hero.headline'))} />
           </h1>
 
-          <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">
+          <p className="hero-in mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={{ animationDelay: '250ms' }}>
             {asString(t('crmAltPage.hero.subheadline'))}
           </p>
 

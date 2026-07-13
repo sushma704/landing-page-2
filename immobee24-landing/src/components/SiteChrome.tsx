@@ -5,6 +5,7 @@ import { useLanguage, languageOptions } from '../i18n';
 import type { Language } from '../i18n';
 import { pathFor } from '../i18n/pages';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
+import { ThemeToggle } from './ThemeToggle';
 import { Reveal } from '../lib/animations';
 import { trackEvent } from '../lib/analytics';
 import { NewsletterSignup } from './NewsletterSignup';
@@ -364,6 +365,7 @@ export const Header = () => {
         </nav>
 
         <div className="flex flex-none items-center gap-2">
+          <ThemeToggle onDark={onDark} />
           <LanguageToggle onDark={onDark} />
           {/* AI-refinement: login entry to the immob24 app (dashboard is a
               separate application — always a full absolute URL). */}

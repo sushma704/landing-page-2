@@ -11,7 +11,8 @@
 
   <meta charset="UTF-8" />
   <!-- Dark-only theme: paint the ground before CSS/JS load (no white flash) -->
-  <style>html{background-color:#17140F;color-scheme:dark}body{background-color:#17140F}</style>
+  <style>html.dark{background-color:#17140F;color-scheme:dark}html.dark body{background-color:#17140F}</style>
+  <script>try{if(localStorage.getItem('immob24-theme')==='light'){document.documentElement.classList.remove('dark');document.documentElement.style.backgroundColor='#FBF9F4'}}catch(e){}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!--

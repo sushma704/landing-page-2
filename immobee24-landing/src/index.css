@@ -4,23 +4,33 @@
 
 @layer base {
   :root {
-    /* Dark-only theme (Part A): the former .dark palette is now the root
-       default. There is no light mode and no toggle. */
-    --c-cream: 23 20 15;         /* page ground  #17140F */
-    --c-surface: 33 29 22;       /* cards        #211D16 */
-    --c-muted: 30 26 20;         /* #1E1A14 */
-    --c-ink: 245 240 230;        /* #F5F0E6 */
-    --c-ink-soft: 180 171 152;   /* #B4AB98 */
-    --c-ink-faint: 140 132 115;  /* #8C8473 */
-    --c-teal: 63 187 166;        /* #3FBBA6 */
-    --c-teal-ink: 111 211 194;   /* #6FD3C2 */
-    --c-teal-wash: 18 48 41;     /* #123029 */
-    color-scheme: dark;
+    /* Light palette (opt-in for review; DARK below is the default via
+       <html class="dark">) */
+    --c-cream: 251 249 244;
+    --c-surface: 255 255 255;
+    --c-muted: 244 240 231;
+    --c-ink: 30 27 22;
+    --c-ink-soft: 85 80 63;
+    --c-ink-faint: 141 132 113;
+    --c-teal: 12 111 95;
+    --c-teal-ink: 10 90 77;
+    --c-teal-wash: 220 238 233;
+    color-scheme: light;
   }
 
   /* Dark theme (brief dark tokens) — toggled by ThemeToggle via .dark on <html> */
-  /* .dark variable overrides removed — dark is the root default.
-     <html class="dark"> remains so `dark:` utilities keep working. */
+  .dark {
+    --c-cream: 23 20 15;         /* page ground  #17140F */
+    --c-surface: 33 29 22;       /* cards        #211D16 */
+    --c-muted: 30 26 20;
+    --c-ink: 245 240 230;
+    --c-ink-soft: 180 171 152;
+    --c-ink-faint: 140 132 115;
+    --c-teal: 63 187 166;
+    --c-teal-ink: 111 211 194;
+    --c-teal-wash: 18 48 41;
+    color-scheme: dark;
+  }
 
   body {
     transition: background-color 0.35s ease, color 0.35s ease;
@@ -1173,3 +1183,12 @@ section.bg-charcoal {
   .cascade-wait .cascade-item, .cascade-wait .cascade-cell { opacity: 1; transform: none; }
   .cascade-on .cascade-item, .cascade-on .cascade-cell { transition: none; }
 }
+
+/* ── Light mode (opt-in): soft drop shadows instead of dark-theme glows,
+   and the pre-CSS ground matches the cream palette. Dark stays default. ── */
+html:not(.dark) { background-color: #fbf9f4; }
+html:not(.dark) body { background-color: #fbf9f4; }
+html:not(.dark) .shadow-card { box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06); }
+html:not(.dark) .shadow-subtle { box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05); }
+html:not(.dark) .shadow-card-hover { box-shadow: 0 8px 32px rgba(199, 108, 5, 0.15); }
+html:not(.dark) .skel-block { background: rgb(var(--c-ink) / 0.08); }

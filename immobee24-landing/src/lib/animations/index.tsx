@@ -449,7 +449,7 @@ export const LineReveal = ({
         current = [];
         top = w.offsetTop;
       }
-      current.push(w.textContent ?? '');
+      current.push((w.textContent ?? '').trim());
     });
     if (current.length) grouped.push(current.join(' '));
     setLines(grouped);

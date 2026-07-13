@@ -33,7 +33,10 @@ import App from './App.tsx'
 bootstrapConsent()
 
 // Apply the persisted light/dark theme before first paint (no flash).
-// Dark-only theme: <html class="dark"> is hardcoded in index.html.
+import { initTheme } from './components/ThemeToggle'
+
+
+initTheme()
 
 // DEBUG (dev/localhost only): ?slowmo=5 multiplies all entrance-choreography
 // delays and durations, for verifying load sequences frame by frame.

@@ -189,7 +189,17 @@ const HERO_STATS: Array<{ icon: ComponentType<{ className?: string }>; stat: str
   { icon: UserCheck, stat: '100%', label: { de: 'Freigabe-Kontrolle', en: 'approval control', fr: 'contrôle de validation', ar: 'تحكم بالموافقات' } },
 ];
 
-const BrowserFrame = ({ src, alt, path }: { src: string; alt: string; path: string }) => (
+const BrowserFrame = ({
+  src,
+  alt,
+  path,
+  imgClass = 'max-h-[420px]',
+}: {
+  src: string;
+  alt: string;
+  path: string;
+  imgClass?: string;
+}) => (
   <div className="overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-card">
     <div className="flex items-center gap-1.5 border-b border-charcoal/10 bg-cream/70 px-4 py-2.5">
       <span className="h-2.5 w-2.5 rounded-full bg-health-crit/70" />
@@ -197,7 +207,14 @@ const BrowserFrame = ({ src, alt, path }: { src: string; alt: string; path: stri
       <span className="h-2.5 w-2.5 rounded-full bg-honey-green/70" />
       <span className="ms-3 truncate rounded-md bg-charcoal/5 px-3 py-0.5 text-[10px] text-slate">{path}</span>
     </div>
-    <img src={src} alt={alt} width={1600} height={892} loading="eager" className="w-full" />
+    <img
+      src={src}
+      alt={alt}
+      width={1600}
+      height={892}
+      loading="eager"
+      className={`${imgClass} w-full object-cover object-top`}
+    />
   </div>
 );
 
@@ -230,7 +247,7 @@ const Hero = () => {
           <h1 className="font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
             {asString(t('produkt.hero.headline'))}
           </h1>
-          <p className="mt-5 text-body-lg text-slate max-w-2xl mx-auto">
+          <p className="mt-5 text-body-lg text-slate max-w-3xl mx-auto">
             {asString(t('produkt.hero.subheadline'))}
           </p>
         </>
@@ -272,23 +289,23 @@ const Hero = () => {
           hover.current = false;
         }}
       >
-        <div className="grid items-start">
+        <div className="grid items-center">
           {/* ── Slide 1: modules + real dashboard ── */}
           <div className={slideCls(0)} aria-hidden={active !== 0}>
-            <div className="text-center max-w-3xl mx-auto hero-in" style={{ animationDelay: '0.05s' }}>
+            <div className="text-center max-w-4xl mx-auto hero-in" style={{ animationDelay: '0.05s' }}>
               <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
                 <Sparkles className="h-3.5 w-3.5" />
                 {asString(t('produkt.hero.eyebrow'))}
               </span>
               <div className="mt-5">{headlineBlock(0)}</div>
             </div>
-            <div className="mt-8 grid items-center gap-8 lg:grid-cols-[minmax(0,2fr),auto,minmax(0,3fr)] hero-in" style={{ animationDelay: '250ms' }}>
+            <div className="mt-6 grid items-center gap-8 lg:grid-cols-[minmax(0,2fr),auto,minmax(0,3fr)] hero-in" style={{ animationDelay: '250ms' }}>
               {/* module tiles, two offset columns like the reference */}
-              <div className="mx-auto grid max-w-sm grid-cols-2 gap-4 lg:mx-0">
+              <div className="mx-auto grid max-w-sm grid-cols-2 gap-3 lg:mx-0">
                 {HERO_MODULES.map((mod, i) => (
                   <div
                     key={mod.label.en}
-                    className={`float-pill flex flex-col items-center gap-2 rounded-2xl border border-teal/25 bg-teal-wash px-4 py-5 text-center shadow-subtle ${
+                    className={`float-pill flex flex-col items-center gap-2 rounded-2xl border border-teal/25 bg-teal-wash px-4 py-4 text-center shadow-subtle ${
                       i % 2 === 1 ? 'translate-y-4' : ''
                     }`}
                     style={{ animationDelay: `${i * 350}ms` }}
@@ -310,17 +327,18 @@ const Hero = () => {
                 src="/screens/dashboard.webp"
                 alt="Immob24 dashboard"
                 path="app.immob24.com/dashboard"
+                imgClass="max-h-[360px]"
               />
             </div>
           </div>
 
           {/* ── Slide 2: the 4-step journey ── */}
           <div className={slideCls(1)} aria-hidden={active !== 1}>
-            <div className="text-center max-w-3xl mx-auto">{headlineBlock(1)}</div>
-            <div className="mt-14 grid gap-10 sm:gap-6 sm:grid-cols-2 xl:grid-cols-4 max-w-none">
+            <div className="text-center max-w-4xl mx-auto">{headlineBlock(1)}</div>
+            <div className="mt-16 grid gap-10 sm:gap-6 sm:grid-cols-2 xl:grid-cols-4 max-w-none">
               {HERO_STEPS.map((st, i) => (
                 <div key={st.title.en} className="relative flex">
-                  <div className="relative w-full rounded-2xl border border-charcoal/15 bg-white/60 p-6 pt-12 text-center shadow-subtle backdrop-blur-sm">
+                  <div className="relative w-full rounded-2xl border border-charcoal/15 bg-white/60 p-7 pt-12 text-center shadow-subtle backdrop-blur-sm">
                     <span className="absolute -top-7 left-1/2 -translate-x-1/2 flex h-14 w-14 items-center justify-center rounded-full border-4 border-cream bg-gradient-golden text-[#1E1B16] shadow-golden">
                       <st.icon className="h-6 w-6" />
                     </span>
@@ -340,7 +358,7 @@ const Hero = () => {
 
           {/* ── Slide 3: hot leads — Bee transcript + floating stats ── */}
           <div className={slideCls(2)} aria-hidden={active !== 2}>
-            <div className="text-center max-w-3xl mx-auto">{headlineBlock(2)}</div>
+            <div className="text-center max-w-4xl mx-auto">{headlineBlock(2)}</div>
             <div className="mt-10 grid items-center gap-6 lg:grid-cols-[1fr,minmax(0,3.2fr),1fr]">
               <div className="flex flex-row flex-wrap justify-center gap-3 lg:flex-col lg:items-end">
                 {HERO_STATS.slice(0, 2).map((st, i) => (
@@ -359,6 +377,7 @@ const Hero = () => {
                 src="/screens/messages.webp"
                 alt="Bee B-Link transcript"
                 path="app.immob24.com/messages"
+                imgClass="max-h-[380px]"
               />
               <div className="flex flex-row flex-wrap justify-center gap-3 lg:flex-col lg:items-start">
                 {HERO_STATS.slice(2).map((st, i) => (

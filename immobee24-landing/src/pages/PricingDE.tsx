@@ -1,5 +1,16 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { ArrowRight, Check, Sparkles, Star, Users } from 'lucide-react';
+import {
+  ArrowRight,
+  CalendarDays,
+  Check,
+  CheckCircle2,
+  ClipboardList,
+  Clock,
+  Rocket,
+  Sparkles,
+  Star,
+  Users,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
@@ -13,6 +24,10 @@ import { useLanguage } from '../i18n';
 import { pathFor } from '../i18n/pages';
 
 type TVal = string | string[] | Array<{ q: string; a: string }> | string[][];
+// Tally application form — the beta program's real apply flow (carried over
+// from the former beta page; the program now lives here, IA phase 3).
+const BETA_APPLY_URL = 'https://tally.so/r/ja5bzJ';
+
 const asString = (v: TVal): string => (typeof v === 'string' ? v : '');
 const asStringArray = (v: TVal): string[] =>
   Array.isArray(v) && v.every((x) => typeof x === 'string') ? (v as string[]) : [];
@@ -102,7 +117,7 @@ const Hero = () => {
               <ArrowRight className="h-4 w-4" />
             </button>
             <Link
-              to={localPath('beta')}
+              to="#beta"
               className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
             >
               {asString(t('pricingPage.hero.secondaryCta'))}
@@ -234,7 +249,7 @@ const PricingCards = () => {
             description={asString(t('pricingPage.cards.beta.description'))}
             included={asStringArray(t('pricingPage.cards.beta.included'))}
             ctaLabel={asString(t('pricingPage.cards.beta.cta'))}
-            ctaHref="/de/beta-agentenprogramm"
+            ctaHref="#beta"
             onCta={() => trackEvent('pricing_card_cta_click', { plan: 'beta' })}
             support={asString(t('pricingPage.cards.beta.support'))}
           />
@@ -350,6 +365,189 @@ const Trust = () => {
   );
 };
 
+// ── Beta program (merged from the former beta page, IA phase 3) ──────────────
+// The full pitch, pilot phases and application CTA now live on Pricing;
+// betaProgram.* i18n keys are reused unchanged (4 languages).
+const BetaProgram = () => {
+  const { t, language } = useLanguage();
+  const localPath = useLocalizedPath();
+  const get = asStringArray(t('betaProgram.whatYouGet.bullets'));
+  const phases = [1, 2, 3].map((n) => ({
+    title: asString(t(`betaProgram.pilot.phase${n}Title`)),
+    body: asString(t(`betaProgram.pilot.phase${n}Body`)),
+    icon: [ClipboardList, Clock, CalendarDays][n - 1],
+  }));
+  const APPLY: Record<string, string> = {
+    de: 'Jetzt für die Beta bewerben',
+    en: 'Apply for the beta',
+    fr: 'Postuler pour la bêta',
+    ar: 'قدّموا لبرنامج بيتا',
+  };
+  const ASK: Record<string, string> = {
+    de: 'Fragen? Kontakt aufnehmen',
+    en: 'Questions? Get in touch',
+    fr: 'Des questions ? Contactez-nous',
+    ar: 'أسئلة؟ تواصلوا معنا',
+  };
+
+  return (
+    <section id="beta" className="py-20 md:py-28 bg-cream">
+      <div className="container">
+        <div className="max-w-3xl mx-auto text-center">
+          <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
+            <Rocket className="h-3.5 w-3.5" />
+            {asString(t('betaProgram.hero.eyebrow'))}
+          </span>
+          <h2 className="mt-5 font-heading text-section-mobile md:text-section text-charcoal text-balance">
+            {asString(t('betaProgram.hero.headline'))}
+          </h2>
+          <p className="mt-5 text-body-lg text-slate">
+            {asString(t('betaProgram.hero.subheadline'))}
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-6 lg:grid-cols-2 max-w-5xl mx-auto">
+          {/* what you get */}
+          <div className="rounded-2xl border border-charcoal/10 bg-white p-6 md:p-8 shadow-card">
+            <h3 className="font-heading text-xl text-charcoal">
+              {asString(t('betaProgram.whatYouGet.headline'))}
+            </h3>
+            <ul className="mt-5 space-y-3">
+              {get.map((b, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <CheckCircle2 className="h-5 w-5 mt-0.5 flex-none text-golden-dark" />
+                  <span className="text-charcoal/85 leading-relaxed">{b}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* the pilot, 3 phases */}
+          <div className="rounded-2xl border border-charcoal/10 bg-white p-6 md:p-8 shadow-card">
+            <h3 className="font-heading text-xl text-charcoal">
+              {asString(t('betaProgram.pilot.headline'))}
+            </h3>
+            <ol className="mt-5 space-y-5">
+              {phases.map((ph, i) => (
+                <li key={i} className="flex items-start gap-4">
+                  <span className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-gradient-golden-soft text-golden-dark">
+                    <ph.icon className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <p className="font-semibold text-charcoal">{ph.title}</p>
+                    <p className="mt-1 text-sm text-slate leading-relaxed">{ph.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+
+        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a
+            href={BETA_APPLY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackEvent('pricing_beta_apply_click')}
+            className="inline-flex items-center gap-2 rounded-full bg-gradient-golden px-7 py-3.5 font-semibold text-[#1E1B16] shadow-golden"
+          >
+            {APPLY[language] ?? APPLY.en}
+            <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+          </a>
+          <Link
+            to={`${localPath('contact')}?intent=beta`}
+            className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
+          >
+            {ASK[language] ?? ASK.en}
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// ── ROI estimator (IA blueprint idea): one slider, one number ────────────────
+// Deliberately labelled as a rough estimate with the assumption stated —
+// no fabricated claims (content discipline).
+const RoiEstimator = () => {
+  const { language } = useLanguage();
+  const [perWeek, setPerWeek] = useState(40);
+  // assumption: ~6 min saved per inquiry (first reply, qualification,
+  // scheduling coordination); 4.33 weeks/month
+  const hours = Math.round((perWeek * 4.33 * 6) / 60);
+  const C: Record<string, Record<string, string>> = {
+    headline: {
+      de: 'Was automatische Erstantworten sparen',
+      en: 'What automatic first responses save',
+      fr: 'Ce que les premières réponses automatiques font gagner',
+      ar: 'ما توفره الردود الأولى التلقائية',
+    },
+    label: {
+      de: 'Anfragen pro Woche in Ihrem Büro',
+      en: 'Inquiries per week at your brokerage',
+      fr: 'Demandes par semaine dans votre agence',
+      ar: 'الاستفسارات أسبوعيًا في مكتبكم',
+    },
+    result: {
+      de: 'geschätzte Stunden pro Monat',
+      en: 'estimated hours per month',
+      fr: 'heures estimées par mois',
+      ar: 'ساعات مقدَّرة شهريًا',
+    },
+    assumption: {
+      de: 'Annahme: ø 6 Minuten pro Anfrage für Erstantwort, Qualifizierung und Terminabstimmung — eine grobe Schätzung, kein Versprechen.',
+      en: 'Assumption: ~6 minutes per inquiry for first reply, qualification and scheduling — a rough estimate, not a promise.',
+      fr: 'Hypothèse : ~6 minutes par demande pour la première réponse, la qualification et la planification — une estimation approximative, pas une promesse.',
+      ar: 'افتراض: نحو 6 دقائق لكل استفسار للرد الأول والتأهيل وتنسيق الموعد — تقدير تقريبي وليس وعدًا.',
+    },
+  };
+  const c = (k: string) => C[k][language] ?? C[k].en;
+
+  return (
+    <section className="py-20 md:py-28 bg-white">
+      <div className="container">
+        <div className="max-w-2xl mx-auto text-center">
+          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+            {c('headline')}
+          </h2>
+
+          <div className="mt-10 rounded-2xl border border-charcoal/10 bg-cream p-6 md:p-10 shadow-subtle">
+            <div className="flex items-baseline justify-between gap-4">
+              <label htmlFor="roi-slider" className="text-sm font-medium text-charcoal text-start">
+                {c('label')}
+              </label>
+              <span
+                className="font-metric text-lg font-bold text-charcoal"
+                style={{ fontVariantNumeric: 'tabular-nums' }}
+              >
+                {perWeek}
+              </span>
+            </div>
+            <input
+              id="roi-slider"
+              type="range"
+              min={5}
+              max={150}
+              step={5}
+              value={perWeek}
+              onChange={(e) => setPerWeek(Number(e.target.value))}
+              className="mt-3 w-full accent-golden"
+            />
+            <p
+              className="mt-8 font-metric text-5xl md:text-6xl font-bold text-golden-dark"
+              style={{ fontVariantNumeric: 'tabular-nums' }}
+            >
+              ≈ {hours} h
+            </p>
+            <p className="mt-2 text-sm font-medium text-charcoal">{c('result')}</p>
+            <p className="mt-6 text-xs text-warm-gray max-w-md mx-auto">{c('assumption')}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const FAQItem = ({ q, a }: { q: string; a: string }) => {
   const [open, setOpen] = useState(false);
   return (
@@ -375,7 +573,10 @@ const FAQItem = ({ q, a }: { q: string; a: string }) => {
 
 const FAQ = () => {
   const { t } = useLanguage();
-  const items = asFaqArray(t('pricingPage.faq.items'));
+  const items = [
+    ...asFaqArray(t('pricingPage.faq.items')),
+    ...asFaqArray(t('betaProgram.faq.items')),
+  ];
   return (
     <section className="py-20 md:py-24 bg-cream">
       <div className="container">
@@ -422,7 +623,7 @@ const FinalCTA = () => {
               <ArrowRight className="h-4 w-4" />
             </button>
             <Link
-              to={localPath('beta')}
+              to="#beta"
               className="inline-flex items-center gap-2 rounded-full border border-charcoal/20 bg-cream px-6 py-3 font-medium text-charcoal hover:bg-charcoal/5 transition-colors"
             >
               {asString(t('pricingPage.finalCta.secondaryCta'))}
@@ -471,7 +672,11 @@ export default function PricingDE() {
     titleKey: 'pricingPage.meta.title',
     descriptionKey: 'pricingPage.meta.description',
   });
-  useFaqSchema(asFaqArray(t('pricingPage.faq.items')), language, 'pricing');
+  useFaqSchema(
+    [...asFaqArray(t('pricingPage.faq.items')), ...asFaqArray(t('betaProgram.faq.items'))],
+    language,
+    'pricing',
+  );
   useJsonLd(
     [
       productSchema(language, asString(t('pricingPage.meta.description')), [
@@ -500,7 +705,9 @@ export default function PricingDE() {
   const sections: Array<() => ReactNode> = [
     Hero,
     PricingCards,
+    BetaProgram,
     QuickComparison,
+    RoiEstimator,
     Trust,
     FAQ,
     FinalCTA,

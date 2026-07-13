@@ -9,7 +9,6 @@ import { DEMO_BOOKING_URL } from './components/SiteChrome';
 // Vite emits one chunk per page; shared pieces are hoisted automatically.
 const HomePage = lazy(() => import('./pages/HomePage'));
 const ProduktDE = lazy(() => import('./pages/ProduktDE'));
-const BetaProgrammDE = lazy(() => import('./pages/BetaProgrammDE'));
 const BetaThankYou = lazy(() => import('./pages/BetaThankYou'));
 const CrmAlternativeDE = lazy(() => import('./pages/CrmAlternativeDE'));
 const PricingDE = lazy(() => import('./pages/PricingDE'));
@@ -93,8 +92,8 @@ export default function App() {
         <Route path="/de/demo" element={<Navigate to="/de/kontakt?intent=demo" replace />} />
         <Route path="/en/demo" element={<Navigate to="/en/contact?intent=demo" replace />} />
 
-        <Route path="/de/beta-agentenprogramm" element={<BetaProgrammDE />} />
-        <Route path="/en/beta-agent-program" element={<BetaProgrammDE />} />
+        <Route path="/de/beta-agentenprogramm" element={<Navigate to="/de/preise#beta" replace />} />
+        <Route path="/en/beta-agent-program" element={<Navigate to="/en/pricing#beta" replace />} />
 
         {/* AI-refinement pages (draft/ai-refinement) */}
         <Route path="/de/ki-funktionen" element={<AiFeaturesPage />} />
@@ -119,8 +118,8 @@ export default function App() {
         <Route path="/ar/pricing" element={<PricingDE />} />
         <Route path="/fr/demo" element={<Navigate to="/fr/contact?intent=demo" replace />} />
         <Route path="/ar/demo" element={<Navigate to="/ar/contact?intent=demo" replace />} />
-        <Route path="/fr/programme-beta-agents" element={<BetaProgrammDE />} />
-        <Route path="/ar/beta-agent-program" element={<BetaProgrammDE />} />
+        <Route path="/fr/programme-beta-agents" element={<Navigate to="/fr/tarifs#beta" replace />} />
+        <Route path="/ar/beta-agent-program" element={<Navigate to="/ar/pricing#beta" replace />} />
         <Route path="/fr/fonctions-ia" element={<AiFeaturesPage />} />
         <Route path="/ar/ai-features-platform" element={<AiFeaturesPage />} />
         <Route path="/fr/conformite" element={<CompliancePage />} />

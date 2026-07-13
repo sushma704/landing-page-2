@@ -48,7 +48,7 @@ export default function BetaThankYou() {
   }, []);
 
   const homeHref = pathFor('home', language);
-  const betaHref = pathFor('beta', language);
+  const betaHref = `${pathFor('pricing', language)}#beta`;
 
   return (
     <div className="min-h-screen antialiased bg-white flex flex-col">

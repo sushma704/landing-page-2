@@ -501,7 +501,7 @@ export default function WhyImmob24Page() {
               <ArrowRight className="h-4 w-4" />
             </button>
             <Link
-              to={pathFor('beta', language)}
+              to={`${pathFor('pricing', language)}#beta`}
               className="inline-flex items-center gap-2 rounded-full bg-white border border-charcoal/10 px-6 py-3 text-sm font-medium text-charcoal shadow-subtle hover:border-golden/40 transition-colors"
             >
               {L({

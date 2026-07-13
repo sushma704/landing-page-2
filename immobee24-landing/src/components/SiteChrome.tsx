@@ -305,7 +305,7 @@ export const Header = () => {
   const resourcesItems: NavItem[] = [
     { to: `${localPath('aiFeatures')}#video`, label: nl('video') },
     { to: localPath('compliance'), label: nl('compliance') },
-    { to: localPath('beta'), label: nl('beta') },
+    { to: `${localPath('pricing')}#beta`, label: nl('beta') },
   ];
 
   return (
@@ -536,7 +536,7 @@ export const Footer = () => {
     { to: localPath('crmAlternative'), label: asString(t('nav.crmAlternative')) },
     { to: localPath('pricing'), label: asString(t('nav.pricing')) },
     { to: `${localPath('contact')}?intent=demo`, label: asString(t('nav.demo')) },
-    { to: localPath('beta'), label: asString(t('betaProgram.nav')) },
+    { to: `${localPath('pricing')}#beta`, label: asString(t('betaProgram.nav')) },
   ];
 
   // The privacy policy has its own page (/privacy) rather than a modal, so

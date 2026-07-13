@@ -944,8 +944,8 @@ export const translations = {
       headline: { de: 'So läuft der Pilot ab', en: 'How the pilot runs' },
       phase1Title: { de: 'Woche 1–2: Setup', en: 'Week 1–2: Setup' },
       phase1Body: {
-        de: '30 Minuten Onboarding, Systeme verbinden, Inserate importieren und erste KI-Antworten live sehen. Der Gesamtaufwand zu Beginn bleibt gering und ist im Pitch Deck mit rund zwei Stunden angesetzt.',
-        en: '30-minute onboarding, connect systems, import listings, and see the first AI responses live. The total starting effort stays low — about two hours according to the pitch deck.',
+        de: '30 Minuten Onboarding, Systeme verbinden, Inserate importieren und erste KI-Antworten live sehen. Der Gesamtaufwand zu Beginn bleibt gering — rund zwei Stunden.',
+        en: '30-minute onboarding, connect systems, import listings, and see the first AI responses live. The total starting effort stays low — about two hours.',
       },
       phase2Title: { de: 'Woche 3–8: Testen', en: 'Week 3–8: Test' },
       phase2Body: {
@@ -980,8 +980,8 @@ export const translations = {
     trust: {
       headline: { de: 'Kontrolle statt Black Box', en: 'Control, not a black box' },
       body: {
-        de: 'Die Beta ist so aufgebaut, dass Makler die Kontrolle behalten. Laut Pitch Deck können KI-Aktionen freigegeben, überschrieben oder pausiert werden; außerdem werden Aktionen protokolliert. Das ist wichtig, weil Vertrauen und operative Kontrolle zentrale Voraussetzungen für die Einführung im Makleralltag sind.',
-        en: 'The beta is built so brokers stay in control. According to the pitch deck, AI actions can be approved, overridden, or paused; all actions are logged. That matters because trust and operational control are essential for adoption in the broker’s day-to-day work.',
+        de: 'Die Beta ist so aufgebaut, dass Makler die Kontrolle behalten. KI-Aktionen können freigegeben, überschrieben oder pausiert werden; außerdem werden Aktionen protokolliert. Das ist wichtig, weil Vertrauen und operative Kontrolle zentrale Voraussetzungen für die Einführung im Makleralltag sind.',
+        en: 'The beta is built so brokers stay in control. AI actions can be approved, overridden, or paused; all actions are logged. That matters because trust and operational control are essential for adoption in the broker’s day-to-day work.',
       },
       bullets: {
         de: [
@@ -1061,7 +1061,7 @@ export const translations = {
           },
           {
             q: 'Gibt es einen Vertrag oder eine Verpflichtung?',
-            a: 'Laut Pitch Deck gibt es keine Verpflichtung zur Verlängerung, und der Pilot kann beendet werden.',
+            a: 'Es gibt keine Verpflichtung zur Verlängerung, und der Pilot kann beendet werden.',
           },
           {
             q: 'Wie viel Zeit muss das Team investieren?',
@@ -1083,7 +1083,7 @@ export const translations = {
           },
           {
             q: 'Is there a contract or commitment?',
-            a: 'According to the pitch deck, there is no obligation to renew, and the pilot can be ended.',
+            a: 'There is no obligation to renew, and the pilot can be ended.',
           },
           {
             q: 'How much time does the team have to invest?',

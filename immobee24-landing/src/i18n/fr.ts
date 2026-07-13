@@ -474,7 +474,7 @@ export const frOverlay: Record<string, any> = {
       headline: 'Comment se déroule le pilote',
       phase1Title: 'Semaines 1–2 : mise en place',
       phase1Body:
-        '30 minutes d’onboarding, connexion des systèmes, import des annonces et premières réponses IA en conditions réelles. L’effort initial total reste faible : environ deux heures selon le pitch deck.',
+        '30 minutes d’onboarding, connexion des systèmes, import des annonces et premières réponses IA en conditions réelles. L’effort initial total reste faible : environ deux heures.',
       phase2Title: 'Semaines 3–8 : test',
       phase2Body:
         'Immob24 travaille dans de vrais workflows avec de vraies données. L’équipe consacre environ 30 minutes de feedback par semaine — en appel ou de façon asynchrone — et garde à tout moment le contrôle des actions de l’IA.',
@@ -495,7 +495,7 @@ export const frOverlay: Record<string, any> = {
 
     trust: {
       headline: 'Du contrôle, pas une boîte noire',
-      body: 'La bêta est conçue pour que les agents gardent le contrôle. Selon le pitch deck, les actions de l’IA peuvent être validées, corrigées ou mises en pause ; toutes les actions sont journalisées. C’est important, car la confiance et le contrôle opérationnel sont des conditions essentielles à l’adoption dans le quotidien de l’agent.',
+      body: 'La bêta est conçue pour que les agents gardent le contrôle. Les actions de l’IA peuvent être validées, corrigées ou mises en pause ; toutes les actions sont journalisées. C’est important, car la confiance et le contrôle opérationnel sont des conditions essentielles à l’adoption dans le quotidien de l’agent.',
       bullets: [
         'Les actions peuvent être validées ou reprises manuellement.',
         'Vous pouvez intervenir à tout moment.',
@@ -538,7 +538,7 @@ export const frOverlay: Record<string, any> = {
         },
         {
           q: 'Y a-t-il un contrat ou un engagement ?',
-          a: 'Selon le pitch deck, il n’y a aucune obligation de renouvellement et le pilote peut être arrêté.',
+          a: 'Il n’y a aucune obligation de renouvellement et le pilote peut être arrêté.',
         },
         {
           q: 'Combien de temps l’équipe doit-elle investir ?',

@@ -24,6 +24,7 @@ import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroShowcase } from '../components/HeroShowcase';
 import { HeroWaves } from '../components/HeroWaves';
+import { CountUp, Reveal, RevealGroup } from '../lib/animations';
 import { SevenCoWorkersBand, ComplianceBadgesStrip } from '../components/AiRefinementBands';
 
 const asString = (
@@ -42,28 +43,6 @@ const asFaqArray = (
 const asPairArray = (
   v: string | string[] | Array<{ q: string; a: string }> | string[][],
 ): string[][] => (Array.isArray(v) && v.every((x) => Array.isArray(x)) ? (v as string[][]) : []);
-
-function useInView<T extends HTMLElement>(threshold = 0.15) {
-  const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    if (!ref.current) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setInView(true);
-            obs.disconnect();
-          }
-        });
-      },
-      { threshold },
-    );
-    obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, inView };
-}
 
 // Brief re-skin: full-viewport immersive dark hero (HomeLead-style) — deep
 // warm-ink canvas with teal/amber ambient glows, staggered entrance, floating
@@ -124,23 +103,28 @@ const Hero = () => {
             {asString(t('hero.eyebrow'))}
           </span>
 
-          <h1
-            className="hero-in mt-6 font-heading text-hero-mobile md:text-hero text-white text-balance"
-            style={{ animationDelay: '0.15s' }}
-          >
-            {asString(t('hero.headline'))}
+          <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-white text-balance">
+            {(() => {
+              const words = asString(t('hero.headline')).split(' ');
+              const mid = Math.ceil(words.length / 2);
+              return [words.slice(0, mid).join(' '), words.slice(mid).join(' ')].map((line, i) => (
+                <span key={i} className="hero-in block" style={{ animationDelay: `${100 + i * 90}ms` }}>
+                  {line}
+                </span>
+              ));
+            })()}
           </h1>
 
           <p
             className="hero-in mt-6 text-body-lg text-white/70 max-w-2xl mx-auto"
-            style={{ animationDelay: '0.28s' }}
+            style={{ animationDelay: '250ms' }}
           >
             {asString(t('hero.subheadline'))}
           </p>
 
           <div
             className="hero-in mt-8 flex flex-col sm:flex-row items-center justify-center gap-3"
-            style={{ animationDelay: '0.4s' }}
+            style={{ animationDelay: '350ms' }}
           >
             <button
               type="button"
@@ -162,7 +146,7 @@ const Hero = () => {
 
           <ul
             className="hero-in mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2"
-            style={{ animationDelay: '0.5s' }}
+            style={{ animationDelay: '450ms' }}
           >
             {bullets.map((b, i) => (
               <li key={i} className="flex items-center gap-2 text-sm text-white/60">
@@ -176,7 +160,7 @@ const Hero = () => {
         {/* product moment + stat pills — 3-column grid on desktop so the
             pills flank the card without ever overlapping it; compact row
             below the card on smaller screens. */}
-        <div className="hero-in relative max-w-6xl mx-auto w-full" style={{ animationDelay: '0.62s' }}>
+        <div className="hero-in-scale relative max-w-6xl mx-auto w-full" style={{ animationDelay: '300ms' }}>
           <div className="xl:grid xl:grid-cols-[1fr_auto_1fr] xl:items-center xl:gap-8">
             {/* left pills */}
             <div aria-hidden className="hidden xl:flex flex-col items-end gap-8">
@@ -188,7 +172,9 @@ const Hero = () => {
                   }`}
                   style={{ animationDelay: `${-i * 1.7}s` }}
                 >
-                  <span className="font-metric text-lg font-bold text-golden whitespace-nowrap">{p.stat}</span>
+                  <span className="font-metric text-lg font-bold text-golden whitespace-nowrap">
+                    {/^\d/.test(p.stat) ? <CountUp value={p.stat} /> : p.stat}
+                  </span>
                   <span className="text-xs text-white/75 max-w-[140px] leading-snug">{pillLabel(p)}</span>
                 </div>
               ))}
@@ -209,7 +195,9 @@ const Hero = () => {
                   }`}
                   style={{ animationDelay: `${-(i + 2) * 1.7}s` }}
                 >
-                  <span className="font-metric text-lg font-bold text-golden whitespace-nowrap">{p.stat}</span>
+                  <span className="font-metric text-lg font-bold text-golden whitespace-nowrap">
+                    {/^\d/.test(p.stat) ? <CountUp value={p.stat} /> : p.stat}
+                  </span>
                   <span className="text-xs text-white/75 max-w-[140px] leading-snug">{pillLabel(p)}</span>
                 </div>
               ))}
@@ -223,7 +211,9 @@ const Hero = () => {
                 key={p.stat}
                 className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.07] px-3 py-1.5 text-xs text-white/75"
               >
-                <b className="font-metric text-golden">{p.stat}</b>
+                <b className="font-metric text-golden">
+                  {/^\d/.test(p.stat) ? <CountUp value={p.stat} /> : p.stat}
+                </b>
                 {pillLabel(p)}
               </span>
             ))}
@@ -350,13 +340,13 @@ const Features = () => {
   return (
     <section className="py-20 md:py-28 bg-white">
       <div className="container">
-        <div className="max-w-3xl mx-auto text-center">
+        <Reveal className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('features.headline'))}
           </h2>
-        </div>
+        </Reveal>
 
-        <div className="mt-12 grid md:grid-cols-2 gap-6 max-w-7xl mx-auto">
+        <RevealGroup className="mt-12 grid md:grid-cols-2 gap-6 max-w-7xl mx-auto">
           {items.map((item, i) => (
             <div
               key={i}
@@ -378,7 +368,7 @@ const Features = () => {
               <p className="mt-3 text-slate leading-relaxed">{item.body}</p>
             </div>
           ))}
-        </div>
+        </RevealGroup>
 
         <div className="mt-10 text-center">
           <Link
@@ -619,14 +609,17 @@ const FAQItem = ({ q, a }: { q: string; a: string }) => {
         <span className="font-medium text-charcoal pr-4">{q}</span>
         <span
           aria-hidden
-          className={`flex-shrink-0 inline-flex h-7 w-7 items-center justify-center rounded-full bg-charcoal/5 text-charcoal transition-transform ${
+          className={`flex-shrink-0 inline-flex h-7 w-7 items-center justify-center rounded-full bg-charcoal/5 text-charcoal transition-transform duration-200 ${
             open ? 'rotate-45' : ''
           }`}
         >
           +
         </span>
       </button>
-      {open && <p className="pb-5 text-slate leading-relaxed">{a}</p>}
+      {/* grid-rows 0fr->1fr trick: animated height without JS measuring */}
+      <div className="acc-body" data-open={open}>
+        <p className="pb-5 text-slate leading-relaxed">{a}</p>
+      </div>
     </div>
   );
 };
@@ -689,20 +682,6 @@ const FinalCTA = () => {
   );
 };
 
-const RevealOnScroll = ({ children }: { children: ReactNode }) => {
-  const { ref, inView } = useInView<HTMLDivElement>(0.05);
-  return (
-    <div
-      ref={ref}
-      className={`transition-all duration-700 ease-out ${
-        inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-      }`}
-    >
-      {children}
-    </div>
-  );
-};
-
 export default function HomePage() {
   const { t, language } = useLanguage();
   usePageMeta({
@@ -750,15 +729,22 @@ export default function HomePage() {
     FinalCTA,
   ];
 
+  // Hero has its own mount entrance; Features/FAQ carry inner Reveals.
+  const selfAnimated = new Set<unknown>([Hero, Features, FAQ]);
+
   return (
     <div className="min-h-screen antialiased bg-white">
       <Header />
       <main className="relative">
-        {sections.map((Section, i) => (
-          <RevealOnScroll key={i}>
-            <Section />
-          </RevealOnScroll>
-        ))}
+        {sections.map((Section, i) =>
+          selfAnimated.has(Section) ? (
+            <Section key={i} />
+          ) : (
+            <Reveal key={i}>
+              <Section />
+            </Reveal>
+          ),
+        )}
       </main>
       <Footer />
     </div>

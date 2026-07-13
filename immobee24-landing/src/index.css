@@ -537,6 +537,16 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
+  /* Hero product visual: fade up + scale 0.97 -> 1 over 700ms (spec step 2) */
+  .hero-in-scale {
+    opacity: 0;
+    transform: translateY(18px) scale(0.97);
+    animation: heroInScale 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes heroInScale {
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
   /* Floating stat pills (HomeLead-style, gentler) */
   .float-pill {
     animation: floatY 5.5s ease-in-out infinite;
@@ -566,8 +576,112 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-in { animation: none; opacity: 1; transform: none; }
+  .hero-in, .hero-in-scale { animation: none; opacity: 1; transform: none; }
   .float-pill, .glow-drift, .scroll-cue { animation: none; }
   .shadow-card, .shadow-card:hover { transition: none; transform: none; }
   html { scroll-behavior: auto; }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   Animation system (spec steps 4/6/7): hover polish, marquee,
+   animated accordions. Motion constants: 200ms ease-out hovers,
+   marquee 30s linear, accordion 220ms. Reduced-motion safe.
+   ════════════════════════════════════════════════════════════════ */
+@layer utilities {
+  /* STEP 4 — interactive cards: border tints toward the accent on hover
+     (lift + shadow already handled by .shadow-card / hover:shadow-card-hover) */
+  @media (hover: hover) {
+    .shadow-card:hover,
+    .shadow-subtle:hover {
+      border-color: rgba(245, 166, 35, 0.35);
+    }
+  }
+
+  /* STEP 4 — primary CTAs: press feedback + arrow nudge */
+  .bg-gradient-golden,
+  [data-demo-cta] {
+    transition: transform 200ms ease-out, box-shadow 200ms ease-out,
+      background-color 200ms ease-out, border-color 200ms ease-out;
+  }
+  .bg-gradient-golden svg,
+  [data-demo-cta] svg {
+    transition: transform 200ms ease-out;
+  }
+  @media (hover: hover) {
+    button.bg-gradient-golden:hover,
+    a.bg-gradient-golden:hover,
+    button[data-demo-cta]:hover {
+      transform: scale(1.02);
+    }
+    .bg-gradient-golden:hover > svg,
+    [data-demo-cta]:hover > svg {
+      transform: translateX(3px);
+    }
+  }
+  button.bg-gradient-golden:active,
+  button[data-demo-cta]:active {
+    transform: scale(0.98);
+  }
+
+  /* STEP 6 — infinite logo/chip marquee (track duplicated, -50% loop) */
+  .marquee {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marqueeX 30s linear infinite;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  .marquee-seg {
+    display: flex;
+    gap: 0.5rem;
+    padding-inline-end: 0.5rem;
+    flex: none;
+  }
+  @keyframes marqueeX {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  [dir='rtl'] .marquee-track {
+    animation-name: marqueeXrtl;
+  }
+  @keyframes marqueeXrtl {
+    from { transform: translateX(0); }
+    to { transform: translateX(50%); }
+  }
+
+  /* STEP 7 — accordion open/close via grid-template-rows 0fr→1fr
+     (no JS height measuring, no layout jump) */
+  .acc-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 220ms ease-out;
+  }
+  .acc-body > * {
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 220ms ease-out, transform 220ms ease-out;
+  }
+  .acc-body[data-open='true'] {
+    grid-template-rows: 1fr;
+  }
+  .acc-body[data-open='true'] > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none !important; flex-wrap: wrap; width: auto; }
+  .acc-body, .acc-body > * { transition: none !important; }
+  .bg-gradient-golden, [data-demo-cta], .bg-gradient-golden svg, [data-demo-cta] svg { transition: none !important; }
+  button.bg-gradient-golden:hover, a.bg-gradient-golden:hover, button[data-demo-cta]:hover,
+  button.bg-gradient-golden:active, button[data-demo-cta]:active { transform: none !important; }
 }

@@ -14,6 +14,7 @@ import {
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
+import { Reveal, RevealGroup, usePrefersReducedMotion } from '../lib/animations';
 import { SevenCoWorkersBand, ComplianceBadgesStrip } from '../components/AiRefinementBands';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
@@ -39,46 +40,18 @@ const asFaqArray = (v: TVal): Array<{ q: string; a: string }> =>
 const asPairArray = (v: TVal): string[][] =>
   Array.isArray(v) && v.every((x) => Array.isArray(x)) ? (v as string[][]) : [];
 
-function useInView<T extends HTMLElement>(threshold = 0.1) {
-  const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    if (!ref.current) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setInView(true);
-            obs.disconnect();
-          }
-        });
-      },
-      { threshold },
-    );
-    obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, inView };
-}
-
-const RevealOnScroll = ({ children }: { children: ReactNode }) => {
-  const { ref, inView } = useInView<HTMLDivElement>(0.05);
-  return (
-    <div
-      ref={ref}
-      className={`transition-all duration-700 ease-out ${
-        inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-      }`}
-    >
-      {children}
-    </div>
-  );
-};
 
 const Hero = () => {
   const { t } = useLanguage();
   const localPath = useLocalizedPath();
   const bullets = asStringArray(t('produkt.hero.bullets'));
+  // Entrance (spec step 2): headline split into two balanced lines that fade
+  // up with a 90ms stagger; subtext/CTAs/badges follow. .hero-in is the
+  // shared mount animation (reduced-motion renders final state).
+  const headline = asString(t('produkt.hero.headline'));
+  const words = headline.split(' ');
+  const mid = Math.ceil(words.length / 2);
+  const lines = [words.slice(0, mid).join(' '), words.slice(mid).join(' ')];
   return (
     <section
       id="top"
@@ -95,20 +68,33 @@ const Hero = () => {
       />
       <div className="container relative">
         <div className="max-w-3xl mx-auto text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
+          <span
+            className="hero-in inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle"
+            style={{ animationDelay: '0.05s' }}
+          >
             <Sparkles className="h-3.5 w-3.5" />
             {asString(t('produkt.hero.eyebrow'))}
           </span>
 
           <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
-            {asString(t('produkt.hero.headline'))}
+            {lines.map((line, i) => (
+              <span key={i} className="hero-in block" style={{ animationDelay: `${100 + i * 90}ms` }}>
+                {line}
+              </span>
+            ))}
           </h1>
 
-          <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">
+          <p
+            className="hero-in mt-6 text-body-lg text-slate max-w-2xl mx-auto"
+            style={{ animationDelay: '250ms' }}
+          >
             {asString(t('produkt.hero.subheadline'))}
           </p>
 
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <div
+            className="hero-in mt-8 flex flex-col sm:flex-row items-center justify-center gap-3"
+            style={{ animationDelay: '350ms' }}
+          >
             <button
               type="button"
               {...DEMO_CTA_PROPS}
@@ -127,7 +113,10 @@ const Hero = () => {
             </Link>
           </div>
 
-          <ul className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 max-w-2xl mx-auto text-left">
+          <ul
+            className="hero-in mt-10 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 max-w-2xl mx-auto text-left"
+            style={{ animationDelay: '450ms' }}
+          >
             {bullets.map((b, i) => (
               <li key={i} className="flex items-start gap-2 text-sm text-slate">
                 <CheckCircle2 className="h-4 w-4 mt-0.5 text-honey-green flex-shrink-0" />
@@ -240,13 +229,13 @@ const Features = () => {
   return (
     <section className="py-20 md:py-28 bg-gradient-to-b from-cream to-white">
       <div className="container">
-        <div className="max-w-3xl mx-auto text-center">
+        <Reveal className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('produkt.features.headline'))}
           </h2>
-        </div>
+        </Reveal>
 
-        <div className="mt-12 grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <RevealGroup className="mt-12 grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
           {items.map((item, i) => (
             <div
               key={i}
@@ -266,7 +255,7 @@ const Features = () => {
               <p className="mt-3 text-slate leading-relaxed">{asString(t(item.bodyKey))}</p>
             </div>
           ))}
-        </div>
+        </RevealGroup>
       </div>
     </section>
   );
@@ -283,13 +272,13 @@ const UseCases = () => {
   return (
     <section className="py-20 md:py-28 bg-white">
       <div className="container">
-        <div className="max-w-3xl mx-auto text-center">
+        <Reveal className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('produkt.useCases.headline'))}
           </h2>
-        </div>
+        </Reveal>
 
-        <div className="mt-12 grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <RevealGroup className="mt-12 grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
           {cases.map((c, i) => (
             <div
               key={i}
@@ -301,7 +290,7 @@ const UseCases = () => {
               <p className="mt-3 text-slate leading-relaxed">{asString(t(c.bodyKey))}</p>
             </div>
           ))}
-        </div>
+        </RevealGroup>
       </div>
     </section>
   );
@@ -405,13 +394,13 @@ const WhoItsFor = () => {
   return (
     <section id="for-whom" className="py-20 md:py-28 bg-white">
       <div className="container">
-        <div className="max-w-3xl mx-auto text-center">
+        <Reveal className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('produkt.whoFor.headline'))}
           </h2>
-        </div>
+        </Reveal>
 
-        <div className="mt-12 grid sm:grid-cols-2 gap-4 max-w-4xl mx-auto">
+        <RevealGroup className="mt-12 grid sm:grid-cols-2 gap-4 max-w-4xl mx-auto">
           {cards.map((c, i) => (
             <div
               key={i}
@@ -421,49 +410,116 @@ const WhoItsFor = () => {
               <span className="text-charcoal">{c}</span>
             </div>
           ))}
-        </div>
+        </RevealGroup>
 
-        <div className="mt-10 max-w-3xl mx-auto rounded-2xl border border-charcoal/15 bg-charcoal/5 p-6 md:p-7">
+        <Reveal delay={160} className="mt-10 max-w-3xl mx-auto rounded-2xl border border-charcoal/15 bg-charcoal/5 p-6 md:p-7">
           <p className="text-xs font-semibold uppercase tracking-wider text-charcoal/60">
             {asString(t('produkt.whoFor.notForLabel'))}
           </p>
           <p className="mt-2 text-charcoal leading-relaxed">
             {asString(t('produkt.whoFor.notForBody'))}
           </p>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
 };
 
+// Existing per-step product imagery reused for the sticky walkthrough panel
+// (spec step 5) — no new artwork.
+const HOW_VISUALS = [
+  '/videos/features/dashboard-properties.jpg',
+  '/videos/features/f4-bee-chat.jpg',
+  '/videos/features/f5-human-control.jpg',
+  '/videos/features/f6-deal-pipeline.jpg',
+  '/videos/features/f7-campaigns.jpg',
+];
+
 const HowItWorks = () => {
   const { t } = useLanguage();
   const steps = asStringArray(t('produkt.howItWorks.steps'));
+  const reduced = usePrefersReducedMotion();
+  const [activeStep, setActiveStep] = useState(0);
+  const stepRefs = useRef<Array<HTMLLIElement | null>>([]);
+
+  // Scrollytelling (desktop): the step crossing the viewport-center band
+  // becomes active; the sticky panel cross-fades to its visual.
+  useEffect(() => {
+    const els = stepRefs.current.filter(Boolean) as HTMLLIElement[];
+    if (els.length === 0) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            const idx = Number((e.target as HTMLElement).dataset.step ?? 0);
+            setActiveStep(idx);
+          }
+        });
+      },
+      { rootMargin: '-45% 0px -45% 0px', threshold: 0 },
+    );
+    els.forEach((el) => obs.observe(el));
+    return () => obs.disconnect();
+  }, [steps.length]);
+
   return (
     <section id="how-it-works" className="py-20 md:py-28 bg-gradient-to-b from-cream to-white">
       <div className="container">
-        <div className="max-w-3xl mx-auto text-center">
+        <Reveal className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('produkt.howItWorks.headline'))}
           </h2>
-        </div>
+        </Reveal>
 
-        <ol className="mt-12 relative max-w-3xl mx-auto">
-          <span
-            aria-hidden
-            className="absolute left-5 top-2 bottom-2 w-px bg-gradient-to-b from-golden/40 via-golden/20 to-transparent"
-          />
-          {steps.map((step, i) => (
-            <li key={i} className="relative pl-16 pb-8 last:pb-0">
-              <span className="absolute left-0 top-0 inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-golden text-white font-bold shadow-golden">
-                {i + 1}
-              </span>
-              <div className="rounded-xl bg-white border border-charcoal/5 p-4 md:p-5 shadow-subtle">
-                <p className="text-charcoal">{step}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
+        <div className="mt-12 lg:grid lg:grid-cols-2 lg:gap-12 max-w-6xl mx-auto">
+          <ol className="relative max-w-3xl mx-auto lg:mx-0">
+            <span
+              aria-hidden
+              className="absolute left-5 top-2 bottom-2 w-px bg-gradient-to-b from-golden/40 via-golden/20 to-transparent"
+            />
+            {steps.map((step, i) => (
+              <li
+                key={i}
+                data-step={i}
+                ref={(el) => {
+                  stepRefs.current[i] = el;
+                }}
+                className="relative pl-16 pb-8 last:pb-0 transition-opacity duration-300"
+                style={{
+                  opacity: reduced || activeStep === i ? 1 : 0.55,
+                }}
+              >
+                <span className="absolute left-0 top-0 inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-golden text-white font-bold shadow-golden">
+                  {i + 1}
+                </span>
+                <div className="rounded-xl bg-white border border-charcoal/5 p-4 md:p-5 shadow-subtle">
+                  <p className="text-charcoal">{step}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+
+          {/* Sticky visual panel — desktop only; mobile keeps the plain list */}
+          <div aria-hidden className="hidden lg:block">
+            <div className="sticky top-28 grid overflow-hidden rounded-2xl border border-charcoal/10 shadow-card">
+              {HOW_VISUALS.map((src, i) => (
+                <img
+                  key={src}
+                  src={src}
+                  alt=""
+                  width={1920}
+                  height={1080}
+                  loading="lazy"
+                  className="col-start-1 row-start-1 aspect-video w-full object-cover"
+                  style={{
+                    opacity: (activeStep % HOW_VISUALS.length) === i ? 1 : 0,
+                    transition: reduced ? undefined : 'opacity 250ms ease-out',
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
 
         <div className="mt-10 text-center">
           <button
@@ -524,14 +580,17 @@ const FAQItem = ({ q, a }: { q: string; a: string }) => {
         <span className="font-medium text-charcoal pr-4">{q}</span>
         <span
           aria-hidden
-          className={`flex-shrink-0 inline-flex h-7 w-7 items-center justify-center rounded-full bg-charcoal/5 text-charcoal transition-transform ${
+          className={`flex-shrink-0 inline-flex h-7 w-7 items-center justify-center rounded-full bg-charcoal/5 text-charcoal transition-transform duration-200 ${
             open ? 'rotate-45' : ''
           }`}
         >
           +
         </span>
       </button>
-      {open && <p className="pb-5 text-slate leading-relaxed">{a}</p>}
+      {/* grid-rows 0fr->1fr trick: animated height without JS measuring */}
+      <div className="acc-body" data-open={open}>
+        <p className="pb-5 text-slate leading-relaxed">{a}</p>
+      </div>
     </div>
   );
 };
@@ -671,15 +730,23 @@ export default function ProduktDE() {
     FinalCTA,
   ];
 
+  // Sections with their own inner Reveals (or a mount entrance) are not
+  // double-wrapped; the rest get a coarse section-level Reveal.
+  const selfAnimated = new Set<unknown>([Hero, Features, UseCases, WhoItsFor, HowItWorks, FAQ]);
+
   return (
     <div className="min-h-screen antialiased bg-white">
       <Header />
       <main className="relative">
-        {sections.map((Section, i) => (
-          <RevealOnScroll key={i}>
-            <Section />
-          </RevealOnScroll>
-        ))}
+        {sections.map((Section, i) =>
+          selfAnimated.has(Section) ? (
+            <Section key={i} />
+          ) : (
+            <Reveal key={i}>
+              <Section />
+            </Reveal>
+          ),
+        )}
       </main>
       <Footer />
     </div>

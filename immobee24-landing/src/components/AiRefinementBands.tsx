@@ -6,6 +6,7 @@
 import { ArrowRight, Bot, PlayCircle, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../i18n';
+import { Marquee } from '../lib/animations';
 import type { Language } from '../i18n';
 import { pathFor } from '../i18n/pages';
 
@@ -53,16 +54,18 @@ export const SevenCoWorkersBand = () => {
                 ar: 'سبعة وكلاء ذكاء اصطناعي متخصصين يتولّون العمل التشغيلي — من العميل المحتمل حتى إتمام الصفقة. رؤية كاملة وموافقة على كل إجراء.',
               })}
             </p>
-            <div className="mt-6 flex flex-wrap gap-2">
+            {/* Spec step 6: infinite chip marquee (pause on hover; static
+                wrapped row under reduced motion). */}
+            <Marquee className="mt-6" durationS={30}>
               {COWORKERS.map((c) => (
                 <span
                   key={c.en}
-                  className="rounded-full bg-cream border border-charcoal/10 px-3 py-1 text-xs text-charcoal"
+                  className="whitespace-nowrap rounded-full bg-cream border border-charcoal/10 px-3 py-1 text-xs text-charcoal"
                 >
                   {L(c)}
                 </span>
               ))}
-            </div>
+            </Marquee>
             <Link
               to={pathFor('aiFeatures', language)}
               className="mt-7 inline-flex items-center gap-2 rounded-full bg-gradient-golden px-5 py-2.5 text-sm font-semibold text-[#1E1B16] shadow-golden"

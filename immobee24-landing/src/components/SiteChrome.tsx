@@ -78,7 +78,7 @@ export const Wordmark = ({
       )}
       {!compact && (
         <span
-          className={`hidden sm:block mt-1 text-[9px] font-medium uppercase tracking-[0.12em] whitespace-nowrap ${
+          className={`hidden sm:block mt-1 text-[8px] font-medium uppercase tracking-[0.1em] whitespace-nowrap ${
             variant === 'light' ? 'text-white/60' : 'text-slate'
           }`}
         >
@@ -238,14 +238,14 @@ export const Header = () => {
       }`}
     >
       <div className="container flex items-center justify-between gap-4 py-4">
-        <Wordmark compact variant={onDark ? 'light' : 'dark'} />
+        <Wordmark variant={onDark ? 'light' : 'dark'} />
 
         <nav className="hidden xl:flex flex-1 items-center justify-center gap-0.5">
           {[aiFeaturesLink, productLink, howItWorksLink, crmAltLink, pricingLink, demoLink, betaLink].map((l) => (
             <Link
               key={l.to}
               to={l.to}
-              className={`px-2.5 py-2 text-sm transition-colors whitespace-nowrap ${
+              className={`px-2 py-2 text-sm transition-colors whitespace-nowrap ${
                 onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
               }`}
             >

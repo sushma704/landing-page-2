@@ -13,7 +13,6 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
-import { HeroWaves } from '../components/HeroWaves';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
@@ -50,19 +49,14 @@ const Hero = () => {
   return (
     <section
       id="top"
-      className="relative pt-36 pb-12 md:pt-44 md:pb-16 overflow-hidden bg-gradient-to-b from-cream to-white"
+      className="relative pt-24 pb-12 md:pt-28 md:pb-16 overflow-hidden bg-gradient-to-b from-cream to-white"
     >
-      <HeroWaves />
       <div
         aria-hidden
         className="absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full bg-gradient-golden opacity-20 blur-3xl"
       />
       <div className="container relative">
         <div className="max-w-3xl mx-auto text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
-            <Sparkles className="h-3.5 w-3.5" />
-            {asString(t('pricingPage.hero.eyebrow'))}
-          </span>
 
           <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
             <TypeOnce text={asString(t('pricingPage.hero.headline'))} />

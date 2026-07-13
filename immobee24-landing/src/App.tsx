@@ -4,6 +4,7 @@ import { ScrollToHash } from './lib/ScrollToHash';
 import { CookieBanner } from './components/CookieBanner';
 import { DEMO_BOOKING_URL } from './components/SiteChrome';
 import { ScrollProgressRing } from './components/Wayfinding';
+import { HeroWaves } from './components/HeroWaves';
 
 // Route-level code splitting: every page is a lazy chunk so the initial
 // bundle carries only the shell (router, consent banner, SiteChrome, i18n).
@@ -57,6 +58,12 @@ export default function App() {
   return (
     <>
       <ScrollToHash />
+      {/* Site-wide ambient background: the contour waves run behind EVERY
+          page (fixed, full viewport); sections are translucent so the
+          motion shows through (see index.css overrides). */}
+      <div aria-hidden className="fixed inset-0 z-0 pointer-events-none">
+        <HeroWaves />
+      </div>
       <ScrollProgressRing />
       <CookieBanner />
       <Suspense fallback={<PageLoader />}>

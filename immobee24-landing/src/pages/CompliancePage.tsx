@@ -24,7 +24,6 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
-import { HeroWaves } from '../components/HeroWaves';
 import { Reveal, RevealGroup, TypeOnce } from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
 import { SceneApprovalGate } from '../components/scenes';
@@ -451,18 +450,8 @@ export default function CompliancePage() {
       <Header />
 
       {/* Hero */}
-      <section className="relative pt-36 pb-14 md:pt-44 md:pb-20 overflow-hidden bg-gradient-to-b from-cream to-white">
-      <HeroWaves />
+      <section className="relative pt-24 pb-14 md:pt-28 md:pb-20 overflow-hidden bg-gradient-to-b from-cream to-white">
         <div className="container relative text-center max-w-3xl mx-auto">
-          <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
-            <ShieldCheck className="h-3.5 w-3.5" />
-            {L({
-              de: 'DSGVO · EU AI Act · Deutsches Maklerrecht',
-              en: 'GDPR · EU AI Act · German brokerage law',
-              fr: 'RGPD · EU AI Act · Droit allemand du courtage',
-              ar: 'GDPR · EU AI Act · قانون الوساطة العقارية الألماني',
-            })}
-          </span>
           <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
             <TypeOnce text={L({
               de: 'Konform für Europa gebaut — von Tag eins',

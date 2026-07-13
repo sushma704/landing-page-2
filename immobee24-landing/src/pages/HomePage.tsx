@@ -106,13 +106,6 @@ const Hero = () => {
 
       <div className="container relative flex-1 flex flex-col justify-center pt-32 pb-16 md:pt-36">
         <div className="max-w-3xl mx-auto text-center">
-          <span
-            className="hero-in inline-flex items-center gap-2 rounded-full border border-golden/40 bg-white/5 backdrop-blur px-4 py-1.5 text-xs font-medium text-golden"
-            style={{ animationDelay: '0.05s' }}
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            {asString(t('hero.eyebrow'))}
-          </span>
 
           <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-white text-balance">
             {(() => {

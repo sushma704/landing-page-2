@@ -25,7 +25,6 @@ import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { Reveal, RevealGroup, TypeOnce } from '../lib/animations';
 import { ScrollCue } from '../components/Wayfinding';
-import { HeroWaves } from '../components/HeroWaves';
 import { SceneAgents, SceneApprovalGate } from '../components/scenes';
 import { DemoVideoPlayer } from '../components/DemoVideoPlayer';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
@@ -532,22 +531,12 @@ export default function AiFeaturesPage() {
       <Header />
 
       {/* Hero */}
-      <section className="relative pt-36 pb-14 md:pt-44 md:pb-20 overflow-hidden bg-gradient-to-b from-cream to-white">
-      <HeroWaves />
+      <section className="relative pt-24 pb-14 md:pt-28 md:pb-20 overflow-hidden bg-gradient-to-b from-cream to-white">
         <div
           aria-hidden
           className="absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full bg-gradient-golden opacity-20 blur-3xl"
         />
         <div className="container relative text-center max-w-3xl mx-auto">
-          <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
-            <Bot className="h-3.5 w-3.5" />
-            {L({
-              de: 'Die KI-Plattform',
-              en: 'The AI platform',
-              fr: 'La plateforme IA',
-              ar: 'منصة الذكاء الاصطناعي',
-            })}
-          </span>
           <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
             <TypeOnce text={L({
               de: 'Jeder Makler bekommt 7 KI-Co-Worker',

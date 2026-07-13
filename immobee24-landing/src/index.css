@@ -975,3 +975,35 @@ button[data-demo-cta]:focus-visible {
   .fill-darken { transition: none; }
   .type-head::after { animation: none; }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   Site-wide ambient waves: the fixed canvas (App.tsx) sits at z-0;
+   page roots go transparent and SECTION backgrounds become
+   translucent so the motion shows through the whole page, not just
+   the hero. Accent bands (band-dark/bg-charcoal) and cards stay
+   opaque. Content stacks above via position/z of the page wrapper.
+   ════════════════════════════════════════════════════════════════ */
+div.min-h-screen.bg-cream,
+div.min-h-screen.bg-white {
+  background-color: transparent;
+  position: relative;
+  z-index: 1;
+}
+section.bg-white {
+  background-color: rgb(var(--c-surface) / 0.7);
+}
+section.bg-cream {
+  background-color: rgb(var(--c-cream) / 0.45);
+}
+section.bg-gradient-to-b {
+  background-image: linear-gradient(
+    to bottom,
+    rgb(var(--c-cream) / 0.35),
+    rgb(var(--c-surface) / 0.6)
+  );
+}
+/* accent bands keep full opacity */
+section.band-dark.bg-charcoal,
+section.bg-charcoal {
+  background-color: rgb(var(--c-ink) / 1);
+}

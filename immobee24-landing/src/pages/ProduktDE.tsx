@@ -942,62 +942,6 @@ const FinalCTA = () => {
   );
 };
 
-// Part E.3 — sticky in-page section nav (long page wayfinding). Highlights
-// the section crossing the viewport center via IntersectionObserver.
-const SUBNAV: Array<{ id: string; label: Record<string, string> }> = [
-  { id: 'product', label: { de: 'Produkt', en: 'Product', fr: 'Produit', ar: 'المنتج' } },
-  { id: 'crm-alternative', label: { de: 'CRM-Vergleich', en: 'CRM comparison', fr: 'Comparatif CRM', ar: 'مقارنة CRM' } },
-  { id: 'how-it-works', label: { de: 'Ablauf', en: 'How it works', fr: 'Fonctionnement', ar: 'كيف يعمل' } },
-  { id: 'process-detail', label: { de: 'Schritte', en: 'Steps', fr: 'Étapes', ar: 'الخطوات' } },
-  { id: 'control', label: { de: 'Kontrolle', en: 'Control', fr: 'Contrôle', ar: 'التحكم' } },
-  { id: 'book-demo', label: { de: 'Demo', en: 'Demo', fr: 'Démo', ar: 'عرض' } },
-];
-
-const SectionSubnav = () => {
-  const { language } = useLanguage();
-  const [active, setActive] = useState('');
-
-  useEffect(() => {
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) setActive(e.target.id);
-        });
-      },
-      { rootMargin: '-45% 0px -45% 0px' },
-    );
-    SUBNAV.forEach(({ id }) => {
-      const el = document.getElementById(id);
-      if (el) obs.observe(el);
-    });
-    return () => obs.disconnect();
-  }, []);
-
-  return (
-    <nav
-      aria-label="Page sections"
-      className="sticky top-[72px] z-30 hidden lg:block border-y border-charcoal/10 bg-cream/85 backdrop-blur"
-    >
-      <div className="container flex items-center gap-1 py-2">
-        {SUBNAV.map(({ id, label }) => (
-          <a
-            key={id}
-            href={`#${id}`}
-            aria-current={active === id ? 'true' : undefined}
-            className={`nav-underline rounded-full px-3 py-1.5 text-xs font-medium transition-colors ${
-              active === id
-                ? 'bg-golden/15 text-golden'
-                : 'text-slate hover:text-charcoal'
-            }`}
-          >
-            {label[language] ?? label.en}
-          </a>
-        ))}
-      </div>
-    </nav>
-  );
-};
-
 export default function ProduktDE() {
   const { t, language } = useLanguage();
 
@@ -1067,7 +1011,6 @@ export default function ProduktDE() {
   return (
     <div className="min-h-screen antialiased bg-white">
       <Header />
-      <SectionSubnav />
       <main className="relative">
         {sections.map((Section, i) =>
           selfAnimated.has(Section) ? (

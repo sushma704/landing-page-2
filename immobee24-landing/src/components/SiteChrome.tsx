@@ -294,6 +294,19 @@ export const Header = () => {
   const nl = (k: keyof typeof NL) => NL[k][language] ?? NL[k].en;
 
   const productLink = { to: localPath('produkt'), label: asString(t('nav.product')) };
+  // Product section anchors (former on-page subnav — folded into this menu)
+  const PSEC: Array<{ id: string; label: Record<string, string> }> = [
+    { id: '', label: { de: 'Überblick', en: 'Overview', fr: 'Aperçu', ar: 'نظرة عامة' } },
+    { id: '#crm-alternative', label: { de: 'CRM-Vergleich', en: 'CRM comparison', fr: 'Comparatif CRM', ar: 'مقارنة CRM' } },
+    { id: '#how-it-works', label: { de: 'So funktioniert es', en: 'How it works', fr: 'Fonctionnement', ar: 'كيف يعمل' } },
+    { id: '#process-detail', label: { de: 'Die Schritte', en: 'The steps', fr: 'Les étapes', ar: 'الخطوات' } },
+    { id: '#control', label: { de: 'Kontrolle', en: 'Control', fr: 'Contrôle', ar: 'التحكم' } },
+    { id: '#book-demo', label: { de: 'Demo', en: 'Demo', fr: 'Démo', ar: 'عرض توضيحي' } },
+  ];
+  const productItems: NavItem[] = PSEC.map((sec) => ({
+    to: `${localPath('produkt')}${sec.id}`,
+    label: sec.label[language] ?? sec.label.en,
+  }));
   const aiAgentsLink = { to: localPath('aiFeatures'), label: nl('aiAgents') };
   const pricingLink = { to: localPath('pricing'), label: asString(t('nav.pricing')) };
   const contactLink = { to: localPath('contact'), label: nl('contact') };
@@ -318,14 +331,7 @@ export const Header = () => {
         <Wordmark variant={onDark ? 'light' : 'dark'} />
 
         <nav className="hidden xl:flex flex-1 items-center justify-end gap-0.5 me-2">
-          <Link
-            to={productLink.to}
-            className={`nav-underline px-2 py-2 text-sm transition-colors whitespace-nowrap ${
-              onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
-            }`}
-          >
-            {productLink.label}
-          </Link>
+          <NavDropdown label={productLink.label} items={productItems} onDark={onDark} />
           <Link
             to={aiAgentsLink.to}
             className={`flex items-center gap-1.5 nav-underline px-2 py-2 text-sm transition-colors whitespace-nowrap ${
@@ -399,7 +405,7 @@ export const Header = () => {
       {open && (
         <div className="xl:hidden border-t border-charcoal/5 bg-white">
           <div className="container py-3 flex flex-col gap-1">
-            {[productLink, aiAgentsLink, pricingLink, contactLink].map((l) => (
+            {[aiAgentsLink, pricingLink, contactLink].map((l) => (
               <Link
                 key={l.to}
                 to={l.to}
@@ -411,6 +417,7 @@ export const Header = () => {
             ))}
             {(
               [
+                [productLink.label, productItems],
                 [nl('solutions'), solutionsItems],
                 [nl('resources'), resourcesItems],
               ] as Array<[string, NavItem[]]>

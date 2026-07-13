@@ -669,32 +669,43 @@ const ProcessDeepDive = () => {
   );
 };
 
-// ── Channel constellation (HomeLead "hub" pattern): your inquiry channels
-// radiating from immob24, dashed lines, one channel highlighted at a time.
-// Honest scope: only channels the site already claims (portals, email,
-// website, calendar, your CRM).
+// ── Integration constellation — LIVE integrations only, verified against
+// frontend v2 (user audit 2026-07-14): calendar sync (Google/Outlook/Apple/
+// Calendly), Meta Ads (live Graph-API test), import via OpenImmo/CSV/Excel,
+// email-on-deals, web & CRM forms, live chat. Portal sync (ImmoScout24,
+// Immowelt) is COMING SOON in the app and must never be shown as live;
+// Kleinanzeigen is not exposed at all.
 const HUB_CHANNELS: Array<Record<string, string>> = [
-  { de: 'ImmoScout24', en: 'ImmoScout24', fr: 'ImmoScout24', ar: 'ImmoScout24' },
-  { de: 'Weitere Portale', en: 'More portals', fr: 'Autres portails', ar: 'بوابات أخرى' },
+  { de: 'Google Kalender', en: 'Google Calendar', fr: 'Google Agenda', ar: 'تقويم Google' },
+  { de: 'Outlook', en: 'Outlook', fr: 'Outlook', ar: 'Outlook' },
+  { de: 'Apple Kalender', en: 'Apple Calendar', fr: 'Calendrier Apple', ar: 'تقويم Apple' },
+  { de: 'Calendly', en: 'Calendly', fr: 'Calendly', ar: 'Calendly' },
+  { de: 'Meta Ads', en: 'Meta Ads', fr: 'Meta Ads', ar: 'Meta Ads' },
+  { de: 'OpenImmo / CSV-Import', en: 'OpenImmo / CSV import', fr: 'Import OpenImmo / CSV', ar: 'استيراد OpenImmo / CSV' },
   { de: 'E-Mail', en: 'Email', fr: 'E-mail', ar: 'البريد الإلكتروني' },
-  { de: 'Website', en: 'Website', fr: 'Site web', ar: 'الموقع الإلكتروني' },
-  { de: 'Kalender', en: 'Calendar', fr: 'Calendrier', ar: 'التقويم' },
-  { de: 'Ihr CRM', en: 'Your CRM', fr: 'Votre CRM', ar: 'نظام CRM لديكم' },
+  { de: 'Web-Formulare', en: 'Web forms', fr: 'Formulaires web', ar: 'نماذج الويب' },
 ];
 
 const HUB_COPY: Record<string, Record<string, string>> = {
   headline: {
-    de: 'Ihre Kanäle. Ein Eingang.',
-    en: 'Your channels. One inbox.',
-    fr: 'Vos canaux. Une seule entrée.',
-    ar: 'قنواتكم. صندوق وارد واحد.',
+    de: 'Integrationen — heute schon live',
+    en: 'Integrations — live today',
+    fr: 'Intégrations — déjà disponibles',
+    ar: 'تكاملات متاحة اليوم',
   },
   body: {
-    de: 'Immob24 nimmt Anfragen dort an, wo sie entstehen — Portal, E-Mail oder Website — und führt sie in einem Arbeitsablauf zusammen. Termine landen im Kalender, Ergebnisse in Ihrem CRM.',
-    en: 'Immob24 picks inquiries up where they start — portal, email or your website — and merges them into one workflow. Viewings land in the calendar, results in your CRM.',
-    fr: 'Immob24 capte les demandes là où elles naissent — portail, e-mail ou site web — et les réunit dans un seul flux. Les visites arrivent au calendrier, les résultats dans votre CRM.',
-    ar: 'يلتقط Immob24 الاستفسارات من حيث تنشأ — بوابة أو بريد أو موقعكم — ويجمعها في مسار عمل واحد. تصل المعاينات إلى التقويم والنتائج إلى نظام CRM لديكم.',
+    de: 'Zwei-Wege-Kalender-Sync, Meta Ads mit Live-Verbindungstest und Ein-Klick-Import über OpenImmo, CSV und Excel — dazu E-Mail-Eingang, Telefonie-Protokolle, Web-Formulare und Live-Chat. Alles direkt im Dashboard.',
+    en: 'Two-way calendar sync, Meta Ads with a live connection test, and one-click import via OpenImmo, CSV and Excel — plus email intake, telephony logs, web forms and live chat. All in the dashboard today.',
+    fr: 'Synchronisation bidirectionnelle des calendriers, Meta Ads avec test de connexion en direct et import en un clic via OpenImmo, CSV et Excel — plus e-mails entrants, journaux téléphoniques, formulaires web et chat en direct. Le tout déjà dans le tableau de bord.',
+    ar: 'مزامنة ثنائية الاتجاه للتقويمات، وMeta Ads مع اختبار اتصال مباشر، واستيراد بنقرة واحدة عبر OpenImmo وCSV وExcel — إضافة إلى البريد الوارد وسجلات الهاتف ونماذج الويب والدردشة المباشرة. كل ذلك في لوحة التحكم اليوم.',
   },
+  soon: {
+    de: 'Bald verfügbar: Portal-Sync für ImmoScout24 & Immowelt — bis dahin ist OpenImmo der Weg.',
+    en: 'Landing soon: portal sync for ImmoScout24 & Immowelt — until then, OpenImmo is the path.',
+    fr: 'Bientôt : synchronisation des portails ImmoScout24 & Immowelt — d’ici là, OpenImmo est la voie.',
+    ar: 'قريبًا: مزامنة بوابتي ImmoScout24 وImmowelt — وحتى ذلك الحين OpenImmo هو المسار.',
+  },
+  soonBadge: { de: 'Bald', en: 'Soon', fr: 'Bientôt', ar: 'قريبًا' },
 };
 
 const HUB_POS = HUB_CHANNELS.map((_, i) => {
@@ -728,6 +739,13 @@ const IntegrationHub = () => {
               </h2>
               <p className="mt-5 text-body-lg text-slate leading-relaxed">
                 {HUB_COPY.body[language] ?? HUB_COPY.body.en}
+              </p>
+              {/* coming-soon stays grey and clearly labelled — never "live" */}
+              <p className="mt-5 flex items-start gap-2.5 text-sm text-warm-gray">
+                <span className="mt-0.5 flex-none rounded-full border border-charcoal/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide">
+                  {HUB_COPY.soonBadge[language] ?? HUB_COPY.soonBadge.en}
+                </span>
+                {HUB_COPY.soon[language] ?? HUB_COPY.soon.en}
               </p>
             </Reveal>
           </div>

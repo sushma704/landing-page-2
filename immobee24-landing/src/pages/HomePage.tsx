@@ -181,35 +181,50 @@ const Hero = () => {
           </ul>
         </div>
 
-        {/* product moment + floating stat pills */}
-        <div className="hero-in relative max-w-5xl mx-auto w-full" style={{ animationDelay: '0.62s' }}>
-          <div className="relative z-10">
-            <LiveInquiryCard />
-          </div>
-
-          {/* floating pills — desktop only, anchored around the card */}
-          <div aria-hidden className="hidden xl:block">
-            {HERO_PILLS.map((p, i) => {
-              const pos = [
-                'left-0 top-10',
-                'right-0 top-6',
-                'left-6 bottom-4',
-                'right-2 bottom-10',
-              ][i];
-              return (
+        {/* product moment + stat pills — 3-column grid on desktop so the
+            pills flank the card without ever overlapping it; compact row
+            below the card on smaller screens. */}
+        <div className="hero-in relative max-w-6xl mx-auto w-full" style={{ animationDelay: '0.62s' }}>
+          <div className="xl:grid xl:grid-cols-[1fr_auto_1fr] xl:items-center xl:gap-8">
+            {/* left pills */}
+            <div aria-hidden className="hidden xl:flex flex-col items-end gap-8">
+              {[HERO_PILLS[0], HERO_PILLS[2]].map((p, i) => (
                 <div
                   key={p.stat}
-                  className={`float-pill absolute ${pos} z-20 flex items-center gap-3 rounded-2xl border border-white/15 bg-white/[0.07] backdrop-blur-md px-4 py-3 shadow-card`}
-                  style={{ animationDelay: `${-i * 1.4}s` }}
+                  className={`float-pill flex items-center gap-3 rounded-2xl border border-white/15 bg-white/[0.07] backdrop-blur-md px-4 py-3 shadow-card ${
+                    i === 0 ? '-translate-y-4' : 'translate-y-6'
+                  }`}
+                  style={{ animationDelay: `${-i * 1.7}s` }}
                 >
                   <span className="font-metric text-lg font-bold text-golden whitespace-nowrap">{p.stat}</span>
-                  <span className="text-xs text-white/75 max-w-[130px] leading-snug">{pillLabel(p)}</span>
+                  <span className="text-xs text-white/75 max-w-[140px] leading-snug">{pillLabel(p)}</span>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+
+            {/* the live product moment */}
+            <div className="relative z-10 xl:w-[36rem]">
+              <LiveInquiryCard />
+            </div>
+
+            {/* right pills */}
+            <div aria-hidden className="hidden xl:flex flex-col items-start gap-8">
+              {[HERO_PILLS[1], HERO_PILLS[3]].map((p, i) => (
+                <div
+                  key={p.stat}
+                  className={`float-pill flex items-center gap-3 rounded-2xl border border-white/15 bg-white/[0.07] backdrop-blur-md px-4 py-3 shadow-card ${
+                    i === 0 ? '-translate-y-6' : 'translate-y-4'
+                  }`}
+                  style={{ animationDelay: `${-(i + 2) * 1.7}s` }}
+                >
+                  <span className="font-metric text-lg font-bold text-golden whitespace-nowrap">{p.stat}</span>
+                  <span className="text-xs text-white/75 max-w-[140px] leading-snug">{pillLabel(p)}</span>
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* mobile: pills as a compact row under the card */}
+          {/* below xl: pills as a compact centered row under the card */}
           <div className="xl:hidden mt-6 flex flex-wrap justify-center gap-2">
             {HERO_PILLS.map((p) => (
               <span

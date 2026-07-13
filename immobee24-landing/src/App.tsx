@@ -11,7 +11,6 @@ const HomePage = lazy(() => import('./pages/HomePage'));
 const ProduktDE = lazy(() => import('./pages/ProduktDE'));
 const BetaProgrammDE = lazy(() => import('./pages/BetaProgrammDE'));
 const BetaThankYou = lazy(() => import('./pages/BetaThankYou'));
-const DemoDE = lazy(() => import('./pages/DemoDE'));
 const CrmAlternativeDE = lazy(() => import('./pages/CrmAlternativeDE'));
 const PricingDE = lazy(() => import('./pages/PricingDE'));
 // AI-refinement pages (draft/ai-refinement)
@@ -20,6 +19,9 @@ const CompliancePage = lazy(() => import('./pages/CompliancePage'));
 const WhyImmob24Page = lazy(() => import('./pages/WhyImmob24Page'));
 
 // Internal-only scene gallery (noindex) for design review
+const SolutionsPage = lazy(() => import('./pages/SolutionsPage'));
+const ContactPage = lazy(() => import('./pages/ContactPage'));
+
 const DevScenes = lazy(() => import('./pages/DevScenes'));
 // SEO landing pages — DE/EN pairs, staged under noindex pending entity registration
 const MaklersoftwareMuenchen = lazy(() => import('./pages/seo/MaklersoftwareMuenchen'));
@@ -68,6 +70,16 @@ export default function App() {
         <Route path="/de/produkt" element={<ProduktDE />} />
         <Route path="/en/product" element={<ProduktDE />} />
 
+        {/* Unified IA phase 2: solutions hub + contact */}
+        <Route path="/de/loesungen" element={<SolutionsPage />} />
+        <Route path="/en/solutions" element={<SolutionsPage />} />
+        <Route path="/fr/solutions" element={<SolutionsPage />} />
+        <Route path="/ar/solutions" element={<SolutionsPage />} />
+        <Route path="/de/kontakt" element={<ContactPage />} />
+        <Route path="/en/contact" element={<ContactPage />} />
+        <Route path="/fr/contact" element={<ContactPage />} />
+        <Route path="/ar/contact" element={<ContactPage />} />
+
         {/* merged into /produkt (unified IA phase 1) — old URLs redirect to the anchor */}
         <Route path="/de/how-it-works" element={<Navigate to="/de/produkt#how-it-works" replace />} />
         <Route path="/en/how-it-works" element={<Navigate to="/en/product#how-it-works" replace />} />
@@ -78,8 +90,8 @@ export default function App() {
         <Route path="/de/preise" element={<PricingDE />} />
         <Route path="/en/pricing" element={<PricingDE />} />
 
-        <Route path="/de/demo" element={<DemoDE />} />
-        <Route path="/en/demo" element={<DemoDE />} />
+        <Route path="/de/demo" element={<Navigate to="/de/kontakt?intent=demo" replace />} />
+        <Route path="/en/demo" element={<Navigate to="/en/contact?intent=demo" replace />} />
 
         <Route path="/de/beta-agentenprogramm" element={<BetaProgrammDE />} />
         <Route path="/en/beta-agent-program" element={<BetaProgrammDE />} />
@@ -105,8 +117,8 @@ export default function App() {
         <Route path="/ar/real-estate-crm-alternative" element={<CrmAlternativeDE />} />
         <Route path="/fr/tarifs" element={<PricingDE />} />
         <Route path="/ar/pricing" element={<PricingDE />} />
-        <Route path="/fr/demo" element={<DemoDE />} />
-        <Route path="/ar/demo" element={<DemoDE />} />
+        <Route path="/fr/demo" element={<Navigate to="/fr/contact?intent=demo" replace />} />
+        <Route path="/ar/demo" element={<Navigate to="/ar/contact?intent=demo" replace />} />
         <Route path="/fr/programme-beta-agents" element={<BetaProgrammDE />} />
         <Route path="/ar/beta-agent-program" element={<BetaProgrammDE />} />
         <Route path="/fr/fonctions-ia" element={<AiFeaturesPage />} />

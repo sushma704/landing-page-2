@@ -583,7 +583,7 @@ const PricingTeaser = () => {
             <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
-            to={localPath('demo')}
+            to={`${localPath('contact')}?intent=demo`}
             onClick={() => trackEvent('home_pricing_demo_cta_click')}
             className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
           >

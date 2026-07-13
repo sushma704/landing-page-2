@@ -286,6 +286,7 @@ export const Header = () => {
     resources: { de: 'Ressourcen', en: 'Resources', fr: 'Ressources', ar: 'الموارد' },
     contact: { de: 'Kontakt', en: 'Contact', fr: 'Contact', ar: 'اتصال' },
     whyImmob24: { de: 'Warum immob24', en: 'Why immob24', fr: 'Pourquoi immob24', ar: 'لماذا immob24' },
+    overview: { de: 'Überblick', en: 'Overview', fr: 'Aperçu', ar: 'نظرة عامة' },
     video: { de: 'Produkt-Video', en: 'Product video', fr: 'Vidéo produit', ar: 'فيديو المنتج' },
     compliance: { de: 'Compliance & DSGVO', en: 'Compliance & GDPR', fr: 'Conformité & RGPD', ar: 'الامتثال وحماية البيانات' },
     beta: { de: 'Beta-Programm', en: 'Beta program', fr: 'Programme bêta', ar: 'برنامج بيتا' },
@@ -295,8 +296,9 @@ export const Header = () => {
   const productLink = { to: localPath('produkt'), label: asString(t('nav.product')) };
   const aiAgentsLink = { to: localPath('aiFeatures'), label: nl('aiAgents') };
   const pricingLink = { to: localPath('pricing'), label: asString(t('nav.pricing')) };
-  const contactLink = { to: localPath('demo'), label: nl('contact') };
+  const contactLink = { to: localPath('contact'), label: nl('contact') };
   const solutionsItems: NavItem[] = [
+    { to: localPath('solutions'), label: nl('overview') },
     { to: localPath('crmAlternative'), label: asString(t('nav.crmAlternative')) },
     { to: localPath('whyImmob24'), label: nl('whyImmob24') },
   ];
@@ -533,7 +535,7 @@ export const Footer = () => {
     { to: `${localPath('produkt')}#how-it-works`, label: asString(t('nav.howItWorks')) },
     { to: localPath('crmAlternative'), label: asString(t('nav.crmAlternative')) },
     { to: localPath('pricing'), label: asString(t('nav.pricing')) },
-    { to: localPath('demo'), label: asString(t('nav.demo')) },
+    { to: `${localPath('contact')}?intent=demo`, label: asString(t('nav.demo')) },
     { to: localPath('beta'), label: asString(t('betaProgram.nav')) },
   ];
 

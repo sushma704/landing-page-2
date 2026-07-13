@@ -8,7 +8,7 @@ import { trackEvent } from '../lib/analytics';
 //   Google Sheet → Extensions → Apps Script → Deploy → New deployment →
 //   Web app (Execute as: Me, Who has access: Anyone) → copy the URL.
 // It looks like:  https://script.google.com/macros/s/AKfyc.../exec
-const SHEET_ENDPOINT =
+export const SHEET_ENDPOINT =
   'https://script.google.com/macros/s/AKfycbx-c7o5Yaz7p1CVgSehLONixeBJZmvcmo-KKKcvRls7h2N_hfSDj7_q7n2HgAm4DekV1A/exec';
 
 // Basic email shape check — rejects obviously invalid addresses before submit.

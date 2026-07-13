@@ -521,7 +521,7 @@ const FinalCTA = () => {
             </Link>
             {' · '}
             <Link
-              to={localPath('demo')}
+              to={`${localPath('contact')}?intent=demo`}
               onClick={() => trackEvent('crmalt_final_demo_link_click')}
               className="font-medium text-golden-dark underline underline-offset-2 hover:text-charcoal"
             >

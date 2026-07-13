@@ -12,7 +12,9 @@ export type PageKey =
   | 'beta'
   | 'aiFeatures'
   | 'compliance'
-  | 'whyImmob24';
+  | 'whyImmob24'
+  | 'solutions'
+  | 'contact';
 
 type PagePaths = Record<Language, string>;
 
@@ -34,6 +36,9 @@ export const PAGE_PATHS: Record<PageKey, PagePaths> = {
   aiFeatures: { de: '/de/ki-funktionen', en: '/en/ai-features-platform', fr: '/fr/fonctions-ia', ar: '/ar/ai-features-platform' },
   compliance: { de: '/de/compliance', en: '/en/compliance', fr: '/fr/conformite', ar: '/ar/compliance' },
   whyImmob24: { de: '/de/warum-immob24', en: '/en/why-immob24', fr: '/fr/pourquoi-immob24', ar: '/ar/why-immob24' },
+  // Unified IA phase 2
+  solutions: { de: '/de/loesungen', en: '/en/solutions', fr: '/fr/solutions', ar: '/ar/solutions' },
+  contact: { de: '/de/kontakt', en: '/en/contact', fr: '/fr/contact', ar: '/ar/contact' },
 };
 
 // DE is the primary market — used as x-default.

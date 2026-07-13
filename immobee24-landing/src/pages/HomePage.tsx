@@ -22,7 +22,7 @@ import { useJsonLd } from '../lib/useJsonLd';
 import { organizationSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
-import { LiveInquiryCard } from '../components/LiveInquiryCard';
+import { HeroShowcase } from '../components/HeroShowcase';
 import { HeroWaves } from '../components/HeroWaves';
 import { SevenCoWorkersBand, ComplianceBadgesStrip } from '../components/AiRefinementBands';
 
@@ -194,9 +194,9 @@ const Hero = () => {
               ))}
             </div>
 
-            {/* the live product moment */}
-            <div className="relative z-10 xl:w-[36rem]">
-              <LiveInquiryCard />
+            {/* the rotating product showcase (chat -> journey -> dashboard) */}
+            <div className="relative z-10 xl:w-[38rem]">
+              <HeroShowcase />
             </div>
 
             {/* right pills */}
@@ -246,7 +246,7 @@ const AnswerBlock = () => {
   return (
     <section id="product" className="py-16 md:py-24 bg-white">
       <div className="container">
-        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-6 max-w-7xl mx-auto">
           {[
             { q: asString(t('answer.q1')), a: asString(t('answer.a1')) },
             { q: asString(t('answer.q2')), a: asString(t('answer.a2')) },
@@ -328,6 +328,14 @@ const Solution = () => {
 const Features = () => {
   const { t } = useLanguage();
   const localPath = useLocalizedPath();
+  // HomeLead-style pipeline pulse: the active card lights up in sequence,
+  // walking visitors through the workflow. Paused under reduced motion.
+  const [pulse, setPulse] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const id = window.setInterval(() => setPulse((v) => (v + 1) % 4), 2200);
+    return () => window.clearInterval(id);
+  }, []);
   const items = [
     { icon: Zap, title: asString(t('features.f1Title')), body: asString(t('features.f1Body')) },
     { icon: Target, title: asString(t('features.f2Title')), body: asString(t('features.f2Body')) },
@@ -348,11 +356,15 @@ const Features = () => {
           </h2>
         </div>
 
-        <div className="mt-12 grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <div className="mt-12 grid md:grid-cols-2 gap-6 max-w-7xl mx-auto">
           {items.map((item, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-charcoal/10 bg-white p-6 md:p-8 shadow-subtle hover:shadow-card-hover hover:border-golden/30 transition-all"
+              className={`rounded-2xl border p-6 md:p-8 transition-all duration-500 ${
+                pulse === i
+                  ? 'border-golden/50 bg-gradient-golden-soft shadow-golden -translate-y-1'
+                  : 'border-charcoal/10 bg-white shadow-subtle hover:shadow-card-hover hover:border-golden/30'
+              }`}
             >
               <div className="flex items-center gap-3">
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-golden-soft text-golden-dark">
@@ -499,7 +511,7 @@ const SocialProof = () => {
           <p className="mt-4 text-sm text-warm-gray italic">{asString(t('socialProof.note'))}</p>
         </div>
 
-        <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-7xl mx-auto">
           {items.map((quote, i) => (
             <figure
               key={i}

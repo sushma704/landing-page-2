@@ -293,15 +293,11 @@ const Hero = () => {
           {/* ── Slide 1: modules + real dashboard ── */}
           <div className={slideCls(0)} aria-hidden={active !== 0}>
             <div className="text-center max-w-4xl mx-auto hero-in" style={{ animationDelay: '0.05s' }}>
-              <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
-                <Sparkles className="h-3.5 w-3.5" />
-                {asString(t('produkt.hero.eyebrow'))}
-              </span>
-              <div className="mt-5">{headlineBlock(0)}</div>
+              {headlineBlock(0)}
             </div>
-            <div className="mt-6 grid items-center gap-8 lg:grid-cols-[minmax(0,2fr),auto,minmax(0,3fr)] hero-in" style={{ animationDelay: '250ms' }}>
+            <div className="mt-6 grid items-center gap-8 lg:gap-0 lg:grid-cols-[minmax(0,2fr),auto,minmax(0,3fr)] hero-in" style={{ animationDelay: '250ms' }}>
               {/* module tiles, two offset columns like the reference */}
-              <div className="mx-auto grid max-w-sm grid-cols-2 gap-3 lg:mx-0">
+              <div className="mx-auto grid max-w-sm grid-cols-2 gap-3 lg:ms-auto lg:me-0">
                 {HERO_MODULES.map((mod, i) => (
                   <div
                     key={mod.label.en}
@@ -315,13 +311,14 @@ const Hero = () => {
                   </div>
                 ))}
               </div>
-              {/* connector hub */}
-              <div className="hidden lg:flex flex-col items-center gap-1 px-2">
+              {/* connector: tiles ─ ─ immob24 ─ ─ dashboard (HomeLead-style linkage) */}
+              <div className="hidden lg:flex items-center">
+                <span aria-hidden className="w-12 xl:w-16 border-t-2 border-dashed border-teal/40" />
                 <span className="rounded-2xl border border-charcoal/10 bg-white px-4 py-2.5 font-heading text-lg shadow-card whitespace-nowrap">
                   <span className="text-teal">immob</span>
                   <span className="text-golden">24</span>
                 </span>
-                <span className="h-16 w-px border-s border-dashed border-charcoal/25" aria-hidden />
+                <span aria-hidden className="w-12 xl:w-16 border-t-2 border-dashed border-golden/50" />
               </div>
               <BrowserFrame
                 src="/screens/dashboard.webp"

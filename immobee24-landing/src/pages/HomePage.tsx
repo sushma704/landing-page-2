@@ -23,6 +23,7 @@ import { organizationSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { LiveInquiryCard } from '../components/LiveInquiryCard';
+import { HeroWaves } from '../components/HeroWaves';
 import { SevenCoWorkersBand, ComplianceBadgesStrip } from '../components/AiRefinementBands';
 
 const asString = (
@@ -110,17 +111,8 @@ const Hero = () => {
         className="glow-drift absolute -top-24 -right-48 w-[46rem] h-[46rem] rounded-full opacity-20 blur-3xl"
         style={{ background: 'radial-gradient(circle, #F5A623 0%, transparent 62%)', animationDelay: '-6s' }}
       />
-      <div
-        aria-hidden
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(245,240,230,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(245,240,230,0.035) 1px, transparent 1px)',
-          backgroundSize: '56px 56px',
-          maskImage: 'radial-gradient(ellipse 90% 70% at 50% 30%, black 30%, transparent 75%)',
-          WebkitMaskImage: 'radial-gradient(ellipse 90% 70% at 50% 30%, black 30%, transparent 75%)',
-        }}
-      />
+      {/* flowing contour-line mesh (canvas, brand teal->amber) */}
+      <HeroWaves />
 
       <div className="container relative flex-1 flex flex-col justify-center pt-32 pb-16 md:pt-36">
         <div className="max-w-3xl mx-auto text-center">

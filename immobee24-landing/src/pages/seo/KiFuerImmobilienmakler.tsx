@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../../components/SiteChrome';
-import { chorSlot, Reveal, RevealGroup } from '../../lib/animations';
+import { cascadeDelay, chorSlot, Reveal, RevealGroup } from '../../lib/animations';
 import { trackEvent } from '../../lib/analytics';
 import { useDocumentMeta } from '../../lib/useDocumentMeta';
 import { useFaqSchema } from '../../lib/useFaqSchema';
@@ -351,14 +351,16 @@ const Faq = () => (
         Häufige Fragen zu KI für Immobilienmakler
       </h2>
       <div className="mt-8 divide-y divide-charcoal/10">
-        {FAQS.map((item) => (
-          <details key={item.q} className="group py-5">
+        {FAQS.map((item, i) => (
+          <Reveal key={item.q} delay={cascadeDelay(i, 280)} distance={16}>
+          <details className="group py-5">
             <summary className="flex cursor-pointer items-start justify-between gap-4 list-none">
               <span className="font-semibold text-charcoal">{item.q}</span>
               <ChevronRight className="h-4 w-4 text-warm-gray mt-1 transition-transform group-open:rotate-90" />
             </summary>
             <p className="mt-3 text-slate leading-relaxed">{item.a}</p>
           </details>
+          </Reveal>
         ))}
       </div>
     </div>
@@ -461,9 +463,7 @@ export default function KiFuerImmobilienmakler() {
       <Reveal>
         <CityLinks />
       </Reveal>
-      <Reveal>
-        <Faq />
-      </Reveal>
+      <Faq />
       <Reveal>
         <FinalCta />
       </Reveal>

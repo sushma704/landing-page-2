@@ -11,7 +11,7 @@
 import { ArrowRight, ChevronRight, Clock, MapPin, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../../components/SiteChrome';
-import { chorSlot, Reveal, RevealGroup } from '../../lib/animations';
+import { cascadeDelay, chorSlot, Reveal, RevealGroup } from '../../lib/animations';
 import { trackEvent } from '../../lib/analytics';
 import { useDocumentMeta } from '../../lib/useDocumentMeta';
 import { useFaqSchema } from '../../lib/useFaqSchema';
@@ -262,9 +262,9 @@ const Faq = () => (
         Häufige Fragen
       </h2>
       <div className="mt-8 divide-y divide-charcoal/10">
-        {FAQS.map((item) => (
+        {FAQS.map((item, i) => (
+          <Reveal key={item.q} delay={cascadeDelay(i, 280)} distance={16}>
           <details
-            key={item.q}
             className="group py-5"
           >
             <summary className="flex cursor-pointer items-start justify-between gap-4 list-none">
@@ -273,6 +273,7 @@ const Faq = () => (
             </summary>
             <p className="mt-3 text-slate leading-relaxed">{item.a}</p>
           </details>
+          </Reveal>
         ))}
       </div>
     </div>
@@ -403,9 +404,7 @@ export default function MaklersoftwareMuenchen() {
       <Reveal>
         <WhyMunich />
       </Reveal>
-      <Reveal>
-        <Faq />
-      </Reveal>
+      <Faq />
       <Reveal>
         <RelatedCities />
       </Reveal>

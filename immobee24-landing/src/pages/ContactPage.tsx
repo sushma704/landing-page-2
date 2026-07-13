@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { Header, Footer, DEMO_BOOKING_URL } from '../components/SiteChrome';
-import { chorSlot, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
+import { cascadeDelay, chorSlot, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
 import { SHEET_ENDPOINT } from '../components/NewsletterSignup';
 import { useLanguage } from '../i18n';
 import type { Language, TranslationKey } from '../i18n';
@@ -556,7 +556,7 @@ const NotADemo = ({ t }: { t: TFn }) => {
 const FaqItem = ({ q, a }: { q: string; a: string }) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-charcoal/10 last:border-b-0">
+    <div>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -596,11 +596,18 @@ const DemoFaq = ({ t }: { t: TFn }) => {
               {asString(t('demoPage.faq.headline') as TVal)}
             </h2>
           </Reveal>
-          <Reveal delay={100} className="mt-10 rounded-2xl bg-white border border-charcoal/10 px-6">
+          <div className="mt-10 rounded-2xl bg-white border border-charcoal/10 px-6">
             {items.map((it, i) => (
-              <FaqItem key={i} q={it.q} a={it.a} />
+              <Reveal
+                key={i}
+                delay={cascadeDelay(i, 280)}
+                distance={16}
+                className="border-b border-charcoal/10 last:border-b-0"
+              >
+                <FaqItem q={it.q} a={it.a} />
+              </Reveal>
             ))}
-          </Reveal>
+          </div>
         </div>
       </div>
     </section>

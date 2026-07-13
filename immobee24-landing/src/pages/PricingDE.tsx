@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from 'react';
+import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 import {
   ArrowRight,
   CalendarDays,
@@ -20,12 +20,15 @@ import { useJsonLd } from '../lib/useJsonLd';
 import { productSchema, breadcrumbSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
 import {
+  LineReveal,
+  cascadeDelay,
   chorSlot,
   CountUp,
   Reveal,
   RevealGroup,
   TypeOnce,
   slowmoFactor,
+  useCascade,
   useInView,
   usePrefersReducedMotion,
 } from '../lib/animations';
@@ -191,10 +194,16 @@ const PricingCard = ({
 
       <ul className="mt-6 space-y-3">
         {included.map((item, i) => (
-          <li key={i} className="flex items-start gap-2 text-charcoal/85">
+          <Reveal
+            key={i}
+            as="li"
+            delay={cascadeDelay(i, 280)}
+            distance={16}
+            className="flex items-start gap-2 text-charcoal/85"
+          >
             <Check className="h-4 w-4 text-golden mt-1 flex-none" />
             <span className="text-sm">{item}</span>
-          </li>
+          </Reveal>
         ))}
       </ul>
 
@@ -332,23 +341,30 @@ const QuickComparison = () => {
   const { t } = useLanguage();
   const headers = asStringArray(t('pricingPage.quickComparison.headers'));
   const rows = asStringMatrix(t('pricingPage.quickComparison.rows'));
+  const [tableRef, tableOn] = useCascade<HTMLDivElement>();
   return (
     <section className="py-20 md:py-24 bg-cream">
       <div className="container">
-        <Reveal className="max-w-3xl mx-auto text-center">
+        <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('pricingPage.quickComparison.headline'))}
+            <LineReveal text={asString(t('pricingPage.quickComparison.headline'))} />
           </h2>
-        </Reveal>
+        </div>
 
-        <Reveal direction="scale" className="mt-10 max-w-3xl mx-auto overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-subtle">
+        {/* header row first, body rows cascade 280ms, cells +60ms LTR;
+            container reserves height — opacity/transform only */}
+        <div
+          ref={tableRef}
+          className={`${tableOn} mt-10 max-w-3xl mx-auto overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-subtle`}
+        >
           <table className="w-full text-left">
             <thead className="band-dark bg-charcoal text-white">
               <tr>
                 {headers.map((h, i) => (
                   <th
                     key={i}
-                    className="p-4 font-heading text-sm uppercase tracking-wider"
+                    className="cascade-cell p-4 font-heading text-sm uppercase tracking-wider"
+                    style={{ '--casc-delay': `${i * 60}ms` } as CSSProperties}
                   >
                     {h}
                   </th>
@@ -363,13 +379,26 @@ const QuickComparison = () => {
                     rIdx % 2 === 1 ? 'bg-cream/40' : ''
                   }`}
                 >
-                  <td className="p-4 align-top text-charcoal/85">{row[0]}</td>
-                  <td className="p-4 align-top font-heading text-charcoal">{row[1]}</td>
+                  {[0, 1].map((j) => (
+                    <td
+                      key={j}
+                      className={`cascade-cell p-4 align-top ${
+                        j === 0 ? 'text-charcoal/85' : 'font-heading text-charcoal'
+                      }`}
+                      style={
+                        {
+                          '--casc-delay': `${cascadeDelay(rIdx + 1, 280) + j * 60}ms`,
+                        } as CSSProperties
+                      }
+                    >
+                      {row[j]}
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>
           </table>
-        </Reveal>
+        </div>
 
         <Reveal delay={100} as="p" className="mt-6 text-center text-sm text-warm-gray italic">
           {asString(t('pricingPage.quickComparison.caption'))}
@@ -595,7 +624,7 @@ const RoiEstimator = () => {
 const FAQItem = ({ q, a }: { q: string; a: string }) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-charcoal/10 last:border-b-0">
+    <div>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -630,11 +659,18 @@ const FAQ = () => {
               {asString(t('pricingPage.faq.headline'))}
             </h2>
           </Reveal>
-          <Reveal delay={100} className="mt-10 rounded-2xl bg-white border border-charcoal/10 px-6">
+          <div className="mt-10 rounded-2xl bg-white border border-charcoal/10 px-6">
             {items.map((it, i) => (
-              <FAQItem key={i} q={it.q} a={it.a} />
+              <Reveal
+                key={i}
+                delay={cascadeDelay(i, 280)}
+                distance={16}
+                className="border-b border-charcoal/10 last:border-b-0"
+              >
+                <FAQItem q={it.q} a={it.a} />
+              </Reveal>
             ))}
-          </Reveal>
+          </div>
         </div>
       </div>
     </section>

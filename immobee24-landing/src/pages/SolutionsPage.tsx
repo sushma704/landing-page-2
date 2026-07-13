@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
-import { chorSlot, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
+import { LineReveal, chorSlot, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
 import { SceneInquiryReply, SceneFollowUp } from '../components/scenes';
 import { WhyImmob24Teaser } from '../components/AiRefinementBands';
 import { useLanguage } from '../i18n';
@@ -284,14 +284,14 @@ export default function SolutionsPage() {
       {/* By role */}
       <section id="by-role" className="py-16 md:py-24 bg-white">
         <div className="container">
-          <Reveal className="max-w-3xl">
+          <div className="max-w-3xl">
             <p className="text-xs font-semibold uppercase tracking-wider text-golden-dark">
               {L('byRole')}
             </p>
             <h2 className="mt-2 font-heading text-section-mobile md:text-section text-charcoal">
-              {L('roleHeadline')}
+              <LineReveal text={L('roleHeadline')} />
             </h2>
-          </Reveal>
+          </div>
 
           <RevealGroup className="mt-10 grid gap-6 lg:grid-cols-3">
             {ROLES.map((r) => (
@@ -334,14 +334,14 @@ export default function SolutionsPage() {
       {/* By scenario */}
       <section id="scenarios" className="py-16 md:py-24 bg-cream">
         <div className="container">
-          <Reveal className="max-w-3xl">
+          <div className="max-w-3xl">
             <p className="text-xs font-semibold uppercase tracking-wider text-golden-dark">
               {L('byScenario')}
             </p>
             <h2 className="mt-2 font-heading text-section-mobile md:text-section text-charcoal">
-              {L('scenarioHeadline')}
+              <LineReveal text={L('scenarioHeadline')} />
             </h2>
-          </Reveal>
+          </div>
 
           <div className="mt-10 space-y-8">
             {scenarios.map((sc, i) => {

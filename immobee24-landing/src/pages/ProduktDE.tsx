@@ -49,6 +49,7 @@ import {
   usePrefersReducedMotion,
 } from '../lib/animations';
 import {
+  SceneInquiryReply,
   SceneQualification,
   SceneScheduling,
   SceneFollowUp,
@@ -592,7 +593,12 @@ type Feature = {
 const Features = () => {
   const { t } = useLanguage();
   const items: Feature[] = [
-    { icon: Zap, titleKey: 'produkt.features.f1Title', bodyKey: 'produkt.features.f1Body' },
+    {
+      icon: Zap,
+      titleKey: 'produkt.features.f1Title',
+      bodyKey: 'produkt.features.f1Body',
+      scene: SceneInquiryReply,
+    },
     {
       icon: Target,
       titleKey: 'produkt.features.f2Title',
@@ -632,7 +638,7 @@ const Features = () => {
           {items.map((item, i) => (
             <div
               key={i}
-              className="card-sweep rounded-2xl border border-charcoal/10 bg-white p-6 md:p-8 shadow-subtle transition-all"
+              className="card-sweep flex h-full flex-col rounded-2xl border border-charcoal/10 bg-white p-6 md:p-8 shadow-subtle transition-all"
             >
               <div className="flex items-center gap-3">
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-golden-soft text-golden-dark">
@@ -646,7 +652,7 @@ const Features = () => {
                 {asString(t(item.titleKey))}
               </h3>
               <p className="mt-3 text-slate leading-relaxed">{asString(t(item.bodyKey))}</p>
-              {item.scene && <item.scene className="mt-6" />}
+              {item.scene && <item.scene className="mt-auto pt-6" />}
             </div>
           ))}
         </RevealGroup>

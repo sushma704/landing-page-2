@@ -33,6 +33,8 @@ import {
   UserCheck,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { registerTranslations } from '../i18n';
+import pageCopy from '../i18n/copy/produkt';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { HeroWaves } from '../components/HeroWaves';
 import { ScrollCue } from '../components/Wayfinding';
@@ -64,6 +66,9 @@ import { softwareApplicationSchema, breadcrumbSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { useLanguage } from '../i18n';
 import { pathFor } from '../i18n/pages';
+
+// page-only copy lives in this route chunk, not the entry bundle
+registerTranslations(pageCopy);
 
 // Local helpers (kept out of i18n module since they're shared by both pages
 // in slightly different shapes). These narrow the t() return to the value

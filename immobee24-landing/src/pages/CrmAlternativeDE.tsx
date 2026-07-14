@@ -9,6 +9,8 @@ import {
   Zap,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { registerTranslations } from '../i18n';
+import pageCopy from '../i18n/copy/crmAlt';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import {
   LineReveal,
@@ -30,6 +32,9 @@ import { breadcrumbSchema, softwareApplicationSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { useLanguage } from '../i18n';
 import { pathFor } from '../i18n/pages';
+
+// page-only copy lives in this route chunk, not the entry bundle
+registerTranslations(pageCopy);
 
 type TVal = string | string[] | Array<{ q: string; a: string }> | string[][];
 const asString = (v: TVal): string => (typeof v === 'string' ? v : '');

@@ -245,6 +245,7 @@ const NavDropdown = ({
                 to={it.to}
                 onClick={() => setOpen(false)}
                 onMouseEnter={() => preloadRoute(it.to)}
+                onFocus={() => preloadRoute(it.to)}
                 className="menu-item block rounded-xl px-3.5 py-2.5 hover:bg-cream"
                 style={{ animationDelay: `${i * 40}ms` }}
               >
@@ -337,6 +338,8 @@ export const Header = () => {
           <NavDropdown label={productLink.label} items={productItems} onDark={onDark} />
           <Link
             to={aiAgentsLink.to}
+            onMouseEnter={() => preloadRoute(aiAgentsLink.to)}
+            onFocus={() => preloadRoute(aiAgentsLink.to)}
             className={`flex items-center gap-1.5 nav-underline px-2 py-2 text-sm transition-colors whitespace-nowrap ${
               onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
             }`}
@@ -350,6 +353,7 @@ export const Header = () => {
           <Link
             to={pricingLink.to}
             onMouseEnter={() => preloadRoute(pricingLink.to)}
+            onFocus={() => preloadRoute(pricingLink.to)}
             className={`nav-underline px-2 py-2 text-sm transition-colors whitespace-nowrap ${
               onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
             }`}
@@ -360,6 +364,7 @@ export const Header = () => {
           <Link
             to={contactLink.to}
             onMouseEnter={() => preloadRoute(contactLink.to)}
+            onFocus={() => preloadRoute(contactLink.to)}
             className={`nav-underline px-2 py-2 text-sm transition-colors whitespace-nowrap ${
               onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
             }`}

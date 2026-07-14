@@ -12,6 +12,8 @@ import {
   Users,
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { registerTranslations } from '../i18n';
+import pageCopy from '../i18n/copy/pricing';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
@@ -36,6 +38,9 @@ import { BillingToggle, MorphPrice, type BillingPeriod } from '../components/Pri
 import { ScrollCue } from '../components/Wayfinding';
 import { useLanguage } from '../i18n';
 import { pathFor } from '../i18n/pages';
+
+// page-only copy lives in this route chunk, not the entry bundle
+registerTranslations(pageCopy);
 
 type TVal = string | string[] | Array<{ q: string; a: string }> | string[][];
 // Tally application form — the beta program's real apply flow (carried over

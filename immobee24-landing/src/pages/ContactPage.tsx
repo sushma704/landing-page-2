@@ -19,6 +19,8 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
+import { registerTranslations } from '../i18n';
+import pageCopy from '../i18n/copy/contact';
 import { Header, Footer, DEMO_BOOKING_URL } from '../components/SiteChrome';
 import { cascadeDelay, chorSlot, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
 import { SHEET_ENDPOINT } from '../components/NewsletterSignup';
@@ -27,6 +29,9 @@ import type { Language, TranslationKey } from '../i18n';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 import { SITE_ORIGIN, pathFor, urlFor } from '../i18n/pages';
 import { trackEvent } from '../lib/analytics';
+
+// page-only copy lives in this route chunk, not the entry bundle
+registerTranslations(pageCopy);
 
 type Copy = Record<Language, string>;
 type TVal = string | string[] | Array<{ q: string; a: string }> | undefined;

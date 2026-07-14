@@ -1,8 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Language, translations } from './translations';
-import { frOverlay } from './fr';
-import { arOverlay } from './ar';
+import { extraTranslations } from './registry';
 import { alternateForLanguage, languageFromPath } from './pages';
 import { trackEvent } from '../lib/analytics';
 
@@ -16,6 +15,20 @@ interface LanguageContextType {
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
 const STORAGE_KEY = 'immob24-lang';
+
+// fr/ar overlay dictionaries are route-independent but only needed when that
+// language is active, so they load as their own chunks (~64/79KB source)
+// instead of sitting in the entry bundle. Loaded once, cached here.
+type Overlay = Record<string, unknown>;
+const overlayCache: Partial<Record<'fr' | 'ar', Overlay>> = {};
+const loadOverlay = (lang: 'fr' | 'ar'): Promise<Overlay> =>
+  overlayCache[lang]
+    ? Promise.resolve(overlayCache[lang]!)
+    : (lang === 'fr' ? import('./fr') : import('./ar')).then((m) => {
+        const overlay = (lang === 'fr' ? (m as any).frOverlay : (m as any).arOverlay) as Overlay;
+        overlayCache[lang] = overlay;
+        return overlay;
+      });
 
 function detectInitialLanguage(): Language {
   if (typeof window === 'undefined') return 'de';
@@ -35,6 +48,17 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const [language, setLanguage] = useState<Language>(detectInitialLanguage);
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  // bump to re-render once an overlay chunk lands
+  const [, setOverlayTick] = useState(0);
+
+  // Load the active language's overlay chunk. On a fr/ar first visit the
+  // provider withholds children until it lands (below) so no English flashes.
+  const needsOverlay = language === 'fr' || language === 'ar';
+  useEffect(() => {
+    if (needsOverlay && !overlayCache[language as 'fr' | 'ar']) {
+      loadOverlay(language as 'fr' | 'ar').then(() => setOverlayTick((n) => n + 1));
+    }
+  }, [language, needsOverlay]);
 
   // Keep the language in sync with the URL: /de/* and /en/* are language-locked.
   useEffect(() => {
@@ -55,8 +79,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
   const switchLanguage = (target: Language) => {
     if (target === language) return;
     const nextPath = alternateForLanguage(pathname, target);
-    setLanguage(target);
-    navigate(nextPath);
+    const go = () => {
+      setLanguage(target);
+      navigate(nextPath);
+    };
+    // fetch the overlay before switching so fr/ar never paint in English
+    if (target === 'fr' || target === 'ar') loadOverlay(target).then(go, go);
+    else go();
   };
 
   const t = (path: string) => {
@@ -66,21 +95,25 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     // leaves). Missing keys fall back to English below — so partially
     // translated languages degrade gracefully instead of showing key paths.
     if (language === 'fr' || language === 'ar') {
-      let o: any = language === 'fr' ? frOverlay : arOverlay;
+      let o: any = overlayCache[language];
       for (const key of keys) {
         o = o && typeof o === 'object' ? o[key] : undefined;
       }
       if (typeof o === 'string' || Array.isArray(o)) return o;
     }
 
-    let result: any = translations;
-    for (const key of keys) {
-      if (result && typeof result === 'object') {
-        result = result[key];
-      } else {
-        console.warn(`Translation not found: ${path}`);
-        return path;
+    const lookup = (root: any) => {
+      let r = root;
+      for (const key of keys) {
+        r = r && typeof r === 'object' ? r[key] : undefined;
       }
+      return r;
+    };
+    // core dictionary first, then route-registered page copy
+    let result: any = lookup(translations) ?? lookup(extraTranslations);
+    if (result === undefined) {
+      console.warn(`Translation not found: ${path}`);
+      return path;
     }
 
     if (result && typeof result === 'object' && !Array.isArray(result)) {
@@ -97,9 +130,13 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     return typeof result === 'string' ? result : path;
   };
 
+  // fr/ar direct entry (URL/saved pref): hold children back the one tick the
+  // overlay chunk needs, instead of painting English and swapping.
+  const overlayPending = needsOverlay && !overlayCache[language as 'fr' | 'ar'];
+
   return (
     <LanguageContext.Provider value={{ language, setLanguage, switchLanguage, t }}>
-      {children}
+      {overlayPending ? null : children}
     </LanguageContext.Provider>
   );
 }

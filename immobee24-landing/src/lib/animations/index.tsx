@@ -51,7 +51,7 @@ const hiddenTransform = (direction: RevealDirection, distance: number): string =
     up: `translateY(${distance}px)`,
     left: `translateX(-${distance}px)`,
     right: `translateX(${distance}px)`,
-    scale: 'scale(0.94)',
+    scale: 'scale(0.95)',
   })[direction];
 
 export function usePrefersReducedMotion(): boolean {

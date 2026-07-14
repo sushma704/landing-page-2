@@ -665,7 +665,11 @@ const Features = () => {
                 {asString(t(item.titleKey))}
               </h3>
               <p className="mt-3 text-slate leading-relaxed">{asString(t(item.bodyKey))}</p>
-              {item.scene && <item.scene className="mt-auto pt-6" />}
+              {item.scene && (
+                <item.scene
+                  className={`float-soft mt-auto pt-6 ${['', 'fs-d1', 'fs-d2', 'fs-d3', 'fs-d4'][i % 5]}`}
+                />
+              )}
             </div>
           ))}
       </RevealGroup>
@@ -1388,7 +1392,8 @@ export default function ProduktDE() {
           selfAnimated.has(Section) ? (
             <Section key={i} />
           ) : (
-            <Reveal key={i}>
+            // alternate entry sides for successive plain sections (subtle)
+            <Reveal key={i} direction={i % 2 === 0 ? 'left' : 'right'} distance={28}>
               <Section />
             </Reveal>
           ),

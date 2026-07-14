@@ -202,7 +202,7 @@ const Hero = () => {
             </div>
 
             {/* the rotating product showcase (chat -> journey -> dashboard) */}
-            <div className="band-dark relative z-10 xl:w-[38rem]">
+            <div className="band-dark float-soft relative z-10 xl:w-[38rem]">
               <HeroShowcase />
             </div>
 

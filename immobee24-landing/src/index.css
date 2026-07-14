@@ -1027,7 +1027,7 @@ section.bg-charcoal {
 }
 .chor-scale {
   opacity: 0;
-  transform: translateY(28px) scale(0.94);
+  transform: translateY(28px) scale(0.95);
   animation: chorScaleIn calc(var(--slowmo, 1) * var(--chor-dur, 700ms))
     cubic-bezier(0.22, 1, 0.36, 1) forwards;
   animation-delay: calc(var(--slowmo, 1) * var(--chor-delay, 0ms));
@@ -1319,11 +1319,26 @@ html:not(.dark) body { background-color: #fbf9f4; }
 }
 .snap-rail::-webkit-scrollbar { display: none; }
 
+
+/* Subtle continuous float for dashboard mockups and feature demos
+   (premium-SaaS ambient motion; ±5px over 7s, staggered via negative
+   delays; disabled under reduced motion) */
+@keyframes floatSoft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+.float-soft { animation: floatSoft 7s ease-in-out infinite; }
+/* stagger phases (must follow the shorthand so the delay survives) */
+.float-soft.fs-d1 { animation-delay: -2.3s; }
+.float-soft.fs-d2 { animation-delay: -4.1s; }
+.float-soft.fs-d3 { animation-delay: -1.2s; }
+.float-soft.fs-d4 { animation-delay: -3.2s; }
+
 /* Floating section-hop button */
 .hop-float { animation: floatY 3.4s ease-in-out infinite; }
 
 @media (prefers-reduced-motion: reduce) {
   .spot-progress { animation: none; }
-  .hop-float { animation: none; }
+  .hop-float, .float-soft { animation: none; }
   .snap-rail { scroll-behavior: auto !important; }
 }

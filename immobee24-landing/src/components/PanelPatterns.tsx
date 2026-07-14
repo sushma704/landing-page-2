@@ -168,7 +168,7 @@ export const WorkflowSpotlight = ({ steps }: { steps: string[] }) => {
       </div>
 
       {/* visual stage: fixed aspect, 250ms crossfade + slow settle-zoom */}
-      <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-golden/25 bg-white shadow-card ring-1 ring-golden/10">
+      <div className="float-soft relative aspect-[16/10] overflow-hidden rounded-2xl border border-golden/25 bg-white shadow-card ring-1 ring-golden/10">
         {SPOT_SCREENS.slice(0, n).map((src, i) => (
           <img
             key={src}

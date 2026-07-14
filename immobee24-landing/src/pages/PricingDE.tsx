@@ -615,7 +615,8 @@ const RoiEstimator = () => {
               className="mt-8 font-metric text-5xl md:text-6xl font-bold text-golden-dark"
               style={{ fontVariantNumeric: 'tabular-nums' }}
             >
-              ≈ {hours} h
+              {/* dir isolate: keeps "≈ 17 h" in this order under RTL */}
+              <span dir="ltr">≈ {hours} h</span>
             </p>
             <p className="mt-2 text-sm font-medium text-charcoal">{c('result')}</p>
             <p className="mt-6 text-xs text-warm-gray max-w-md mx-auto">{c('assumption')}</p>

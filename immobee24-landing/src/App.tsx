@@ -24,6 +24,7 @@ const SolutionsPage = lazy(() => import('./pages/SolutionsPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 
 const DevScenes = lazy(() => import('./pages/DevScenes'));
+const DevMotionTemplates = lazy(() => import('./pages/DevMotionTemplates'));
 // SEO landing pages — DE/EN pairs, staged under noindex pending entity registration
 const MaklersoftwareMuenchen = lazy(() => import('./pages/seo/MaklersoftwareMuenchen'));
 const MaklersoftwareBerlin = lazy(() => import('./pages/seo/MaklersoftwareBerlin'));
@@ -93,6 +94,7 @@ export default function App() {
         <Route path="/" element={<Navigate to="/de" replace />} />
 
         <Route path="/dev/scenes" element={<DevScenes />} />
+        <Route path="/dev/motion-templates" element={<DevMotionTemplates />} />
 
         <Route path="/de" element={<HomePage />} />
         <Route path="/en" element={<HomePage />} />

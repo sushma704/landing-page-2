@@ -33,7 +33,7 @@ const SPOTLIGHT_ITEMS = [
   { label: 'Clear reports & insights anytime', img: SCREENS.analytics },
 ];
 
-const TemplateSpotlightList = () => {
+export const TemplateSpotlightList = () => {
   const reduced = usePrefersReducedMotion();
   const [active, setActive] = useState(0);
   const [hover, setHover] = useState(false);
@@ -105,7 +105,7 @@ const RAIL_CARDS = [
   { title: 'Decisions on real numbers', body: 'Response times, conversion and pipeline value at a glance.', img: SCREENS.analytics },
 ];
 
-const TemplateCardRail = () => {
+export const TemplateCardRail = () => {
   const reduced = usePrefersReducedMotion();
   const [index, setIndex] = useState(0);
   const [hover, setHover] = useState(false);
@@ -194,7 +194,7 @@ const STATS = [
   { value: '5', suffix: 'h', label: 'Admin time saved per week' },
 ];
 
-const TemplateStatBand = () => {
+export const TemplateStatBand = () => {
   const reduced = usePrefersReducedMotion();
   const ref = useRef<HTMLDivElement | null>(null);
   const [on, setOn] = useState(false);
@@ -273,7 +273,7 @@ const STEPS = [
   { q: 'The pipeline stays honest', a: 'Every touch is logged; reports show response times and conversion without manual bookkeeping.', img: SCREENS.analytics },
 ];
 
-const TemplateStepperAccordion = () => {
+export const TemplateStepperAccordion = () => {
   const [open, setOpen] = useState(0);
   return (
     <div className="grid gap-6 md:grid-cols-2 md:items-center">

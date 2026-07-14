@@ -1266,23 +1266,39 @@ html:not(.dark) body { background-color: #fbf9f4; }
    ════════════════════════════════════════════════════════════════ */
 .panel-card {
   position: relative;
-  background: linear-gradient(135deg, #FFFDF9 0%, #FBF2E0 100%);
-  border: 1px solid rgb(30 27 22 / 0.08);
+  background: linear-gradient(140deg, #FFFEFB 0%, #FCF1DC 55%, #F8E7C4 100%);
+  border: 1px solid rgb(199 108 5 / 0.18);
+  box-shadow: 0 24px 60px -28px rgb(30 27 22 / 0.25);
 }
 .dark .panel-card {
-  background: linear-gradient(135deg, #211d16 0%, #2b2213 100%);
-  border-color: rgb(255 255 255 / 0.08);
+  background: linear-gradient(140deg, #262017 0%, #2e2412 55%, #382a10 100%);
+  border-color: rgb(245 166 35 / 0.22);
+  box-shadow:
+    0 0 0 1px rgb(245 166 35 / 0.06),
+    0 30px 80px -30px rgb(0 0 0 / 0.8);
 }
 .panel-card::before {
   content: '';
   position: absolute;
   top: -6rem;
   inset-inline-end: -6rem;
+  width: 26rem;
+  height: 26rem;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: radial-gradient(circle, rgb(var(--glow-color) / calc(var(--glow-opacity) * 2.2)) 0%, transparent 65%);
+}
+/* second, fainter glow anchored to the opposite corner for depth */
+.panel-card::after {
+  content: '';
+  position: absolute;
+  bottom: -8rem;
+  inset-inline-start: -8rem;
   width: 24rem;
   height: 24rem;
   border-radius: 9999px;
   pointer-events: none;
-  background: radial-gradient(circle, rgb(var(--glow-color) / var(--glow-opacity)) 0%, transparent 65%);
+  background: radial-gradient(circle, rgb(12 111 95 / 0.14) 0%, transparent 65%);
 }
 
 /* Workflow spotlight: time-to-next progress inside the active item */

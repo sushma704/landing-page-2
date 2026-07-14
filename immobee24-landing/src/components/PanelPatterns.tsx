@@ -167,8 +167,8 @@ export const WorkflowSpotlight = ({ steps }: { steps: string[] }) => {
         })}
       </div>
 
-      {/* visual stage: fixed aspect, 250ms crossfade */}
-      <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-card dark:border-white/10">
+      {/* visual stage: fixed aspect, 250ms crossfade + slow settle-zoom */}
+      <div className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-golden/25 bg-white shadow-card ring-1 ring-golden/10">
         {SPOT_SCREENS.slice(0, n).map((src, i) => (
           <img
             key={src}
@@ -180,7 +180,10 @@ export const WorkflowSpotlight = ({ steps }: { steps: string[] }) => {
             className="absolute inset-0 h-full w-full object-cover object-left-top"
             style={{
               opacity: active === i ? 1 : 0,
-              transition: reduced ? undefined : 'opacity 250ms ease-out',
+              transform: reduced ? undefined : active === i ? 'scale(1)' : 'scale(1.045)',
+              transition: reduced
+                ? undefined
+                : 'opacity 250ms ease-out, transform 2600ms cubic-bezier(0.22,1,0.36,1)',
             }}
           />
         ))}

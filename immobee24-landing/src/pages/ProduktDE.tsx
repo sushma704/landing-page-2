@@ -1060,9 +1060,10 @@ const IntegrationHub = () => {
   }, [inView, reduced]);
 
   return (
-    <section id="channels" ref={ref} className="py-20 md:py-28 bg-cream">
-      <div className="container">
-        <div className="grid items-center gap-10 lg:grid-cols-2 max-w-6xl mx-auto">
+    <section id="channels" ref={ref} className="py-10 md:py-14">
+      <div className="container max-w-[1200px]">
+        <Reveal direction="scale">
+        <div className="panel-card overflow-hidden rounded-3xl p-6 md:p-12 grid items-center gap-10 lg:grid-cols-2">
           <div>
             <Reveal direction="left">
               <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
@@ -1137,6 +1138,7 @@ const IntegrationHub = () => {
             </div>
           </Reveal>
         </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -1328,21 +1330,27 @@ export default function ProduktDE() {
     'produkt',
   );
 
+  // Rhythm (flat → panel → flat → panel …): the workflow spotlight panel is
+  // the first thing after the hero — visual proof before the text sections.
   const sections = [
     Hero,
+    // PANEL 1: the centerpiece spotlight
+    WorkflowPanel,
+    // flat dark band
+    SevenCoWorkersBand,
+    // PANEL 2: what Immob24 takes over (scene cards)
+    Features,
+    // flat: real-screens snap carousel
+    ScreensCarousel,
+    // flat text cluster (definition/answer/problem — SEO content)
     Definition,
     AnswerBlock,
     ProblemFit,
-    Features,
-    // AI-refinement (draft/ai-refinement): the 7 AI co-workers + demo video
-    SevenCoWorkersBand,
-    // real-screens tour (pattern 3: snap carousel)
-    ScreensCarousel,
     UseCases,
+    // PANEL 3: channels hub
     IntegrationHub,
     CrmComparison,
     WhoItsFor,
-    WorkflowPanel,
     ProcessDeepDive,
     HumanControl,
     SocialProof,

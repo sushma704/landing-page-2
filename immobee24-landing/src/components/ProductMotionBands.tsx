@@ -412,3 +412,219 @@ export const ProductStatBand = () => {
     </section>
   );
 };
+
+// ── T5: pinned scroll presentation (the "deck") ──────────────────────────────
+// The how-it-works section as a presentation: the stage pins to the viewport
+// and scrolling advances the five steps like slides — caption and screen
+// crossfade, the visual drifts with scroll, a progress bar tracks position.
+// Below md (and under reduced motion) it renders as a plain stacked list.
+
+const DECK_SCREENS = [
+  '/screens/dashboard.webp',
+  '/screens/messages.webp',
+  '/screens/leads.webp',
+  '/screens/ai-control.webp',
+  '/screens/analytics.webp',
+];
+
+const DECK_KICKER: L10n = {
+  de: 'Scrollen Sie — jeder Schritt ist eine Folie',
+  en: 'Keep scrolling — every step is a slide',
+  fr: 'Continuez à défiler — chaque étape est une diapositive',
+  ar: 'تابعوا التمرير — كل خطوة شريحة',
+};
+
+export const PresentationDeck = ({
+  headline,
+  steps,
+  ctaLabel,
+  ctaAttrs,
+  onCta,
+}: {
+  headline: string;
+  steps: string[];
+  ctaLabel: string;
+  ctaAttrs?: Record<string, unknown>;
+  onCta?: () => void;
+}) => {
+  const { language } = useLanguage();
+  const reduced = usePrefersReducedMotion();
+  const hostRef = useRef<HTMLElement | null>(null);
+  const [slide, setSlide] = useState(0);
+  const [isDesktop, setIsDesktop] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches,
+  );
+  const n = Math.min(steps.length, DECK_SCREENS.length);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const onMq = () => setIsDesktop(mq.matches);
+    mq.addEventListener('change', onMq);
+    return () => mq.removeEventListener('change', onMq);
+  }, []);
+
+  // scroll scrub: progress 0..1 across the tall host drives --deck-p (cheap,
+  // no re-render) and the slide index (state, changes at boundaries only)
+  useEffect(() => {
+    if (reduced || !isDesktop) return;
+    const el = hostRef.current;
+    if (!el) return;
+    let raf = 0;
+    const onScroll = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const r = el.getBoundingClientRect();
+        const total = r.height - window.innerHeight;
+        const p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 0;
+        el.style.setProperty('--deck-p', String(p));
+        const idx = Math.min(n - 1, Math.floor(p * n));
+        setSlide((s) => (s === idx ? s : idx));
+      });
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+    };
+  }, [reduced, isDesktop, n]);
+
+  // static fallback: stacked steps (mobile + reduced motion)
+  if (reduced || !isDesktop) {
+    return (
+      <section id="how-it-works" className="py-20 bg-cream">
+        <div className="container max-w-3xl">
+          <h2 className="font-heading text-section-mobile text-charcoal text-balance text-center">
+            {headline}
+          </h2>
+          <ol className="mt-10 space-y-6">
+            {steps.slice(0, n).map((step, i) => (
+              <li key={i} className="rounded-2xl border border-charcoal/10 bg-white p-5 shadow-subtle">
+                <span className="font-metric text-xs font-bold text-golden-dark">
+                  {String(i + 1).padStart(2, '0')} / {String(n).padStart(2, '0')}
+                </span>
+                <p className="mt-2 text-charcoal">{step}</p>
+                <img src={DECK_SCREENS[i]} alt="" loading="lazy" className="mt-4 w-full rounded-xl border border-charcoal/10" />
+              </li>
+            ))}
+          </ol>
+          <div className="mt-10 text-center">
+            <button
+              type="button"
+              {...(ctaAttrs ?? {})}
+              onClick={onCta}
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-golden px-7 py-3.5 font-semibold text-[#1E1B16] shadow-golden"
+            >
+              {ctaLabel}
+              <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section
+      id="how-it-works"
+      ref={hostRef}
+      className="relative"
+      style={{ height: `${(n + 1) * 100}vh`, '--deck-p': 0 } as React.CSSProperties}
+    >
+      <div className="band-dark sticky top-0 flex h-screen flex-col overflow-hidden bg-[#17140F]">
+        {/* progress bar */}
+        <div aria-hidden className="absolute inset-x-0 top-0 h-1 bg-white/10">
+          <div
+            className="h-full bg-gradient-golden"
+            style={{ width: 'calc(var(--deck-p) * 100%)', insetInlineStart: 0 }}
+          />
+        </div>
+
+        <div className="container flex flex-1 flex-col justify-center pb-10 pt-28">
+          <div className="flex items-baseline justify-between gap-4">
+            <h2 className="font-heading text-2xl md:text-4xl text-white text-balance">{headline}</h2>
+            <span dir="ltr" className="font-metric text-sm font-bold text-golden whitespace-nowrap" aria-live="polite">
+              {String(slide + 1).padStart(2, '0')} / {String(n).padStart(2, '0')}
+            </span>
+          </div>
+          <p className="mt-1 text-sm text-white/50">{pick(DECK_KICKER, language)}</p>
+
+          <div className="mt-8 grid flex-1 items-center gap-10 lg:grid-cols-[1fr_1.35fr]">
+            {/* captions: the active one rises in, others rest */}
+            <div className="relative min-h-[9rem]">
+              {steps.slice(0, n).map((step, i) => (
+                <p
+                  key={i}
+                  aria-hidden={slide !== i}
+                  className="absolute inset-x-0 top-1/2 -translate-y-1/2 font-heading text-xl md:text-3xl leading-snug text-white transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                  style={{
+                    opacity: slide === i ? 1 : 0,
+                    transform: `translateY(calc(-50% + ${slide === i ? 0 : slide > i ? -28 : 28}px))`,
+                  }}
+                >
+                  <span className="me-3 font-metric text-base font-bold text-golden align-middle">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  {step}
+                </p>
+              ))}
+              {/* step dots */}
+              <div className="absolute -bottom-10 flex gap-2">
+                {steps.slice(0, n).map((_, i) => (
+                  <span
+                    key={i}
+                    className={`h-1.5 rounded-full transition-all duration-400 ${
+                      i === slide ? 'w-7 bg-golden' : i < slide ? 'w-1.5 bg-golden/50' : 'w-1.5 bg-white/20'
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+
+            {/* screens: crossfade per slide, whole stack drifts with scroll */}
+            <div
+              className="relative aspect-[16/10] overflow-hidden rounded-2xl border border-white/10 shadow-card-hover"
+              style={{ transform: 'translateY(calc((var(--deck-p) - 0.5) * -30px))' }}
+            >
+              {DECK_SCREENS.slice(0, n).map((src, i) => (
+                <img
+                  key={src}
+                  src={src}
+                  alt=""
+                  loading={i === 0 ? 'eager' : 'lazy'}
+                  className="absolute inset-0 h-full w-full object-cover object-left-top transition-all duration-700 ease-[cubic-bezier(0.22,1,0.36,1)]"
+                  style={{
+                    opacity: slide === i ? 1 : 0,
+                    transform: slide === i ? 'scale(1)' : slide > i ? 'scale(1.05)' : 'scale(0.985)',
+                  }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* CTA lands with the final slide */}
+          <div
+            className="pb-2 pt-6 text-center transition-all duration-500"
+            style={{
+              opacity: slide === n - 1 ? 1 : 0,
+              transform: slide === n - 1 ? 'none' : 'translateY(10px)',
+              pointerEvents: slide === n - 1 ? 'auto' : 'none',
+            }}
+          >
+            <button
+              type="button"
+              {...(ctaAttrs ?? {})}
+              onClick={onCta}
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-golden px-7 py-3.5 font-semibold text-[#1E1B16] shadow-golden transition-transform hover:scale-[1.03]"
+            >
+              {ctaLabel}
+              <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};

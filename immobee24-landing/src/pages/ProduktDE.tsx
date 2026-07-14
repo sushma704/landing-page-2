@@ -58,7 +58,7 @@ import {
   ScenePipeline,
 } from '../components/scenes';
 import { SevenCoWorkersBand, ComplianceBadgesStrip } from '../components/AiRefinementBands';
-import { ModuleSpotlight, ScreenRail, ProductStatBand } from '../components/ProductMotionBands';
+import { ModuleSpotlight, ScreenRail, ProductStatBand, PresentationDeck } from '../components/ProductMotionBands';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
@@ -866,113 +866,18 @@ const WhoItsFor = () => {
 // Real dashboard screens (user screenshots 2026-07-14) — step order:
 // inquiry lands (dashboard) → Bee chats (messages) → human approves
 // (ai-control) → pipeline moves (analytics) → marketing follows (campaigns)
-const HOW_VISUALS = [
-  '/screens/dashboard.webp',
-  '/screens/messages.webp',
-  '/screens/ai-control.webp',
-  '/screens/analytics.webp',
-  '/screens/campaigns.webp',
-];
-
-const HowItWorks = () => {
+// How-it-works as a pinned scroll presentation (deck) — same i18n content,
+// upgraded interaction. Mobile/reduced-motion falls back to a stacked list.
+const HowItWorksDeck = () => {
   const { t } = useLanguage();
-  const steps = asStringArray(t('produkt.howItWorks.steps'));
-  const reduced = usePrefersReducedMotion();
-  const [activeStep, setActiveStep] = useState(0);
-  const stepRefs = useRef<Array<HTMLLIElement | null>>([]);
-
-  // Scrollytelling (desktop): the step crossing the viewport-center band
-  // becomes active; the sticky panel cross-fades to its visual.
-  useEffect(() => {
-    const els = stepRefs.current.filter(Boolean) as HTMLLIElement[];
-    if (els.length === 0) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            const idx = Number((e.target as HTMLElement).dataset.step ?? 0);
-            setActiveStep(idx);
-          }
-        });
-      },
-      { rootMargin: '-45% 0px -45% 0px', threshold: 0 },
-    );
-    els.forEach((el) => obs.observe(el));
-    return () => obs.disconnect();
-  }, [steps.length]);
-
   return (
-    <section id="how-it-works" className="py-20 md:py-28 bg-gradient-to-b from-cream to-white">
-      <div className="container">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            <LineReveal text={asString(t('produkt.howItWorks.headline'))} />
-          </h2>
-          </div>
-
-        <div className="mt-12 lg:grid lg:grid-cols-2 lg:gap-12 max-w-6xl mx-auto">
-          <ol className="relative max-w-3xl mx-auto lg:mx-0">
-            <span
-              aria-hidden
-              className="absolute left-5 top-2 bottom-2 w-px bg-gradient-to-b from-golden/40 via-golden/20 to-transparent"
-            />
-            {steps.map((step, i) => (
-              <li
-                key={i}
-                data-step={i}
-                ref={(el) => {
-                  stepRefs.current[i] = el;
-                }}
-                className="relative pl-16 pb-8 last:pb-0 transition-opacity duration-300"
-                style={{
-                  opacity: reduced || activeStep === i ? 1 : 0.55,
-                }}
-              >
-                <span className="absolute left-0 top-0 inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-golden text-white font-bold shadow-golden">
-                  {i + 1}
-                </span>
-                <div className="rounded-xl bg-white border border-charcoal/5 p-4 md:p-5 shadow-subtle">
-                  <p className="text-charcoal">{step}</p>
-                </div>
-              </li>
-            ))}
-          </ol>
-
-          {/* Sticky visual panel — desktop only; mobile keeps the plain list */}
-          <div aria-hidden className="hidden lg:block">
-            <div className="sticky top-28 grid overflow-hidden rounded-2xl border border-charcoal/10 shadow-card">
-              {HOW_VISUALS.map((src, i) => (
-                <img
-                  key={src}
-                  src={src}
-                  alt=""
-                  width={1920}
-                  height={1080}
-                  loading="lazy"
-                  className="col-start-1 row-start-1 aspect-video w-full object-cover"
-                  style={{
-                    opacity: (activeStep % HOW_VISUALS.length) === i ? 1 : 0,
-                    transition: reduced ? undefined : 'opacity 250ms ease-out',
-                  }}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-10 text-center">
-          <button
-            type="button"
-            {...DEMO_CTA_PROPS}
-            onClick={() => trackEvent('produkt_how_cta_click')}
-            className="inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
-          >
-            {asString(t('produkt.howItWorks.cta'))}
-            <ArrowRight className="h-4 w-4" />
-          </button>
-        </div>
-      </div>
-    </section>
+    <PresentationDeck
+      headline={asString(t('produkt.howItWorks.headline'))}
+      steps={asStringArray(t('produkt.howItWorks.steps'))}
+      ctaLabel={asString(t('produkt.howItWorks.cta'))}
+      ctaAttrs={DEMO_CTA_PROPS}
+      onCta={() => trackEvent('produkt_how_cta_click')}
+    />
   );
 };
 
@@ -1420,7 +1325,7 @@ export default function ProduktDE() {
     IntegrationHub,
     CrmComparison,
     WhoItsFor,
-    HowItWorks,
+    HowItWorksDeck,
     ProcessDeepDive,
     HumanControl,
     SocialProof,
@@ -1442,7 +1347,7 @@ export default function ProduktDE() {
     Features,
     UseCases,
     WhoItsFor,
-    HowItWorks,
+    HowItWorksDeck,
     ProcessDeepDive,
     HumanControl,
     IntegrationHub,

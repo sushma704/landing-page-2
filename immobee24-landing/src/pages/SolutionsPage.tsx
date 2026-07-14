@@ -22,6 +22,7 @@ import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { LineReveal, chorSlot, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
 import { SceneInquiryReply, SceneFollowUp } from '../components/scenes';
 import { WhyImmob24Teaser } from '../components/AiRefinementBands';
+import { AccentHeading, Panel, SectionHopButton } from '../components/PanelPatterns';
 import { useLanguage } from '../i18n';
 import type { Language } from '../i18n';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
@@ -121,10 +122,10 @@ const T: Record<string, Copy> = {
   },
   byRole: { de: 'Nach Rolle', en: 'By role', fr: 'Par rôle', ar: 'حسب الدور' },
   roleHeadline: {
-    de: 'Wer arbeitet mit Immob24?',
-    en: 'Who works with Immob24?',
-    fr: 'Qui travaille avec Immob24 ?',
-    ar: 'من يعمل مع Immob24؟',
+    de: 'Wer «arbeitet» mit Immob24?',
+    en: 'Who «works» with Immob24?',
+    fr: 'Qui «travaille» avec Immob24 ?',
+    ar: 'من «يعمل» مع Immob24؟',
   },
   agentsLabel: {
     de: 'Ihre wichtigsten KI-Agenten',
@@ -134,10 +135,10 @@ const T: Record<string, Copy> = {
   },
   byScenario: { de: 'Nach Szenario', en: 'By scenario', fr: 'Par scénario', ar: 'حسب السيناريو' },
   scenarioHeadline: {
-    de: 'Drei Situationen, die jedes Maklerbüro kennt',
-    en: 'Three situations every brokerage knows',
-    fr: 'Trois situations que toute agence connaît',
-    ar: 'ثلاثة مواقف يعرفها كل مكتب وساطة',
+    de: 'Drei Situationen, die «jedes Maklerbüro» kennt',
+    en: 'Three situations «every brokerage» knows',
+    fr: 'Trois situations que «toute agence» connaît',
+    ar: 'ثلاثة مواقف يعرفها «كل مكتب وساطة»',
   },
   s1Title: {
     de: 'Portal-Anfragen stapeln sich über Nacht',
@@ -281,19 +282,19 @@ export default function SolutionsPage() {
         </div>
       </section>
 
-      {/* By role */}
-      <section id="by-role" className="py-16 md:py-24 bg-white">
-        <div className="container">
-          <div className="max-w-3xl">
-            <p className="text-xs font-semibold uppercase tracking-wider text-golden-dark">
-              {L('byRole')}
-            </p>
-            <h2 className="mt-2 font-heading text-section-mobile md:text-section text-charcoal">
-              <LineReveal text={L('roleHeadline')} />
-            </h2>
-          </div>
+      {/* By role — panel section (pattern 1) */}
+      <Panel id="by-role">
+        <div className="max-w-3xl">
+          <p className="text-xs font-semibold uppercase tracking-wider text-golden-dark">
+            {L('byRole')}
+          </p>
+          <AccentHeading
+            text={L('roleHeadline')}
+            className="mt-2 font-heading text-section-mobile md:text-section text-charcoal"
+          />
+        </div>
 
-          <RevealGroup className="mt-10 grid gap-6 lg:grid-cols-3">
+        <RevealGroup className="mt-10 grid gap-6 lg:grid-cols-3">
             {ROLES.map((r) => (
               <div
                 key={r.title.en}
@@ -328,21 +329,20 @@ export default function SolutionsPage() {
                 </div>
               </div>
             ))}
-          </RevealGroup>
-        </div>
-      </section>
+        </RevealGroup>
+      </Panel>
 
-      {/* By scenario */}
-      <section id="scenarios" className="py-16 md:py-24 bg-cream">
-        <div className="container">
-          <div className="max-w-3xl">
-            <p className="text-xs font-semibold uppercase tracking-wider text-golden-dark">
-              {L('byScenario')}
-            </p>
-            <h2 className="mt-2 font-heading text-section-mobile md:text-section text-charcoal">
-              <LineReveal text={L('scenarioHeadline')} />
-            </h2>
-          </div>
+      {/* By scenario — panel section (pattern 1) */}
+      <Panel id="scenarios">
+        <div className="max-w-3xl">
+          <p className="text-xs font-semibold uppercase tracking-wider text-golden-dark">
+            {L('byScenario')}
+          </p>
+          <AccentHeading
+            text={L('scenarioHeadline')}
+            className="mt-2 font-heading text-section-mobile md:text-section text-charcoal"
+          />
+        </div>
 
           <div className="mt-10 space-y-8">
             {scenarios.map((sc, i) => {
@@ -406,8 +406,7 @@ export default function SolutionsPage() {
               );
             })}
           </div>
-        </div>
-      </section>
+      </Panel>
 
       {/* Why immob24 — closing argument, links to the deep-dive */}
       <div id="why-immob24">
@@ -435,6 +434,7 @@ export default function SolutionsPage() {
         </div>
       </section>
 
+      <SectionHopButton />
       <Footer />
     </div>
   );

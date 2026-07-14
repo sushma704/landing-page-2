@@ -1258,3 +1258,56 @@ html:not(.dark) body { background-color: #fbf9f4; }
 .ba-animating {
   transition: --ba-pos 0ms; /* position driven by JS; this class marks the teach-in */
 }
+
+/* ════════════════════════════════════════════════════════════════
+   Panel patterns (product/solutions redesign, 2026-07-14)
+   .panel-card — page-scale rounded container: brand gradient ground
+   + soft glow in one corner (theme-aware via the v4 effect tokens).
+   ════════════════════════════════════════════════════════════════ */
+.panel-card {
+  position: relative;
+  background: linear-gradient(135deg, #FFFDF9 0%, #FBF2E0 100%);
+  border: 1px solid rgb(30 27 22 / 0.08);
+}
+.dark .panel-card {
+  background: linear-gradient(135deg, #211d16 0%, #2b2213 100%);
+  border-color: rgb(255 255 255 / 0.08);
+}
+.panel-card::before {
+  content: '';
+  position: absolute;
+  top: -6rem;
+  inset-inline-end: -6rem;
+  width: 24rem;
+  height: 24rem;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: radial-gradient(circle, rgb(var(--glow-color) / var(--glow-opacity)) 0%, transparent 65%);
+}
+
+/* Workflow spotlight: time-to-next progress inside the active item */
+.spot-progress {
+  transform-origin: left;
+  animation: spotFill var(--spot-ms, 3000ms) linear forwards;
+}
+[dir='rtl'] .spot-progress { transform-origin: right; }
+@keyframes spotFill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Screens carousel: hidden scrollbar, snap rail */
+.snap-rail {
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.snap-rail::-webkit-scrollbar { display: none; }
+
+/* Floating section-hop button */
+.hop-float { animation: floatY 3.4s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .spot-progress { animation: none; }
+  .hop-float { animation: none; }
+  .snap-rail { scroll-behavior: auto !important; }
+}

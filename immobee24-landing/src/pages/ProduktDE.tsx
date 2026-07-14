@@ -58,7 +58,14 @@ import {
   ScenePipeline,
 } from '../components/scenes';
 import { SevenCoWorkersBand, ComplianceBadgesStrip } from '../components/AiRefinementBands';
-import { ModuleSpotlight, ScreenRail, ProductStatBand, PresentationDeck } from '../components/ProductMotionBands';
+import { ProductStatBand } from '../components/ProductMotionBands';
+import {
+  AccentHeading,
+  Panel,
+  ScreensCarousel,
+  SectionHopButton,
+  WorkflowSpotlight,
+} from '../components/PanelPatterns';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
@@ -632,15 +639,15 @@ const Features = () => {
   ];
 
   return (
-    <section className="py-20 md:py-28 bg-gradient-to-b from-cream to-white">
-      <div className="container">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            <LineReveal text={asString(t('produkt.features.headline'))} />
-          </h2>
-          </div>
+    <Panel>
+      <div className="max-w-3xl">
+        <AccentHeading
+          text={asString(t('produkt.features.headline'))}
+          className="font-heading text-section-mobile md:text-section text-charcoal text-balance"
+        />
+      </div>
 
-        <RevealGroup className="mt-12 grid md:grid-cols-2 gap-6 max-w-7xl mx-auto">
+      <RevealGroup className="mt-12 grid md:grid-cols-2 gap-6">
           {items.map((item, i) => (
             <div
               key={i}
@@ -661,9 +668,8 @@ const Features = () => {
               {item.scene && <item.scene className="mt-auto pt-6" />}
             </div>
           ))}
-        </RevealGroup>
-      </div>
-    </section>
+      </RevealGroup>
+    </Panel>
   );
 };
 
@@ -866,18 +872,31 @@ const WhoItsFor = () => {
 // Real dashboard screens (user screenshots 2026-07-14) — step order:
 // inquiry lands (dashboard) → Bee chats (messages) → human approves
 // (ai-control) → pipeline moves (analytics) → marketing follows (campaigns)
-// How-it-works as a pinned scroll presentation (deck) — same i18n content,
-// upgraded interaction. Mobile/reduced-motion falls back to a stacked list.
-const HowItWorksDeck = () => {
+// How-it-works as a panel with the auto-cycling workflow spotlight: one
+// active step at a time, progress bar to the next, crossfading stage.
+const WorkflowPanel = () => {
   const { t } = useLanguage();
   return (
-    <PresentationDeck
-      headline={asString(t('produkt.howItWorks.headline'))}
-      steps={asStringArray(t('produkt.howItWorks.steps'))}
-      ctaLabel={asString(t('produkt.howItWorks.cta'))}
-      ctaAttrs={DEMO_CTA_PROPS}
-      onCta={() => trackEvent('produkt_how_cta_click')}
-    />
+    <Panel id="how-it-works">
+      <div className="max-w-3xl">
+        <AccentHeading
+          text={asString(t('produkt.howItWorks.headline'))}
+          className="font-heading text-section-mobile md:text-section text-charcoal text-balance"
+        />
+      </div>
+      <WorkflowSpotlight steps={asStringArray(t('produkt.howItWorks.steps'))} />
+      <div className="mt-10 text-center">
+        <button
+          type="button"
+          {...DEMO_CTA_PROPS}
+          onClick={() => trackEvent('produkt_how_cta_click')}
+          className="inline-flex items-center gap-2 rounded-full bg-gradient-golden px-7 py-3.5 font-semibold text-[#1E1B16] shadow-golden transition-transform hover:scale-[1.03]"
+        >
+          {asString(t('produkt.howItWorks.cta'))}
+          <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+        </button>
+      </div>
+    </Panel>
   );
 };
 
@@ -1314,18 +1333,16 @@ export default function ProduktDE() {
     Definition,
     AnswerBlock,
     ProblemFit,
-    // HomeLead-pattern rollout (product page first): module spotlight band
-    ModuleSpotlight,
     Features,
     // AI-refinement (draft/ai-refinement): the 7 AI co-workers + demo video
     SevenCoWorkersBand,
-    // real-screens tour rail
-    ScreenRail,
+    // real-screens tour (pattern 3: snap carousel)
+    ScreensCarousel,
     UseCases,
     IntegrationHub,
     CrmComparison,
     WhoItsFor,
-    HowItWorksDeck,
+    WorkflowPanel,
     ProcessDeepDive,
     HumanControl,
     SocialProof,
@@ -1341,13 +1358,14 @@ export default function ProduktDE() {
   // double-wrapped; the rest get a coarse section-level Reveal.
   const selfAnimated = new Set<unknown>([
     Hero,
-    ModuleSpotlight,
-    ScreenRail,
+    Features,
+    ScreensCarousel,
+    WorkflowPanel,
     ProductStatBand,
     Features,
     UseCases,
     WhoItsFor,
-    HowItWorksDeck,
+    WorkflowPanel,
     ProcessDeepDive,
     HumanControl,
     IntegrationHub,
@@ -1368,6 +1386,7 @@ export default function ProduktDE() {
           ),
         )}
       </main>
+      <SectionHopButton />
       <Footer />
     </div>
   );

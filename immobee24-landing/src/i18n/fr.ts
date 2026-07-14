@@ -268,7 +268,7 @@ export const frOverlay: Record<string, any> = {
     },
 
     features: {
-      headline: 'Ce qu’Immob24 prend en charge dans le quotidien de l’agent',
+      headline: 'Ce qu’Immob24 «prend en charge» dans le quotidien de l’agent',
       f1Title: 'Répondre immédiatement aux nouvelles demandes',
       f1Body:
         'Dès qu’un lead arrive, Immob24 lance automatiquement la première réponse. Les chances d’établir le contact augmentent avant que les prospects n’abandonnent ou ne se tournent vers d’autres agents.',

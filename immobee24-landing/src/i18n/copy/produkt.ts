@@ -105,8 +105,8 @@ export default {
 
     features: {
       headline: {
-        de: 'Was Immob24 im Makleralltag übernimmt',
-        en: 'What Immob24 takes over in the broker’s day-to-day',
+        de: 'Was Immob24 im Makleralltag «übernimmt»',
+        en: 'What Immob24 «takes over» in the broker’s day-to-day',
       },
       f1Title: {
         de: 'Neue Anfragen sofort beantworten',
@@ -275,7 +275,7 @@ export default {
     },
 
     howItWorks: {
-      headline: { de: 'Wie Immob24 arbeitet', en: 'How Immob24 works' },
+      headline: { de: 'Wie Immob24 «arbeitet»', en: 'How Immob24 «works»' },
       steps: {
         de: [
           'Neue Anfrage kommt rein.',

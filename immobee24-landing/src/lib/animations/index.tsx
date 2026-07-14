@@ -77,10 +77,11 @@ type InViewOptions = {
 // (the caller checks `immediate`).
 export function useInView<T extends HTMLElement = HTMLDivElement>(
   options: InViewOptions = {},
-): [React.RefObject<T | null>, boolean, boolean] {
+): [React.RefObject<T | null>, boolean, boolean, number] {
   const ref = useRef<T | null>(null);
   const [inView, setInView] = useState(false);
   const [immediate, setImmediate] = useState(false);
+  const loadDelayRef = useRef(0);
 
   // useLayoutEffect: measure synchronously before first paint, so the
   // already-in-viewport check can't race a scroll that happens between
@@ -88,12 +89,25 @@ export function useInView<T extends HTMLElement = HTMLDivElement>(
   useLayoutEffect(() => {
     const el = ref.current;
     if (!el) return;
-    // Already visible on load → final state instantly, no animation.
+    // Visible on load → the element JOINS THE PAGE-LOAD BUILD: it animates
+    // in with a delay proportional to its position on screen, so the whole
+    // first viewport assembles top-to-bottom (the "data arriving" feel)
+    // instead of rendering pre-baked. Double-rAF ensures the hidden state
+    // paints first so the transition is visible.
     const r = el.getBoundingClientRect();
     if (r.top < window.innerHeight && r.bottom > 0) {
       setImmediate(true);
-      setInView(true);
-      return;
+      loadDelayRef.current = Math.round(
+        250 + (Math.max(0, r.top) / window.innerHeight) * 650,
+      );
+      let raf2 = 0;
+      const raf1 = requestAnimationFrame(() => {
+        raf2 = requestAnimationFrame(() => setInView(true));
+      });
+      return () => {
+        cancelAnimationFrame(raf1);
+        cancelAnimationFrame(raf2);
+      };
     }
     const obs = new IntersectionObserver(
       (entries) => {
@@ -114,7 +128,7 @@ export function useInView<T extends HTMLElement = HTMLDivElement>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return [ref, inView, immediate];
+  return [ref, inView, immediate, loadDelayRef.current];
 }
 
 type RevealProps = {
@@ -138,19 +152,19 @@ export const Reveal = ({
   distance = 36,
 }: RevealProps) => {
   const reduced = usePrefersReducedMotion();
-  const [ref, inView, immediate] = useInView<HTMLElement>();
+  const [ref, inView, immediate, loadDelay] = useInView<HTMLElement>();
   const show = reduced || inView;
-  const style: CSSProperties =
-    reduced || immediate
-      ? {}
-      : {
-          opacity: show ? 1 : 0,
-          transform: show ? 'none' : hiddenTransform(direction, distance),
-          transition: `opacity ${REVEAL_MS}ms ${EASE} ${delay}ms, transform ${REVEAL_MS}ms ${EASE} ${delay}ms`,
-          willChange: show ? undefined : 'opacity, transform',
-        };
+  const totalDelay = delay + (immediate ? loadDelay : 0);
+  const style: CSSProperties = reduced
+    ? {}
+    : {
+        opacity: show ? 1 : 0,
+        transform: show ? 'none' : hiddenTransform(direction, distance),
+        transition: `opacity ${REVEAL_MS}ms ${EASE} ${totalDelay}ms, transform ${REVEAL_MS}ms ${EASE} ${totalDelay}ms`,
+        willChange: show ? undefined : 'opacity, transform',
+      };
   // .is-revealed lets CSS trigger dependent entrances (icon draw-in, Part 7)
-  const revealedCls = show && !reduced ? ' is-revealed' : reduced || immediate ? ' is-revealed' : '';
+  const revealedCls = show ? ' is-revealed' : '';
   return createElement(as, { ref, style, className: className + revealedCls }, children);
 };
 
@@ -219,8 +233,20 @@ export function useCascade<T extends HTMLElement = HTMLDivElement>(): [
   string,
 ] {
   const reduced = usePrefersReducedMotion();
-  const [ref, inView, immediate] = useInView<T>();
-  const on = reduced || immediate || inView;
+  const [ref, inView, immediate, loadDelay] = useInView<T>();
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    if (reduced) {
+      setOn(true);
+      return;
+    }
+    if (!inView) return;
+    if (immediate && loadDelay) {
+      const t = window.setTimeout(() => setOn(true), loadDelay);
+      return () => window.clearTimeout(t);
+    }
+    setOn(true);
+  }, [reduced, inView, immediate, loadDelay]);
   return [ref, on ? 'cascade-on' : 'cascade-wait'];
 }
 
@@ -430,7 +456,7 @@ export const LineReveal = ({
   const gap = lineGapMs ?? (masked ? 90 : 70);
   const hostRef = useRef<HTMLSpanElement | null>(null);
   const [lines, setLines] = useState<string[] | null>(null);
-  const [inViewRef, inView, immediate] = useInView<HTMLSpanElement>();
+  const [inViewRef, inView, immediate, loadDelay] = useInView<HTMLSpanElement>();
 
   // share one element between measuring and display
   const setRefs = (el: HTMLSpanElement | null) => {
@@ -492,7 +518,8 @@ export const LineReveal = ({
     );
   }
 
-  const show = inView || immediate;
+  const show = inView;
+  const extra = immediate ? loadDelay : 0;
   return (
     <span ref={setRefs} className={className} aria-label={text}>
       {lines.map((line, i) => (
@@ -503,8 +530,8 @@ export const LineReveal = ({
               opacity: show ? 1 : 0,
               transform: show ? 'none' : masked ? 'translateY(110%)' : 'translateY(16px)',
               transition: `opacity ${masked ? 500 : 450}ms ${EASE} ${
-                baseDelay + i * gap
-              }ms, transform ${masked ? 500 : 450}ms ${EASE} ${baseDelay + i * gap}ms`,
+                baseDelay + extra + i * gap
+              }ms, transform ${masked ? 500 : 450}ms ${EASE} ${baseDelay + extra + i * gap}ms`,
             }}
           >
             {line}

@@ -1056,7 +1056,7 @@ export const arOverlay: Record<string, any> = {
     },
 
     cards: {
-      sectionHeadline: 'ثلاث طرق للبدء مع Immob24',
+      sectionHeadline: '«ثلاث طرق» للبدء مع Immob24',
       recommendedBadge: 'موصى بها',
 
       beta: {

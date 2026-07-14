@@ -16,6 +16,7 @@ import { registerTranslations } from '../i18n';
 import pageCopy from '../i18n/copy/pricing';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
+import { AccentHeading, Panel, SectionHopButton } from '../components/PanelPatterns';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
 import { useJsonLd } from '../lib/useJsonLd';
@@ -266,13 +267,16 @@ const PricingCards = () => {
   const breathStyle = (i: number) => ({ animationDelay: `${i * 60 * slowmoFactor()}ms` });
 
   return (
-    <section id="plans" className="py-16 md:py-20 bg-white">
-      <div className="container">
-        <Reveal className="max-w-3xl mx-auto text-center">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('pricingPage.cards.sectionHeadline'))}
-          </h2>
-        </Reveal>
+    <section id="plans" className="py-10 md:py-14">
+      <div className="container max-w-[1200px]">
+        <Reveal direction="scale">
+        <div className="panel-card overflow-hidden rounded-3xl p-6 md:p-12">
+        <div className="max-w-3xl mx-auto text-center">
+          <AccentHeading
+            text={asString(t('pricingPage.cards.sectionHeadline'))}
+            className="font-heading text-section-mobile md:text-section text-charcoal text-balance"
+          />
+        </div>
 
         <div className="mt-8 flex justify-center">
           <BillingToggle period={period} onChange={onPeriod} />
@@ -337,6 +341,8 @@ const PricingCards = () => {
             </div>
           </div>
         </div>
+        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -467,16 +473,19 @@ const BetaProgram = () => {
   };
 
   return (
-    <section id="beta" className="py-20 md:py-28 bg-cream">
-      <div className="container">
+    <section id="beta" className="py-10 md:py-14">
+      <div className="container max-w-[1200px]">
+        <Reveal direction="scale">
+        <div className="panel-card overflow-hidden rounded-3xl p-6 md:p-12">
         <Reveal className="max-w-3xl mx-auto text-center">
           <span className="float-pill inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
             <Rocket className="h-3.5 w-3.5" />
             {asString(t('betaProgram.hero.eyebrow'))}
           </span>
-          <h2 className="mt-5 font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('betaProgram.hero.headline'))}
-          </h2>
+          <AccentHeading
+            text={asString(t('betaProgram.hero.headline'))}
+            className="mt-5 font-heading text-section-mobile md:text-section text-charcoal text-balance"
+          />
           <p className="mt-5 text-body-lg text-slate">
             {asString(t('betaProgram.hero.subheadline'))}
           </p>
@@ -536,6 +545,8 @@ const BetaProgram = () => {
           >
             {ASK[language] ?? ASK.en}
           </Link>
+        </Reveal>
+        </div>
         </Reveal>
       </div>
     </section>
@@ -812,6 +823,7 @@ export default function PricingDE() {
           <Section key={i} />
         ))}
       </main>
+      <SectionHopButton />
       <Footer />
     </div>
   );

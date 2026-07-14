@@ -19,8 +19,8 @@ export default {
     hero: {
       eyebrow: { de: 'Geschlossene Beta', en: 'Closed beta' },
       headline: {
-        de: 'Beta-Agentenprogramm für Immobilienmakler',
-        en: 'Beta Agent Program for real estate brokers',
+        de: '«Beta-Agentenprogramm» für Immobilienmakler',
+        en: '«Beta Agent Program» for real estate brokers',
       },
       subheadline: {
         de: 'Ein 12-Wochen-Pilot für Immobilienmakler und Maklerbüros in Deutschland, die neue Anfragen schneller bearbeiten, operative Arbeit reduzieren und den Produktaufbau aktiv mitgestalten wollen. Der Zugang ist begrenzt, der Aufwand gering und der Fokus klar: echte Workflows, echte Ergebnisse, direkt mit dem Gründerteam.',
@@ -310,7 +310,7 @@ export default {
     },
 
     cards: {
-      sectionHeadline: { de: 'Drei Wege, mit Immob24 zu starten', en: 'Three ways to start with Immob24' },
+      sectionHeadline: { de: '«Drei Wege», mit Immob24 zu starten', en: '«Three ways» to start with Immob24' },
       recommendedBadge: { de: 'Empfohlen', en: 'Recommended' },
 
       beta: {

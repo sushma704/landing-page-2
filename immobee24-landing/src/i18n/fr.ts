@@ -1054,7 +1054,7 @@ export const frOverlay: Record<string, any> = {
     },
 
     cards: {
-      sectionHeadline: 'Trois façons de démarrer avec Immob24',
+      sectionHeadline: '«Trois façons» de démarrer avec Immob24',
       recommendedBadge: 'Recommandé',
 
       beta: {

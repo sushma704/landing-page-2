@@ -5,7 +5,7 @@ import { useLanguage, languageOptions } from '../i18n';
 import type { Language } from '../i18n';
 import { pathFor } from '../i18n/pages';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
-import { ThemeToggle } from './ThemeToggle';
+import { ThemeToggle, useThemeIsDark } from './ThemeToggle';
 import { Reveal } from '../lib/animations';
 import { preloadRoute } from '../lib/preload';
 import { trackEvent } from '../lib/analytics';
@@ -267,10 +267,12 @@ export const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
-  // The home hero is a full-viewport dark canvas (brief re-skin); while the
-  // transparent header floats over it, links/controls render light-on-dark.
+  // The home hero follows the theme (2026-07-14): a dark canvas only in dark
+  // mode. While the transparent header floats over it, links/controls render
+  // light-on-dark — but only when the hero actually is dark.
+  const isDarkTheme = useThemeIsDark();
   const isHome = pathname === pathFor('home', language) || pathname === '/';
-  const onDark = isHome && !scrolled && !open;
+  const onDark = isHome && !scrolled && !open && isDarkTheme;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 12);

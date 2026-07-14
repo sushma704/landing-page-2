@@ -89,7 +89,7 @@ const Hero = () => {
   return (
     <section
       id="top"
-      className="band-dark relative min-h-screen flex flex-col overflow-hidden bg-[#17140F] text-white"
+      className="relative min-h-screen flex flex-col overflow-hidden bg-cream text-charcoal"
     >
       {/* ambient glows — teal top-left, amber right (drift slowly) */}
       <div
@@ -103,13 +103,13 @@ const Hero = () => {
         style={{ background: 'radial-gradient(circle, #F5A623 0%, transparent 62%)', animationDelay: '-6s' }}
       />
       {/* flowing contour-line mesh (canvas, brand teal->amber) */}
-      <HeroWaves forceDark />
+      <HeroWaves />
 
       <div className="container relative flex-1 flex flex-col justify-center pt-32 pb-16 md:pt-36">
         <div className="max-w-3xl mx-auto text-center">
 
           <h1
-            className="mt-6 font-heading text-hero-mobile md:text-hero text-white text-balance"
+            className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance"
             aria-label={`${(HERO_TYPED[language] ?? HERO_TYPED.en).lead} ${(HERO_TYPED[language] ?? HERO_TYPED.en).words[0]}`}
           >
             {(() => {
@@ -123,7 +123,7 @@ const Hero = () => {
                     {typed.lead}
                   </span>
                   <span
-                    className="chor block text-golden"
+                    className="chor block text-golden-dark dark:text-golden"
                     style={{ '--chor-delay': '180ms', '--chor-dur': '700ms' } as CSSProperties}
                   >
                     <TypeCycle words={typed.words} />
@@ -134,7 +134,7 @@ const Hero = () => {
           </h1>
 
           <p
-            className="chor mt-6 text-body-lg text-white/70 max-w-2xl mx-auto"
+            className="chor mt-6 text-body-lg text-slate max-w-2xl mx-auto"
             style={{ '--chor-delay': '380ms', '--chor-dur': '600ms' } as CSSProperties}
           >
             {asString(t('hero.subheadline'))}
@@ -154,7 +154,7 @@ const Hero = () => {
             <Link
               to={`${localPath('produkt')}#how-it-works`}
               onClick={() => trackEvent('hero_secondary_cta_click')}
-              className="chor inline-flex items-center gap-2 rounded-full border border-white/25 px-7 py-3.5 font-medium text-white hover:bg-white/10 transition-colors"
+              className="chor inline-flex items-center gap-2 rounded-full border border-charcoal/25 px-7 py-3.5 font-medium text-charcoal hover:bg-charcoal/10 transition-colors"
               style={{ '--chor-delay': '680ms', '--chor-dur': '500ms' } as CSSProperties}
             >
               {asString(t('hero.secondaryCta'))}
@@ -165,7 +165,7 @@ const Hero = () => {
             {bullets.map((b, i) => (
               <li
                 key={i}
-                className="chor flex items-center gap-2 text-sm text-white/60"
+                className="chor flex items-center gap-2 text-sm text-slate"
                 style={{ '--chor-delay': `${780 + i * 70}ms`, '--chor-dur': '500ms' } as CSSProperties}
               >
                 <CheckCircle2 className="h-4 w-4 text-honey-green flex-shrink-0" />
@@ -188,21 +188,21 @@ const Hero = () => {
               {[HERO_PILLS[0], HERO_PILLS[2]].map((p, i) => (
                 <div
                   key={p.stat}
-                  className={`float-pill flex items-center gap-3 rounded-2xl border border-white/15 bg-white/[0.07] backdrop-blur-md px-4 py-3 shadow-card ${
+                  className={`float-pill no-fill flex items-center gap-3 rounded-2xl border border-charcoal/15 bg-white/60 backdrop-blur-md px-4 py-3 shadow-card dark:border-[rgba(255,255,255,0.15)] dark:bg-[rgba(255,255,255,0.07)] ${
                     i === 0 ? '-translate-y-4' : 'translate-y-6'
                   }`}
                   style={{ animationDelay: `${-i * 1.7}s` }}
                 >
-                  <span className="font-metric text-lg font-bold text-golden whitespace-nowrap">
+                  <span className="font-metric text-lg font-bold text-golden-dark dark:text-golden whitespace-nowrap">
                     {/^\d/.test(p.stat) ? <CountUp value={p.stat} delay={1200} /> : p.stat}
                   </span>
-                  <span className="text-xs text-white/75 max-w-[140px] leading-snug">{pillLabel(p)}</span>
+                  <span className="text-xs text-slate max-w-[140px] leading-snug">{pillLabel(p)}</span>
                 </div>
               ))}
             </div>
 
             {/* the rotating product showcase (chat -> journey -> dashboard) */}
-            <div className="relative z-10 xl:w-[38rem]">
+            <div className="band-dark relative z-10 xl:w-[38rem]">
               <HeroShowcase />
             </div>
 
@@ -211,15 +211,15 @@ const Hero = () => {
               {[HERO_PILLS[1], HERO_PILLS[3]].map((p, i) => (
                 <div
                   key={p.stat}
-                  className={`float-pill flex items-center gap-3 rounded-2xl border border-white/15 bg-white/[0.07] backdrop-blur-md px-4 py-3 shadow-card ${
+                  className={`float-pill no-fill flex items-center gap-3 rounded-2xl border border-charcoal/15 bg-white/60 backdrop-blur-md px-4 py-3 shadow-card dark:border-[rgba(255,255,255,0.15)] dark:bg-[rgba(255,255,255,0.07)] ${
                     i === 0 ? '-translate-y-6' : 'translate-y-4'
                   }`}
                   style={{ animationDelay: `${-(i + 2) * 1.7}s` }}
                 >
-                  <span className="font-metric text-lg font-bold text-golden whitespace-nowrap">
+                  <span className="font-metric text-lg font-bold text-golden-dark dark:text-golden whitespace-nowrap">
                     {/^\d/.test(p.stat) ? <CountUp value={p.stat} delay={1200} /> : p.stat}
                   </span>
-                  <span className="text-xs text-white/75 max-w-[140px] leading-snug">{pillLabel(p)}</span>
+                  <span className="text-xs text-slate max-w-[140px] leading-snug">{pillLabel(p)}</span>
                 </div>
               ))}
             </div>
@@ -230,9 +230,9 @@ const Hero = () => {
             {HERO_PILLS.map((p) => (
               <span
                 key={p.stat}
-                className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.07] px-3 py-1.5 text-xs text-white/75"
+                className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white/60 px-3 py-1.5 text-xs text-slate dark:border-[rgba(255,255,255,0.15)] dark:bg-[rgba(255,255,255,0.07)]"
               >
-                <b className="font-metric text-golden">
+                <b className="font-metric text-golden-dark dark:text-golden">
                   {/^\d/.test(p.stat) ? <CountUp value={p.stat} delay={1200} /> : p.stat}
                 </b>
                 {pillLabel(p)}
@@ -244,11 +244,11 @@ const Hero = () => {
 
       {/* scroll cue */}
       <div aria-hidden className="relative pb-6 flex justify-center">
-        <span className="scroll-cue inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/60">
+        <span className="scroll-cue inline-flex h-9 w-9 items-center justify-center rounded-full border border-charcoal/20 text-charcoal/60">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
         </span>
       </div>
-      <ScrollCue onDark className="relative mt-10" />
+      <ScrollCue className="relative mt-10" />
       </section>
   );
 };

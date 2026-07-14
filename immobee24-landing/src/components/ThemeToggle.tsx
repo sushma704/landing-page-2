@@ -18,6 +18,22 @@ export function initTheme(): void {
   }
 }
 
+// Reactive theme state for components whose styling depends on the active
+// theme (e.g. the header over the home hero, which is a dark band only in
+// dark mode). Watches the <html> class so it tracks the toggle live.
+export function useThemeIsDark(): boolean {
+  const [dark, setDark] = useState(
+    () => typeof document !== 'undefined' && document.documentElement.classList.contains('dark'),
+  );
+  useEffect(() => {
+    const html = document.documentElement;
+    const obs = new MutationObserver(() => setDark(html.classList.contains('dark')));
+    obs.observe(html, { attributes: true, attributeFilter: ['class'] });
+    return () => obs.disconnect();
+  }, []);
+  return dark;
+}
+
 export const ThemeToggle = ({ onDark = false }: { onDark?: boolean }) => {
   const [dark, setDark] = useState(
     () => typeof document !== 'undefined' && document.documentElement.classList.contains('dark'),

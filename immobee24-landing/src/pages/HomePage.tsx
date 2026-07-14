@@ -118,13 +118,13 @@ const Hero = () => {
                 <>
                   <span
                     className="chor block"
-                    style={{ '--chor-delay': '0ms', '--chor-dur': '600ms' } as CSSProperties}
+                    style={{ '--chor-delay': '0ms', '--chor-dur': '700ms' } as CSSProperties}
                   >
                     {typed.lead}
                   </span>
                   <span
                     className="chor block text-golden"
-                    style={{ '--chor-delay': '120ms', '--chor-dur': '600ms' } as CSSProperties}
+                    style={{ '--chor-delay': '180ms', '--chor-dur': '700ms' } as CSSProperties}
                   >
                     <TypeCycle words={typed.words} />
                   </span>
@@ -135,7 +135,7 @@ const Hero = () => {
 
           <p
             className="chor mt-6 text-body-lg text-white/70 max-w-2xl mx-auto"
-            style={{ '--chor-delay': '280ms', '--chor-dur': '500ms' } as CSSProperties}
+            style={{ '--chor-delay': '380ms', '--chor-dur': '600ms' } as CSSProperties}
           >
             {asString(t('hero.subheadline'))}
           </p>
@@ -146,7 +146,7 @@ const Hero = () => {
               {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('hero_primary_cta_click')}
               className="chor inline-flex items-center gap-2 rounded-full bg-gradient-golden px-7 py-3.5 font-semibold text-[#1E1B16] shadow-golden transition-transform hover:scale-[1.03]"
-              style={{ '--chor-delay': '420ms', '--chor-dur': '450ms' } as CSSProperties}
+              style={{ '--chor-delay': '550ms', '--chor-dur': '500ms' } as CSSProperties}
             >
               {asString(t('hero.primaryCta'))}
               <ArrowRight className="h-4 w-4" />
@@ -155,7 +155,7 @@ const Hero = () => {
               to={`${localPath('produkt')}#how-it-works`}
               onClick={() => trackEvent('hero_secondary_cta_click')}
               className="chor inline-flex items-center gap-2 rounded-full border border-white/25 px-7 py-3.5 font-medium text-white hover:bg-white/10 transition-colors"
-              style={{ '--chor-delay': '500ms', '--chor-dur': '450ms' } as CSSProperties}
+              style={{ '--chor-delay': '680ms', '--chor-dur': '500ms' } as CSSProperties}
             >
               {asString(t('hero.secondaryCta'))}
             </Link>
@@ -166,7 +166,7 @@ const Hero = () => {
               <li
                 key={i}
                 className="chor flex items-center gap-2 text-sm text-white/60"
-                style={{ '--chor-delay': `${560 + i * 60}ms`, '--chor-dur': '450ms' } as CSSProperties}
+                style={{ '--chor-delay': `${780 + i * 70}ms`, '--chor-dur': '500ms' } as CSSProperties}
               >
                 <CheckCircle2 className="h-4 w-4 text-honey-green flex-shrink-0" />
                 <span>{b}</span>
@@ -180,7 +180,7 @@ const Hero = () => {
             below the card on smaller screens. */}
         <div
           className="chor-scale relative max-w-6xl mx-auto w-full"
-          style={{ '--chor-delay': '650ms', '--chor-dur': '700ms' } as CSSProperties}
+          style={{ '--chor-delay': '850ms', '--chor-dur': '900ms' } as CSSProperties}
         >
           <div className="xl:grid xl:grid-cols-[1fr_auto_1fr] xl:items-center xl:gap-8">
             {/* left pills */}
@@ -194,7 +194,7 @@ const Hero = () => {
                   style={{ animationDelay: `${-i * 1.7}s` }}
                 >
                   <span className="font-metric text-lg font-bold text-golden whitespace-nowrap">
-                    {/^\d/.test(p.stat) ? <CountUp value={p.stat} delay={900} /> : p.stat}
+                    {/^\d/.test(p.stat) ? <CountUp value={p.stat} delay={1200} /> : p.stat}
                   </span>
                   <span className="text-xs text-white/75 max-w-[140px] leading-snug">{pillLabel(p)}</span>
                 </div>
@@ -217,7 +217,7 @@ const Hero = () => {
                   style={{ animationDelay: `${-(i + 2) * 1.7}s` }}
                 >
                   <span className="font-metric text-lg font-bold text-golden whitespace-nowrap">
-                    {/^\d/.test(p.stat) ? <CountUp value={p.stat} delay={900} /> : p.stat}
+                    {/^\d/.test(p.stat) ? <CountUp value={p.stat} delay={1200} /> : p.stat}
                   </span>
                   <span className="text-xs text-white/75 max-w-[140px] leading-snug">{pillLabel(p)}</span>
                 </div>
@@ -233,7 +233,7 @@ const Hero = () => {
                 className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.07] px-3 py-1.5 text-xs text-white/75"
               >
                 <b className="font-metric text-golden">
-                  {/^\d/.test(p.stat) ? <CountUp value={p.stat} delay={900} /> : p.stat}
+                  {/^\d/.test(p.stat) ? <CountUp value={p.stat} delay={1200} /> : p.stat}
                 </b>
                 {pillLabel(p)}
               </span>

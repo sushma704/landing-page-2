@@ -289,14 +289,14 @@ const Hero = () => {
             className="font-heading text-hero-mobile md:text-hero text-charcoal text-balance"
             aria-label={`${typed.lead} ${typed.words[0]}`}
           >
-            <span className="chor block" style={chorSlot(0)} aria-hidden>
+            <span className="chor block" style={chorSlot(0, 700)} aria-hidden>
               {typed.lead}
             </span>
-            <span className="chor block text-golden" style={chorSlot(120)}>
+            <span className="chor block text-golden" style={chorSlot(180, 700)}>
               <TypeCycle words={typed.words} />
             </span>
           </h1>
-          <p className="chor mt-5 text-body-lg text-slate max-w-3xl mx-auto" style={chorSlot(280, 500)}>
+          <p className="chor mt-5 text-body-lg text-slate max-w-3xl mx-auto" style={chorSlot(380, 600)}>
             {asString(t('produkt.hero.subheadline'))}
           </p>
         </>
@@ -352,7 +352,7 @@ const Hero = () => {
             </div>
             <div
               className="chor-scale mt-6 grid items-center gap-8 lg:gap-0 lg:grid-cols-[minmax(0,2fr),auto,minmax(0,3fr)]"
-              style={chorSlot(650, 700)}
+              style={chorSlot(850, 900)}
             >
               {/* module tiles, two offset columns like the reference */}
               <div className="mx-auto grid max-w-sm grid-cols-2 gap-3 lg:ms-auto lg:me-0">
@@ -463,7 +463,7 @@ const Hero = () => {
         </div>
 
         {/* dots */}
-        <div className="chor mt-6 flex items-center justify-center gap-2" style={chorSlot(560, 450)}>
+        <div className="chor mt-6 flex items-center justify-center gap-2" style={chorSlot(750, 500)}>
           {[0, 1, 2].map((i) => (
             <button
               key={i}
@@ -485,7 +485,7 @@ const Hero = () => {
             {...DEMO_CTA_PROPS}
             onClick={() => trackEvent('produkt_hero_primary_cta_click')}
             className="chor inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
-            style={chorSlot(420, 450)}
+            style={chorSlot(550, 500)}
           >
             {asString(t('produkt.hero.primaryCta'))}
             <ArrowRight className="h-4 w-4 rtl:rotate-180" />
@@ -494,12 +494,12 @@ const Hero = () => {
             href="#how-it-works"
             onClick={() => trackEvent('produkt_hero_secondary_cta_click')}
             className="chor inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
-            style={chorSlot(500, 450)}
+            style={chorSlot(680, 500)}
           >
             {asString(t('produkt.hero.secondaryCta'))}
           </a>
         </div>
-        <ScrollCue targetId="product" className="chor mt-6" style={chorSlot(900, 450)} />
+        <ScrollCue targetId="product" className="chor mt-6" style={chorSlot(1200, 500)} />
       </div>
     </section>
   );

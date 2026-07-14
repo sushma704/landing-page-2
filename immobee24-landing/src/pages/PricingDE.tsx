@@ -254,10 +254,10 @@ const PricingCards = () => {
   };
 
   const ENTER_DELAY = [0, 240, 120]; // beta, TEAM LAST, custom
-  const enterCls = (i: number) =>
-    reduced ? 'flex' : `price-enter flex ${inView ? 'landed' : ''}`;
-  const enterStyle = (i: number) =>
-    reduced ? undefined : { transitionDelay: `${ENTER_DELAY[i] * slowmoFactor()}ms` };
+  // applied under reduced motion too — CSS strips the rise, keeps the
+  // ordered opacity fade
+  const enterCls = (_i: number) => `price-enter flex ${inView ? 'landed' : ''}`;
+  const enterStyle = (i: number) => ({ transitionDelay: `${ENTER_DELAY[i] * slowmoFactor()}ms` });
   const breathStyle = (i: number) => ({ animationDelay: `${i * 60 * slowmoFactor()}ms` });
 
   return (

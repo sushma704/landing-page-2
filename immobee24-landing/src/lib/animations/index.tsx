@@ -6,8 +6,10 @@
 //   STAGGER_MS 80 · HOVER_MS 200
 //
 // Rules enforced here:
-// - prefers-reduced-motion → everything renders in its final state, no
-//   transitions, no auto-motion (centralized in usePrefersReducedMotion).
+// - prefers-reduced-motion → no SPATIAL motion and no loops, but sequenced
+//   entrances survive as opacity-only 400ms fades (content still "arrives").
+//   Loops/typewriters/marquees render their final state; CountUp snaps to
+//   the target value (centralized in usePrefersReducedMotion).
 // - Only transform/opacity are animated — zero layout shift.
 // - Elements already visible on mount do NOT scroll-animate.
 
@@ -153,10 +155,15 @@ export const Reveal = ({
 }: RevealProps) => {
   const reduced = usePrefersReducedMotion();
   const [ref, inView, immediate, loadDelay] = useInView<HTMLElement>();
-  const show = reduced || inView;
+  const show = inView;
   const totalDelay = delay + (immediate ? loadDelay : 0);
+  // reduced motion: same in-view trigger and delays, opacity-only 400ms —
+  // the cascade sequencing survives, nothing moves spatially
   const style: CSSProperties = reduced
-    ? {}
+    ? {
+        opacity: show ? 1 : 0,
+        transition: `opacity 400ms ${EASE} ${totalDelay}ms`,
+      }
     : {
         opacity: show ? 1 : 0,
         transform: show ? 'none' : hiddenTransform(direction, distance),
@@ -228,25 +235,22 @@ export const RevealGroup = ({
 // container flips .cascade-on when scrolled into view (once). Above-fold
 // tables render revealed instantly (no double animation with the entrance
 // choreography).
+// Under reduced motion the same in-view trigger runs — the CSS turns the
+// staggered reveal into an opacity-only fade.
 export function useCascade<T extends HTMLElement = HTMLDivElement>(): [
   React.RefObject<T | null>,
   string,
 ] {
-  const reduced = usePrefersReducedMotion();
   const [ref, inView, immediate, loadDelay] = useInView<T>();
   const [on, setOn] = useState(false);
   useEffect(() => {
-    if (reduced) {
-      setOn(true);
-      return;
-    }
     if (!inView) return;
     if (immediate && loadDelay) {
       const t = window.setTimeout(() => setOn(true), loadDelay);
       return () => window.clearTimeout(t);
     }
     setOn(true);
-  }, [reduced, inView, immediate, loadDelay]);
+  }, [inView, immediate, loadDelay]);
   return [ref, on ? 'cascade-on' : 'cascade-wait'];
 }
 
@@ -465,7 +469,6 @@ export const LineReveal = ({
   };
 
   useLayoutEffect(() => {
-    if (reduced) return;
     const el = hostRef.current;
     if (!el || lines !== null) return;
     const words = [...el.querySelectorAll<HTMLSpanElement>('[data-lr-word]')];
@@ -483,11 +486,10 @@ export const LineReveal = ({
     });
     if (current.length) grouped.push(current.join(' '));
     setLines(grouped);
-  }, [reduced, lines, text]);
+  }, [lines, text]);
 
   // re-split on resize (line breaks change)
   useEffect(() => {
-    if (reduced) return;
     let t = 0;
     const onResize = () => {
       window.clearTimeout(t);
@@ -498,11 +500,9 @@ export const LineReveal = ({
       window.removeEventListener('resize', onResize);
       window.clearTimeout(t);
     };
-  }, [reduced]);
+  }, []);
 
   useEffect(() => setLines(null), [text]);
-
-  if (reduced) return <span className={className}>{text}</span>;
 
   if (lines === null) {
     // measuring pass — words laid out normally, hidden until split
@@ -526,13 +526,22 @@ export const LineReveal = ({
         <span key={i} className={`block ${masked ? 'overflow-hidden' : ''}`} aria-hidden>
           <span
             className="block"
-            style={{
-              opacity: show ? 1 : 0,
-              transform: show ? 'none' : masked ? 'translateY(110%)' : 'translateY(16px)',
-              transition: `opacity ${masked ? 500 : 450}ms ${EASE} ${
-                baseDelay + extra + i * gap
-              }ms, transform ${masked ? 500 : 450}ms ${EASE} ${baseDelay + extra + i * gap}ms`,
-            }}
+            style={
+              // reduced motion: lines still land one after another, but as a
+              // pure fade — no mask slide, no rise
+              reduced
+                ? {
+                    opacity: show ? 1 : 0,
+                    transition: `opacity 400ms ${EASE} ${baseDelay + extra + i * gap}ms`,
+                  }
+                : {
+                    opacity: show ? 1 : 0,
+                    transform: show ? 'none' : masked ? 'translateY(110%)' : 'translateY(16px)',
+                    transition: `opacity ${masked ? 500 : 450}ms ${EASE} ${
+                      baseDelay + extra + i * gap
+                    }ms, transform ${masked ? 500 : 450}ms ${EASE} ${baseDelay + extra + i * gap}ms`,
+                  }
+            }
           >
             {line}
           </span>

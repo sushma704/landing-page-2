@@ -994,7 +994,10 @@ section.bg-charcoal {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .route-in, .route-out, .entrance-nav { animation: none; opacity: 1; }
+  /* route crossfades are already opacity-only — keep them, just gentler;
+     the outgoing fade is skipped (App.tsx swaps instantly) */
+  .route-in, .entrance-nav { animation-duration: 400ms; }
+  .route-out { animation: none; opacity: 1; }
   .fill-grow, .bar-grow { animation: none; transform: none; }
   .draw-line { animation: none; stroke-dashoffset: 0; }
   .skel-block::after { animation: none; }
@@ -1027,7 +1030,15 @@ section.bg-charcoal {
   to { opacity: 1; transform: scale(1); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .chor, .chor-scale { animation: none; opacity: 1; transform: none; }
+  /* sequencing kept, spatial travel removed: same delays, opacity-only 400ms */
+  .chor, .chor-scale {
+    transform: none;
+    animation-name: chorFadeIn;
+    animation-duration: calc(var(--slowmo, 1) * 400ms);
+  }
+  @keyframes chorFadeIn {
+    to { opacity: 1; }
+  }
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -1076,7 +1087,12 @@ section.bg-charcoal {
 }
 .duration-250 { transition-duration: 250ms; }
 @media (prefers-reduced-motion: reduce) {
-  .price-enter { transition: none; opacity: 1; transform: none; }
+  /* ordered entrance kept as opacity-only fade; inline transition-delay
+     (the beta→custom→Team order) still applies */
+  .price-enter {
+    transform: none;
+    transition: opacity calc(var(--slowmo, 1) * 400ms) cubic-bezier(0.22, 1, 0.36, 1);
+  }
   .pulse-glow, .badge-pop, .card-breath { animation: none; }
 }
 
@@ -1097,8 +1113,13 @@ section.bg-charcoal {
   transition-delay: calc(var(--slowmo, 1) * var(--casc-delay, 0ms));
 }
 @media (prefers-reduced-motion: reduce) {
-  .cascade-wait .cascade-item, .cascade-wait .cascade-cell { opacity: 1; transform: none; }
-  .cascade-on .cascade-item, .cascade-on .cascade-cell { transition: none; }
+  /* rows still arrive in sequence (--casc-delay), but fade only */
+  .cascade-wait .cascade-item, .cascade-wait .cascade-cell { transform: none; }
+  .cascade-on .cascade-item, .cascade-on .cascade-cell {
+    transform: none;
+    transition: opacity calc(var(--slowmo, 1) * 400ms) cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--slowmo, 1) * var(--casc-delay, 0ms));
+  }
 }
 
 /* ── Light mode (opt-in): soft drop shadows instead of dark-theme glows,

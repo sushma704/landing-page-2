@@ -58,6 +58,7 @@ import {
   ScenePipeline,
 } from '../components/scenes';
 import { SevenCoWorkersBand, ComplianceBadgesStrip } from '../components/AiRefinementBands';
+import { ModuleSpotlight, ScreenRail, ProductStatBand } from '../components/ProductMotionBands';
 import { trackEvent } from '../lib/analytics';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
@@ -1408,9 +1409,13 @@ export default function ProduktDE() {
     Definition,
     AnswerBlock,
     ProblemFit,
+    // HomeLead-pattern rollout (product page first): module spotlight band
+    ModuleSpotlight,
     Features,
     // AI-refinement (draft/ai-refinement): the 7 AI co-workers + demo video
     SevenCoWorkersBand,
+    // real-screens tour rail
+    ScreenRail,
     UseCases,
     IntegrationHub,
     CrmComparison,
@@ -1419,6 +1424,8 @@ export default function ProduktDE() {
     ProcessDeepDive,
     HumanControl,
     SocialProof,
+    // proof numbers + growing chart
+    ProductStatBand,
     // AI-refinement: compliance trust strip
     ComplianceBadgesStrip,
     FAQ,
@@ -1429,6 +1436,9 @@ export default function ProduktDE() {
   // double-wrapped; the rest get a coarse section-level Reveal.
   const selfAnimated = new Set<unknown>([
     Hero,
+    ModuleSpotlight,
+    ScreenRail,
+    ProductStatBand,
     Features,
     UseCases,
     WhoItsFor,

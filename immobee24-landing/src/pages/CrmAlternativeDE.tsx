@@ -183,7 +183,7 @@ const ComparisonTable = () => {
                       className={`cascade-cell p-5 font-heading text-sm uppercase tracking-wider ${
                         i === 2 ? 'text-golden' : ''
                       }`}
-                      style={{ '--casc-delay': `${i * 60}ms` } as CSSProperties}
+                      style={{ '--casc-delay': `${i * 50}ms` } as CSSProperties}
                     >
                       {h}
                     </th>
@@ -210,7 +210,7 @@ const ComparisonTable = () => {
                         }`}
                         style={
                           {
-                            '--casc-delay': `${cascadeDelay(rIdx + 1, 280) + cIdx * 60}ms`,
+                            '--casc-delay': `${cascadeDelay(rIdx + 1, 240) + cIdx * 50}ms`,
                           } as CSSProperties
                         }
                       >

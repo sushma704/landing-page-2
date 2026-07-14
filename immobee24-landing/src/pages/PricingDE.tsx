@@ -364,7 +364,7 @@ const QuickComparison = () => {
                   <th
                     key={i}
                     className="cascade-cell p-4 font-heading text-sm uppercase tracking-wider"
-                    style={{ '--casc-delay': `${i * 60}ms` } as CSSProperties}
+                    style={{ '--casc-delay': `${i * 50}ms` } as CSSProperties}
                   >
                     {h}
                   </th>
@@ -387,7 +387,7 @@ const QuickComparison = () => {
                       }`}
                       style={
                         {
-                          '--casc-delay': `${cascadeDelay(rIdx + 1, 280) + j * 60}ms`,
+                          '--casc-delay': `${cascadeDelay(rIdx + 1, 240) + j * 50}ms`,
                         } as CSSProperties
                       }
                     >
@@ -465,7 +465,7 @@ const BetaProgram = () => {
     <section id="beta" className="py-20 md:py-28 bg-cream">
       <div className="container">
         <Reveal className="max-w-3xl mx-auto text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
+          <span className="float-pill inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
             <Rocket className="h-3.5 w-3.5" />
             {asString(t('betaProgram.hero.eyebrow'))}
           </span>

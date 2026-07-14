@@ -7,6 +7,7 @@ import { pathFor } from '../i18n/pages';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { ThemeToggle } from './ThemeToggle';
 import { Reveal } from '../lib/animations';
+import { preloadRoute } from '../lib/preload';
 import { trackEvent } from '../lib/analytics';
 import { NewsletterSignup } from './NewsletterSignup';
 import { openCookieSettings } from './CookieBanner';
@@ -243,6 +244,7 @@ const NavDropdown = ({
                 key={it.to}
                 to={it.to}
                 onClick={() => setOpen(false)}
+                onMouseEnter={() => preloadRoute(it.to)}
                 className="menu-item block rounded-xl px-3.5 py-2.5 hover:bg-cream"
                 style={{ animationDelay: `${i * 40}ms` }}
               >
@@ -347,6 +349,7 @@ export const Header = () => {
           <NavDropdown label={nl('solutions')} items={solutionsItems} onDark={onDark} />
           <Link
             to={pricingLink.to}
+            onMouseEnter={() => preloadRoute(pricingLink.to)}
             className={`nav-underline px-2 py-2 text-sm transition-colors whitespace-nowrap ${
               onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
             }`}
@@ -356,6 +359,7 @@ export const Header = () => {
           <NavDropdown label={nl('resources')} items={resourcesItems} onDark={onDark} />
           <Link
             to={contactLink.to}
+            onMouseEnter={() => preloadRoute(contactLink.to)}
             className={`nav-underline px-2 py-2 text-sm transition-colors whitespace-nowrap ${
               onDark ? 'text-white/75 hover:text-white' : 'text-charcoal/70 hover:text-charcoal'
             }`}

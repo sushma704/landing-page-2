@@ -108,7 +108,10 @@ const Hero = () => {
       <div className="container relative flex-1 flex flex-col justify-center pt-32 pb-16 md:pt-36">
         <div className="max-w-3xl mx-auto text-center">
 
-          <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-white text-balance">
+          <h1
+            className="mt-6 font-heading text-hero-mobile md:text-hero text-white text-balance"
+            aria-label={`${(HERO_TYPED[language] ?? HERO_TYPED.en).lead} ${(HERO_TYPED[language] ?? HERO_TYPED.en).words[0]}`}
+          >
             {(() => {
               const typed = HERO_TYPED[language] ?? HERO_TYPED.en;
               return (
@@ -377,7 +380,7 @@ const Features = () => {
             >
               <div className="flex items-center gap-3">
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-golden-soft text-golden-dark">
-                  <item.icon className="h-5 w-5" />
+                  <item.icon className="icon-draw h-5 w-5" />
                 </span>
                 <span className="text-xs font-semibold uppercase tracking-wider text-golden-dark">
                   {`0${i + 1}`}

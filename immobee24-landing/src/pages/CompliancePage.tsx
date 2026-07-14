@@ -389,7 +389,7 @@ const LawTable = ({ rows, language }: { rows: LawRow[]; language: Language }) =>
   // left-to-right; container reserves full height (opacity/transform only)
   const [ref, cascadeCls] = useCascade<HTMLDivElement>();
   const cell = (i: number, j: number): CSSProperties =>
-    ({ '--casc-delay': `${cascadeDelay(i + 1, 280) + j * 60}ms` }) as CSSProperties;
+    ({ '--casc-delay': `${cascadeDelay(i + 1, 240) + j * 50}ms` }) as CSSProperties;
   return (
     <div
       ref={ref}
@@ -402,7 +402,7 @@ const LawTable = ({ rows, language }: { rows: LawRow[]; language: Language }) =>
               <th
                 key={j}
                 className="cascade-cell px-5 py-3 font-semibold"
-                style={{ '--casc-delay': `${j * 60}ms` } as CSSProperties}
+                style={{ '--casc-delay': `${j * 50}ms` } as CSSProperties}
               >
                 {h[language] ?? h.en}
               </th>

@@ -364,13 +364,13 @@ export default function WhyImmob24Page() {
                   <tr key={row.dim.en} className="border-b border-charcoal/5 last:border-none align-top">
                     <td
                       className="cascade-cell px-5 py-5 text-xs font-semibold uppercase tracking-wide text-warm-gray whitespace-nowrap"
-                      style={{ '--casc-delay': `${cascadeDelay(i + 1, 280)}ms` } as CSSProperties}
+                      style={{ '--casc-delay': `${cascadeDelay(i + 1, 240)}ms` } as CSSProperties}
                     >
                       {L(row.dim)}
                     </td>
                     <td
                       className="cascade-cell px-5 py-5"
-                      style={{ '--casc-delay': `${cascadeDelay(i + 1, 280) + 60}ms` } as CSSProperties}
+                      style={{ '--casc-delay': `${cascadeDelay(i + 1, 240) + 60}ms` } as CSSProperties}
                     >
                       <div className="flex items-start gap-2 text-charcoal">
                         <Check className="h-4 w-4 mt-0.5 flex-none text-honey-green" />
@@ -379,7 +379,7 @@ export default function WhyImmob24Page() {
                     </td>
                     <td
                       className="cascade-cell px-5 py-5"
-                      style={{ '--casc-delay': `${cascadeDelay(i + 1, 280) + 120}ms` } as CSSProperties}
+                      style={{ '--casc-delay': `${cascadeDelay(i + 1, 240) + 120}ms` } as CSSProperties}
                     >
                       <div className="flex items-start gap-2 text-slate">
                         <X className="h-4 w-4 mt-0.5 flex-none text-warm-gray" />

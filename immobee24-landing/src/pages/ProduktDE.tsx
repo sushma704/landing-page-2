@@ -285,8 +285,11 @@ const Hero = () => {
       const typed = PRODUCT_TYPED[language] ?? PRODUCT_TYPED.en;
       return (
         <>
-          <h1 className="font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
-            <span className="chor block" style={chorSlot(0)}>
+          <h1
+            className="font-heading text-hero-mobile md:text-hero text-charcoal text-balance"
+            aria-label={`${typed.lead} ${typed.words[0]}`}
+          >
+            <span className="chor block" style={chorSlot(0)} aria-hidden>
               {typed.lead}
             </span>
             <span className="chor block text-golden" style={chorSlot(120)}>
@@ -302,8 +305,11 @@ const Hero = () => {
     const c = H2_LINES[i];
     return (
       <>
-        <h2 className="font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
-          <span className="block">{L(c.top)}</span>
+        <h2
+          className="font-heading text-hero-mobile md:text-hero text-charcoal text-balance"
+          aria-label={`${L(c.top)} ${L(c.golden)}`}
+        >
+          <span className="block" aria-hidden>{L(c.top)}</span>
           <span className="block text-golden">
             <TypeCycle words={[L(c.golden)]} holdMs={2600} />
           </span>
@@ -630,7 +636,7 @@ const Features = () => {
             >
               <div className="flex items-center gap-3">
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-golden-soft text-golden-dark">
-                  <item.icon className="h-5 w-5" />
+                  <item.icon className="icon-draw h-5 w-5" />
                 </span>
                 <span className="text-xs font-semibold uppercase tracking-wider text-golden-dark">
                   {`0${i + 1}`}
@@ -716,7 +722,7 @@ const CrmComparison = () => {
                   <th
                     key={j}
                     className="cascade-cell px-5 py-4 font-semibold"
-                    style={{ '--casc-delay': `${j * 60}ms` } as CSSProperties}
+                    style={{ '--casc-delay': `${j * 50}ms` } as CSSProperties}
                   >
                     {j === 2 ? (
                       <span className="inline-flex items-center gap-2">
@@ -750,7 +756,7 @@ const CrmComparison = () => {
                       }`}
                       style={
                         {
-                          '--casc-delay': `${cascadeDelay(i + 1, 280) + j * 60}ms`,
+                          '--casc-delay': `${cascadeDelay(i + 1, 240) + j * 50}ms`,
                         } as CSSProperties
                       }
                     >
@@ -1042,7 +1048,7 @@ const ProcessDeepDive = () => {
                     <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-golden text-[#1E1B16] font-heading text-lg shadow-golden">
                       {i + 1}
                     </span>
-                    <Icon className="h-5 w-5 text-golden-dark mt-3" />
+                    <Icon className="icon-draw h-5 w-5 text-golden-dark mt-3" />
                   </div>
                   <div className="flex-1">
                     <h3 className="font-heading text-xl text-charcoal">{step.title}</h3>

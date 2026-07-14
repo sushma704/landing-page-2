@@ -464,7 +464,7 @@ export default function ContactPage() {
                   </li>
                 ))}
               </ul>
-              <div className="mt-8 rounded-2xl border border-charcoal/10 bg-cream p-5">
+              <div className="float-pill mt-8 rounded-2xl border border-charcoal/10 bg-cream p-5">
                 <p className="text-sm font-medium text-charcoal">{L('directMail')}</p>
                 <a
                   href="mailto:kontakt@immob24.de"

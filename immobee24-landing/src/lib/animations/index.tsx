@@ -345,7 +345,7 @@ export const TypeCycle = ({
   if (reduced) return <span className={className}>{words[0]}</span>;
   const longest = words.reduce((a, b) => (a.length >= b.length ? a : b));
   return (
-    <span className={`relative inline-grid align-baseline ${className}`} aria-label={words[wi]}>
+    <span className={`relative inline-grid align-baseline ${className}`} aria-hidden>
       {/* sizer: reserves the widest/tallest state so nothing reflows.
           text-start anchors typing so characters append without
           re-centering the word (a centered word shifts every keystroke). */}

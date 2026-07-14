@@ -300,7 +300,7 @@ export default function SolutionsPage() {
                 className="rounded-2xl border border-charcoal/10 bg-cream p-6 md:p-8 shadow-subtle hover:shadow-card-hover transition-all"
               >
                 <span className="inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-golden-soft text-golden-dark">
-                  <r.icon className="h-5 w-5" />
+                  <r.icon className="icon-draw h-5 w-5" />
                 </span>
                 <h3 className="mt-4 font-heading text-xl text-charcoal">
                   {r.title[language] ?? r.title.en}
@@ -315,11 +315,12 @@ export default function SolutionsPage() {
                   {L('agentsLabel')}
                 </p>
                 <div className="mt-2 flex flex-wrap gap-1.5">
-                  {r.agents.map((a) => (
+                  {r.agents.map((a, ai) => (
                     <Link
                       key={a}
                       to={localPath('aiFeatures')}
-                      className="rounded-full border border-teal/25 bg-teal-wash px-2.5 py-1 text-xs font-medium text-teal hover:border-teal/50 transition-colors"
+                      className="icon-pop rounded-full border border-teal/25 bg-teal-wash px-2.5 py-1 text-xs font-medium text-teal hover:border-teal/50 transition-colors"
+                      style={{ animationDelay: `${ai * 60}ms` }}
                     >
                       {a}
                     </Link>

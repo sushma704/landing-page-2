@@ -1,3 +1,4 @@
+import { type ReactNode } from 'react';
 // AI Features platform page — /de/ki-funktionen + /en/ai-features-platform
 //
 // Content sources (draft/ai-refinement):
@@ -24,6 +25,7 @@ import {
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { cascadeDelay, LineReveal, chorSlot, Reveal, RevealGroup, TypeOnce } from '../lib/animations';
+import { useSpotlight } from '../lib/spotlight';
 import { ScrollCue } from '../components/Wayfinding';
 import { SceneAgents, SceneApprovalGate } from '../components/scenes';
 import { DemoVideoPlayer } from '../components/DemoVideoPlayer';
@@ -479,6 +481,26 @@ const SCREENS_HEAD: Record<string, Record<Language, string>> = {
   },
 };
 
+// Cursor-spotlight wrapper (v4 Part 6) — hook per card, opt-in on this page.
+const SpotlightCard = ({
+  as: Tag = 'div',
+  className = '',
+  children,
+}: {
+  as?: 'div' | 'article';
+  className?: string;
+  children: ReactNode;
+}) => {
+  const ref = useSpotlight<HTMLDivElement>();
+  // no-fill: the site-wide hover-fill would paint the card solid amber and
+  // drown the spotlight — the spotlight IS the hover treatment here.
+  return (
+    <Tag ref={ref} className={`spotlight-card no-fill ${className}`}>
+      {children}
+    </Tag>
+  );
+};
+
 export default function AiFeaturesPage() {
   const { language } = useLanguage();
   const L = <T,>(v: Record<Language, T>): T => v[language] ?? v.en;
@@ -648,7 +670,8 @@ export default function AiFeaturesPage() {
 
           <RevealGroup className="mt-10 grid md:grid-cols-2 gap-6">
             {FEATURES.map((f, i) => (
-              <article
+              <SpotlightCard
+                as="article"
                 key={f.title.en}
                 className="rounded-2xl bg-white border border-charcoal/5 shadow-card p-7"
               >
@@ -662,7 +685,7 @@ export default function AiFeaturesPage() {
                 />
                 <div className="flex items-center gap-3">
                   <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-golden/10 text-golden-dark">
-                    <f.icon className="h-5 w-5" />
+                    <f.icon className="icon-draw h-5 w-5" />
                   </span>
                   <span className="font-metric text-sm text-warm-gray">0{i + 1}</span>
                 </div>
@@ -684,7 +707,7 @@ export default function AiFeaturesPage() {
                     </Reveal>
                   ))}
                 </ul>
-              </article>
+              </SpotlightCard>
             ))}
           </RevealGroup>
         </div>
@@ -716,7 +739,7 @@ export default function AiFeaturesPage() {
                   }`}
                 >
                   <Reveal direction={reversed ? 'right' : 'left'}>
-                    <div className="no-fill overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-card">
+                    <SpotlightCard className="no-fill overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-card">
                       <div className="flex items-center gap-1.5 border-b border-charcoal/10 bg-cream/70 px-4 py-2.5">
                         <span className="h-2.5 w-2.5 rounded-full bg-health-crit/70" />
                         <span className="h-2.5 w-2.5 rounded-full bg-health-warn/70" />
@@ -733,7 +756,7 @@ export default function AiFeaturesPage() {
                         loading="lazy"
                         className="w-full"
                       />
-                    </div>
+                    </SpotlightCard>
                   </Reveal>
                   <Reveal direction={reversed ? 'left' : 'right'}>
                     <p className="text-xs font-semibold uppercase tracking-wider text-golden-dark">

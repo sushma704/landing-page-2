@@ -54,6 +54,7 @@ export function softwareApplicationSchema(
     description,
     inLanguage: inLanguage(lang),
     url: SITE_ORIGIN,
+    image: `${SITE_ORIGIN}/immob24-wordmark.png`,
     offers: {
       '@type': 'Offer',
       price: '249',
@@ -104,6 +105,10 @@ export function productSchema(
     inLanguage: inLanguage(lang),
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
+    // Google runs Merchant-listing validation on ANY schema with offers
+    // (2026-07: even SoftwareApplication) and requires an image; the
+    // wordmark is the only brand image with an ALB rule on the shared host.
+    image: `${SITE_ORIGIN}/immob24-wordmark.png`,
     brand: { '@type': 'Brand', name: 'Immob24' },
     offers: offers.map((o) => ({
       '@type': 'Offer',

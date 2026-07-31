@@ -12,25 +12,35 @@ module.exports = {
       center: true,
       padding: '1.5rem',
       screens: {
-        '2xl': '1200px',
+        '2xl': '1400px',
       },
     },
     extend: {
       colors: {
-        // Primary - Golden/Honey tones
+        // ── Brand tokens per the marketing-site brief (§02) ──
+        // Neutrals are CSS variables (RGB triplets in src/index.css) so the
+        // whole site flips to dark mode from one place; utilities keep their
+        // opacity modifiers (e.g. text-charcoal/70) via <alpha-value>.
         golden: {
-          DEFAULT: '#F5A623',
+          DEFAULT: '#F5A623', // signal amber — wordmark "24"
           light: '#FFD700',
-          dark: '#E09100',
+          dark: '#C76C05', // deep amber — CTA/emphasis (brief token)
         },
-        // Secondary - Neutrals
-        cream: '#FFFDF7',
-        // Accents - Text colors
-        charcoal: '#1A1A1A',
-        slate: '#4A4A4A',
-        'warm-gray': '#888888',
-        // Success
-        'honey-green': '#34C759',
+        'amber-deep': '#C76C05',
+        teal: {
+          DEFAULT: 'rgb(var(--c-teal) / <alpha-value>)', // wordmark "immob"
+          ink: 'rgb(var(--c-teal-ink) / <alpha-value>)',
+          wash: 'rgb(var(--c-teal-wash) / <alpha-value>)',
+        },
+        cream: 'rgb(var(--c-cream) / <alpha-value>)',
+        charcoal: 'rgb(var(--c-ink) / <alpha-value>)',
+        slate: 'rgb(var(--c-ink-soft) / <alpha-value>)',
+        'warm-gray': 'rgb(var(--c-ink-faint) / <alpha-value>)',
+        white: 'rgb(var(--c-surface) / <alpha-value>)',
+        // Health scale (brief): good / warn / crit
+        'honey-green': '#2F9A72',
+        'health-warn': '#D9922B',
+        'health-crit': '#D9544B',
         // Legacy support
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
@@ -50,14 +60,16 @@ module.exports = {
           foreground: '#FFFFFF',
         },
         muted: {
-          DEFAULT: '#F5F5F5',
-          foreground: '#888888',
+          DEFAULT: 'rgb(var(--c-muted) / <alpha-value>)',
+          foreground: 'rgb(var(--c-ink-faint) / <alpha-value>)',
         },
       },
       fontFamily: {
         heading: ['Poppins', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
-        metric: ['DM Sans', 'sans-serif'],
+        // metric previously used DM Sans; consolidated to Inter (two-family
+        // font budget — see src/main.tsx).
+        metric: ['Inter', 'sans-serif'],
       },
       fontSize: {
         // Custom scale
@@ -81,18 +93,18 @@ module.exports = {
         '3xl': '2rem',
       },
       boxShadow: {
-        'card': '0 4px 24px rgba(0, 0, 0, 0.06)',
-        'card-hover': '0 8px 32px rgba(245, 166, 35, 0.15)',
-        'golden': '0 4px 20px rgba(245, 166, 35, 0.35)',
-        'subtle': '0 2px 12px rgba(0, 0, 0, 0.04)',
+        // Theme-aware effect tokens (v4 Part 1): values live in index.css
+        // per theme — dark = ring+glow, light = drop shadows.
+        'card': 'var(--shadow-card)',
+        'card-hover': 'var(--shadow-card-hover)',
+        'golden': 'var(--shadow-golden)',
+        'subtle': 'var(--shadow-subtle)',
       },
       backgroundImage: {
         'gradient-golden': 'linear-gradient(135deg, #FFD700 0%, #F5A623 50%, #E09100 100%)',
         'gradient-golden-soft': 'linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(245, 166, 35, 0.05) 100%)',
       },
       animation: {
-        'fade-in': 'fadeIn 0.6s ease-out forwards',
-        'slide-up': 'slideUp 0.6s ease-out forwards',
       },
       keyframes: {
         fadeIn: {

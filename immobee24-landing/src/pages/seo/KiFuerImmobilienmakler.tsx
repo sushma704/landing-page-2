@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../../components/SiteChrome';
+import { cascadeDelay, chorSlot, Reveal, RevealGroup } from '../../lib/animations';
 import { trackEvent } from '../../lib/analytics';
 import { useDocumentMeta } from '../../lib/useDocumentMeta';
 import { useFaqSchema } from '../../lib/useFaqSchema';
@@ -88,7 +89,7 @@ const Hero = () => (
         <Sparkles className="h-3.5 w-3.5" /> Ratgeber — Lesezeit ca. 8 Minuten
       </p>
 
-      <h1 className="mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight">
+      <h1 className="chor mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight" style={chorSlot(0)}>
         KI für Immobilienmakler: So nutzen Sie künstliche Intelligenz in Ihrem Maklerbüro
       </h1>
 
@@ -277,7 +278,7 @@ const Positioning = () => (
           type="button"
           {...DEMO_CTA_PROPS}
           onClick={() => trackEvent('seo_hub_cta_click', { position: 'positioning' })}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 text-base font-semibold hover:bg-charcoal/90 transition-colors"
+          className="inline-flex items-center justify-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 text-base font-semibold hover:bg-charcoal/90 transition-colors"
         >
           Demo anfragen
           <ArrowRight className="h-4 w-4" />
@@ -303,7 +304,7 @@ const CityLinks = () => (
         Wie sich KI in der Praxis konkret auswirkt, hängt vom lokalen Markt
         ab. Lesen Sie unsere Stadt-Seiten für die Details:
       </p>
-      <div className="mt-6 grid sm:grid-cols-2 gap-3">
+      <RevealGroup className="mt-6 grid sm:grid-cols-2 gap-3">
         {[
           {
             title: 'KI-Maklersoftware in München',
@@ -338,7 +339,7 @@ const CityLinks = () => (
             </p>
           </Link>
         ))}
-      </div>
+      </RevealGroup>
     </div>
   </section>
 );
@@ -350,14 +351,16 @@ const Faq = () => (
         Häufige Fragen zu KI für Immobilienmakler
       </h2>
       <div className="mt-8 divide-y divide-charcoal/10">
-        {FAQS.map((item) => (
-          <details key={item.q} className="group py-5">
+        {FAQS.map((item, i) => (
+          <Reveal key={item.q} delay={cascadeDelay(i, 280)} distance={16}>
+          <details className="group py-5">
             <summary className="flex cursor-pointer items-start justify-between gap-4 list-none">
               <span className="font-semibold text-charcoal">{item.q}</span>
               <ChevronRight className="h-4 w-4 text-warm-gray mt-1 transition-transform group-open:rotate-90" />
             </summary>
             <p className="mt-3 text-slate leading-relaxed">{item.a}</p>
           </details>
+          </Reveal>
         ))}
       </div>
     </div>
@@ -365,10 +368,10 @@ const Faq = () => (
 );
 
 const FinalCta = () => (
-  <section className="py-20 bg-charcoal text-white">
+  <section className="py-20 band-dark bg-charcoal text-white">
     <div className="container max-w-3xl text-center">
       <Bot className="h-10 w-10 text-golden mx-auto" />
-      <h2 className="mt-4 font-heading text-3xl md:text-4xl font-bold">
+      <h2 className="mt-4 font-heading text-3xl md:text-4xl font-bold text-white">
         Bereit, KI in Ihrem Maklerbüro zu testen?
       </h2>
       <p className="mt-5 text-white/75 leading-relaxed">
@@ -382,7 +385,7 @@ const FinalCta = () => (
           type="button"
           {...DEMO_CTA_PROPS}
           onClick={() => trackEvent('seo_hub_cta_click', { position: 'final' })}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-golden text-charcoal px-6 py-3 text-base font-semibold hover:bg-golden/90 transition-colors"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-golden text-[#1E1B16] px-6 py-3 text-base font-semibold hover:bg-golden/90 transition-colors"
         >
           Demo anfragen
           <ArrowRight className="h-4 w-4" />
@@ -448,12 +451,22 @@ export default function KiFuerImmobilienmakler() {
     <div className="min-h-screen bg-white">
       <Header />
       <Hero />
-      <Overview />
-      <PainPoints />
-      <Positioning />
-      <CityLinks />
+      <Reveal>
+        <Overview />
+      </Reveal>
+      <Reveal>
+        <PainPoints />
+      </Reveal>
+      <Reveal>
+        <Positioning />
+      </Reveal>
+      <Reveal>
+        <CityLinks />
+      </Reveal>
       <Faq />
-      <FinalCta />
+      <Reveal>
+        <FinalCta />
+      </Reveal>
       <Footer />
     </div>
   );

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="de">
+<html lang="de" class="dark">
 
 <head>
   <!--
@@ -10,6 +10,23 @@
   -->
 
   <meta charset="UTF-8" />
+
+  <!--
+    Preload ONLY the above-the-fold font set (Poppins 600/700 latin for
+    headings, Inter 400/500 latin for body) so the first paint doesn't
+    reflow when the woff2 files land. Latin-ext and the remaining weights
+    stay lazy behind their unicode-range @font-face rules. Vite resolves
+    these node_modules paths to the same content-hashed /mkt-assets/ URLs
+    the @fontsource CSS references, so the preloads always match the build.
+  -->
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="./node_modules/@fontsource/poppins/files/poppins-latin-600-normal.woff2" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="./node_modules/@fontsource/poppins/files/poppins-latin-700-normal.woff2" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="./node_modules/@fontsource/inter/files/inter-latin-400-normal.woff2" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="./node_modules/@fontsource/inter/files/inter-latin-500-normal.woff2" />
+
+  <!-- Dark-only theme: paint the ground before CSS/JS load (no white flash) -->
+  <style>html.dark{background-color:#17140F;color-scheme:dark}html.dark body{background-color:#17140F}</style>
+  <script>try{if(localStorage.getItem('immob24-theme')==='light'){document.documentElement.classList.remove('dark');document.documentElement.style.backgroundColor='#FBF9F4'}}catch(e){}</script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!--
@@ -38,7 +55,7 @@
   <meta property="og:url" content="https://immob24.com/" />
   <meta property="og:title" content="KI-Maklersoftware für Immobilienmakler | Immob24" />
   <meta property="og:description" content="Immob24 ist die KI-Maklersoftware für Immobilienmakler in Deutschland. Beantworten Sie neue Anfragen in 3 Sekunden, qualifizieren Sie Leads automatisch." />
-  <meta property="og:image" content="/og-image.png" />
+  <meta property="og:image" content="https://immob24.com/og-image.png" />
   <meta property="og:site_name" content="Immob24" />
 
   <!-- Twitter -->
@@ -46,7 +63,7 @@
   <meta property="twitter:url" content="https://immob24.com/" />
   <meta property="twitter:title" content="KI-Maklersoftware für Immobilienmakler | Immob24" />
   <meta property="twitter:description" content="Immob24 ist die KI-Maklersoftware für Immobilienmakler in Deutschland. Beantworten Sie neue Anfragen in 3 Sekunden, qualifizieren Sie Leads automatisch." />
-  <meta property="twitter:image" content="/og-image.png" />
+  <meta property="twitter:image" content="https://immob24.com/og-image.png" />
 
   <!-- Canonical fallback for crawlers that read static HTML. React overrides per-route. -->
   <link rel="canonical" href="https://immob24.com/" />

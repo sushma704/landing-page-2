@@ -1,0 +1,616 @@
+// Site-wide premium animation system (Steps 0/3/6 of the animation spec).
+//
+// Constants — single source of truth for motion feel. B2B-precise: no bounce,
+// nothing longer than 800ms.
+//   REVEAL_DISTANCE 24px · REVEAL_MS 600 · EASE cubic-bezier(0.22,1,0.36,1)
+//   STAGGER_MS 80 · HOVER_MS 200
+//
+// Rules enforced here:
+// - prefers-reduced-motion → no SPATIAL motion and no loops, but sequenced
+//   entrances survive as opacity-only 400ms fades (content still "arrives").
+//   Loops/typewriters/marquees render their final state; CountUp snaps to
+//   the target value (centralized in usePrefersReducedMotion).
+// - Only transform/opacity are animated — zero layout shift.
+// - Elements already visible on mount do NOT scroll-animate.
+
+import {
+  createElement,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+  Children,
+  type CSSProperties,
+  type ElementType,
+  type ReactNode,
+} from 'react';
+
+export const REVEAL_MS = 700;
+export const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+export const STAGGER_MS = 80;
+
+// Entrance-choreography slot: literal delay/duration for .chor/.chor-scale
+// elements (multiplied by ?slowmo=N in dev). Usage:
+//   <div className="chor" style={chorSlot(280, 500)}>
+// ?slowmo=N multiplier (dev/localhost flag set in main.tsx) for JS-driven timings
+export const slowmoFactor = (): number =>
+  import.meta.env.DEV
+    ? Number(getComputedStyle(document.documentElement).getPropertyValue('--slowmo') || 1) || 1
+    : 1;
+
+export const chorSlot = (delayMs: number, durMs = 600): CSSProperties =>
+  ({ '--chor-delay': `${delayMs}ms`, '--chor-dur': `${durMs}ms` }) as CSSProperties;
+
+export type RevealDirection = 'up' | 'left' | 'right' | 'scale';
+
+// pre-reveal transform per direction (Part B.2): up = 28px rise,
+// left/right = slide in from that side, scale = 0.94 → 1.
+// `distance` lets subtle contexts (footer: 16px) shorten the travel.
+const hiddenTransform = (direction: RevealDirection, distance: number): string =>
+  ({
+    up: `translateY(${distance}px)`,
+    left: `translateX(-${distance}px)`,
+    right: `translateX(${distance}px)`,
+    scale: 'scale(0.95)',
+  })[direction];
+
+export function usePrefersReducedMotion(): boolean {
+  const [reduced, setReduced] = useState(
+    () =>
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const onChange = (e: MediaQueryListEvent) => setReduced(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+  return reduced;
+}
+
+type InViewOptions = {
+  rootMargin?: string;
+  threshold?: number;
+};
+
+// IntersectionObserver hook — fires once, then unobserves. Elements already
+// in the viewport on mount report inView immediately WITHOUT animating
+// (the caller checks `immediate`).
+export function useInView<T extends HTMLElement = HTMLDivElement>(
+  options: InViewOptions = {},
+): [React.RefObject<T | null>, boolean, boolean, number] {
+  const ref = useRef<T | null>(null);
+  const [inView, setInView] = useState(false);
+  const [immediate, setImmediate] = useState(false);
+  const loadDelayRef = useRef(0);
+
+  // useLayoutEffect: measure synchronously before first paint, so the
+  // already-in-viewport check can't race a scroll that happens between
+  // paint and effect flush.
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    // Visible on load → the element JOINS THE PAGE-LOAD BUILD: it animates
+    // in with a delay proportional to its position on screen, so the whole
+    // first viewport assembles top-to-bottom (the "data arriving" feel)
+    // instead of rendering pre-baked. Double-rAF ensures the hidden state
+    // paints first so the transition is visible.
+    const r = el.getBoundingClientRect();
+    if (r.top < window.innerHeight && r.bottom > 0) {
+      setImmediate(true);
+      loadDelayRef.current = Math.round(
+        250 + (Math.max(0, r.top) / window.innerHeight) * 650,
+      );
+      let raf2 = 0;
+      const raf1 = requestAnimationFrame(() => {
+        raf2 = requestAnimationFrame(() => setInView(true));
+      });
+      return () => {
+        cancelAnimationFrame(raf1);
+        cancelAnimationFrame(raf2);
+      };
+    }
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) {
+            setInView(true);
+            obs.unobserve(e.target);
+          }
+        });
+      },
+      {
+        rootMargin: options.rootMargin ?? '0px 0px -10% 0px',
+        threshold: options.threshold ?? 0.15,
+      },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return [ref, inView, immediate, loadDelayRef.current];
+}
+
+type RevealProps = {
+  children: ReactNode;
+  delay?: number;
+  as?: ElementType;
+  className?: string;
+  direction?: RevealDirection;
+  /** travel in px for up/left/right (default 28) */
+  distance?: number;
+};
+
+// Scroll reveal: opacity 0 + direction offset → final. 650ms, precise ease.
+// will-change is set only while hidden and dropped once revealed (Part B.6).
+export const Reveal = ({
+  children,
+  delay = 0,
+  as = 'div',
+  className = '',
+  direction = 'up',
+  distance = 36,
+}: RevealProps) => {
+  const reduced = usePrefersReducedMotion();
+  const [ref, inView, immediate, loadDelay] = useInView<HTMLElement>();
+  const show = inView;
+  const totalDelay = delay + (immediate ? loadDelay : 0);
+  // reduced motion: same in-view trigger and delays, opacity-only 400ms —
+  // the cascade sequencing survives, nothing moves spatially
+  const style: CSSProperties = reduced
+    ? {
+        opacity: show ? 1 : 0,
+        transition: `opacity 400ms ${EASE} ${totalDelay}ms`,
+      }
+    : {
+        opacity: show ? 1 : 0,
+        transform: show ? 'none' : hiddenTransform(direction, distance),
+        transition: `opacity ${REVEAL_MS}ms ${EASE} ${totalDelay}ms, transform ${REVEAL_MS}ms ${EASE} ${totalDelay}ms`,
+        willChange: show ? undefined : 'opacity, transform',
+      };
+  // .is-revealed lets CSS trigger dependent entrances (icon draw-in, Part 7)
+  const revealedCls = show ? ' is-revealed' : '';
+  return createElement(as, { ref, style, className: className + revealedCls }, children);
+};
+
+type CascadeRhythm = 'wave' | 'read' | 'subtle';
+
+// wave: card grids (fast). read: content users read top-to-bottom
+// (FAQ, steps, checklists). subtle: footer columns.
+const RHYTHM: Record<CascadeRhythm, { gap: number; dur: number; distance: number }> = {
+  wave: { gap: STAGGER_MS, dur: REVEAL_MS, distance: 36 },
+  read: { gap: 280, dur: 450, distance: 16 },
+  subtle: { gap: 120, dur: 450, distance: 16 },
+};
+
+// Long cascades cap at 8 items — items 9+ share the 8th slot.
+export const cascadeDelay = (i: number, gap: number, base = 0): number =>
+  base + Math.min(i, 7) * gap;
+
+type RevealGroupProps = {
+  children: ReactNode;
+  as?: ElementType;
+  className?: string;
+  baseDelay?: number;
+  direction?: RevealDirection;
+  /** per-child stagger in ms (overrides rhythm gap) */
+  stagger?: number;
+  rhythm?: CascadeRhythm;
+};
+
+// Applies Reveal to each direct child with a rhythm-driven stagger.
+export const RevealGroup = ({
+  children,
+  as = 'div',
+  className = '',
+  baseDelay = 0,
+  direction = 'up',
+  stagger,
+  rhythm = 'wave',
+}: RevealGroupProps) => {
+  const r = RHYTHM[rhythm];
+  const gap = stagger ?? r.gap;
+  const items = Children.toArray(children);
+  return createElement(
+    as,
+    { className },
+    items.map((child, i) => (
+      <Reveal
+        key={i}
+        delay={cascadeDelay(i, gap, baseDelay)}
+        direction={direction}
+        distance={r.distance}
+      >
+        {child}
+      </Reveal>
+    )),
+  );
+};
+
+// ── Table cascade: container hook + CSS classes ──────────────────────────────
+// Tables can't be wrapped per-row without breaking semantics, so rows/cells
+// carry .cascade-item/.cascade-cell with inline transition delays and the
+// container flips .cascade-on when scrolled into view (once). Above-fold
+// tables render revealed instantly (no double animation with the entrance
+// choreography).
+// Under reduced motion the same in-view trigger runs — the CSS turns the
+// staggered reveal into an opacity-only fade.
+export function useCascade<T extends HTMLElement = HTMLDivElement>(): [
+  React.RefObject<T | null>,
+  string,
+] {
+  const [ref, inView, immediate, loadDelay] = useInView<T>();
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    if (!inView) return;
+    if (immediate && loadDelay) {
+      const t = window.setTimeout(() => setOn(true), loadDelay);
+      return () => window.clearTimeout(t);
+    }
+    setOn(true);
+  }, [inView, immediate, loadDelay]);
+  return [ref, on ? 'cascade-on' : 'cascade-wait'];
+}
+
+type CountUpProps = {
+  value: string; // e.g. "€249", "3s", "24/7", "94%"
+  duration?: number;
+  className?: string;
+  /** ms before counting starts once triggered (choreography slot) */
+  delay?: number;
+  /** duration when morphing between successive values (price toggle) */
+  morphMs?: number;
+};
+
+// Animated count-up for numeric stats. Parses prefix/number/suffix from the
+// value string ("€249" → "€" + 249, "24/7" → 24 + "/7"); renders integers
+// with tabular numerals so surrounding text never reflows.
+export const CountUp = ({
+  value,
+  duration = 1200,
+  className = '',
+  delay = 0,
+  morphMs = 500,
+}: CountUpProps) => {
+  const reduced = usePrefersReducedMotion();
+  // Unlike Reveal, elements visible on mount DO count up — it's a mount
+  // entrance (like the hero), and tabular-nums means zero layout shift.
+  const [ref, inView] = useInView<HTMLSpanElement>();
+  const m = /^([^0-9]*)(\d+)(.*)$/.exec(value);
+  const target = m ? parseInt(m[2], 10) : 0;
+  const prefix = m ? m[1] : '';
+  const suffix = m ? m[3] : '';
+  const [n, setN] = useState(reduced ? target : 0);
+  const nRef = useRef(n);
+  nRef.current = n;
+  const ranOnce = useRef(false);
+
+  useEffect(() => {
+    if (!m) return;
+    if (reduced) {
+      setN(target);
+      return;
+    }
+    if (!inView) return;
+    let raf = 0;
+    let timer = 0;
+    const slowmo = slowmoFactor();
+    // first trigger counts 0 → target; later target changes MORPH from the
+    // currently displayed value (price toggle: 249 → 207), never reflowing.
+    const from = ranOnce.current ? nRef.current : 0;
+    const dur = (ranOnce.current ? morphMs : duration) * slowmo;
+    const start = () => {
+      ranOnce.current = true;
+      const t0 = performance.now();
+      const tick = (now: number) => {
+        const k = Math.min(1, (now - t0) / dur);
+        const eased = 1 - Math.pow(1 - k, 3); // ease-out cubic
+        setN(Math.round(from + eased * (target - from)));
+        if (k < 1) raf = requestAnimationFrame(tick);
+      };
+      raf = requestAnimationFrame(tick);
+    };
+    if (delay > 0 && !ranOnce.current) timer = window.setTimeout(start, delay * slowmo);
+    else start();
+    return () => {
+      cancelAnimationFrame(raf);
+      window.clearTimeout(timer);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView, reduced, target, duration]);
+
+  if (!m) return <span className={className}>{value}</span>;
+  return (
+    <span ref={ref} className={className} style={{ fontVariantNumeric: 'tabular-nums' }}>
+      {prefix}
+      {n}
+      {suffix}
+    </span>
+  );
+};
+
+type TypeCycleProps = {
+  /** words typed/erased in a loop; words[0] renders statically under reduced motion */
+  words: string[];
+  className?: string;
+  typeMs?: number;
+  eraseMs?: number;
+  holdMs?: number;
+};
+
+// Typewriter word rotation (HomeLead-style hero): types a word, holds,
+// erases, types the next. An invisible sizer containing the longest word
+// reserves the box, so the surrounding layout never shifts (CLS 0).
+export const TypeCycle = ({
+  words,
+  className = '',
+  typeMs = 45,
+  eraseMs = 25,
+  holdMs = 2200,
+}: TypeCycleProps) => {
+  const reduced = usePrefersReducedMotion();
+  const [wi, setWi] = useState(0);
+  const [len, setLen] = useState(0);
+  const [erasing, setErasing] = useState(false);
+
+  useEffect(() => {
+    if (reduced || words.length === 0) return;
+    const word = words[wi];
+    let t: number;
+    if (!erasing) {
+      if (len < word.length) t = window.setTimeout(() => setLen(len + 1), typeMs);
+      else t = window.setTimeout(() => setErasing(true), holdMs);
+    } else if (len > 0) {
+      t = window.setTimeout(() => setLen(len - 1), eraseMs);
+    } else {
+      setErasing(false);
+      setWi((wi + 1) % words.length);
+    }
+    return () => window.clearTimeout(t);
+  }, [len, erasing, wi, reduced, words, typeMs, eraseMs, holdMs]);
+
+  if (!words.length) return null;
+  if (reduced) return <span className={className}>{words[0]}</span>;
+  const longest = words.reduce((a, b) => (a.length >= b.length ? a : b));
+  return (
+    <span className={`relative inline-grid align-baseline ${className}`} aria-hidden>
+      {/* sizer: reserves the widest/tallest state so nothing reflows.
+          text-start anchors typing so characters append without
+          re-centering the word (a centered word shifts every keystroke). */}
+      <span aria-hidden className="invisible col-start-1 row-start-1 whitespace-pre text-start">
+        {longest}
+      </span>
+      <span aria-hidden className="col-start-1 row-start-1 whitespace-pre text-start">
+        {words[wi].slice(0, len)}
+        <span className="type-caret" />
+      </span>
+    </span>
+  );
+};
+
+type TypeOnceProps = {
+  text: string;
+  className?: string;
+  charMs?: number;
+  startDelay?: number;
+};
+
+// One-shot typewriter for page headings: characters REVEAL in place
+// (visibility, not insertion), so centered multi-line headings never
+// reflow — zero CLS. A caret rides the newest character while typing.
+// Under reduced motion the text renders complete and static.
+export const TypeOnce = ({ text, className = '', charMs = 45, startDelay = 150 }: TypeOnceProps) => {
+  const reduced = usePrefersReducedMotion();
+  const [ref, inView] = useInView<HTMLSpanElement>();
+  const [len, setLen] = useState(0);
+  const done = len >= text.length;
+
+  useEffect(() => {
+    if (reduced || !inView || done) return;
+    const t = window.setTimeout(() => setLen((n) => n + 1), len === 0 ? startDelay : charMs);
+    return () => window.clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView, len, reduced, done, charMs, startDelay]);
+
+  if (reduced) return <span className={className}>{text}</span>;
+  const chars = [...text];
+  return (
+    <span ref={ref} className={className} aria-label={text}>
+      {chars.map((c, i) =>
+        c === ' ' ? (
+          ' '
+        ) : (
+          <span
+            key={i}
+            aria-hidden
+            className={`${i < len ? '' : 'invisible'} ${!done && i === len - 1 ? 'type-head' : ''}`}
+          >
+            {c}
+          </span>
+        ),
+      )}
+    </span>
+  );
+};
+
+type LineRevealProps = {
+  text: string;
+  className?: string;
+  /** masked: heading treatment (overflow-hidden mask, slide up from 110%).
+      unmasked: lead-paragraph treatment (plain fade-up per line). */
+  masked?: boolean;
+  lineGapMs?: number;
+  baseDelay?: number;
+};
+
+// Line-by-line text reveal. The text renders as word spans first (space
+// fully reserved), lines are measured synchronously before paint
+// (useLayoutEffect + offsetTop grouping — i18n safe: splitting happens on
+// RENDERED output), then each visual line animates in. Re-splits on resize.
+export const LineReveal = ({
+  text,
+  className = '',
+  masked = true,
+  lineGapMs,
+  baseDelay = 0,
+}: LineRevealProps) => {
+  const reduced = usePrefersReducedMotion();
+  const gap = lineGapMs ?? (masked ? 90 : 70);
+  const hostRef = useRef<HTMLSpanElement | null>(null);
+  const [lines, setLines] = useState<string[] | null>(null);
+  const [inViewRef, inView, immediate, loadDelay] = useInView<HTMLSpanElement>();
+
+  // share one element between measuring and display
+  const setRefs = (el: HTMLSpanElement | null) => {
+    hostRef.current = el;
+    (inViewRef as React.MutableRefObject<HTMLSpanElement | null>).current = el;
+  };
+
+  useLayoutEffect(() => {
+    const el = hostRef.current;
+    if (!el || lines !== null) return;
+    const words = [...el.querySelectorAll<HTMLSpanElement>('[data-lr-word]')];
+    if (!words.length) return;
+    const grouped: string[] = [];
+    let top: number | null = null;
+    let current: string[] = [];
+    words.forEach((w) => {
+      if (top === null || Math.abs(w.offsetTop - top) > 2) {
+        if (current.length) grouped.push(current.join(' '));
+        current = [];
+        top = w.offsetTop;
+      }
+      current.push((w.textContent ?? '').trim());
+    });
+    if (current.length) grouped.push(current.join(' '));
+    setLines(grouped);
+  }, [lines, text]);
+
+  // re-split on resize (line breaks change)
+  useEffect(() => {
+    let t = 0;
+    const onResize = () => {
+      window.clearTimeout(t);
+      t = window.setTimeout(() => setLines(null), 150);
+    };
+    window.addEventListener('resize', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      window.clearTimeout(t);
+    };
+  }, []);
+
+  useEffect(() => setLines(null), [text]);
+
+  if (lines === null) {
+    // measuring pass — words laid out normally, hidden until split
+    return (
+      <span ref={setRefs} className={className} style={{ visibility: 'hidden' }} aria-label={text}>
+        {text.split(' ').map((w, i) => (
+          <span key={i} data-lr-word aria-hidden>
+            {w}
+            {'\u0020'}
+          </span>
+        ))}
+      </span>
+    );
+  }
+
+  const show = inView;
+  const extra = immediate ? loadDelay : 0;
+  return (
+    <span ref={setRefs} className={className} aria-label={text}>
+      {lines.map((line, i) => (
+        <span key={i} className={`block ${masked ? 'overflow-hidden' : ''}`} aria-hidden>
+          <span
+            className="block"
+            style={
+              // reduced motion: lines still land one after another, but as a
+              // pure fade — no mask slide, no rise
+              reduced
+                ? {
+                    opacity: show ? 1 : 0,
+                    transition: `opacity 400ms ${EASE} ${baseDelay + extra + i * gap}ms`,
+                  }
+                : {
+                    opacity: show ? 1 : 0,
+                    transform: show ? 'none' : masked ? 'translateY(110%)' : 'translateY(16px)',
+                    transition: `opacity ${masked ? 500 : 450}ms ${EASE} ${
+                      baseDelay + extra + i * gap
+                    }ms, transform ${masked ? 500 : 450}ms ${EASE} ${baseDelay + extra + i * gap}ms`,
+                  }
+            }
+          >
+            {line}
+          </span>
+        </span>
+      ))}
+    </span>
+  );
+};
+
+type SkeletonRevealProps = {
+  children: ReactNode;
+  className?: string;
+  /** shimmer duration before the real content crossfades in */
+  holdMs?: number;
+};
+
+// "Data loading in": neutral shimmer blocks hold for ~400ms, then the real
+// content crossfades over them. Space is reserved by the children themselves
+// (they render at opacity 0 underneath) — zero layout shift. Use sparingly:
+// hero mockups and at most one dashboard visual per page.
+export const SkeletonReveal = ({ children, className = '', holdMs = 400 }: SkeletonRevealProps) => {
+  const reduced = usePrefersReducedMotion();
+  const [ready, setReady] = useState(reduced);
+  useEffect(() => {
+    if (reduced) {
+      setReady(true);
+      return;
+    }
+    const t = window.setTimeout(() => setReady(true), holdMs);
+    return () => window.clearTimeout(t);
+  }, [reduced, holdMs]);
+  return (
+    <div className={`relative ${className}`}>
+      <div className={`transition-opacity duration-300 ${ready ? 'opacity-100' : 'opacity-0'}`}>
+        {children}
+      </div>
+      {!ready && (
+        <div aria-hidden className="absolute inset-0 flex flex-col gap-3 p-5">
+          <div className="skel-block h-6 w-1/3" />
+          <div className="skel-block h-4 w-2/3" />
+          <div className="skel-block h-4 w-1/2" />
+          <div className="skel-block flex-1" />
+        </div>
+      )}
+    </div>
+  );
+};
+
+type MarqueeProps = {
+  children: ReactNode;
+  className?: string;
+  durationS?: number;
+};
+
+// Infinite horizontal marquee: track duplicated, translateX(-50%) keyframe
+// loop, pause on hover. Under reduced motion: a static wrapped row.
+export const Marquee = ({ children, className = '', durationS = 30 }: MarqueeProps) => {
+  const reduced = usePrefersReducedMotion();
+  if (reduced) {
+    return <div className={`flex flex-wrap gap-2 ${className}`}>{children}</div>;
+  }
+  return (
+    <div className={`marquee ${className}`}>
+      <div className="marquee-track" style={{ animationDuration: `${durationS}s` }}>
+        <div className="marquee-seg">{children}</div>
+        <div className="marquee-seg" aria-hidden>
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};

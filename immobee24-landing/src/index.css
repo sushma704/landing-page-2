@@ -4,12 +4,60 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 10%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 39 91% 55%;
-    --radius: 0.75rem;
+    /* Light palette (opt-in for review; DARK below is the default via
+       <html class="dark">) */
+    --c-cream: 251 249 244;
+    --c-surface: 255 255 255;
+    --c-muted: 244 240 231;
+    --c-ink: 30 27 22;
+    --c-ink-soft: 85 80 63;
+    --c-ink-faint: 141 132 113;
+    --c-teal: 12 111 95;
+    --c-teal-ink: 10 90 77;
+    --c-teal-wash: 220 238 233;
+    color-scheme: light;
+    /* ── effect tokens (Part 1): LIGHT = deeper accent, higher opacity
+       (pale glows vanish on cream); shimmer darkens instead of lightening;
+       card shadows are real drop shadows. ── */
+    --glow-color: 199 108 5;
+    --glow-opacity: 0.22;
+    --shimmer-highlight: 30 27 22;
+    --shimmer-opacity: 0.09;
+    --spotlight-color: 199 108 5;
+    --spotlight-opacity: 0.16;
+    --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.07);
+    --shadow-subtle: 0 2px 12px rgba(0, 0, 0, 0.05);
+    --shadow-card-hover: 0 0 0 1px rgba(199, 108, 5, 0.3), 0 8px 32px rgba(199, 108, 5, 0.18);
+    --shadow-golden: 0 4px 20px rgba(199, 108, 5, 0.35);
+  }
+
+  /* Dark theme (brief dark tokens) — toggled by ThemeToggle via .dark on <html> */
+  .dark {
+    --c-cream: 23 20 15;         /* page ground  #17140F */
+    --c-surface: 33 29 22;       /* cards        #211D16 */
+    --c-muted: 30 26 20;
+    --c-ink: 245 240 230;
+    --c-ink-soft: 180 171 152;
+    --c-ink-faint: 140 132 115;
+    --c-teal: 63 187 166;
+    --c-teal-ink: 111 211 194;
+    --c-teal-wash: 18 48 41;
+    color-scheme: dark;
+    /* effect tokens — DARK: accent glows 10-15%, light-tinted shimmer */
+    --glow-color: 245 166 35;
+    --glow-opacity: 0.12;
+    --shimmer-highlight: 245 240 230;
+    --shimmer-opacity: 0.08;
+    --spotlight-color: 245 166 35;
+    --spotlight-opacity: 0.1;
+    --shadow-card: 0 0 0 1px rgba(245, 240, 230, 0.05), 0 0 24px rgba(245, 166, 35, 0.07);
+    --shadow-subtle: 0 0 0 1px rgba(245, 240, 230, 0.04);
+    --shadow-card-hover: 0 0 0 1px rgba(245, 166, 35, 0.25), 0 8px 32px rgba(245, 166, 35, 0.12);
+    --shadow-golden: 0 4px 24px rgba(245, 166, 35, 0.3);
+  }
+
+  body {
+    transition: background-color 0.35s ease, color 0.35s ease;
   }
 
   * {
@@ -131,18 +179,7 @@
   /* ============================================
      HEXAGONAL CARD with golden border glow
      ============================================ */
-  .hex-card {
-    @apply relative bg-white rounded-2xl p-6 md:p-8
-           border border-golden/10
-           shadow-[0_4px_24px_rgba(0,0,0,0.06)]
-           transition-all duration-500 ease-out;
-    clip-path: polygon(5% 0%, 95% 0%, 100% 50%, 95% 100%, 5% 100%, 0% 50%);
-  }
 
-  .hex-card:hover {
-    @apply border-golden/30;
-    box-shadow: 0 8px 32px rgba(245, 166, 35, 0.2), 0 0 0 1px rgba(245, 166, 35, 0.1);
-  }
 
   /* ============================================
      METRIC CARD with honey fill animation
@@ -181,17 +218,7 @@
   /* ============================================
      GOLDEN SECTION DIVIDER
      ============================================ */
-  .section-divider {
-    @apply relative h-px w-full overflow-hidden;
-    background: linear-gradient(90deg,
-      transparent 0%,
-      rgba(245, 166, 35, 0.3) 20%,
-      rgba(255, 215, 0, 0.5) 50%,
-      rgba(245, 166, 35, 0.3) 80%,
-      transparent 100%
-    );
-  }
-
+  
   .section-divider::before {
     content: '';
     @apply absolute inset-0;
@@ -236,33 +263,15 @@
   /* ============================================
      FLOATING ANIMATIONS
      ============================================ */
-  .float {
-    animation: float 6s ease-in-out infinite;
-  }
 
-  .float-delayed {
-    animation: float 6s ease-in-out infinite 2s;
-  }
-
-  .float-slow {
-    animation: float 8s ease-in-out infinite 1s;
-  }
-
+  
+  
   /* ============================================
      GLOW EFFECTS
      Golden amber glow for premium feel
      ============================================ */
-  .glow-golden {
-    box-shadow: 0 0 60px -15px rgba(245, 166, 35, 0.5);
-  }
 
-  .glow-golden-sm {
-    box-shadow: 0 0 30px -10px rgba(245, 166, 35, 0.4);
-  }
 
-  .glow-amber {
-    box-shadow: 0 4px 20px rgba(245, 166, 35, 0.4);
-  }
 
   /* ============================================
      TIMELINE
@@ -374,65 +383,17 @@
 /* ============================================
    KEYFRAME ANIMATIONS
    ============================================ */
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(2deg); }
-}
 
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(245, 166, 35, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(245, 166, 35, 0.5); }
-}
 
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
 
-@keyframes divider-shimmer {
-  0%, 100% { opacity: 0.3; transform: translateX(-100%); }
-  50% { opacity: 1; transform: translateX(100%); }
-}
 
-@keyframes honey-fill {
-  0% { clip-path: inset(100% 0 0 0); }
-  100% { clip-path: inset(0 0 0 0); }
-}
 
-@keyframes bee-flight {
-  0%, 100% { transform: translateX(0) translateY(0); }
-  25% { transform: translateX(10px) translateY(-5px); }
-  50% { transform: translateX(0) translateY(-10px); }
-  75% { transform: translateX(-10px) translateY(-5px); }
-}
 
-.animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
-}
 
-.animate-gradient {
-  background-size: 200% 200%;
-  animation: gradient-shift 8s ease infinite;
-}
 
-.animate-honey-fill {
-  animation: honey-fill 1s ease-out forwards;
-}
 
-.animate-bee-flight {
-  animation: bee-flight 4s ease-in-out infinite;
-}
 
-@keyframes bounce-in {
-  0% { transform: scale(0.5); opacity: 0; }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); opacity: 1; }
-}
 
-.animate-bounce-in {
-  animation: bounce-in 0.5s ease-out forwards;
-}
 
 /* ============================================
    RESPONSIVE BREAKPOINTS
@@ -472,4 +433,912 @@
   .section {
     @apply py-40;
   }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   AI-refinement UI polish (brief re-skin): micro-interactions +
+   hero animations. All motion is disabled under reduced-motion.
+   ════════════════════════════════════════════════════════════════ */
+@layer utilities {
+  /* Cards lift subtly on hover — applies to every existing shadow-card */
+  .shadow-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  @media (hover: hover) {
+    .shadow-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 34px rgba(30, 27, 22, 0.12);
+    }
+    .dark .shadow-card:hover {
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  /* Hero entrance (staggered via inline animation-delay) */
+  .hero-in {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: heroIn 0.75s cubic-bezier(0.22, 0.8, 0.32, 1) forwards;
+  }
+  @keyframes heroIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Hero product visual: fade up + scale 0.97 -> 1 over 700ms (spec step 2) */
+    
+  /* Floating stat pills (HomeLead-style, gentler) */
+  .float-pill {
+    animation: floatY 5.5s ease-in-out infinite;
+  }
+  @keyframes floatY {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-9px); }
+  }
+
+  /* Ambient glow drift behind the hero */
+  .glow-drift {
+    animation: glowDrift 12s ease-in-out infinite alternate;
+  }
+  @keyframes glowDrift {
+    from { transform: translate3d(-2%, -1%, 0) scale(1); }
+    to { transform: translate3d(2%, 2%, 0) scale(1.08); }
+  }
+
+  /* Scroll cue chevron */
+  .scroll-cue {
+    animation: cueBounce 1.8s ease-in-out infinite;
+  }
+  @keyframes cueBounce {
+    0%, 100% { transform: translateY(0); opacity: 0.7; }
+    50% { transform: translateY(8px); opacity: 1; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-in {
+    transform: none;
+    animation-name: rmFade;
+    animation-duration: 400ms;
+  }
+  .float-pill, .glow-drift, .scroll-cue { animation: none; }
+  .shadow-card, .shadow-card:hover { transition: none; transform: none; }
+  html { scroll-behavior: auto; }
+}
+
+
+/* ════════════════════════════════════════════════════════════════
+   Animation system (spec steps 4/6/7): hover polish, marquee,
+   animated accordions. Motion constants: 200ms ease-out hovers,
+   marquee 30s linear, accordion 220ms. Reduced-motion safe.
+   ════════════════════════════════════════════════════════════════ */
+@layer utilities {
+  /* STEP 4 — interactive cards: border tints toward the accent on hover
+     (lift + shadow already handled by .shadow-card / hover:shadow-card-hover) */
+  @media (hover: hover) {
+    .shadow-card:hover,
+    .shadow-subtle:hover {
+      border-color: rgba(245, 166, 35, 0.35);
+    }
+  }
+
+  /* STEP 4 — primary CTAs: press feedback + arrow nudge */
+  .bg-gradient-golden,
+  [data-demo-cta] {
+    transition: transform 200ms ease-out, box-shadow 200ms ease-out,
+      background-color 200ms ease-out, border-color 200ms ease-out;
+  }
+  .bg-gradient-golden svg,
+  [data-demo-cta] svg {
+    transition: transform 200ms ease-out;
+  }
+  @media (hover: hover) {
+    button.bg-gradient-golden:hover,
+    a.bg-gradient-golden:hover,
+    button[data-demo-cta]:hover {
+      transform: scale(1.02);
+    }
+    .bg-gradient-golden:hover > svg,
+    [data-demo-cta]:hover > svg {
+      transform: translateX(3px);
+    }
+  }
+  button.bg-gradient-golden:active,
+  button[data-demo-cta]:active {
+    transform: scale(0.98);
+  }
+
+  /* STEP 6 — infinite logo/chip marquee (track duplicated, -50% loop) */
+  .marquee {
+    overflow: hidden;
+    mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marqueeX 30s linear infinite;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  .marquee-seg {
+    display: flex;
+    gap: 0.5rem;
+    padding-inline-end: 0.5rem;
+    flex: none;
+  }
+  @keyframes marqueeX {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  [dir='rtl'] .marquee-track {
+    animation-name: marqueeXrtl;
+  }
+  @keyframes marqueeXrtl {
+    from { transform: translateX(0); }
+    to { transform: translateX(50%); }
+  }
+
+  /* STEP 7 — accordion open/close via grid-template-rows 0fr→1fr
+     (no JS height measuring, no layout jump) */
+  .acc-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 220ms ease-out;
+  }
+  .acc-body > * {
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 220ms ease-out, transform 220ms ease-out;
+  }
+  .acc-body[data-open='true'] {
+    grid-template-rows: 1fr;
+  }
+  .acc-body[data-open='true'] > * {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track { animation: none !important; flex-wrap: wrap; width: auto; }
+  .acc-body, .acc-body > * { transition: none !important; }
+  .bg-gradient-golden, [data-demo-cta], .bg-gradient-golden svg, [data-demo-cta] svg { transition: none !important; }
+  button.bg-gradient-golden:hover, a.bg-gradient-golden:hover, button[data-demo-cta]:hover,
+  button.bg-gradient-golden:active, button[data-demo-cta]:active { transform: none !important; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Product scenes — self-playing UI vignettes (src/components/scenes).
+   Step-driven elements use .tr-scene transitions; only continuous
+   loops (typing dots, slot pulse) need keyframes. Transform/opacity
+   only — nothing here can shift layout.
+   ════════════════════════════════════════════════════════════════ */
+@layer utilities {
+  .tr-scene {
+    transition-property: opacity, transform, border-color, background-color;
+    transition-duration: 350ms;
+    transition-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+}
+
+.scene-typing-dot {
+  animation: sceneTyping 1s infinite cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes sceneTyping {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.35; }
+  30% { transform: translateY(-3px); opacity: 1; }
+}
+
+.scene-ring {
+  animation: sceneRing 1.6s infinite cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes sceneRing {
+  0%, 100% { opacity: 0; transform: scale(0.92); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scene-typing-dot, .scene-ring { animation: none; }
+  .tr-scene { transition: none !important; }
+}
+
+/* Header dropdown menus (unified nav): panel pops in with the house easing,
+   items cascade 40ms apart. Transform/opacity only. */
+.menu-pop {
+  transform-origin: top;
+  animation: menuPop 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes menuPop {
+  from { opacity: 0; transform: translateY(4px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.menu-item {
+  animation: menuItem 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes menuItem {
+  from { opacity: 0; transform: translateY(3px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .menu-pop, .menu-item { animation: none; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Part D — hover states on everything interactive (dark theme).
+   Hover-only styles live behind @media (hover: hover) so touch
+   devices never get stuck states; every hover has a :focus-visible
+   twin for keyboard users. Transform/opacity/box-shadow only.
+   ════════════════════════════════════════════════════════════════ */
+
+/* D.1 — cards: lift + accent border + glow + inner icon scale */
+.shadow-card,
+.shadow-subtle {
+  transition: transform 200ms ease-out, box-shadow 200ms ease-out,
+    border-color 200ms ease-out;
+}
+.shadow-card svg,
+.shadow-subtle svg {
+  transition: transform 200ms ease-out;
+}
+@media (hover: hover) and (pointer: fine) {
+  .shadow-card:hover > * svg:first-of-type,
+  .shadow-subtle:hover > * svg:first-of-type {
+    transform: rotate(-6deg) scale(1.12);
+    transition: transform 250ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  /* D.4 — screenshots inside cards zoom subtly (frames are overflow-hidden);
+     images never invert */
+  .shadow-card:hover img {
+    transform: scale(1.03);
+  }
+}
+.shadow-card img {
+  transition: transform 300ms ease-out;
+}
+.shadow-card:focus-visible,
+.shadow-subtle:focus-visible,
+a:has(> .shadow-card):focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(245, 166, 35, 0.4);
+  box-shadow: 0 0 0 2px rgba(245, 166, 35, 0.6);
+  outline: none;
+}
+
+/* D.2 — focus twin for primary CTAs (hover variants exist above) */
+button.bg-gradient-golden:focus-visible,
+a.bg-gradient-golden:focus-visible,
+button[data-demo-cta]:focus-visible {
+  transform: scale(1.03);
+  box-shadow: 0 0 0 2px rgba(245, 166, 35, 0.6), 0 4px 24px rgba(245, 166, 35, 0.3);
+  outline: none;
+}
+
+/* D.3 — nav & footer links: animated underline, scaleX 0 → 1 from the start side */
+.nav-underline {
+  position: relative;
+}
+.nav-underline::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0.5rem;
+  bottom: 0.25rem;
+  height: 1.5px;
+  background: currentColor;
+  border-radius: 1px;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 200ms ease-out;
+}
+[dir='rtl'] .nav-underline::after {
+  transform-origin: 100% 50%;
+}
+@media (hover: hover) {
+  .nav-underline:hover::after {
+    transform: scaleX(1);
+  }
+}
+.nav-underline:focus-visible::after {
+  transform: scaleX(1);
+}
+.nav-underline:focus-visible {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shadow-card, .shadow-subtle, .shadow-card svg, .shadow-subtle svg,
+  .shadow-card img, .nav-underline::after {
+    transition: none !important;
+  }
+  .shadow-card:hover, .shadow-subtle:hover { transform: none; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   .band-dark — scoped token restore for deliberately-dark surfaces.
+   The dark-only theme inverts the neutral tokens site-wide, which
+   made "dark bands" (bg-charcoal + text-white) render as light
+   bands and the home hero text near-invisible. Inside .band-dark
+   the ORIGINAL light-theme palette applies, so these surfaces
+   render exactly as designed: dark band, white text, white cards.
+   ════════════════════════════════════════════════════════════════ */
+.band-dark {
+  --c-cream: 251 249 244;
+  --c-surface: 255 255 255;
+  --c-muted: 244 240 231;
+  --c-ink: 30 27 22;
+  --c-ink-soft: 85 80 63;
+  --c-ink-faint: 141 132 113;
+  --c-teal: 12 111 95;
+  --c-teal-ink: 10 90 77;
+  --c-teal-wash: 220 238 233;
+}
+
+/* Typewriter caret (TypeCycle) */
+.type-caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.95em;
+  margin-inline-start: 3px;
+  vertical-align: -0.08em;
+  background: currentColor;
+  animation: caretBlink 1s steps(1) infinite;
+}
+@keyframes caretBlink {
+  50% { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .type-caret { animation: none; display: none; }
+}
+
+/* Connector dashes that flow along the path (product hero linkage) */
+.dash-flow {
+  stroke-dasharray: 5 5;
+  animation: dashFlow 1.1s linear infinite;
+}
+@keyframes dashFlow {
+  to { stroke-dashoffset: -20; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dash-flow { animation: none; }
+}
+
+/* TypeOnce caret — absolutely positioned so it never shifts layout */
+.type-head { position: relative; }
+.type-head::after {
+  content: '';
+  position: absolute;
+  top: 0.08em;
+  bottom: 0.02em;
+  inset-inline-end: -0.14em;
+  width: 3px;
+  background: currentColor;
+  animation: caretBlink 0.9s steps(1) infinite;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Site-wide hover FILL (replaces the lift+glow-only treatment).
+   Any .shadow-card / .shadow-subtle element — the site's universal
+   card markers — fills with the brand amber on hover; the token
+   variables flip to the light palette in the same rule, so every
+   child (headings, body, muted text, icons, chips) inverts to dark
+   without per-child selectors. Ink #1E1B16 on amber #F5A623 = 8.4:1.
+   Exclusions: .no-fill (scenes, screenshot frames, video, forms,
+   menus) and anything inside one.
+   ════════════════════════════════════════════════════════════════ */
+@media (hover: hover) and (pointer: fine) {
+  .shadow-card:not(.no-fill):not(.no-fill *):hover,
+  .shadow-subtle:not(.no-fill):not(.no-fill *):hover,
+  .shadow-card:not(.no-fill):not(.no-fill *):focus-within,
+  .shadow-subtle:not(.no-fill):not(.no-fill *):focus-within {
+    /* light palette => dark content on the amber fill */
+    --c-cream: 251 249 244;
+    --c-surface: 255 255 255;
+    --c-muted: 244 240 231;
+    --c-ink: 30 27 22;
+    --c-ink-soft: 66 60 48;
+    --c-ink-faint: 92 82 62;
+    --c-teal: 12 111 95;
+    --c-teal-ink: 10 90 77;
+    --c-teal-wash: 255 255 255;
+    background-color: #f5a623 !important;
+    border-color: #c76c05 !important;
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-hover);
+  }
+  /* literal (non-token) accent colors need one grouped flip */
+  .shadow-card:not(.no-fill):not(.no-fill *):hover :is(.text-golden, .text-golden-dark, .text-honey-green, .text-health-warn),
+  .shadow-subtle:not(.no-fill):not(.no-fill *):hover :is(.text-golden, .text-golden-dark, .text-honey-green, .text-health-warn) {
+    color: #1e1b16 !important;
+  }
+  /* golden CTAs inside a filled card get the dark variant */
+  .shadow-card:not(.no-fill):not(.no-fill *):hover .bg-gradient-golden,
+  .shadow-subtle:not(.no-fill):not(.no-fill *):hover .bg-gradient-golden {
+    background-image: none !important;
+    background-color: #1e1b16 !important;
+    color: #f5a623 !important;
+  }
+}
+/* smooth color/bg transitions for the flip — :where() keeps specificity 0
+   so purpose-built transitions (.tr-scene, .menu-pop, reveals) still win */
+:where(.shadow-card, .shadow-subtle) {
+  transition: background-color 250ms ease-out, border-color 250ms ease-out,
+    transform 200ms ease-out, box-shadow 250ms ease-out;
+}
+:where(.shadow-card, .shadow-subtle) :where(h1, h2, h3, h4, p, span, li, a, svg, div) {
+  transition: color 250ms ease-out;
+}
+
+/* Sweep variant — the fill wipes in from the start side (Q&A + capability
+   cards). The pseudo-element paints the amber; content sits above it. */
+.card-sweep {
+  position: relative;
+  z-index: 0;
+}
+.card-sweep::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: #f5a623;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+[dir='rtl'] .card-sweep::before {
+  transform-origin: 100% 50%;
+}
+@media (hover: hover) and (pointer: fine) {
+  .card-sweep:hover::before,
+  .card-sweep:focus-within::before {
+    transform: scaleX(1);
+  }
+  /* sweep cards keep their own bg; the pseudo covers it */
+  .card-sweep:hover,
+  .card-sweep:focus-within {
+    background-color: transparent !important;
+  }
+}
+
+/* Recommended pricing card keeps its accent resting look; it darkens
+   slightly instead of filling */
+@media (hover: hover) and (pointer: fine) {
+  .fill-darken:hover {
+    filter: brightness(0.94);
+    transform: translateY(-4px);
+  }
+}
+.fill-darken {
+  transition: filter 250ms ease-out, transform 200ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card-sweep::before { transition: none; }
+  .fill-darken { transition: none; }
+  .type-head::after { animation: none; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Site-wide ambient waves: the fixed canvas (App.tsx) sits at z-0;
+   page roots go transparent and SECTION backgrounds become
+   translucent so the motion shows through the whole page, not just
+   the hero. Accent bands (band-dark/bg-charcoal) and cards stay
+   opaque. Content stacks above via position/z of the page wrapper.
+   ════════════════════════════════════════════════════════════════ */
+div.min-h-screen.bg-cream,
+div.min-h-screen.bg-white {
+  background-color: transparent;
+  position: relative;
+  z-index: 1;
+}
+section.bg-white {
+  background-color: rgb(var(--c-surface) / 0.7);
+}
+section.bg-cream {
+  background-color: rgb(var(--c-cream) / 0.45);
+}
+section.bg-gradient-to-b {
+  background-image: linear-gradient(
+    to bottom,
+    rgb(var(--c-cream) / 0.35),
+    rgb(var(--c-surface) / 0.6)
+  );
+}
+/* accent bands keep full opacity */
+section.band-dark.bg-charcoal,
+section.bg-charcoal {
+  background-color: rgb(var(--c-ink) / 1);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Page-load choreography (entrance orchestration).
+   .route-in / .route-out: SPA navigation crossfade — outgoing page
+   fades 150ms, incoming fades 250ms; content is keyed per route so
+   the hero-in cascade (the per-page choreography) reruns exactly
+   once per mount, including back/forward. Interaction is never
+   blocked. .entrance-nav: the header fades in once on first load.
+   ════════════════════════════════════════════════════════════════ */
+.route-in { animation: routeIn 250ms ease-out both; }
+.route-out { animation: routeOut 150ms ease-in forwards; }
+@keyframes routeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes routeOut { to { opacity: 0; } }
+.entrance-nav { animation: routeIn 300ms ease-out both; }
+
+/* ── Data-population utilities (shared mechanism) ──
+   Delays are set inline (style="animation-delay") — stagger lives in
+   CSS, no JS timers per element. Transform/opacity only. */
+
+
+
+/* skeleton shimmer for "live data loading" mockups (hero visuals only) */
+.skel-block {
+  background: rgb(var(--c-ink) / 0.06);
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.skel-block::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    rgb(var(--shimmer-highlight) / var(--shimmer-opacity)) 50%,
+    transparent 70%
+  );
+  background-size: 200% 100%;
+  animation: shimmerSweep 1s linear infinite;
+}
+@keyframes shimmerSweep {
+  from { background-position: 180% 0; }
+  to { background-position: -20% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* route crossfades are already opacity-only — keep them, just gentler;
+     the outgoing fade is skipped (App.tsx swaps instantly) */
+  .route-in, .entrance-nav { animation-duration: 400ms; }
+  .route-out { animation: none; opacity: 1; }
+  .skel-block::after { animation: none; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Entrance choreography v2 (.chor / .chor-scale) — literal delays
+   via --chor-delay/--chor-dur per element; ?slowmo=N multiplies
+   everything (debug). 32px travel, cubic-bezier(0.22,1,0.36,1).
+   Base state hides the element from the FIRST paint.
+   ════════════════════════════════════════════════════════════════ */
+.chor {
+  opacity: 0;
+  transform: translateY(48px);
+  animation: chorIn calc(var(--slowmo, 1) * var(--chor-dur, 600ms))
+    cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--slowmo, 1) * var(--chor-delay, 0ms));
+}
+@keyframes rmFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes chorIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+.chor-scale {
+  opacity: 0;
+  transform: translateY(28px) scale(0.95);
+  animation: chorScaleIn calc(var(--slowmo, 1) * var(--chor-dur, 700ms))
+    cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay: calc(var(--slowmo, 1) * var(--chor-delay, 0ms));
+}
+@keyframes chorScaleIn {
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* sequencing kept, spatial travel removed: same delays, opacity-only 400ms */
+  .chor, .chor-scale {
+    transform: none;
+    animation-name: rmFade;
+    animation-duration: calc(var(--slowmo, 1) * 400ms);
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Pricing switcher: ordered card entrance, recommended pulse,
+   badge pop, swap breath. All slowmo-aware via calc(var(--slowmo)).
+   ════════════════════════════════════════════════════════════════ */
+.price-enter {
+  opacity: 0;
+  transform: translateY(32px);
+  transition:
+    opacity calc(var(--slowmo, 1) * 600ms) cubic-bezier(0.22, 1, 0.36, 1),
+    transform calc(var(--slowmo, 1) * 600ms) cubic-bezier(0.22, 1, 0.36, 1);
+}
+.price-enter.landed {
+  opacity: 1;
+  transform: translateY(0);
+}
+.pulse-glow {
+  animation: pulseGlow calc(var(--slowmo, 1) * 900ms) ease-out 1;
+}
+@keyframes pulseGlow {
+  from {
+    box-shadow:
+      0 0 0 0 rgb(var(--glow-color) / calc(var(--glow-opacity) * 2)),
+      0 0 42px rgb(var(--glow-color) / calc(var(--glow-opacity) * 2));
+  }
+  to {
+    box-shadow: 0 0 0 26px rgb(var(--glow-color) / 0), 0 0 42px rgb(var(--glow-color) / 0);
+  }
+}
+.badge-pop {
+  animation: badgePop calc(var(--slowmo, 1) * 350ms) cubic-bezier(0.22, 1, 0.36, 1) 1;
+}
+@keyframes badgePop {
+  0% { transform: translateX(-50%) scale(0.6); }
+  70% { transform: translateX(-50%) scale(1.05); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+.card-breath {
+  animation: cardBreath calc(var(--slowmo, 1) * 400ms) cubic-bezier(0.22, 1, 0.36, 1) 1;
+}
+@keyframes cardBreath {
+  0% { transform: scale(1); }
+  40% { transform: scale(0.99); }
+  100% { transform: scale(1); }
+}
+.duration-250 { transition-duration: 250ms; }
+@media (prefers-reduced-motion: reduce) {
+  /* ordered entrance kept as opacity-only fade; inline transition-delay
+     (the beta→custom→Team order) still applies */
+  .price-enter {
+    transform: none;
+    transition: opacity calc(var(--slowmo, 1) * 400ms) cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .pulse-glow, .badge-pop, .card-breath { animation: none; }
+}
+
+/* Table/list cascade (useCascade): rows/cells reveal when the container
+   flips to .cascade-on. Space always reserved — opacity/transform only. */
+.cascade-wait .cascade-item,
+.cascade-wait .cascade-cell {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.cascade-on .cascade-item,
+.cascade-on .cascade-cell {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity calc(var(--slowmo, 1) * 450ms) cubic-bezier(0.22, 1, 0.36, 1),
+    transform calc(var(--slowmo, 1) * 450ms) cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: calc(var(--slowmo, 1) * var(--casc-delay, 0ms));
+}
+@media (prefers-reduced-motion: reduce) {
+  /* rows still arrive in sequence (--casc-delay), but fade only */
+  .cascade-wait .cascade-item, .cascade-wait .cascade-cell { transform: none; }
+  .cascade-on .cascade-item, .cascade-on .cascade-cell {
+    transform: none;
+    transition: opacity calc(var(--slowmo, 1) * 400ms) cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--slowmo, 1) * var(--casc-delay, 0ms));
+  }
+}
+
+/* ── Light mode (opt-in): soft drop shadows instead of dark-theme glows,
+   and the pre-CSS ground matches the cream palette. Dark stays default. ── */
+html:not(.dark) { background-color: #fbf9f4; }
+html:not(.dark) body { background-color: #fbf9f4; }
+
+/* ── Theme switch crossfade (Part 1.4): ThemeToggle adds .theme-xfade to
+   <html> for ~350ms so colors glide instead of hard-flashing. ── */
+.theme-xfade,
+.theme-xfade *,
+.theme-xfade *::before,
+.theme-xfade *::after {
+  transition:
+    background-color 250ms ease-out,
+    color 250ms ease-out,
+    border-color 250ms ease-out,
+    fill 250ms ease-out,
+    stroke 250ms ease-out !important;
+}
+
+/* ── Cursor-spotlight cards (Part 6, opt-in via .spotlight-card) ──
+   Radial accent glow follows the cursor (--mx/--my set via rAF-throttled
+   mousemove) + a brighter border segment nearest the cursor. Tokens from
+   Part 1; hover-capable pointers only; hidden under reduced motion. */
+.spotlight-card {
+  position: relative;
+}
+.spotlight-card::before,
+.spotlight-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 300ms ease-out;
+}
+.spotlight-card::before {
+  background: radial-gradient(
+    250px circle at var(--mx, 50%) var(--my, 50%),
+    rgb(var(--spotlight-color) / var(--spotlight-opacity)),
+    transparent 70%
+  );
+}
+.spotlight-card::after {
+  padding: 1.5px;
+  background: radial-gradient(
+    200px circle at var(--mx, 50%) var(--my, 50%),
+    rgb(var(--spotlight-color) / 0.7),
+    transparent 70%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+@media (hover: hover) and (pointer: fine) {
+  .spotlight-card:hover::before,
+  .spotlight-card:hover::after {
+    opacity: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spotlight-card::before,
+  .spotlight-card::after {
+    display: none;
+  }
+}
+
+/* ── Icon micro-animations (Part 7) ──
+   .icon-draw: outline icons draw in when their Reveal wrapper lands
+   (.is-revealed set by Reveal on completion of the show state).
+   Hover: card icons tilt -6° + scale 1.12 (updates the old 1.08 rule). */
+.icon-draw :is(path, circle, rect, line, polyline, polygon) {
+  stroke-dasharray: 90;
+  stroke-dashoffset: 90;
+}
+.is-revealed .icon-draw :is(path, circle, rect, line, polyline, polygon) {
+  animation: iconDraw 500ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes iconDraw {
+  to { stroke-dashoffset: 0; }
+}
+.is-revealed .icon-pop {
+  animation: iconPop 350ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes iconPop {
+  0% { transform: scale(0.5); }
+  70% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .icon-draw :is(path, circle, rect, line, polyline, polygon) {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
+    animation: none;
+  }
+  .is-revealed .icon-pop { animation: none; }
+}
+
+/* ── Before/after slider (Part 8, CRM-alternative) ── */
+.ba-slider {
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+}
+.ba-after {
+  position: absolute;
+  inset: 0;
+  clip-path: inset(0 0 0 var(--ba-pos, 50%));
+}
+.ba-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--ba-pos, 50%);
+  width: 2px;
+  transform: translateX(-1px);
+  background: rgb(var(--spotlight-color) / 0.9);
+  pointer-events: none;
+}
+.ba-handle {
+  position: absolute;
+  top: 50%;
+  left: var(--ba-pos, 50%);
+  transform: translate(-50%, -50%);
+  cursor: ew-resize;
+  touch-action: none;
+}
+.ba-animating {
+  transition: --ba-pos 0ms; /* position driven by JS; this class marks the teach-in */
+}
+
+/* ════════════════════════════════════════════════════════════════
+   Panel patterns (product/solutions redesign, 2026-07-14)
+   .panel-card — page-scale rounded container: brand gradient ground
+   + soft glow in one corner (theme-aware via the v4 effect tokens).
+   ════════════════════════════════════════════════════════════════ */
+.panel-card {
+  position: relative;
+  background: linear-gradient(140deg, #FFFEFB 0%, #FCF1DC 55%, #F8E7C4 100%);
+  border: 1px solid rgb(199 108 5 / 0.18);
+  box-shadow: 0 24px 60px -28px rgb(30 27 22 / 0.25);
+}
+.dark .panel-card {
+  background: linear-gradient(140deg, #262017 0%, #2e2412 55%, #382a10 100%);
+  border-color: rgb(245 166 35 / 0.22);
+  box-shadow:
+    0 0 0 1px rgb(245 166 35 / 0.06),
+    0 30px 80px -30px rgb(0 0 0 / 0.8);
+}
+.panel-card::before {
+  content: '';
+  position: absolute;
+  top: -6rem;
+  inset-inline-end: -6rem;
+  width: 26rem;
+  height: 26rem;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: radial-gradient(circle, rgb(var(--glow-color) / calc(var(--glow-opacity) * 2.2)) 0%, transparent 65%);
+}
+/* second, fainter glow anchored to the opposite corner for depth */
+.panel-card::after {
+  content: '';
+  position: absolute;
+  bottom: -8rem;
+  inset-inline-start: -8rem;
+  width: 24rem;
+  height: 24rem;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: radial-gradient(circle, rgb(12 111 95 / 0.14) 0%, transparent 65%);
+}
+
+/* Workflow spotlight: time-to-next progress inside the active item */
+.spot-progress {
+  transform-origin: left;
+  animation: spotFill var(--spot-ms, 3000ms) linear forwards;
+}
+[dir='rtl'] .spot-progress { transform-origin: right; }
+@keyframes spotFill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+/* Screens carousel: hidden scrollbar, snap rail */
+.snap-rail {
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.snap-rail::-webkit-scrollbar { display: none; }
+
+
+/* Subtle continuous float for dashboard mockups and feature demos
+   (premium-SaaS ambient motion; ±5px over 7s, staggered via negative
+   delays; disabled under reduced motion) */
+@keyframes floatSoft {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+.float-soft { animation: floatSoft 7s ease-in-out infinite; }
+/* stagger phases (must follow the shorthand so the delay survives) */
+.float-soft.fs-d1 { animation-delay: -2.3s; }
+.float-soft.fs-d2 { animation-delay: -4.1s; }
+.float-soft.fs-d3 { animation-delay: -1.2s; }
+.float-soft.fs-d4 { animation-delay: -3.2s; }
+
+/* Floating section-hop button */
+.hop-float { animation: floatY 3.4s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .spot-progress { animation: none; }
+  .hop-float, .float-soft { animation: none; }
+  .snap-rail { scroll-behavior: auto !important; }
 }

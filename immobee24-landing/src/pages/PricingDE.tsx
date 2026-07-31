@@ -1,17 +1,53 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { ArrowRight, Check, Sparkles, Star, Users } from 'lucide-react';
+import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
+import {
+  ArrowRight,
+  CalendarDays,
+  Check,
+  CheckCircle2,
+  ClipboardList,
+  Clock,
+  Rocket,
+  Sparkles,
+  Star,
+  Users,
+} from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { registerTranslations } from '../i18n';
+import pageCopy from '../i18n/copy/pricing';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
 import { trackEvent } from '../lib/analytics';
+import { AccentHeading, Panel, SectionHopButton } from '../components/PanelPatterns';
 import { usePageMeta } from '../lib/usePageMeta';
 import { useFaqSchema } from '../lib/useFaqSchema';
 import { useJsonLd } from '../lib/useJsonLd';
 import { productSchema, breadcrumbSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
+import {
+  LineReveal,
+  cascadeDelay,
+  chorSlot,
+  CountUp,
+  Reveal,
+  RevealGroup,
+  TypeOnce,
+  slowmoFactor,
+  useCascade,
+  useInView,
+  usePrefersReducedMotion,
+} from '../lib/animations';
+import { BillingToggle, MorphPrice, type BillingPeriod } from '../components/PricingSwitch';
+import { ScrollCue } from '../components/Wayfinding';
 import { useLanguage } from '../i18n';
 import { pathFor } from '../i18n/pages';
 
+// page-only copy lives in this route chunk, not the entry bundle
+registerTranslations(pageCopy);
+
 type TVal = string | string[] | Array<{ q: string; a: string }> | string[][];
+// Tally application form — the beta program's real apply flow (carried over
+// from the former beta page; the program now lives here, IA phase 3).
+const BETA_APPLY_URL = 'https://tally.so/r/ja5bzJ';
+
 const asString = (v: TVal): string => (typeof v === 'string' ? v : '');
 const asStringArray = (v: TVal): string[] =>
   Array.isArray(v) && v.every((x) => typeof x === 'string') ? (v as string[]) : [];
@@ -26,49 +62,13 @@ const asFaqArray = (v: TVal): Array<{ q: string; a: string }> =>
     ? (v as Array<{ q: string; a: string }>)
     : [];
 
-function useInView<T extends HTMLElement>(threshold = 0.1) {
-  const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    if (!ref.current) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setInView(true);
-            obs.disconnect();
-          }
-        });
-      },
-      { threshold },
-    );
-    obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, inView };
-}
-
-const RevealOnScroll = ({ children }: { children: ReactNode }) => {
-  const { ref, inView } = useInView<HTMLDivElement>(0.05);
-  return (
-    <div
-      ref={ref}
-      className={`transition-all duration-700 ease-out ${
-        inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-      }`}
-    >
-      {children}
-    </div>
-  );
-};
-
 const Hero = () => {
   const { t } = useLanguage();
   const localPath = useLocalizedPath();
   return (
     <section
       id="top"
-      className="relative pt-36 pb-12 md:pt-44 md:pb-16 overflow-hidden bg-gradient-to-b from-cream to-white"
+      className="relative pt-24 pb-12 md:pt-28 md:pb-16 overflow-hidden bg-gradient-to-b from-cream to-white"
     >
       <div
         aria-hidden
@@ -76,16 +76,12 @@ const Hero = () => {
       />
       <div className="container relative">
         <div className="max-w-3xl mx-auto text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
-            <Sparkles className="h-3.5 w-3.5" />
-            {asString(t('pricingPage.hero.eyebrow'))}
-          </span>
 
-          <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
-            {asString(t('pricingPage.hero.headline'))}
+          <h1 className="chor mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance" style={chorSlot(0)}>
+            <TypeOnce text={asString(t('pricingPage.hero.headline'))} />
           </h1>
 
-          <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">
+          <p className="chor mt-6 text-body-lg text-slate max-w-2xl mx-auto" style={chorSlot(280, 500)}>
             {asString(t('pricingPage.hero.subheadline'))}
           </p>
 
@@ -94,21 +90,23 @@ const Hero = () => {
               type="button"
               {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('pricing_hero_primary_cta_click')}
-              className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
+              className="chor inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors" style={chorSlot(420, 450)}
             >
               {asString(t('pricingPage.hero.primaryCta'))}
               <ArrowRight className="h-4 w-4" />
             </button>
             <Link
-              to={localPath('beta')}
-              className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
+              to="#beta"
+              className="chor inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors" style={chorSlot(500, 450)}
             >
               {asString(t('pricingPage.hero.secondaryCta'))}
             </Link>
           </div>
-          <p className="mt-4 text-sm text-warm-gray">
+          <p className="chor mt-4 text-sm text-warm-gray" style={chorSlot(560, 450)}>
             {asString(t('pricingPage.hero.microcopy'))}
           </p>
+
+          <ScrollCue targetId="plans" className="mt-8" />
         </div>
       </div>
     </section>
@@ -124,6 +122,10 @@ type CardProps = {
   included: string[];
   ctaLabel: string;
   onCta: () => void;
+  priceOverride?: ReactNode;
+  priceDelay?: number;
+  cardClass?: string;
+  badgeClass?: string;
   ctaAttrs?: Record<string, string>;
   ctaHref?: string;
   recommended?: boolean;
@@ -142,20 +144,24 @@ const PricingCard = ({
   onCta,
   ctaAttrs,
   ctaHref,
+  priceOverride,
+  priceDelay = 0,
+  cardClass,
+  badgeClass,
   recommended,
   recommendedLabel,
   support,
 }: CardProps) => {
   const wrapperBase =
-    'relative flex flex-col rounded-2xl border bg-white p-6 md:p-8 transition-shadow';
+    'relative flex w-full flex-col rounded-2xl border bg-white p-6 md:p-8 transition-shadow';
   const wrapperVariant = recommended
-    ? 'border-golden shadow-card-hover ring-1 ring-golden/40'
-    : 'border-charcoal/10 shadow-card hover:shadow-card-hover';
+    ? 'fill-darken no-fill border-golden shadow-card-hover ring-1 ring-golden/40'
+    : 'border-charcoal/10 shadow-card';
   const ctaClassBase =
     'mt-8 inline-flex w-full items-center justify-center gap-2 rounded-full px-5 py-3 font-medium transition-colors';
   const ctaClass = recommended
-    ? `${ctaClassBase} bg-gradient-golden text-white shadow-golden hover:opacity-95`
-    : `${ctaClassBase} bg-charcoal text-white hover:bg-charcoal/90`;
+    ? `${ctaClassBase} bg-gradient-golden text-[#1E1B16] shadow-golden hover:opacity-95`
+    : `${ctaClassBase} band-dark bg-charcoal text-white hover:bg-charcoal/90`;
 
   const ctaContent = (
     <>
@@ -165,9 +171,13 @@ const PricingCard = ({
   );
 
   return (
-    <div className={`${wrapperBase} ${wrapperVariant}`}>
+    <div className={`${wrapperBase} ${wrapperVariant} ${cardClass ?? ''}`}>
       {recommended && (
-        <span className="absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 rounded-full bg-gradient-golden text-white px-3 py-1 text-xs font-semibold shadow-golden">
+        <span
+          className={`absolute -top-3 left-1/2 -translate-x-1/2 inline-flex items-center gap-1 rounded-full bg-gradient-golden text-[#1E1B16] px-3 py-1 text-xs font-semibold shadow-golden ${
+            badgeClass ?? ''
+          }`}
+        >
           <Star className="h-3 w-3" /> {recommendedLabel}
         </span>
       )}
@@ -178,7 +188,11 @@ const PricingCard = ({
       </div>
 
       <div className="mt-6">
-        <p className="font-heading text-3xl md:text-4xl text-charcoal">{price}</p>
+        {priceOverride ?? (
+          <p className="font-heading text-3xl md:text-4xl text-charcoal">
+            {/^\D*\d/.test(price) ? <CountUp value={price} delay={priceDelay} duration={800} /> : price}
+          </p>
+        )}
         <p className="mt-2 text-sm text-slate">{subtext}</p>
       </div>
 
@@ -186,10 +200,16 @@ const PricingCard = ({
 
       <ul className="mt-6 space-y-3">
         {included.map((item, i) => (
-          <li key={i} className="flex items-start gap-2 text-charcoal/85">
+          <Reveal
+            key={i}
+            as="li"
+            delay={cascadeDelay(i, 280)}
+            distance={16}
+            className="flex items-start gap-2 text-charcoal/85"
+          >
             <Check className="h-4 w-4 text-golden mt-1 flex-none" />
             <span className="text-sm">{item}</span>
-          </li>
+          </Reveal>
         ))}
       </ul>
 
@@ -214,56 +234,115 @@ const PricingCard = ({
 
 const PricingCards = () => {
   const { t } = useLanguage();
+  const reduced = usePrefersReducedMotion();
+  const [period, setPeriod] = useState<BillingPeriod>('monthly');
+  // ordered entrance: beta (0) → custom (120) → recommended Team LAST (240),
+  // then the one-time attention pulse on the Team card
+  const [gridRef, inView] = useInView<HTMLDivElement>({ threshold: 0.2 });
+  const [pulsed, setPulsed] = useState(false);
+  useEffect(() => {
+    if (!inView || reduced || pulsed) return;
+    const t = window.setTimeout(() => setPulsed(true), (240 + 600) * slowmoFactor());
+    return () => window.clearTimeout(t);
+  }, [inView, reduced, pulsed]);
+
+  const [breathing, setBreathing] = useState(false);
+  const onPeriod = (p: BillingPeriod) => {
+    setPeriod(p);
+    if (reduced) return;
+    // restart the breath WITHOUT remounting (a remount would reset the
+    // CountUp and kill the price morph)
+    setBreathing(false);
+    requestAnimationFrame(() => {
+      setBreathing(true);
+      window.setTimeout(() => setBreathing(false), 420 * slowmoFactor());
+    });
+  };
+
+  const ENTER_DELAY = [0, 240, 120]; // beta, TEAM LAST, custom
+  // applied under reduced motion too — CSS strips the rise, keeps the
+  // ordered opacity fade
+  const enterCls = (_i: number) => `price-enter flex ${inView ? 'landed' : ''}`;
+  const enterStyle = (i: number) => ({ transitionDelay: `${ENTER_DELAY[i] * slowmoFactor()}ms` });
+  const breathStyle = (i: number) => ({ animationDelay: `${i * 60 * slowmoFactor()}ms` });
+
   return (
-    <section id="plans" className="py-16 md:py-20 bg-white">
-      <div className="container">
+    <section id="plans" className="py-10 md:py-14">
+      <div className="container max-w-[1200px]">
+        <Reveal direction="scale">
+        <div className="panel-card overflow-hidden rounded-3xl p-6 md:p-12">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('pricingPage.cards.sectionHeadline'))}
-          </h2>
-        </div>
-
-        <div className="mt-12 grid gap-6 md:gap-8 md:grid-cols-3 max-w-6xl mx-auto items-stretch">
-          <PricingCard
-            label={asString(t('pricingPage.cards.beta.label'))}
-            audience={asString(t('pricingPage.cards.beta.audience'))}
-            price={asString(t('pricingPage.cards.beta.price'))}
-            subtext={asString(t('pricingPage.cards.beta.subtext'))}
-            description={asString(t('pricingPage.cards.beta.description'))}
-            included={asStringArray(t('pricingPage.cards.beta.included'))}
-            ctaLabel={asString(t('pricingPage.cards.beta.cta'))}
-            ctaHref="/de/beta-agentenprogramm"
-            onCta={() => trackEvent('pricing_card_cta_click', { plan: 'beta' })}
-            support={asString(t('pricingPage.cards.beta.support'))}
-          />
-
-          <PricingCard
-            recommended
-            recommendedLabel={asString(t('pricingPage.cards.recommendedBadge'))}
-            label={asString(t('pricingPage.cards.team.label'))}
-            audience={asString(t('pricingPage.cards.team.audience'))}
-            price={asString(t('pricingPage.cards.team.price'))}
-            subtext={asString(t('pricingPage.cards.team.subtext'))}
-            description={asString(t('pricingPage.cards.team.description'))}
-            included={asStringArray(t('pricingPage.cards.team.included'))}
-            ctaLabel={asString(t('pricingPage.cards.team.cta'))}
-            ctaAttrs={DEMO_CTA_PROPS}
-            onCta={() => trackEvent('pricing_card_cta_click', { plan: 'team' })}
-          />
-
-          <PricingCard
-            label={asString(t('pricingPage.cards.custom.label'))}
-            audience={asString(t('pricingPage.cards.custom.audience'))}
-            price={asString(t('pricingPage.cards.custom.price'))}
-            subtext={asString(t('pricingPage.cards.custom.subtext'))}
-            description={asString(t('pricingPage.cards.custom.description'))}
-            included={asStringArray(t('pricingPage.cards.custom.included'))}
-            ctaLabel={asString(t('pricingPage.cards.custom.cta'))}
-            ctaAttrs={DEMO_CTA_PROPS}
-            onCta={() => trackEvent('pricing_card_cta_click', { plan: 'custom' })}
-            support={asString(t('pricingPage.cards.custom.support'))}
+          <AccentHeading
+            text={asString(t('pricingPage.cards.sectionHeadline'))}
+            className="font-heading text-section-mobile md:text-section text-charcoal text-balance"
           />
         </div>
+
+        <div className="mt-8 flex justify-center">
+          <BillingToggle period={period} onChange={onPeriod} />
+        </div>
+
+        <div
+          ref={gridRef}
+          className="mt-10 grid gap-6 md:gap-8 md:grid-cols-3 max-w-6xl mx-auto items-stretch"
+        >
+          <div className={enterCls(0)} style={enterStyle(0)}>
+            <div className={`flex w-full ${breathing ? 'card-breath' : ''}`} style={breathStyle(0)}>
+            <PricingCard
+              label={asString(t('pricingPage.cards.beta.label'))}
+              audience={asString(t('pricingPage.cards.beta.audience'))}
+              price={asString(t('pricingPage.cards.beta.price'))}
+              subtext={asString(t('pricingPage.cards.beta.subtext'))}
+              description={asString(t('pricingPage.cards.beta.description'))}
+              included={asStringArray(t('pricingPage.cards.beta.included'))}
+              ctaLabel={asString(t('pricingPage.cards.beta.cta'))}
+              ctaHref="#beta"
+              onCta={() => trackEvent('pricing_card_cta_click', { plan: 'beta' })}
+              support={asString(t('pricingPage.cards.beta.support'))}
+            />
+            </div>
+          </div>
+
+          <div className={enterCls(1)} style={enterStyle(1)}>
+            <div className={`flex w-full ${breathing ? 'card-breath' : ''}`} style={breathStyle(1)}>
+            <PricingCard
+              recommended
+              recommendedLabel={asString(t('pricingPage.cards.recommendedBadge'))}
+              label={asString(t('pricingPage.cards.team.label'))}
+              audience={asString(t('pricingPage.cards.team.audience'))}
+              price={asString(t('pricingPage.cards.team.price'))}
+              subtext={asString(t('pricingPage.cards.team.subtext'))}
+              description={asString(t('pricingPage.cards.team.description'))}
+              included={asStringArray(t('pricingPage.cards.team.included'))}
+              ctaLabel={asString(t('pricingPage.cards.team.cta'))}
+              ctaAttrs={DEMO_CTA_PROPS}
+              onCta={() => trackEvent('pricing_card_cta_click', { plan: 'team' })}
+              priceOverride={<MorphPrice period={period} entranceDelay={440} />}
+              cardClass={pulsed ? 'pulse-glow' : ''}
+              badgeClass={pulsed ? 'badge-pop' : ''}
+            />
+            </div>
+          </div>
+
+          <div className={enterCls(2)} style={enterStyle(2)}>
+            <div className={`flex w-full ${breathing ? 'card-breath' : ''}`} style={breathStyle(2)}>
+            <PricingCard
+              label={asString(t('pricingPage.cards.custom.label'))}
+              audience={asString(t('pricingPage.cards.custom.audience'))}
+              price={asString(t('pricingPage.cards.custom.price'))}
+              subtext={asString(t('pricingPage.cards.custom.subtext'))}
+              description={asString(t('pricingPage.cards.custom.description'))}
+              included={asStringArray(t('pricingPage.cards.custom.included'))}
+              ctaLabel={asString(t('pricingPage.cards.custom.cta'))}
+              ctaAttrs={DEMO_CTA_PROPS}
+              onCta={() => trackEvent('pricing_card_cta_click', { plan: 'custom' })}
+              support={asString(t('pricingPage.cards.custom.support'))}
+            />
+            </div>
+          </div>
+        </div>
+        </div>
+        </Reveal>
       </div>
     </section>
   );
@@ -273,23 +352,30 @@ const QuickComparison = () => {
   const { t } = useLanguage();
   const headers = asStringArray(t('pricingPage.quickComparison.headers'));
   const rows = asStringMatrix(t('pricingPage.quickComparison.rows'));
+  const [tableRef, tableOn] = useCascade<HTMLDivElement>();
   return (
     <section className="py-20 md:py-24 bg-cream">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('pricingPage.quickComparison.headline'))}
+            <LineReveal text={asString(t('pricingPage.quickComparison.headline'))} />
           </h2>
         </div>
 
-        <div className="mt-10 max-w-3xl mx-auto overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-subtle">
+        {/* header row first, body rows cascade 280ms, cells +60ms LTR;
+            container reserves height — opacity/transform only */}
+        <div
+          ref={tableRef}
+          className={`${tableOn} mt-10 max-w-3xl mx-auto overflow-hidden rounded-2xl border border-charcoal/10 bg-white shadow-subtle`}
+        >
           <table className="w-full text-left">
-            <thead className="bg-charcoal text-white">
+            <thead className="band-dark bg-charcoal text-white">
               <tr>
                 {headers.map((h, i) => (
                   <th
                     key={i}
-                    className="p-4 font-heading text-sm uppercase tracking-wider"
+                    className="cascade-cell p-4 font-heading text-sm uppercase tracking-wider"
+                    style={{ '--casc-delay': `${i * 50}ms` } as CSSProperties}
                   >
                     {h}
                   </th>
@@ -304,17 +390,30 @@ const QuickComparison = () => {
                     rIdx % 2 === 1 ? 'bg-cream/40' : ''
                   }`}
                 >
-                  <td className="p-4 align-top text-charcoal/85">{row[0]}</td>
-                  <td className="p-4 align-top font-heading text-charcoal">{row[1]}</td>
+                  {[0, 1].map((j) => (
+                    <td
+                      key={j}
+                      className={`cascade-cell p-4 align-top ${
+                        j === 0 ? 'text-charcoal/85' : 'font-heading text-charcoal'
+                      }`}
+                      style={
+                        {
+                          '--casc-delay': `${cascadeDelay(rIdx + 1, 240) + j * 50}ms`,
+                        } as CSSProperties
+                      }
+                    >
+                      {row[j]}
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
 
-        <p className="mt-6 text-center text-sm text-warm-gray italic">
+        <Reveal delay={100} as="p" className="mt-6 text-center text-sm text-warm-gray italic">
           {asString(t('pricingPage.quickComparison.caption'))}
-        </p>
+        </Reveal>
       </div>
     </section>
   );
@@ -326,23 +425,214 @@ const Trust = () => {
   return (
     <section className="py-20 md:py-24 bg-white">
       <div className="container">
-        <div className="max-w-3xl mx-auto text-center">
+        <Reveal className="max-w-3xl mx-auto text-center">
           <Users className="h-8 w-8 text-golden mx-auto" />
           <h2 className="mt-4 font-heading text-section-mobile md:text-section text-charcoal text-balance">
             {asString(t('pricingPage.trust.headline'))}
           </h2>
-        </div>
-        <ul className="mt-10 grid gap-4 sm:grid-cols-2 max-w-4xl mx-auto">
+        </Reveal>
+        <RevealGroup className="mt-10 grid gap-4 sm:grid-cols-2 max-w-4xl mx-auto">
           {bullets.map((b, i) => (
-            <li
+            <div
               key={i}
               className="flex items-start gap-3 rounded-xl bg-cream border border-charcoal/10 px-5 py-4"
             >
               <Check className="h-5 w-5 text-golden mt-0.5 flex-none" />
               <span className="text-charcoal/85">{b}</span>
-            </li>
+            </div>
           ))}
-        </ul>
+        </RevealGroup>
+      </div>
+    </section>
+  );
+};
+
+// ── Beta program (merged from the former beta page, IA phase 3) ──────────────
+// The full pitch, pilot phases and application CTA now live on Pricing;
+// betaProgram.* i18n keys are reused unchanged (4 languages).
+const BetaProgram = () => {
+  const { t, language } = useLanguage();
+  const localPath = useLocalizedPath();
+  const get = asStringArray(t('betaProgram.whatYouGet.bullets'));
+  const phases = [1, 2, 3].map((n) => ({
+    title: asString(t(`betaProgram.pilot.phase${n}Title`)),
+    body: asString(t(`betaProgram.pilot.phase${n}Body`)),
+    icon: [ClipboardList, Clock, CalendarDays][n - 1],
+  }));
+  const APPLY: Record<string, string> = {
+    de: 'Jetzt für die Beta bewerben',
+    en: 'Apply for the beta',
+    fr: 'Postuler pour la bêta',
+    ar: 'قدّموا لبرنامج بيتا',
+  };
+  const ASK: Record<string, string> = {
+    de: 'Fragen? Kontakt aufnehmen',
+    en: 'Questions? Get in touch',
+    fr: 'Des questions ? Contactez-nous',
+    ar: 'أسئلة؟ تواصلوا معنا',
+  };
+
+  return (
+    <section id="beta" className="py-10 md:py-14">
+      <div className="container max-w-[1200px]">
+        <Reveal direction="scale">
+        <div className="panel-card overflow-hidden rounded-3xl p-6 md:p-12">
+        <Reveal className="max-w-3xl mx-auto text-center">
+          <span className="float-pill inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
+            <Rocket className="h-3.5 w-3.5" />
+            {asString(t('betaProgram.hero.eyebrow'))}
+          </span>
+          <AccentHeading
+            text={asString(t('betaProgram.hero.headline'))}
+            className="mt-5 font-heading text-section-mobile md:text-section text-charcoal text-balance"
+          />
+          <p className="mt-5 text-body-lg text-slate">
+            {asString(t('betaProgram.hero.subheadline'))}
+          </p>
+        </Reveal>
+
+        <div className="mt-12 grid gap-6 lg:grid-cols-2 max-w-5xl mx-auto">
+          {/* what you get — slides in from the left; the pilot from the right */}
+          <Reveal direction="left" className="rounded-2xl border border-charcoal/10 bg-white p-6 md:p-8 shadow-card">
+            <h3 className="font-heading text-xl text-charcoal">
+              {asString(t('betaProgram.whatYouGet.headline'))}
+            </h3>
+            <ul className="mt-5 space-y-3">
+              {get.map((b, i) => (
+                <li key={i} className="flex items-start gap-3">
+                  <CheckCircle2 className="h-5 w-5 mt-0.5 flex-none text-golden-dark" />
+                  <span className="text-charcoal/85 leading-relaxed">{b}</span>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+
+          {/* the pilot, 3 phases */}
+          <Reveal direction="right" className="rounded-2xl border border-charcoal/10 bg-white p-6 md:p-8 shadow-card">
+            <h3 className="font-heading text-xl text-charcoal">
+              {asString(t('betaProgram.pilot.headline'))}
+            </h3>
+            <ol className="mt-5 space-y-5">
+              {phases.map((ph, i) => (
+                <li key={i} className="flex items-start gap-4">
+                  <span className="flex h-9 w-9 flex-none items-center justify-center rounded-xl bg-gradient-golden-soft text-golden-dark">
+                    <ph.icon className="h-4 w-4" />
+                  </span>
+                  <div>
+                    <p className="font-semibold text-charcoal">{ph.title}</p>
+                    <p className="mt-1 text-sm text-slate leading-relaxed">{ph.body}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </Reveal>
+        </div>
+
+        <Reveal delay={150} className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a
+            href={BETA_APPLY_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => trackEvent('pricing_beta_apply_click')}
+            className="inline-flex items-center gap-2 rounded-full bg-gradient-golden px-7 py-3.5 font-semibold text-[#1E1B16] shadow-golden"
+          >
+            {APPLY[language] ?? APPLY.en}
+            <ArrowRight className="h-4 w-4 rtl:rotate-180" />
+          </a>
+          <Link
+            to={`${localPath('contact')}?intent=beta`}
+            className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
+          >
+            {ASK[language] ?? ASK.en}
+          </Link>
+        </Reveal>
+        </div>
+        </Reveal>
+      </div>
+    </section>
+  );
+};
+
+// ── ROI estimator (IA blueprint idea): one slider, one number ────────────────
+// Deliberately labelled as a rough estimate with the assumption stated —
+// no fabricated claims (content discipline).
+const RoiEstimator = () => {
+  const { language } = useLanguage();
+  const [perWeek, setPerWeek] = useState(40);
+  // assumption: ~6 min saved per inquiry (first reply, qualification,
+  // scheduling coordination); 4.33 weeks/month
+  const hours = Math.round((perWeek * 4.33 * 6) / 60);
+  const C: Record<string, Record<string, string>> = {
+    headline: {
+      de: 'Was automatische Erstantworten sparen',
+      en: 'What automatic first responses save',
+      fr: 'Ce que les premières réponses automatiques font gagner',
+      ar: 'ما توفره الردود الأولى التلقائية',
+    },
+    label: {
+      de: 'Anfragen pro Woche in Ihrem Büro',
+      en: 'Inquiries per week at your brokerage',
+      fr: 'Demandes par semaine dans votre agence',
+      ar: 'الاستفسارات أسبوعيًا في مكتبكم',
+    },
+    result: {
+      de: 'geschätzte Stunden pro Monat',
+      en: 'estimated hours per month',
+      fr: 'heures estimées par mois',
+      ar: 'ساعات مقدَّرة شهريًا',
+    },
+    assumption: {
+      de: 'Annahme: ø 6 Minuten pro Anfrage für Erstantwort, Qualifizierung und Terminabstimmung — eine grobe Schätzung, kein Versprechen.',
+      en: 'Assumption: ~6 minutes per inquiry for first reply, qualification and scheduling — a rough estimate, not a promise.',
+      fr: 'Hypothèse : ~6 minutes par demande pour la première réponse, la qualification et la planification — une estimation approximative, pas une promesse.',
+      ar: 'افتراض: نحو 6 دقائق لكل استفسار للرد الأول والتأهيل وتنسيق الموعد — تقدير تقريبي وليس وعدًا.',
+    },
+  };
+  const c = (k: string) => C[k][language] ?? C[k].en;
+
+  return (
+    <section className="py-20 md:py-28 bg-white">
+      <div className="container">
+        <div className="max-w-2xl mx-auto text-center">
+          <Reveal>
+            <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+              {c('headline')}
+            </h2>
+          </Reveal>
+
+          <Reveal direction="scale" className="mt-10 rounded-2xl border border-charcoal/10 bg-cream p-6 md:p-10 shadow-subtle">
+            <div className="flex items-baseline justify-between gap-4">
+              <label htmlFor="roi-slider" className="text-sm font-medium text-charcoal text-start">
+                {c('label')}
+              </label>
+              <span
+                className="font-metric text-lg font-bold text-charcoal"
+                style={{ fontVariantNumeric: 'tabular-nums' }}
+              >
+                {perWeek}
+              </span>
+            </div>
+            <input
+              id="roi-slider"
+              type="range"
+              min={5}
+              max={150}
+              step={5}
+              value={perWeek}
+              onChange={(e) => setPerWeek(Number(e.target.value))}
+              className="mt-3 w-full accent-golden"
+            />
+            <p
+              className="mt-8 font-metric text-5xl md:text-6xl font-bold text-golden-dark"
+              style={{ fontVariantNumeric: 'tabular-nums' }}
+            >
+              {/* dir isolate: keeps "≈ 17 h" in this order under RTL */}
+              <span dir="ltr">≈ {hours} h</span>
+            </p>
+            <p className="mt-2 text-sm font-medium text-charcoal">{c('result')}</p>
+            <p className="mt-6 text-xs text-warm-gray max-w-md mx-auto">{c('assumption')}</p>
+          </Reveal>
+        </div>
       </div>
     </section>
   );
@@ -351,7 +641,7 @@ const Trust = () => {
 const FAQItem = ({ q, a }: { q: string; a: string }) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border-b border-charcoal/10 last:border-b-0">
+    <div>
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -373,17 +663,29 @@ const FAQItem = ({ q, a }: { q: string; a: string }) => {
 
 const FAQ = () => {
   const { t } = useLanguage();
-  const items = asFaqArray(t('pricingPage.faq.items'));
+  const items = [
+    ...asFaqArray(t('pricingPage.faq.items')),
+    ...asFaqArray(t('betaProgram.faq.items')),
+  ];
   return (
     <section className="py-20 md:py-24 bg-cream">
       <div className="container">
         <div className="max-w-3xl mx-auto">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance text-center">
-            {asString(t('pricingPage.faq.headline'))}
-          </h2>
+          <Reveal>
+            <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance text-center">
+              {asString(t('pricingPage.faq.headline'))}
+            </h2>
+          </Reveal>
           <div className="mt-10 rounded-2xl bg-white border border-charcoal/10 px-6">
             {items.map((it, i) => (
-              <FAQItem key={i} q={it.q} a={it.a} />
+              <Reveal
+                key={i}
+                delay={cascadeDelay(i, 280)}
+                distance={16}
+                className="border-b border-charcoal/10 last:border-b-0"
+              >
+                <FAQItem q={it.q} a={it.a} />
+              </Reveal>
             ))}
           </div>
         </div>
@@ -403,24 +705,26 @@ const FinalCTA = () => {
       />
       <div className="container relative">
         <div className="max-w-3xl mx-auto text-center">
-          <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('pricingPage.finalCta.headline'))}
-          </h2>
-          <p className="mt-6 text-body-lg text-slate">
+          <Reveal>
+            <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
+              {asString(t('pricingPage.finalCta.headline'))}
+            </h2>
+          </Reveal>
+          <Reveal delay={100} as="p" className="mt-6 text-body-lg text-slate">
             {asString(t('pricingPage.finalCta.body'))}
-          </p>
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          </Reveal>
+          <Reveal delay={150} className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               type="button"
               {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('pricing_final_primary_cta_click')}
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-golden text-white px-7 py-3.5 font-semibold shadow-golden hover:opacity-95 transition-opacity"
+              className="inline-flex items-center gap-2 rounded-full bg-gradient-golden text-[#1E1B16] px-7 py-3.5 font-semibold shadow-golden hover:opacity-95 transition-opacity"
             >
               {asString(t('pricingPage.finalCta.primaryCta'))}
               <ArrowRight className="h-4 w-4" />
             </button>
             <Link
-              to={localPath('beta')}
+              to="#beta"
               className="inline-flex items-center gap-2 rounded-full border border-charcoal/20 bg-cream px-6 py-3 font-medium text-charcoal hover:bg-charcoal/5 transition-colors"
             >
               {asString(t('pricingPage.finalCta.secondaryCta'))}
@@ -433,7 +737,7 @@ const FinalCTA = () => {
             >
               {asString(t('pricingPage.finalCta.tertiaryCta'))}
             </button>
-          </div>
+          </Reveal>
 
           <p className="mt-6 text-sm text-slate">
             <span className="text-warm-gray">
@@ -448,7 +752,7 @@ const FinalCTA = () => {
             </Link>
             {' · '}
             <Link
-              to={localPath('demo')}
+              to={`${localPath('contact')}?intent=demo`}
               onClick={() => trackEvent('pricing_final_demo_link_click')}
               className="font-medium text-golden-dark underline underline-offset-2 hover:text-charcoal"
             >
@@ -469,7 +773,11 @@ export default function PricingDE() {
     titleKey: 'pricingPage.meta.title',
     descriptionKey: 'pricingPage.meta.description',
   });
-  useFaqSchema(asFaqArray(t('pricingPage.faq.items')), language, 'pricing');
+  useFaqSchema(
+    [...asFaqArray(t('pricingPage.faq.items')), ...asFaqArray(t('betaProgram.faq.items'))],
+    language,
+    'pricing',
+  );
   useJsonLd(
     [
       productSchema(language, asString(t('pricingPage.meta.description')), [
@@ -498,22 +806,24 @@ export default function PricingDE() {
   const sections: Array<() => ReactNode> = [
     Hero,
     PricingCards,
+    BetaProgram,
     QuickComparison,
+    RoiEstimator,
     Trust,
     FAQ,
     FinalCTA,
   ];
 
+  // Every section carries its own inner Reveals now — render bare.
   return (
     <div className="min-h-screen antialiased bg-white">
       <Header />
       <main className="relative">
         {sections.map((Section, i) => (
-          <RevealOnScroll key={i}>
-            <Section />
-          </RevealOnScroll>
+          <Section key={i} />
         ))}
       </main>
+      <SectionHopButton />
       <Footer />
     </div>
   );

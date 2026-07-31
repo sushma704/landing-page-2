@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import {
   ArrowRight,
   CheckCircle2,
@@ -22,6 +22,12 @@ import { useJsonLd } from '../lib/useJsonLd';
 import { organizationSchema } from '../lib/schema';
 import { useLocalizedPath } from '../lib/useLocalizedPath';
 import { Header, Footer, DEMO_CTA_PROPS } from '../components/SiteChrome';
+import { HeroShowcase } from '../components/HeroShowcase';
+import { HeroWaves } from '../components/HeroWaves';
+import { LineReveal, CountUp, Reveal, RevealGroup, TypeCycle } from '../lib/animations';
+import { ScrollCue } from '../components/Wayfinding';
+import { BillingToggle, MorphPrice, type BillingPeriod } from '../components/PricingSwitch';
+import { SevenCoWorkersBand, ComplianceBadgesStrip } from '../components/AiRefinementBands';
 
 const asString = (
   v: string | string[] | Array<{ q: string; a: string }> | string[][],
@@ -40,59 +46,97 @@ const asPairArray = (
   v: string | string[] | Array<{ q: string; a: string }> | string[][],
 ): string[][] => (Array.isArray(v) && v.every((x) => Array.isArray(x)) ? (v as string[][]) : []);
 
-function useInView<T extends HTMLElement>(threshold = 0.15) {
-  const ref = useRef<T | null>(null);
-  const [inView, setInView] = useState(false);
-  useEffect(() => {
-    if (!ref.current) return;
-    const obs = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            setInView(true);
-            obs.disconnect();
-          }
-        });
-      },
-      { threshold },
-    );
-    obs.observe(ref.current);
-    return () => obs.disconnect();
-  }, [threshold]);
-  return { ref, inView };
-}
+// Brief re-skin: full-viewport immersive dark hero (HomeLead-style) — deep
+// warm-ink canvas with teal/amber ambient glows, staggered entrance, floating
+// stat pills around the live product moment, and a scroll cue. The hero is
+// deliberately dark in BOTH themes (single-look section); the rest of the
+// page follows the light/dark toggle.
+const HERO_PILLS: Array<{ stat: string; label: Record<string, string> }> = [
+  {
+    stat: '3s',
+    label: { de: 'Erstantwort auf Anfragen', en: 'First reply to inquiries', fr: 'Première réponse', ar: 'أول رد على الاستفسارات' },
+  },
+  {
+    stat: '24/7',
+    label: { de: 'KI-Assistent erreichbar', en: 'AI assistant available', fr: 'Assistant IA disponible', ar: 'مساعد ذكاء اصطناعي متاح' },
+  },
+  {
+    stat: 'DSGVO',
+    label: { de: 'By Design, EU-gehostet', en: 'By design, EU-hosted', fr: 'By design, hébergé en UE', ar: 'حسب التصميم، استضافة أوروبية' },
+  },
+  {
+    stat: 'DE·FR·EN·AR',
+    label: { de: 'Mehrsprachig nativ', en: 'Multilingual native', fr: 'Multilingue natif', ar: 'متعدد اللغات أصلاً' },
+  },
+];
+
+// Typewriter hero headline (HomeLead-style): a static lead-in plus a cycling
+// audience word with blinking caret. Mirrors the Solutions roles. words[0]
+// renders statically under reduced motion.
+const HERO_TYPED: Record<string, { lead: string; words: string[] }> = {
+  de: { lead: 'KI-Software für', words: ['Immobilienmakler', 'Maklerteams', 'Hausverwaltungen'] },
+  en: { lead: 'AI software for', words: ['real estate brokers', 'brokerage teams', 'property managers'] },
+  fr: { lead: 'Le logiciel IA pour', words: ['les agents immobiliers', 'les équipes d’agence', 'les gestionnaires de biens'] },
+  ar: { lead: 'برنامج الذكاء الاصطناعي لـ', words: ['وسطاء العقارات', 'فرق الوساطة', 'إدارة العقارات'] },
+};
 
 const Hero = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const localPath = useLocalizedPath();
   const bullets = asStringArray(t('hero.trustBullets'));
+  const pillLabel = (p: (typeof HERO_PILLS)[number]) => p.label[language] ?? p.label.en;
 
   return (
     <section
       id="top"
-      className="relative pt-36 pb-20 md:pt-44 md:pb-28 overflow-hidden bg-gradient-to-b from-cream to-white"
+      className="relative min-h-screen flex flex-col overflow-hidden bg-cream text-charcoal"
     >
+      {/* ambient glows — teal top-left, amber right (drift slowly) */}
       <div
         aria-hidden
-        className="absolute -top-32 -right-32 w-[28rem] h-[28rem] rounded-full bg-gradient-golden opacity-20 blur-3xl"
+        className="glow-drift absolute -top-40 -left-40 w-[42rem] h-[42rem] rounded-full opacity-25 blur-3xl"
+        style={{ background: 'radial-gradient(circle, #0C6F5F 0%, transparent 65%)' }}
       />
       <div
         aria-hidden
-        className="absolute -bottom-40 -left-24 w-[24rem] h-[24rem] rounded-full bg-golden/10 blur-3xl"
+        className="glow-drift absolute -top-24 -right-48 w-[46rem] h-[46rem] rounded-full opacity-20 blur-3xl"
+        style={{ background: 'radial-gradient(circle, #F5A623 0%, transparent 62%)', animationDelay: '-6s' }}
       />
+      {/* flowing contour-line mesh (canvas, brand teal->amber) */}
+      <HeroWaves />
 
-      <div className="container relative">
+      <div className="container relative flex-1 flex flex-col justify-center pt-32 pb-16 md:pt-36">
         <div className="max-w-3xl mx-auto text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-golden/30 bg-white px-4 py-1.5 text-xs font-medium text-golden-dark shadow-subtle">
-            <Sparkles className="h-3.5 w-3.5" />
-            {asString(t('hero.eyebrow'))}
-          </span>
 
-          <h1 className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance">
-            {asString(t('hero.headline'))}
+          <h1
+            className="mt-6 font-heading text-hero-mobile md:text-hero text-charcoal text-balance"
+            aria-label={`${(HERO_TYPED[language] ?? HERO_TYPED.en).lead} ${(HERO_TYPED[language] ?? HERO_TYPED.en).words[0]}`}
+          >
+            {(() => {
+              const typed = HERO_TYPED[language] ?? HERO_TYPED.en;
+              return (
+                <>
+                  <span
+                    className="chor block"
+                    style={{ '--chor-delay': '0ms', '--chor-dur': '700ms' } as CSSProperties}
+                  >
+                    {typed.lead}
+                  </span>
+                  <span
+                    className="chor block text-golden-dark dark:text-golden"
+                    style={{ '--chor-delay': '180ms', '--chor-dur': '700ms' } as CSSProperties}
+                  >
+                    <TypeCycle words={typed.words} />
+                  </span>
+                </>
+              );
+            })()}
           </h1>
 
-          <p className="mt-6 text-body-lg text-slate max-w-2xl mx-auto">
+          <p
+            className="chor mt-6 text-body-lg text-slate max-w-2xl mx-auto"
+            style={{ '--chor-delay': '380ms', '--chor-dur': '600ms' } as CSSProperties}
+          >
             {asString(t('hero.subheadline'))}
           </p>
 
@@ -101,31 +145,111 @@ const Hero = () => {
               type="button"
               {...DEMO_CTA_PROPS}
               onClick={() => trackEvent('hero_primary_cta_click')}
-              className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium shadow-golden hover:bg-charcoal/90 transition-colors"
+              className="chor inline-flex items-center gap-2 rounded-full bg-gradient-golden px-7 py-3.5 font-semibold text-[#1E1B16] shadow-golden transition-transform hover:scale-[1.03]"
+              style={{ '--chor-delay': '550ms', '--chor-dur': '500ms' } as CSSProperties}
             >
               {asString(t('hero.primaryCta'))}
               <ArrowRight className="h-4 w-4" />
             </button>
             <Link
-              to={localPath('howItWorks')}
+              to={`${localPath('produkt')}#how-it-works`}
               onClick={() => trackEvent('hero_secondary_cta_click')}
-              className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
+              className="chor inline-flex items-center gap-2 rounded-full border border-charcoal/25 px-7 py-3.5 font-medium text-charcoal hover:bg-charcoal/10 transition-colors"
+              style={{ '--chor-delay': '680ms', '--chor-dur': '500ms' } as CSSProperties}
             >
               {asString(t('hero.secondaryCta'))}
             </Link>
           </div>
 
-          <ul className="mt-10 grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 max-w-2xl mx-auto text-left">
+          <ul className="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2">
             {bullets.map((b, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-slate">
-                <CheckCircle2 className="h-4 w-4 mt-0.5 text-honey-green flex-shrink-0" />
+              <li
+                key={i}
+                className="chor flex items-center gap-2 text-sm text-slate"
+                style={{ '--chor-delay': `${780 + i * 70}ms`, '--chor-dur': '500ms' } as CSSProperties}
+              >
+                <CheckCircle2 className="h-4 w-4 text-honey-green flex-shrink-0" />
                 <span>{b}</span>
               </li>
             ))}
           </ul>
         </div>
+
+        {/* product moment + stat pills — 3-column grid on desktop so the
+            pills flank the card without ever overlapping it; compact row
+            below the card on smaller screens. */}
+        <div
+          className="chor-scale relative max-w-6xl mx-auto w-full"
+          style={{ '--chor-delay': '850ms', '--chor-dur': '900ms' } as CSSProperties}
+        >
+          <div className="xl:grid xl:grid-cols-[1fr_auto_1fr] xl:items-center xl:gap-8">
+            {/* left pills */}
+            <div aria-hidden className="hidden xl:flex flex-col items-end gap-8">
+              {[HERO_PILLS[0], HERO_PILLS[2]].map((p, i) => (
+                <div
+                  key={p.stat}
+                  className={`float-pill no-fill flex items-center gap-3 rounded-2xl border border-charcoal/15 bg-white/60 backdrop-blur-md px-4 py-3 shadow-card dark:border-[rgba(255,255,255,0.15)] dark:bg-[rgba(255,255,255,0.07)] ${
+                    i === 0 ? '-translate-y-4' : 'translate-y-6'
+                  }`}
+                  style={{ animationDelay: `${-i * 1.7}s` }}
+                >
+                  <span className="font-metric text-lg font-bold text-golden-dark dark:text-golden whitespace-nowrap">
+                    {/^\d/.test(p.stat) ? <CountUp value={p.stat} delay={1200} /> : p.stat}
+                  </span>
+                  <span className="text-xs text-slate max-w-[140px] leading-snug">{pillLabel(p)}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* the rotating product showcase (chat -> journey -> dashboard) */}
+            <div className="band-dark float-soft relative z-10 xl:w-[38rem]">
+              <HeroShowcase />
+            </div>
+
+            {/* right pills */}
+            <div aria-hidden className="hidden xl:flex flex-col items-start gap-8">
+              {[HERO_PILLS[1], HERO_PILLS[3]].map((p, i) => (
+                <div
+                  key={p.stat}
+                  className={`float-pill no-fill flex items-center gap-3 rounded-2xl border border-charcoal/15 bg-white/60 backdrop-blur-md px-4 py-3 shadow-card dark:border-[rgba(255,255,255,0.15)] dark:bg-[rgba(255,255,255,0.07)] ${
+                    i === 0 ? '-translate-y-6' : 'translate-y-4'
+                  }`}
+                  style={{ animationDelay: `${-(i + 2) * 1.7}s` }}
+                >
+                  <span className="font-metric text-lg font-bold text-golden-dark dark:text-golden whitespace-nowrap">
+                    {/^\d/.test(p.stat) ? <CountUp value={p.stat} delay={1200} /> : p.stat}
+                  </span>
+                  <span className="text-xs text-slate max-w-[140px] leading-snug">{pillLabel(p)}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* below xl: pills as a compact centered row under the card */}
+          <div className="xl:hidden mt-6 flex flex-wrap justify-center gap-2">
+            {HERO_PILLS.map((p) => (
+              <span
+                key={p.stat}
+                className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white/60 px-3 py-1.5 text-xs text-slate dark:border-[rgba(255,255,255,0.15)] dark:bg-[rgba(255,255,255,0.07)]"
+              >
+                <b className="font-metric text-golden-dark dark:text-golden">
+                  {/^\d/.test(p.stat) ? <CountUp value={p.stat} delay={1200} /> : p.stat}
+                </b>
+                {pillLabel(p)}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
-    </section>
+
+      {/* scroll cue */}
+      <div aria-hidden className="relative pb-6 flex justify-center">
+        <span className="scroll-cue inline-flex h-9 w-9 items-center justify-center rounded-full border border-charcoal/20 text-charcoal/60">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </span>
+      </div>
+      <ScrollCue className="relative mt-10" />
+      </section>
   );
 };
 
@@ -134,7 +258,7 @@ const AnswerBlock = () => {
   return (
     <section id="product" className="py-16 md:py-24 bg-white">
       <div className="container">
-        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-2 gap-6 max-w-7xl mx-auto">
           {[
             { q: asString(t('answer.q1')), a: asString(t('answer.a1')) },
             { q: asString(t('answer.q2')), a: asString(t('answer.a2')) },
@@ -161,7 +285,7 @@ const Problem = () => {
   const { t } = useLanguage();
   const points = asStringArray(t('problem.painpoints'));
   return (
-    <section className="py-20 md:py-28 bg-charcoal text-white">
+    <section className="py-20 md:py-28 band-dark bg-charcoal text-white">
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-balance text-white">
@@ -216,6 +340,14 @@ const Solution = () => {
 const Features = () => {
   const { t } = useLanguage();
   const localPath = useLocalizedPath();
+  // HomeLead-style pipeline pulse: the active card lights up in sequence,
+  // walking visitors through the workflow. Paused under reduced motion.
+  const [pulse, setPulse] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const id = window.setInterval(() => setPulse((v) => (v + 1) % 4), 2200);
+    return () => window.clearInterval(id);
+  }, []);
   const items = [
     { icon: Zap, title: asString(t('features.f1Title')), body: asString(t('features.f1Body')) },
     { icon: Target, title: asString(t('features.f2Title')), body: asString(t('features.f2Body')) },
@@ -232,19 +364,23 @@ const Features = () => {
       <div className="container">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-balance">
-            {asString(t('features.headline'))}
+            <LineReveal text={asString(t('features.headline'))} />
           </h2>
-        </div>
+          </div>
 
-        <div className="mt-12 grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+        <RevealGroup className="mt-12 grid md:grid-cols-2 gap-6 max-w-7xl mx-auto">
           {items.map((item, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-charcoal/10 bg-white p-6 md:p-8 shadow-subtle hover:shadow-card-hover hover:border-golden/30 transition-all"
+              className={`card-sweep shadow-subtle rounded-2xl border p-6 md:p-8 transition-all duration-500 ${
+                pulse === i
+                  ? 'border-golden/50 bg-gradient-golden-soft shadow-golden -translate-y-1'
+                  : 'border-charcoal/10 bg-white shadow-subtle hover:shadow-card-hover hover:border-golden/30'
+              }`}
             >
               <div className="flex items-center gap-3">
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-golden-soft text-golden-dark">
-                  <item.icon className="h-5 w-5" />
+                  <item.icon className="icon-draw h-5 w-5" />
                 </span>
                 <span className="text-xs font-semibold uppercase tracking-wider text-golden-dark">
                   {`0${i + 1}`}
@@ -254,7 +390,7 @@ const Features = () => {
               <p className="mt-3 text-slate leading-relaxed">{item.body}</p>
             </div>
           ))}
-        </div>
+        </RevealGroup>
 
         <div className="mt-10 text-center">
           <Link
@@ -361,9 +497,9 @@ const HowItWorks = () => {
 
         <div className="mt-10 text-center">
           <Link
-            to={localPath('howItWorks')}
+            to={`${localPath('produkt')}#how-it-works`}
             onClick={() => trackEvent('home_how_cta_click')}
-            className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
+            className="inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
           >
             {asString(t('howItWorks.cta'))}
             <ArrowRight className="h-4 w-4" />
@@ -387,7 +523,7 @@ const SocialProof = () => {
           <p className="mt-4 text-sm text-warm-gray italic">{asString(t('socialProof.note'))}</p>
         </div>
 
-        <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+        <div className="mt-12 grid md:grid-cols-3 gap-6 max-w-7xl mx-auto">
           {items.map((quote, i) => (
             <figure
               key={i}
@@ -434,6 +570,7 @@ const PricingTeaser = () => {
   const { t } = useLanguage();
   const localPath = useLocalizedPath();
   const plans = asPairArray(t('pricingTeaser.plans'));
+  const [period, setPeriod] = useState<BillingPeriod>('monthly');
   return (
     <section id="pricing" className="py-20 md:py-28 bg-white">
       <div className="container">
@@ -444,7 +581,11 @@ const PricingTeaser = () => {
           <p className="mt-6 text-body-lg text-slate">{asString(t('pricingTeaser.body'))}</p>
         </div>
 
-        <div className="mt-12 grid sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
+        <div className="mt-8 flex justify-center">
+          <BillingToggle period={period} onChange={setPeriod} />
+        </div>
+
+        <div className="mt-10 grid sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
           {plans.map((plan, i) => (
             <div
               key={i}
@@ -454,7 +595,13 @@ const PricingTeaser = () => {
                 <Tag className="h-5 w-5" />
               </span>
               <h3 className="mt-4 font-heading text-xl text-charcoal">{plan[0] ?? ''}</h3>
-              <p className="mt-2 text-slate">{plan[1] ?? ''}</p>
+              {i === 1 ? (
+                <div className="mt-2 flex justify-center">
+                  <MorphPrice period={period} size="sm" />
+                </div>
+              ) : (
+                <p className="mt-2 text-slate">{plan[1] ?? ''}</p>
+              )}
             </div>
           ))}
         </div>
@@ -463,13 +610,13 @@ const PricingTeaser = () => {
           <Link
             to={localPath('pricing')}
             onClick={() => trackEvent('home_pricing_cta_click')}
-            className="inline-flex items-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
+            className="inline-flex items-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 font-medium hover:bg-charcoal/90 transition-colors"
           >
             {asString(t('pricingTeaser.pricingCta'))}
             <ArrowRight className="h-4 w-4" />
           </Link>
           <Link
-            to={localPath('demo')}
+            to={`${localPath('contact')}?intent=demo`}
             onClick={() => trackEvent('home_pricing_demo_cta_click')}
             className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white px-6 py-3 font-medium text-charcoal hover:border-charcoal/40 transition-colors"
           >
@@ -495,14 +642,17 @@ const FAQItem = ({ q, a }: { q: string; a: string }) => {
         <span className="font-medium text-charcoal pr-4">{q}</span>
         <span
           aria-hidden
-          className={`flex-shrink-0 inline-flex h-7 w-7 items-center justify-center rounded-full bg-charcoal/5 text-charcoal transition-transform ${
+          className={`flex-shrink-0 inline-flex h-7 w-7 items-center justify-center rounded-full bg-charcoal/5 text-charcoal transition-transform duration-200 ${
             open ? 'rotate-45' : ''
           }`}
         >
           +
         </span>
       </button>
-      {open && <p className="pb-5 text-slate leading-relaxed">{a}</p>}
+      {/* grid-rows 0fr->1fr trick: animated height without JS measuring */}
+      <div className="acc-body" data-open={open}>
+        <p className="pb-5 text-slate leading-relaxed">{a}</p>
+      </div>
     </div>
   );
 };
@@ -515,7 +665,7 @@ const FAQ = () => {
       <div className="container">
         <div className="max-w-3xl mx-auto">
           <h2 className="font-heading text-section-mobile md:text-section text-charcoal text-center text-balance">
-            {asString(t('faq.headline'))}
+            <LineReveal text={asString(t('faq.headline'))} />
           </h2>
 
           <div className="mt-10 rounded-2xl bg-cream border border-charcoal/10 px-6">
@@ -565,20 +715,6 @@ const FinalCTA = () => {
   );
 };
 
-const RevealOnScroll = ({ children }: { children: ReactNode }) => {
-  const { ref, inView } = useInView<HTMLDivElement>(0.05);
-  return (
-    <div
-      ref={ref}
-      className={`transition-all duration-700 ease-out ${
-        inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-      }`}
-    >
-      {children}
-    </div>
-  );
-};
-
 export default function HomePage() {
   const { t, language } = useLanguage();
   usePageMeta({
@@ -610,25 +746,38 @@ export default function HomePage() {
     AnswerBlock,
     Problem,
     Solution,
+    // AI-refinement (draft/ai-refinement): 7-co-worker band with demo-video
+    // teaser, additive between Solution and Features. Existing sections,
+    // forms and the chatbot stay untouched.
+    SevenCoWorkersBand,
     Features,
     CrmDifferentiation,
     HowItWorks,
     SocialProof,
+    // AI-refinement: compliance trust strip linking to /compliance.
+    ComplianceBadgesStrip,
     UseCases,
     PricingTeaser,
     FAQ,
     FinalCTA,
   ];
 
+  // Hero has its own mount entrance; Features/FAQ carry inner Reveals.
+  const selfAnimated = new Set<unknown>([Hero, Features, FAQ]);
+
   return (
     <div className="min-h-screen antialiased bg-white">
       <Header />
       <main className="relative">
-        {sections.map((Section, i) => (
-          <RevealOnScroll key={i}>
-            <Section />
-          </RevealOnScroll>
-        ))}
+        {sections.map((Section, i) =>
+          selfAnimated.has(Section) ? (
+            <Section key={i} />
+          ) : (
+            <Reveal key={i}>
+              <Section />
+            </Reveal>
+          ),
+        )}
       </main>
       <Footer />
     </div>

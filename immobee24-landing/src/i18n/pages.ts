@@ -9,21 +9,36 @@ export type PageKey =
   | 'crmAlternative'
   | 'pricing'
   | 'demo'
-  | 'beta';
+  | 'beta'
+  | 'aiFeatures'
+  | 'compliance'
+  | 'whyImmob24'
+  | 'solutions'
+  | 'contact';
 
 type PagePaths = Record<Language, string>;
 
 export const PAGE_PATHS: Record<PageKey, PagePaths> = {
-  home: { de: '/de', en: '/en' },
-  produkt: { de: '/de/produkt', en: '/en/product' },
-  howItWorks: { de: '/de/how-it-works', en: '/en/how-it-works' },
+  home: { de: '/de', en: '/en', fr: '/fr', ar: '/ar' },
+  produkt: { de: '/de/produkt', en: '/en/product', fr: '/fr/produit', ar: '/ar/product' },
+  howItWorks: { de: '/de/how-it-works', en: '/en/how-it-works', fr: '/fr/comment-ca-marche', ar: '/ar/how-it-works' },
   crmAlternative: {
     de: '/de/immobilien-crm-alternative',
     en: '/en/real-estate-crm-alternative',
+    fr: '/fr/alternative-crm-immobilier',
+    ar: '/ar/real-estate-crm-alternative',
   },
-  pricing: { de: '/de/preise', en: '/en/pricing' },
-  demo: { de: '/de/demo', en: '/en/demo' },
-  beta: { de: '/de/beta-agentenprogramm', en: '/en/beta-agent-program' },
+  pricing: { de: '/de/preise', en: '/en/pricing', fr: '/fr/tarifs', ar: '/ar/pricing' },
+  demo: { de: '/de/demo', en: '/en/demo', fr: '/fr/demo', ar: '/ar/demo' },
+  beta: { de: '/de/beta-agentenprogramm', en: '/en/beta-agent-program', fr: '/fr/programme-beta-agents', ar: '/ar/beta-agent-program' },
+  // AI-refinement pages (draft/ai-refinement). EN slug avoids colliding with
+  // the existing /en/ai-for-real-estate-agents SEO page.
+  aiFeatures: { de: '/de/ki-funktionen', en: '/en/ai-features-platform', fr: '/fr/fonctions-ia', ar: '/ar/ai-features-platform' },
+  compliance: { de: '/de/compliance', en: '/en/compliance', fr: '/fr/conformite', ar: '/ar/compliance' },
+  whyImmob24: { de: '/de/warum-immob24', en: '/en/why-immob24', fr: '/fr/pourquoi-immob24', ar: '/ar/why-immob24' },
+  // Unified IA phase 2
+  solutions: { de: '/de/loesungen', en: '/en/solutions', fr: '/fr/solutions', ar: '/ar/solutions' },
+  contact: { de: '/de/kontakt', en: '/en/contact', fr: '/fr/contact', ar: '/ar/contact' },
 };
 
 // DE is the primary market — used as x-default.
@@ -40,14 +55,17 @@ export function urlFor(key: PageKey, lang: Language): string {
 export function languageFromPath(pathname: string): Language | null {
   if (pathname === '/de' || pathname.startsWith('/de/')) return 'de';
   if (pathname === '/en' || pathname.startsWith('/en/')) return 'en';
+  if (pathname === '/fr' || pathname.startsWith('/fr/')) return 'fr';
+  if (pathname === '/ar' || pathname.startsWith('/ar/')) return 'ar';
   return null;
 }
 
 const PATH_TO_KEY: Map<string, PageKey> = (() => {
   const m = new Map<string, PageKey>();
   (Object.keys(PAGE_PATHS) as PageKey[]).forEach((key) => {
-    m.set(PAGE_PATHS[key].de, key);
-    m.set(PAGE_PATHS[key].en, key);
+    (Object.values(PAGE_PATHS[key]) as string[]).forEach((path) => {
+      m.set(path, key);
+    });
   });
   return m;
 })();

@@ -80,7 +80,7 @@ const PolicyDe = () => (
 
     <h4 className="font-semibold text-charcoal pt-4">5. Selbst-gehostete Schriftarten</h4>
     <p>
-      Diese Website verwendet die Schriftarten Poppins, Inter und DM Sans. Die
+      Diese Website verwendet die Schriftarten Poppins und Inter. Die
       Schrift-Dateien werden ausschließlich von unserem eigenen Server
       ausgeliefert; es erfolgt <strong>keine</strong> Verbindung zu Google
       Fonts oder anderen Drittanbietern. Beim Laden der Schriften werden
@@ -356,7 +356,7 @@ const PolicyEn = () => (
 
     <h4 className="font-semibold text-charcoal pt-4">5. Self-hosted fonts</h4>
     <p>
-      The site uses the typefaces Poppins, Inter, and DM Sans. Font files are
+      The site uses the typefaces Poppins and Inter. Font files are
       served exclusively from our own server; <strong>no</strong> connection is
       made to Google Fonts or any other third party. Loading fonts does not
       transmit any personal data to third parties.

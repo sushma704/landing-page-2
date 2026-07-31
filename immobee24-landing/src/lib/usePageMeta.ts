@@ -51,6 +51,8 @@ export function usePageMeta({
     () => [
       { hreflang: 'de', href: urlFor(pageKey, 'de') },
       { hreflang: 'en', href: urlFor(pageKey, 'en') },
+      { hreflang: 'fr', href: urlFor(pageKey, 'fr') },
+      { hreflang: 'ar', href: urlFor(pageKey, 'ar') },
       { hreflang: 'x-default', href: urlFor(pageKey, X_DEFAULT_LANG) },
     ],
     [pageKey],

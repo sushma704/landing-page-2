@@ -9,6 +9,7 @@
 import { ArrowRight, ChevronRight, Clock, MapPin, TrendingUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Header, Footer, DEMO_CTA_PROPS } from '../../components/SiteChrome';
+import { cascadeDelay, chorSlot, Reveal, RevealGroup } from '../../lib/animations';
 import { trackEvent } from '../../lib/analytics';
 import { useDocumentMeta } from '../../lib/useDocumentMeta';
 import { useFaqSchema } from '../../lib/useFaqSchema';
@@ -66,11 +67,11 @@ const Hero = () => (
         <MapPin className="h-3.5 w-3.5" /> Local focus: Munich
       </p>
 
-      <h1 className="mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight max-w-3xl">
+      <h1 className="chor mt-5 font-heading text-4xl md:text-5xl lg:text-6xl font-bold text-charcoal leading-tight max-w-3xl" style={chorSlot(0)}>
         Real-estate agent software for brokerages in Munich
       </h1>
 
-      <p className="mt-5 max-w-2xl text-lg text-slate leading-relaxed">
+      <p className="chor mt-5 max-w-2xl text-lg text-slate leading-relaxed" style={chorSlot(280, 500)}>
         Munich inquiries don't wait. Immob24 responds in under three seconds,
         qualifies prospects automatically, and takes over scheduling and
         follow-up — so your brokerage wins mandates instead of losing them to
@@ -82,7 +83,7 @@ const Hero = () => (
           type="button"
           {...DEMO_CTA_PROPS}
           onClick={() => trackEvent('seo_city_cta_click', { city: 'munich-en', position: 'hero' })}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-charcoal text-white px-6 py-3 text-base font-semibold hover:bg-charcoal/90 transition-colors"
+          className="inline-flex items-center justify-center gap-2 rounded-full band-dark bg-charcoal text-white px-6 py-3 text-base font-semibold hover:bg-charcoal/90 transition-colors"
         >
           Request a Munich demo
           <ArrowRight className="h-4 w-4" />
@@ -119,7 +120,7 @@ const Challenge = () => (
         qualified, and proposed a viewing time.
       </p>
 
-      <div className="mt-10 grid md:grid-cols-3 gap-4">
+      <RevealGroup className="mt-10 grid md:grid-cols-3 gap-4">
         {[
           {
             icon: Clock,
@@ -149,7 +150,7 @@ const Challenge = () => (
             <p className="mt-2 text-sm text-slate leading-relaxed">{c.body}</p>
           </div>
         ))}
-      </div>
+      </RevealGroup>
     </div>
   </section>
 );
@@ -180,7 +181,7 @@ const Solution = () => (
 const Features = () => (
   <section className="py-20 bg-white">
     <div className="container">
-      <div className="grid md:grid-cols-3 gap-8">
+      <RevealGroup className="grid md:grid-cols-3 gap-8">
         <div>
           <h3 className="font-heading text-xl font-bold text-charcoal">
             Automatic lead response in 3 seconds
@@ -213,7 +214,7 @@ const Features = () => (
             is followed up automatically.
           </p>
         </div>
-      </div>
+      </RevealGroup>
     </div>
   </section>
 );
@@ -259,14 +260,16 @@ const Faq = () => (
         Frequently asked questions
       </h2>
       <div className="mt-8 divide-y divide-charcoal/10">
-        {FAQS.map((item) => (
-          <details key={item.q} className="group py-5">
+        {FAQS.map((item, i) => (
+          <Reveal key={item.q} delay={cascadeDelay(i, 280)} distance={16}>
+          <details className="group py-5">
             <summary className="flex cursor-pointer items-start justify-between gap-4 list-none">
               <span className="font-semibold text-charcoal">{item.q}</span>
               <ChevronRight className="h-4 w-4 text-warm-gray mt-1 transition-transform group-open:rotate-90" />
             </summary>
             <p className="mt-3 text-slate leading-relaxed">{item.a}</p>
           </details>
+          </Reveal>
         ))}
       </div>
     </div>
@@ -279,7 +282,7 @@ const RelatedCities = () => (
       <h2 className="font-heading text-2xl font-bold text-charcoal">
         Also relevant for brokerages in:
       </h2>
-      <div className="mt-5 flex flex-wrap gap-3">
+      <RevealGroup stagger={60} className="mt-5 flex flex-wrap gap-3">
         {[
           { label: 'Berlin', path: '/en/real-estate-agent-software/berlin' },
           { label: 'Hamburg', path: '/en/real-estate-agent-software/hamburg' },
@@ -294,15 +297,15 @@ const RelatedCities = () => (
             {l.label}
           </Link>
         ))}
-      </div>
+      </RevealGroup>
     </div>
   </section>
 );
 
 const FinalCta = () => (
-  <section className="py-20 bg-charcoal text-white">
+  <section className="py-20 band-dark bg-charcoal text-white">
     <div className="container max-w-3xl text-center">
-      <h2 className="font-heading text-3xl md:text-4xl font-bold">
+      <h2 className="font-heading text-3xl md:text-4xl font-bold text-white">
         Get started with Immob24 in Munich
       </h2>
       <p className="mt-5 text-white/75 leading-relaxed">
@@ -316,7 +319,7 @@ const FinalCta = () => (
           type="button"
           {...DEMO_CTA_PROPS}
           onClick={() => trackEvent('seo_city_cta_click', { city: 'munich-en', position: 'final' })}
-          className="inline-flex items-center justify-center gap-2 rounded-full bg-golden text-charcoal px-6 py-3 text-base font-semibold hover:bg-golden/90 transition-colors"
+          className="inline-flex items-center justify-center gap-2 rounded-full bg-golden text-[#1E1B16] px-6 py-3 text-base font-semibold hover:bg-golden/90 transition-colors"
         >
           Request a Munich demo
           <ArrowRight className="h-4 w-4" />
@@ -384,13 +387,25 @@ export default function RealEstateAgentSoftwareMunich() {
     <div className="min-h-screen bg-white">
       <Header />
       <Hero />
-      <Challenge />
-      <Solution />
-      <Features />
-      <WhyMunich />
+      <Reveal>
+        <Challenge />
+      </Reveal>
+      <Reveal>
+        <Solution />
+      </Reveal>
+      <Reveal>
+        <Features />
+      </Reveal>
+      <Reveal>
+        <WhyMunich />
+      </Reveal>
       <Faq />
-      <RelatedCities />
-      <FinalCta />
+      <Reveal>
+        <RelatedCities />
+      </Reveal>
+      <Reveal>
+        <FinalCta />
+      </Reveal>
       <Footer />
     </div>
   );

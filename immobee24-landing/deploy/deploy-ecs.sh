@@ -2,7 +2,7 @@
 # THE deploy script for the immob24.com marketing site.
 #
 # Ships this repo (immobee24-landing/) to ECS/Fargate in Frankfurt on AWS
-# account 020642895299 (eu-central-1). Builds dist/, pushes a single-arch
+# account 951395863325 (eu-central-1). Builds dist/, pushes a single-arch
 # ARM64 image to ECR, registers a new task-def revision from whatever the
 # service currently runs (image swapped), rolls the service, and waits for it
 # to stabilize. See deploy/DEPLOY-ECS.md for the infra map, the dashboard
@@ -11,26 +11,31 @@
 # NOTE: the old root-level ./deploy.sh (us-east-1 SSM/EC2 box) is DEAD — that
 # infra was decommissioned 2026-07-03. Use THIS script for every deploy.
 #
+# NOTE: account 020642895299 (profiles immob24de / immob24-de) is ALSO dead. The
+# whole stack moved to 951395863325 on 2026-07-31; the marketing site was rebuilt
+# there from scratch (ECR repo, tg immob24-de-tg-marketing, service
+# immob24-de-marketing, ALB rules). The default CLI profile is that account.
+#
 # Usage (run from anywhere; it cd's to the repo root itself):
 #   ./deploy/deploy-ecs.sh                # auto-bump to the next vN tag, build, deploy
 #   TAG=v9 ./deploy/deploy-ecs.sh         # force a specific image tag
 #   SKIP_BUILD=1 ./deploy/deploy-ecs.sh   # reuse existing dist/ (still rebuilds the image)
-#   AWS_PROFILE=immob24de ./deploy/deploy-ecs.sh
+#   AWS_PROFILE=someprofile ./deploy/deploy-ecs.sh
 #
 # Prereqs: aws CLI v2, docker + buildx, pnpm, python3, and credentials for
-# account 020642895299 (default profile below is immob24de).
+# account 951395863325 (the default CLI profile).
 
 set -euo pipefail
 
-: "${AWS_PROFILE:=immob24de}"
+: "${AWS_PROFILE:=default}"
 : "${AWS_DEFAULT_REGION:=eu-central-1}"
 export AWS_PROFILE AWS_DEFAULT_REGION
 
-REG="020642895299.dkr.ecr.eu-central-1.amazonaws.com"
+REG="951395863325.dkr.ecr.eu-central-1.amazonaws.com"
 REPO="immob24-de/marketing-nginx"
 CLUSTER="immob24-de-cluster"
 SERVICE="immob24-de-marketing"
-SITE_URL="https://immob24.com/"
+SITE_URL="https://immob24.com/en"   # bare / belongs to the dashboard, not marketing
 
 green() { printf '\033[32m%s\033[0m\n' "$*"; }
 blue()  { printf '\033[34m%s\033[0m\n' "$*"; }

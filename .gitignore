@@ -10,3 +10,6 @@ dist/
 # Keep .claude/settings.json tracked if it ever exists (shared config), but
 # the .local variant is machine-specific.
 .claude/settings.local.json
+**/public/videos/*.mp4
+**/dist-draft/
+**/media-master/

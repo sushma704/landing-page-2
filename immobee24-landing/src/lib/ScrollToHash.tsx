@@ -9,13 +9,22 @@ export function ScrollToHash() {
 
   useEffect(() => {
     if (hash) {
+      // Cross-page hash links race the lazy route chunk: the target id may
+      // not be in the DOM yet. Retry for ~1s before giving up.
       const id = hash.slice(1);
-      const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        trackPageView(pathname + hash);
-        return;
-      }
+      let tries = 0;
+      let raf = 0;
+      const attempt = () => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          trackPageView(pathname + hash);
+          return;
+        }
+        if (++tries < 60) raf = requestAnimationFrame(attempt);
+      };
+      attempt();
+      return () => cancelAnimationFrame(raf);
     }
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
     trackPageView(pathname);

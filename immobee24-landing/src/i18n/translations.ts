@@ -56,6 +56,16 @@ export const translations = {
       de: 'Demo anfragen',
       en: 'Request demo',
     },
+    // Wordmark strapline. The product name "immob24" is never translated;
+    // the sentence under it is.
+    tagline: {
+      de: 'Das KI-Betriebssystem für die moderne Immobilienbranche',
+      en: 'The AI Operating System for Modern Real Estate',
+    },
+    login: {
+      de: 'Anmelden',
+      en: 'Login',
+    },
   },
 
   // ============================================
@@ -498,6 +508,10 @@ export const translations = {
     copyright: {
       de: 'Alle Rechte vorbehalten.',
       en: 'All rights reserved.',
+    },
+    madeInGermany: {
+      de: 'Made in Germany.',
+      en: 'Made in Germany.',
     },
   },
 

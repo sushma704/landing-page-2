@@ -26,6 +26,8 @@ export const frOverlay: Record<string, any> = {
     demo: 'Démo',
     pricing: 'Tarifs',
     requestDemo: 'Demander une démo',
+    tagline: "Le système d'exploitation IA pour l'immobilier moderne",
+    login: 'Connexion',
   },
 
   // ============================================
@@ -577,6 +579,7 @@ export const frOverlay: Record<string, any> = {
     privacy: 'Confidentialité',
     cookieSettings: 'Paramètres des cookies',
     copyright: 'Tous droits réservés.',
+    madeInGermany: 'Conçu et développé en Allemagne.',
   },
 
   // ============================================

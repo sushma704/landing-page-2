@@ -51,7 +51,10 @@ const asPairArray = (
 // stat pills around the live product moment, and a scroll cue. The hero is
 // deliberately dark in BOTH themes (single-look section); the rest of the
 // page follows the light/dark toggle.
-const HERO_PILLS: Array<{ stat: string; label: Record<string, string> }> = [
+// `stat` is normally a locale-neutral figure (3s, 24/7). When it is a word it
+// must be localized as well — "DSGVO" is the German name of the regulation and
+// was rendering untranslated on the EN/FR/AR homes.
+const HERO_PILLS: Array<{ stat: string | Record<string, string>; label: Record<string, string> }> = [
   {
     stat: '3s',
     label: { de: 'Erstantwort auf Anfragen', en: 'First reply to inquiries', fr: 'Première réponse', ar: 'أول رد على الاستفسارات' },
@@ -61,8 +64,8 @@ const HERO_PILLS: Array<{ stat: string; label: Record<string, string> }> = [
     label: { de: 'KI-Assistent erreichbar', en: 'AI assistant available', fr: 'Assistant IA disponible', ar: 'مساعد ذكاء اصطناعي متاح' },
   },
   {
-    stat: 'DSGVO',
-    label: { de: 'By Design, EU-gehostet', en: 'By design, EU-hosted', fr: 'By design, hébergé en UE', ar: 'حسب التصميم، استضافة أوروبية' },
+    stat: { de: 'DSGVO', en: 'GDPR', fr: 'RGPD', ar: 'GDPR' },
+    label: { de: 'By Design, EU-gehostet', en: 'By design, EU-hosted', fr: 'Par conception, hébergé en UE', ar: 'حسب التصميم، استضافة أوروبية' },
   },
   {
     stat: 'DE·FR·EN·AR',
@@ -85,6 +88,8 @@ const Hero = () => {
   const localPath = useLocalizedPath();
   const bullets = asStringArray(t('hero.trustBullets'));
   const pillLabel = (p: (typeof HERO_PILLS)[number]) => p.label[language] ?? p.label.en;
+  const pillStat = (p: (typeof HERO_PILLS)[number]) =>
+    typeof p.stat === 'string' ? p.stat : (p.stat[language] ?? p.stat.en);
 
   return (
     <section
@@ -187,14 +192,14 @@ const Hero = () => {
             <div aria-hidden className="hidden xl:flex flex-col items-end gap-8">
               {[HERO_PILLS[0], HERO_PILLS[2]].map((p, i) => (
                 <div
-                  key={p.stat}
+                  key={p.label.en}
                   className={`float-pill no-fill flex items-center gap-3 rounded-2xl border border-charcoal/15 bg-white/60 backdrop-blur-md px-4 py-3 shadow-card dark:border-[rgba(255,255,255,0.15)] dark:bg-[rgba(255,255,255,0.07)] ${
                     i === 0 ? '-translate-y-4' : 'translate-y-6'
                   }`}
                   style={{ animationDelay: `${-i * 1.7}s` }}
                 >
                   <span className="font-metric text-lg font-bold text-golden-dark dark:text-golden whitespace-nowrap">
-                    {/^\d/.test(p.stat) ? <CountUp value={p.stat} delay={1200} /> : p.stat}
+                    {/^\d/.test(pillStat(p)) ? <CountUp value={pillStat(p)} delay={1200} /> : pillStat(p)}
                   </span>
                   <span className="text-xs text-slate max-w-[140px] leading-snug">{pillLabel(p)}</span>
                 </div>
@@ -210,14 +215,14 @@ const Hero = () => {
             <div aria-hidden className="hidden xl:flex flex-col items-start gap-8">
               {[HERO_PILLS[1], HERO_PILLS[3]].map((p, i) => (
                 <div
-                  key={p.stat}
+                  key={p.label.en}
                   className={`float-pill no-fill flex items-center gap-3 rounded-2xl border border-charcoal/15 bg-white/60 backdrop-blur-md px-4 py-3 shadow-card dark:border-[rgba(255,255,255,0.15)] dark:bg-[rgba(255,255,255,0.07)] ${
                     i === 0 ? '-translate-y-6' : 'translate-y-4'
                   }`}
                   style={{ animationDelay: `${-(i + 2) * 1.7}s` }}
                 >
                   <span className="font-metric text-lg font-bold text-golden-dark dark:text-golden whitespace-nowrap">
-                    {/^\d/.test(p.stat) ? <CountUp value={p.stat} delay={1200} /> : p.stat}
+                    {/^\d/.test(pillStat(p)) ? <CountUp value={pillStat(p)} delay={1200} /> : pillStat(p)}
                   </span>
                   <span className="text-xs text-slate max-w-[140px] leading-snug">{pillLabel(p)}</span>
                 </div>
@@ -229,11 +234,11 @@ const Hero = () => {
           <div className="xl:hidden mt-6 flex flex-wrap justify-center gap-2">
             {HERO_PILLS.map((p) => (
               <span
-                key={p.stat}
+                key={p.label.en}
                 className="inline-flex items-center gap-2 rounded-full border border-charcoal/15 bg-white/60 px-3 py-1.5 text-xs text-slate dark:border-[rgba(255,255,255,0.15)] dark:bg-[rgba(255,255,255,0.07)]"
               >
                 <b className="font-metric text-golden-dark dark:text-golden">
-                  {/^\d/.test(p.stat) ? <CountUp value={p.stat} delay={1200} /> : p.stat}
+                  {/^\d/.test(pillStat(p)) ? <CountUp value={pillStat(p)} delay={1200} /> : pillStat(p)}
                 </b>
                 {pillLabel(p)}
               </span>

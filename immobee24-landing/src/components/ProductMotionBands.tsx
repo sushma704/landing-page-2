@@ -315,7 +315,10 @@ const STAT_HEAD: L10n = {
   ar: 'طبقة ذكاء اصطناعي كاملة فوق مكتبكم العقاري',
 };
 
-const BAND_STATS: Array<{ value: string; label: L10n }> = [
+// `value` is usually a locale-neutral figure (3s, 24/7, 100). Where it is a
+// word it has to be localized too — "DSGVO" is the German name of the
+// regulation and was showing up untranslated on the EN/FR/AR pages.
+const BAND_STATS: Array<{ value: string | L10n; label: L10n }> = [
   {
     value: '3s',
     label: { de: 'Erstantwort auf neue Anfragen', en: 'First reply to a new inquiry', fr: 'Première réponse à une demande', ar: 'الرد الأول على استفسار جديد' },
@@ -329,7 +332,7 @@ const BAND_STATS: Array<{ value: string; label: L10n }> = [
     label: { de: 'Freigabe-Kontrolle bei jedem Schritt', en: 'Approval control on every step', fr: 'Contrôle de validation à chaque étape', ar: 'تحكم بالموافقة في كل خطوة' },
   },
   {
-    value: 'DSGVO',
+    value: { de: 'DSGVO', en: 'GDPR', fr: 'RGPD', ar: 'GDPR' },
     label: { de: 'EU-Hosting, konform by design', en: 'EU-hosted, compliant by design', fr: 'Hébergé en UE, conforme par conception', ar: 'استضافة أوروبية ومتوافق تصميمًا' },
   },
 ];
@@ -363,20 +366,23 @@ export const ProductStatBand = () => {
               {pick(STAT_HEAD, language)}
             </h2>
             <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-8">
-              {BAND_STATS.map((s, i) => (
-                <div key={s.value}>
+              {BAND_STATS.map((s, i) => {
+                const value = typeof s.value === 'string' ? s.value : pick(s.value, language);
+                return (
+                <div key={i}>
                   <div className="font-metric text-3xl font-bold text-golden">
-                    {/^\d+$/.test(s.value) ? (
+                    {/^\d+$/.test(value) ? (
                       <>
-                        <CountUp value={s.value} delay={i * 150} />%
+                        <CountUp value={value} delay={i * 150} />%
                       </>
                     ) : (
-                      s.value
+                      value
                     )}
                   </div>
                   <p className="mt-1 text-sm text-white/70">{pick(s.label, language)}</p>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </div>
           <div className="flex items-end">

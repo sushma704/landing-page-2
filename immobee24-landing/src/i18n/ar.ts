@@ -25,6 +25,8 @@ export const arOverlay: Record<string, any> = {
     demo: 'العرض التوضيحي',
     pricing: 'الأسعار',
     requestDemo: 'اطلب عرضًا توضيحيًا',
+    tagline: 'نظام التشغيل بالذكاء الاصطناعي لقطاع العقارات الحديث',
+    login: 'تسجيل الدخول',
   },
 
   // ============================================
@@ -576,6 +578,7 @@ export const arOverlay: Record<string, any> = {
     privacy: 'الخصوصية',
     cookieSettings: 'إعدادات ملفات تعريف الارتباط',
     copyright: 'جميع الحقوق محفوظة.',
+    madeInGermany: 'صُنع في ألمانيا.',
   },
 
   // ============================================

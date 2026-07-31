@@ -38,7 +38,7 @@ export const Wordmark = ({
   // slim row (the tagline is ~280px wide and forced the nav to overflow).
   compact?: boolean;
 }) => {
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const { pathname } = useLocation();
   const homePath = pathFor('home', language);
   const isHome = pathname === homePath || pathname === '/';
@@ -81,11 +81,14 @@ export const Wordmark = ({
       )}
       {!compact && (
         <span
-          className={`hidden sm:block mt-1 text-[8px] font-medium uppercase tracking-[0.1em] whitespace-nowrap ${
-            variant === 'light' ? 'text-white/60' : 'text-slate'
-          }`}
+          className={`hidden sm:block mt-1 text-[8px] font-medium whitespace-nowrap ${
+            // Arabic is cursive: uppercase is a no-op and letter-spacing
+            // pulls the joined glyphs apart, so the strapline renders as
+            // disconnected letters. Latin scripts keep the small-caps look.
+            language === 'ar' ? 'text-[9px]' : 'uppercase tracking-[0.1em]'
+          } ${variant === 'light' ? 'text-white/60' : 'text-slate'}`}
         >
-          The AI Operating System for Modern Real Estate
+          {asString(t('nav.tagline'))}
         </span>
       )}
     </>
@@ -389,7 +392,7 @@ export const Header = () => {
                 : 'border-charcoal/15 text-charcoal hover:border-golden/50 hover:text-golden-dark'
             }`}
           >
-            Login
+            {asString(t('nav.login'))}
           </a>
           <button
             type="button"
@@ -456,7 +459,7 @@ export const Header = () => {
               onClick={() => setOpen(false)}
               className="px-3 py-2 text-sm text-charcoal/80 hover:bg-cream rounded-lg"
             >
-              Login
+              {asString(t('nav.login'))}
             </a>
             <button
               type="button"
@@ -702,7 +705,7 @@ export const Footer = () => {
           <span>
             © {new Date().getFullYear()} Immob24. {asString(t('footer.copyright'))}
           </span>
-          <span>Made in Germany.</span>
+          <span>{asString(t('footer.madeInGermany'))}</span>
         </div>
       </div>
 

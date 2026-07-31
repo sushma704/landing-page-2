@@ -16,17 +16,11 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '../i18n';
 import { Marquee, Reveal, RevealGroup } from '../lib/animations';
 import type { Language } from '../i18n';
+import { AGENT_NAMES, AGENT_ORDER } from '../i18n/agents';
 import { pathFor } from '../i18n/pages';
 
-const COWORKERS: Array<Record<Language, string>> = [
-  { de: 'Lead-Responder', en: 'Lead Responder', fr: 'Lead Responder', ar: 'Lead Responder' },
-  { de: 'Conversation-Agent', en: 'Conversation Agent', fr: 'Conversation Agent', ar: 'Conversation Agent' },
-  { de: 'Viewing-Booker', en: 'Viewing Booker', fr: 'Viewing Booker', ar: 'Viewing Booker' },
-  { de: 'Listing-Creator', en: 'Listing Creator', fr: 'Listing Creator', ar: 'Listing Creator' },
-  { de: 'Deal-Monitor', en: 'Deal Monitor', fr: 'Deal Monitor', ar: 'Deal Monitor' },
-  { de: 'Daily-Brief-Agent', en: 'Daily Brief Agent', fr: 'Daily Brief Agent', ar: 'Daily Brief Agent' },
-  { de: 'Compliance-Guard', en: 'Compliance Guard', fr: 'Compliance Guard', ar: 'Compliance Guard' },
-];
+// Names live in src/i18n/agents.ts — one source for all four call sites.
+const COWORKERS: Array<Record<Language, string>> = AGENT_ORDER.map((id) => AGENT_NAMES[id]);
 
 // Home: "7 AI co-workers" band + video teaser linking to the AI features page.
 export const SevenCoWorkersBand = () => {

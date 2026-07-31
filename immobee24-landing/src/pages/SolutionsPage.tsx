@@ -25,6 +25,7 @@ import { WhyImmob24Teaser } from '../components/AiRefinementBands';
 import { AccentHeading, Panel, SectionHopButton } from '../components/PanelPatterns';
 import { useLanguage } from '../i18n';
 import type { Language } from '../i18n';
+import { agentName, type AgentId } from '../i18n/agents';
 import { useDocumentMeta } from '../lib/useDocumentMeta';
 import { useJsonLd } from '../lib/useJsonLd';
 import { breadcrumbSchema } from '../lib/schema';
@@ -39,7 +40,7 @@ const ROLES: Array<{
   title: Copy;
   pain: Copy;
   fit: Copy;
-  agents: string[];
+  agents: AgentId[];
 }> = [
   {
     icon: User,
@@ -56,7 +57,7 @@ const ROLES: Array<{
       fr: 'Première réponse, qualification et propositions de créneaux continuent automatiquement. Vous validez entre deux.',
       ar: 'الرد الأول والتأهيل واقتراح المواعيد تستمر تلقائيًا، وأنت توافق على الإجراءات بين المهام.',
     },
-    agents: ['Lead Responder', 'Conversation Agent', 'Viewing Booker'],
+    agents: ['leadResponder', 'conversationAgent', 'viewingBooker'],
   },
   {
     icon: Users,
@@ -73,7 +74,7 @@ const ROLES: Array<{
       fr: 'Une entrée commune, un tableau des dossiers, des responsabilités claires. Les relances restent actives même en période de charge.',
       ar: 'صندوق وارد مشترك، لوحة صفقات واحدة، ومسؤوليات واضحة. تبقى المتابعات نشطة حتى عندما يكون الفريق مشغولًا.',
     },
-    agents: ['Deal Monitor', 'Daily Brief Agent', 'Lead Responder'],
+    agents: ['dealMonitor', 'dailyBrief', 'leadResponder'],
   },
   {
     icon: KeyRound,
@@ -90,7 +91,7 @@ const ROLES: Array<{
       fr: 'Les demandes courantes reçoivent des réponses instantanées et cohérentes ; dossiers et visites suivent un processus structuré, journalisé et conforme au RGPD.',
       ar: 'تحصل الاستفسارات الروتينية على إجابات فورية ومتسقة؛ وتسير العروض والمعاينات بشكل منظم — موثقة ومتوافقة مع حماية البيانات.',
     },
-    agents: ['Conversation Agent', 'Listing Creator', 'Compliance Guard'],
+    agents: ['conversationAgent', 'listingCreator', 'complianceGuard'],
   },
 ];
 
@@ -323,7 +324,7 @@ export default function SolutionsPage() {
                       className="icon-pop rounded-full border border-teal/25 bg-teal-wash px-2.5 py-1 text-xs font-medium text-teal hover:border-teal/50 transition-colors"
                       style={{ animationDelay: `${ai * 60}ms` }}
                     >
-                      {a}
+                      {agentName(a, language)}
                     </Link>
                   ))}
                 </div>

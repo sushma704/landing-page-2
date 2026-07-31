@@ -6,13 +6,14 @@
 import { Hexagon } from 'lucide-react';
 import { useLanguage } from '../../i18n';
 import type { Language } from '../../i18n';
+import { agentName, type AgentId } from '../../i18n/agents';
 import { Scene } from './Scene';
 
-type Agent = { name: string; status: Record<Language, string> };
+type Agent = { id: AgentId; status: Record<Language, string> };
 
 const AGENTS: Agent[] = [
   {
-    name: 'Lead Responder',
+    id: 'leadResponder',
     status: {
       de: 'Beantwortet eine neue Portal-Anfrage …',
       en: 'Answering a new portal inquiry …',
@@ -21,7 +22,7 @@ const AGENTS: Agent[] = [
     },
   },
   {
-    name: 'Conversation Agent',
+    id: 'conversationAgent',
     status: {
       de: 'Qualifiziert im Gespräch: Budget & Zeitraum',
       en: 'Qualifying in conversation: budget & timeframe',
@@ -30,7 +31,7 @@ const AGENTS: Agent[] = [
     },
   },
   {
-    name: 'Viewing Booker',
+    id: 'viewingBooker',
     status: {
       de: 'Schlägt 3 freie Besichtigungstermine vor',
       en: 'Proposing 3 free viewing slots',
@@ -39,7 +40,7 @@ const AGENTS: Agent[] = [
     },
   },
   {
-    name: 'Listing Creator',
+    id: 'listingCreator',
     status: {
       de: 'Erstellt Exposé-Entwurf aus dem PDF',
       en: 'Drafting the listing from the PDF',
@@ -48,7 +49,7 @@ const AGENTS: Agent[] = [
     },
   },
   {
-    name: 'Deal Monitor',
+    id: 'dealMonitor',
     status: {
       de: 'Verschiebt Deal Weber nach „Besichtigung“',
       en: 'Moving deal Weber to “Viewing”',
@@ -57,7 +58,7 @@ const AGENTS: Agent[] = [
     },
   },
   {
-    name: 'Daily Brief Agent',
+    id: 'dailyBrief',
     status: {
       de: 'Bereitet das Morgen-Briefing vor',
       en: 'Preparing the morning brief',
@@ -66,7 +67,7 @@ const AGENTS: Agent[] = [
     },
   },
   {
-    name: 'Compliance Guard',
+    id: 'complianceGuard',
     status: {
       de: 'Prüft Entwurf — wartet auf Ihre Freigabe',
       en: 'Checking draft — awaiting your approval',
@@ -149,7 +150,7 @@ export const SceneAgents = ({ className = '' }: { className?: string }) => {
               const on = activeIdx === i;
               return (
                 <span
-                  key={agent.name}
+                  key={agent.id}
                   className={`tr-scene absolute max-w-[34%] -translate-x-1/2 -translate-y-1/2 truncate rounded-full border px-2 py-0.5 text-[8px] sm:text-[10px] font-medium ${
                     on
                       ? 'border-golden bg-gradient-golden text-[#1E1B16] shadow-subtle'
@@ -161,7 +162,7 @@ export const SceneAgents = ({ className = '' }: { className?: string }) => {
                     transform: `translate(-50%, -50%)${on ? ' scale(1.08)' : ''}`,
                   }}
                 >
-                  {agent.name}
+                  {agentName(agent.id, language)}
                 </span>
               );
             })}
@@ -170,12 +171,12 @@ export const SceneAgents = ({ className = '' }: { className?: string }) => {
             <div className="absolute inset-x-3 bottom-2.5 grid text-center">
               {AGENTS.map((agent, i) => (
                 <p
-                  key={agent.name}
+                  key={agent.id}
                   className={`tr-scene col-start-1 row-start-1 truncate text-[10px] sm:text-[11px] text-slate ${
                     activeIdx === i ? 'opacity-100' : 'opacity-0'
                   }`}
                 >
-                  <span className="font-semibold text-golden-dark">{agent.name}:</span>{' '}
+                  <span className="font-semibold text-golden-dark">{agentName(agent.id, language)}:</span>{' '}
                   {agent.status[language] ?? agent.status.en}
                 </p>
               ))}

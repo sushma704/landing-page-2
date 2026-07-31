@@ -13,10 +13,9 @@ import {
   useRef,
   useState,
   type KeyboardEvent,
-  type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from 'react';
-import { ArrowDown, ArrowUp } from 'lucide-react';
+import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from 'lucide-react';
 import { Reveal, slowmoFactor, useInView, usePrefersReducedMotion } from '../lib/animations';
 import { useLanguage } from '../i18n';
 import type { Language } from '../i18n';
@@ -285,78 +284,67 @@ const CAROUSEL_HEAD: L10n = {
   ar: 'شاشات حقيقية من «المنتج»',
 };
 const CAROUSEL_SUB: L10n = {
-  de: 'Keine Mockups — wischen, ziehen oder mit der Bildlaufleiste blättern.',
-  en: 'No mockups — swipe, drag or use the scrollbar to browse.',
-  fr: 'Pas de maquettes — balayez, faites glisser ou utilisez la barre de défilement.',
-  ar: 'ليست نماذج تجريبية — اسحبوا أو استخدموا شريط التمرير للتصفح.',
+  de: 'Keine Mockups — wischen, ziehen oder mit den Pfeilen blättern.',
+  en: 'No mockups — swipe, drag or use the arrows to browse.',
+  fr: 'Pas de maquettes — balayez, faites glisser ou utilisez les flèches.',
+  ar: 'ليست نماذج تجريبية — اسحبوا أو استخدموا الأسهم للتصفح.',
 };
+
+const PREV_LABEL: L10n = {
+  de: 'Vorherige Screens',
+  en: 'Previous screens',
+  fr: 'Écrans précédents',
+  ar: 'الشاشات السابقة',
+};
+const NEXT_LABEL: L10n = {
+  de: 'Nächste Screens',
+  en: 'Next screens',
+  fr: 'Écrans suivants',
+  ar: 'الشاشات التالية',
+};
+
+const ARROWS = [
+  { dir: -1 as const, label: PREV_LABEL, Icon: ArrowLeft },
+  { dir: 1 as const, label: NEXT_LABEL, Icon: ArrowRight },
+];
 
 export const ScreensCarousel = () => {
   const { language } = useLanguage();
   const reduced = usePrefersReducedMotion();
   const railRef = useRef<HTMLDivElement | null>(null);
-  const trackRef = useRef<HTMLDivElement | null>(null);
   const drag = useRef<{ startX: number; startScroll: number; on: boolean }>({
     startX: 0,
     startScroll: 0,
     on: false,
   });
 
-  // Custom scrollbar under the rail. `w` = visible fraction of the rail,
-  // `x` = scroll progress 0..1. Both are derived from the rail itself, so the
-  // bar stays correct across resize, font loading and RTL.
-  const [bar, setBar] = useState({ w: 1, x: 0 });
-  const barDrag = useRef<{ startX: number; startScroll: number; on: boolean }>({
-    startX: 0,
-    startScroll: 0,
-    on: false,
-  });
-
-  const syncBar = useCallback(() => {
+  // Scroll progress 0..1, used only to fade out an arrow once that end is
+  // reached — a live-looking button that cannot scroll any further is worse
+  // than no button. Recomputed on scroll and on resize.
+  const [pos, setPos] = useState(0);
+  const syncPos = useCallback(() => {
     const rail = railRef.current;
     if (!rail) return;
     const max = rail.scrollWidth - rail.clientWidth;
-    setBar({
-      w: rail.scrollWidth > 0 ? rail.clientWidth / rail.scrollWidth : 1,
-      // scrollLeft is negative in RTL on some engines — normalise.
-      x: max > 0 ? Math.min(1, Math.abs(rail.scrollLeft) / max) : 0,
-    });
+    // scrollLeft is negative in RTL on some engines — normalise.
+    setPos(max > 0 ? Math.min(1, Math.abs(rail.scrollLeft) / max) : 0);
   }, []);
 
   useEffect(() => {
     const rail = railRef.current;
     if (!rail) return;
-    syncBar();
-    rail.addEventListener('scroll', syncBar, { passive: true });
-    const ro = new ResizeObserver(syncBar);
+    syncPos();
+    rail.addEventListener('scroll', syncPos, { passive: true });
+    const ro = new ResizeObserver(syncPos);
     ro.observe(rail);
     return () => {
-      rail.removeEventListener('scroll', syncBar);
+      rail.removeEventListener('scroll', syncPos);
       ro.disconnect();
     };
-  }, [syncBar]);
+  }, [syncPos]);
 
-  // Dragging the bar scrolls the rail proportionally. scroll-behavior is
-  // forced to auto for the duration or the smooth scrolling fights the drag.
-  const onBarDown = (e: ReactPointerEvent<HTMLDivElement>) => {
-    const rail = railRef.current;
-    const track = trackRef.current;
-    if (!rail || !track) return;
-    barDrag.current = { startX: e.clientX, startScroll: rail.scrollLeft, on: true };
-    rail.style.scrollBehavior = 'auto';
-    track.setPointerCapture(e.pointerId);
-  };
-  const onBarMove = (e: ReactPointerEvent<HTMLDivElement>) => {
-    if (!barDrag.current.on) return;
-    const rail = railRef.current!;
-    const track = trackRef.current!;
-    const ratio = rail.scrollWidth / Math.max(1, track.clientWidth);
-    rail.scrollLeft = barDrag.current.startScroll + (e.clientX - barDrag.current.startX) * ratio;
-  };
-  const onBarUp = () => {
-    barDrag.current.on = false;
-    if (railRef.current) railRef.current.style.scrollBehavior = '';
-  };
+  const atStart = pos <= 0.01;
+  const atEnd = pos >= 0.99;
 
   const stepBy = useCallback(
     (dir: 1 | -1) => {
@@ -388,6 +376,9 @@ export const ScreensCarousel = () => {
           </Reveal>
         </div>
 
+        {/* positioned box: the arrows centre on the cards, not on the
+            whole section (which would include the heading above). */}
+        <div className="relative mt-10">
         <div
           ref={railRef}
           role="region"
@@ -406,7 +397,7 @@ export const ScreensCarousel = () => {
           }}
           onPointerUp={() => (drag.current.on = false)}
           onPointerCancel={() => (drag.current.on = false)}
-          className="snap-rail mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth outline-none focus-visible:ring-2 focus-visible:ring-golden"
+          className="snap-rail flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth outline-none focus-visible:ring-2 focus-visible:ring-golden"
         >
           {SHOT_FRAMES.map((c, i) => (
             <Reveal
@@ -449,26 +440,29 @@ export const ScreensCarousel = () => {
           ))}
         </div>
 
-        {/* Scrollbar under the photos, replacing the arrow buttons: it shows
-            position as well as offering control, which arrows never did.
-            aria-hidden — the rail itself is focusable and arrow-key scrollable,
-            so this is a redundant pointer affordance. */}
-        <div
-          ref={trackRef}
-          aria-hidden
-          onPointerDown={onBarDown}
-          onPointerMove={onBarMove}
-          onPointerUp={onBarUp}
-          onPointerCancel={onBarUp}
-          className="mt-6 h-2 w-full cursor-grab touch-none rounded-full bg-charcoal/12 active:cursor-grabbing dark:bg-white/15"
-        >
-          <div
-            className="h-2 rounded-full bg-charcoal/45 transition-colors hover:bg-golden-dark dark:bg-white/55 dark:hover:bg-golden"
-            style={{
-              width: `${bar.w * 100}%`,
-              marginInlineStart: `${bar.x * (100 - bar.w * 100)}%`,
-            }}
-          />
+        {/* Arrows overlaid on the rail, vertically centred on the cards.
+            Logical inset properties (not left/right) so they swap sides under
+            RTL. Each fades out at its end of the rail rather than sitting
+            there dead. Hidden on touch-first widths, where swiping is the
+            natural gesture and the buttons would cover the cards. */}
+        {ARROWS.map(({ dir, label, Icon }) => {
+          const disabled = dir === -1 ? atStart : atEnd;
+          return (
+            <button
+              key={dir}
+              type="button"
+              aria-label={pick(label, language)}
+              onClick={() => stepBy(dir)}
+              disabled={disabled}
+              style={dir === -1 ? { insetInlineStart: '-0.5rem' } : { insetInlineEnd: '-0.5rem' }}
+              className={`absolute top-1/2 z-10 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-charcoal/10 bg-white/90 text-charcoal shadow-card backdrop-blur transition-all hover:border-golden hover:bg-gradient-golden hover:text-[#1E1B16] focus-visible:ring-2 focus-visible:ring-golden dark:border-white/15 dark:bg-charcoal/80 dark:text-white sm:inline-flex ${
+                disabled ? 'pointer-events-none opacity-0' : 'opacity-100'
+              }`}
+            >
+              <Icon className="h-5 w-5 rtl:rotate-180" />
+            </button>
+          );
+        })}
         </div>
       </div>
     </section>

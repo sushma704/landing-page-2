@@ -510,7 +510,7 @@ export const translations = {
       en: 'All rights reserved.',
     },
     madeInGermany: {
-      de: 'Made in Germany.',
+      de: 'Hergestellt in Deutschland.',
       en: 'Made in Germany.',
     },
   },

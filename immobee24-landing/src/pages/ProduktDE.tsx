@@ -234,10 +234,10 @@ const HERO_STEPS: Array<{
   },
 ];
 
-const HERO_STATS: Array<{ icon: ComponentType<{ className?: string }>; stat: string; label: HeroCopy }> = [
+const HERO_STATS: Array<{ icon: ComponentType<{ className?: string }>; stat: string | HeroCopy; label: HeroCopy }> = [
   { icon: Zap, stat: '3s', label: { de: 'Erstantwort', en: 'First reply', fr: 'Première réponse', ar: 'الرد الأول' } },
   { icon: Clock, stat: '24/7', label: { de: 'erreichbar', en: 'available', fr: 'disponible', ar: 'متاح' } },
-  { icon: ShieldCheck, stat: 'DSGVO', label: { de: 'EU-Hosting', en: 'EU-hosted', fr: 'hébergé en UE', ar: 'استضافة أوروبية' } },
+  { icon: ShieldCheck, stat: { de: 'DSGVO', en: 'GDPR', fr: 'RGPD', ar: 'GDPR' }, label: { de: 'EU-Hosting', en: 'EU-hosted', fr: 'hébergé en UE', ar: 'استضافة أوروبية' } },
   { icon: UserCheck, stat: '100%', label: { de: 'Freigabe-Kontrolle', en: 'approval control', fr: 'contrôle de validation', ar: 'تحكم بالموافقات' } },
 ];
 
@@ -364,8 +364,13 @@ const Hero = () => {
             <div className="text-center max-w-4xl mx-auto">
               {headlineBlock(0)}
             </div>
+            {/* Centred, not full-bleed: the columns are 2fr/auto/3fr, so when
+                this stretched edge-to-edge the heavier dashboard column pushed
+                the composition's visual centre to the right of the centred
+                headline above it. Capping the width and centring lines the
+                whole widget up with the copy. */}
             <div
-              className="chor-scale mt-6 grid items-center gap-8 lg:gap-0 lg:grid-cols-[minmax(0,2fr),auto,minmax(0,3fr)]"
+              className="chor-scale mt-6 mx-auto w-full max-w-[1360px] grid items-center gap-8 lg:gap-0 lg:grid-cols-[minmax(0,2fr),auto,minmax(0,3fr)]"
               style={chorSlot(850, 900)}
             >
               {/* module tiles, two offset columns like the reference */}
@@ -443,12 +448,12 @@ const Hero = () => {
               <div className="flex flex-row flex-wrap justify-center gap-3 lg:flex-col lg:items-end">
                 {HERO_STATS.slice(0, 2).map((st, i) => (
                   <div
-                    key={st.stat}
+                    key={st.label.en}
                     className="float-pill flex items-center gap-3 rounded-2xl border border-charcoal/10 bg-white px-4 py-3 shadow-card"
                     style={{ animationDelay: `${i * 600}ms` }}
                   >
                     <st.icon className="h-4 w-4 text-golden" />
-                    <span className="font-metric text-lg font-bold text-golden whitespace-nowrap">{st.stat}</span>
+                    <span className="font-metric text-lg font-bold text-golden whitespace-nowrap">{typeof st.stat === 'string' ? st.stat : L(st.stat)}</span>
                     <span className="text-xs text-slate">{L(st.label)}</span>
                   </div>
                 ))}
@@ -462,12 +467,12 @@ const Hero = () => {
               <div className="flex flex-row flex-wrap justify-center gap-3 lg:flex-col lg:items-start">
                 {HERO_STATS.slice(2).map((st, i) => (
                   <div
-                    key={st.stat}
+                    key={st.label.en}
                     className="float-pill flex items-center gap-3 rounded-2xl border border-charcoal/10 bg-white px-4 py-3 shadow-card"
                     style={{ animationDelay: `${300 + i * 600}ms` }}
                   >
                     <st.icon className="h-4 w-4 text-golden" />
-                    <span className="font-metric text-lg font-bold text-golden whitespace-nowrap">{st.stat}</span>
+                    <span className="font-metric text-lg font-bold text-golden whitespace-nowrap">{typeof st.stat === 'string' ? st.stat : L(st.stat)}</span>
                     <span className="text-xs text-slate">{L(st.label)}</span>
                   </div>
                 ))}

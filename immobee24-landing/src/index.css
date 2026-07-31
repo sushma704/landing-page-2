@@ -1319,6 +1319,12 @@ html:not(.dark) body { background-color: #fbf9f4; }
 }
 .snap-rail::-webkit-scrollbar { display: none; }
 
+/* NOTE on rail scrollbars: we do NOT re-enable the native one. macOS uses
+   overlay scrollbars that fade out at rest, so a native bar is invisible
+   exactly when it is meant to act as an affordance, and it looks different on
+   every OS. The screens carousel draws its own bar (see ScreensCarousel) so
+   it is always visible, brand-styled and identical everywhere. */
+
 
 /* Subtle continuous float for dashboard mockups and feature demos
    (premium-SaaS ambient motion; ±5px over 7s, staggered via negative

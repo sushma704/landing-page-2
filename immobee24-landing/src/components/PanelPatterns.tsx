@@ -13,9 +13,10 @@ import {
   useRef,
   useState,
   type KeyboardEvent,
+  type PointerEvent as ReactPointerEvent,
   type ReactNode,
 } from 'react';
-import { ArrowDown, ArrowLeft, ArrowRight, ArrowUp } from 'lucide-react';
+import { ArrowDown, ArrowUp } from 'lucide-react';
 import { Reveal, slowmoFactor, useInView, usePrefersReducedMotion } from '../lib/animations';
 import { useLanguage } from '../i18n';
 import type { Language } from '../i18n';
@@ -284,21 +285,78 @@ const CAROUSEL_HEAD: L10n = {
   ar: 'شاشات حقيقية من «المنتج»',
 };
 const CAROUSEL_SUB: L10n = {
-  de: 'Keine Mockups — wischen, ziehen oder mit den Pfeilen blättern.',
-  en: 'No mockups — swipe, drag or use the arrows to browse.',
-  fr: 'Pas de maquettes — balayez, faites glisser ou utilisez les flèches.',
-  ar: 'ليست نماذج تجريبية — اسحبوا أو استخدموا الأسهم للتصفح.',
+  de: 'Keine Mockups — wischen, ziehen oder mit der Bildlaufleiste blättern.',
+  en: 'No mockups — swipe, drag or use the scrollbar to browse.',
+  fr: 'Pas de maquettes — balayez, faites glisser ou utilisez la barre de défilement.',
+  ar: 'ليست نماذج تجريبية — اسحبوا أو استخدموا شريط التمرير للتصفح.',
 };
 
 export const ScreensCarousel = () => {
   const { language } = useLanguage();
   const reduced = usePrefersReducedMotion();
   const railRef = useRef<HTMLDivElement | null>(null);
+  const trackRef = useRef<HTMLDivElement | null>(null);
   const drag = useRef<{ startX: number; startScroll: number; on: boolean }>({
     startX: 0,
     startScroll: 0,
     on: false,
   });
+
+  // Custom scrollbar under the rail. `w` = visible fraction of the rail,
+  // `x` = scroll progress 0..1. Both are derived from the rail itself, so the
+  // bar stays correct across resize, font loading and RTL.
+  const [bar, setBar] = useState({ w: 1, x: 0 });
+  const barDrag = useRef<{ startX: number; startScroll: number; on: boolean }>({
+    startX: 0,
+    startScroll: 0,
+    on: false,
+  });
+
+  const syncBar = useCallback(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    const max = rail.scrollWidth - rail.clientWidth;
+    setBar({
+      w: rail.scrollWidth > 0 ? rail.clientWidth / rail.scrollWidth : 1,
+      // scrollLeft is negative in RTL on some engines — normalise.
+      x: max > 0 ? Math.min(1, Math.abs(rail.scrollLeft) / max) : 0,
+    });
+  }, []);
+
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+    syncBar();
+    rail.addEventListener('scroll', syncBar, { passive: true });
+    const ro = new ResizeObserver(syncBar);
+    ro.observe(rail);
+    return () => {
+      rail.removeEventListener('scroll', syncBar);
+      ro.disconnect();
+    };
+  }, [syncBar]);
+
+  // Dragging the bar scrolls the rail proportionally. scroll-behavior is
+  // forced to auto for the duration or the smooth scrolling fights the drag.
+  const onBarDown = (e: ReactPointerEvent<HTMLDivElement>) => {
+    const rail = railRef.current;
+    const track = trackRef.current;
+    if (!rail || !track) return;
+    barDrag.current = { startX: e.clientX, startScroll: rail.scrollLeft, on: true };
+    rail.style.scrollBehavior = 'auto';
+    track.setPointerCapture(e.pointerId);
+  };
+  const onBarMove = (e: ReactPointerEvent<HTMLDivElement>) => {
+    if (!barDrag.current.on) return;
+    const rail = railRef.current!;
+    const track = trackRef.current!;
+    const ratio = rail.scrollWidth / Math.max(1, track.clientWidth);
+    rail.scrollLeft = barDrag.current.startScroll + (e.clientX - barDrag.current.startX) * ratio;
+  };
+  const onBarUp = () => {
+    barDrag.current.on = false;
+    if (railRef.current) railRef.current.style.scrollBehavior = '';
+  };
 
   const stepBy = useCallback(
     (dir: 1 | -1) => {
@@ -354,7 +412,11 @@ export const ScreensCarousel = () => {
             <Reveal
               key={c.img}
               delay={(i % 3) * 80}
-              className="w-[88%] flex-shrink-0 snap-start sm:w-[60%] lg:w-[38.5%]"
+              // Widths divide the rail EXACTLY (gap-5 = 1.25rem): 1 card on
+              // mobile, 2 from sm, 3 from lg. The old 88/60/38.5% left a
+              // sliced-off card hanging at the right edge, which read as a
+              // broken image rather than as a scroll affordance.
+              className="w-full flex-shrink-0 snap-start sm:w-[calc((100%-1.25rem)/2)] lg:w-[calc((100%-2.5rem)/3)]"
             >
               <figure
                 data-card
@@ -387,23 +449,26 @@ export const ScreensCarousel = () => {
           ))}
         </div>
 
-        <div className="mt-6 flex justify-end gap-2">
-          <button
-            type="button"
-            aria-label="previous"
-            onClick={() => stepBy(-1)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-charcoal/15 text-charcoal transition-colors hover:border-golden hover:bg-gradient-golden hover:text-[#1E1B16]"
-          >
-            <ArrowLeft className="h-4 w-4 rtl:rotate-180" />
-          </button>
-          <button
-            type="button"
-            aria-label="next"
-            onClick={() => stepBy(1)}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-charcoal/15 text-charcoal transition-colors hover:border-golden hover:bg-gradient-golden hover:text-[#1E1B16]"
-          >
-            <ArrowRight className="h-4 w-4 rtl:rotate-180" />
-          </button>
+        {/* Scrollbar under the photos, replacing the arrow buttons: it shows
+            position as well as offering control, which arrows never did.
+            aria-hidden — the rail itself is focusable and arrow-key scrollable,
+            so this is a redundant pointer affordance. */}
+        <div
+          ref={trackRef}
+          aria-hidden
+          onPointerDown={onBarDown}
+          onPointerMove={onBarMove}
+          onPointerUp={onBarUp}
+          onPointerCancel={onBarUp}
+          className="mt-6 h-2 w-full cursor-grab touch-none rounded-full bg-charcoal/12 active:cursor-grabbing dark:bg-white/15"
+        >
+          <div
+            className="h-2 rounded-full bg-charcoal/45 transition-colors hover:bg-golden-dark dark:bg-white/55 dark:hover:bg-golden"
+            style={{
+              width: `${bar.w * 100}%`,
+              marginInlineStart: `${bar.x * (100 - bar.w * 100)}%`,
+            }}
+          />
         </div>
       </div>
     </section>

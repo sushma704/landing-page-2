@@ -2,8 +2,18 @@
 <!--
   Sitemap for immob24.com. Public: robots.txt allows crawling and every
   indexable page emits <meta robots: index, follow>. Only canonical,
-  indexable, 200-status marketing pages are listed here — the post-conversion
-  beta thank-you pages are intentionally excluded (they are noindex).
+  indexable, 200-status marketing pages are listed here.
+
+  Deliberately EXCLUDED:
+  - the post-conversion beta thank-you pages (noindex)
+  - /dev/* scratch routes (noindex)
+  - every redirect URL. The old /{lang}/how-it-works, /{lang}/demo and
+    beta-programme slugs are 301'd by nginx-spa.conf to their merged
+    destinations, so listing them would point Google at redirects. They
+    were listed here by mistake until 2026-07-31 — this file had not been
+    regenerated since the unified-IA rework deleted those pages, so it
+    advertised 6 dead URLs and none of the new ones.
+  - the bare root: nginx 301s / to /de, so /de is the canonical entry.
 
   hreflang is intentionally NOT declared in this sitemap. Each page's
   HTML head already emits <link rel="alternate" hreflang> via the
@@ -13,147 +23,280 @@
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
+  <!-- ============================= DE (primary) ============================= -->
   <url>
     <loc>https://immob24.com/de</loc>
-    <lastmod>2026-07-09</lastmod>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://immob24.com/de/produkt</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/de/loesungen</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/de/ki-funktionen</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/de/preise</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/de/warum-immob24</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/de/compliance</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/de/immobilien-crm-alternative</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/de/kontakt</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- DE SEO landing pages -->
+  <url>
+    <loc>https://immob24.com/de/ki-fuer-immobilienmakler</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/de/maklersoftware/berlin</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/de/maklersoftware/hamburg</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/de/maklersoftware/muenchen</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- ================================== EN ================================== -->
+  <url>
     <loc>https://immob24.com/en</loc>
-    <lastmod>2026-07-09</lastmod>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
-
-  <url>
-    <loc>https://immob24.com/de/produkt</loc>
-    <lastmod>2026-07-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
   <url>
     <loc>https://immob24.com/en/product</loc>
-    <lastmod>2026-07-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://immob24.com/de/how-it-works</loc>
-    <lastmod>2026-07-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://immob24.com/en/how-it-works</loc>
-    <lastmod>2026-07-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://immob24.com/de/immobilien-crm-alternative</loc>
-    <lastmod>2026-07-09</lastmod>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://immob24.com/en/real-estate-crm-alternative</loc>
-    <lastmod>2026-07-09</lastmod>
+    <loc>https://immob24.com/en/solutions</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
   <url>
-    <loc>https://immob24.com/de/preise</loc>
-    <lastmod>2026-07-09</lastmod>
+    <loc>https://immob24.com/en/ai-features-platform</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://immob24.com/en/pricing</loc>
-    <lastmod>2026-07-09</lastmod>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
-
   <url>
-    <loc>https://immob24.com/de/demo</loc>
-    <lastmod>2026-07-09</lastmod>
+    <loc>https://immob24.com/en/why-immob24</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://immob24.com/en/demo</loc>
-    <lastmod>2026-07-09</lastmod>
+    <loc>https://immob24.com/en/compliance</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/en/real-estate-crm-alternative</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/en/contact</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- EN SEO landing pages -->
+  <url>
+    <loc>https://immob24.com/en/ai-for-real-estate-agents</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/en/real-estate-agent-software/berlin</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/en/real-estate-agent-software/hamburg</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/en/real-estate-agent-software/munich</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- ================================== FR ================================== -->
+  <url>
+    <loc>https://immob24.com/fr</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/fr/produit</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/fr/solutions</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/fr/fonctions-ia</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/fr/tarifs</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/fr/pourquoi-immob24</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/fr/conformite</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/fr/alternative-crm-immobilier</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/fr/contact</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
 
+  <!-- ================================== AR ================================== -->
   <url>
-    <loc>https://immob24.com/de/beta-agentenprogramm</loc>
-    <lastmod>2026-07-09</lastmod>
-    <changefreq>monthly</changefreq>
+    <loc>https://immob24.com/ar</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://immob24.com/en/beta-agent-program</loc>
-    <lastmod>2026-07-09</lastmod>
+    <loc>https://immob24.com/ar/product</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
-
   <url>
-    <loc>https://immob24.com/de/maklersoftware/muenchen</loc>
-    <lastmod>2026-07-09</lastmod>
+    <loc>https://immob24.com/ar/solutions</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://immob24.com/en/real-estate-agent-software/munich</loc>
-    <lastmod>2026-07-09</lastmod>
+    <loc>https://immob24.com/ar/ai-features-platform</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://immob24.com/de/maklersoftware/berlin</loc>
-    <lastmod>2026-07-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://immob24.com/en/real-estate-agent-software/berlin</loc>
-    <lastmod>2026-07-09</lastmod>
+    <loc>https://immob24.com/ar/pricing</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://immob24.com/de/maklersoftware/hamburg</loc>
-    <lastmod>2026-07-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://immob24.com/en/real-estate-agent-software/hamburg</loc>
-    <lastmod>2026-07-09</lastmod>
+    <loc>https://immob24.com/ar/why-immob24</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://immob24.com/de/ki-fuer-immobilienmakler</loc>
-    <lastmod>2026-07-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://immob24.com/en/ai-for-real-estate-agents</loc>
-    <lastmod>2026-07-09</lastmod>
+    <loc>https://immob24.com/ar/compliance</loc>
+    <lastmod>2026-07-31</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/ar/real-estate-crm-alternative</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://immob24.com/ar/contact</loc>
+    <lastmod>2026-07-31</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
   </url>
 
 </urlset>
